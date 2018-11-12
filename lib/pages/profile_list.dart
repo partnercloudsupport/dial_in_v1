@@ -82,23 +82,35 @@ class _ProfileListState extends State<ProfileList>{
             orderNumber: 0
             ),
     ];
+ }
+
+Widget _buildProfileCard(){
+  return Text('Cock');
+}
+
+
+ @override
+    Widget build(BuildContext context) {
+      return _profiles.length > 0 ? ListView.builder(
+        itemBuilder: (BuildContext context, int index) =>  ProfileCard(_profiles[index]),
+        itemCount: _profiles.length,
+      ) : Center(child: Text('No Data'),);
     }
 
+  //   @override
+  //   Widget build(BuildContext context) {
+  //     return ListView( children: <Widget>[
 
-    @override
-    Widget build(BuildContext context) {
-      return ListView( children: <Widget>[
-
-          ProfileCard(
-            _profiles[1]
-          ),
-           ProfileCard(
-            _profiles[2]
-          ),
-           ProfileCard(
-            _profiles[3]
-          )
-      ] 
-    );
-  }
+  //         ProfileCard(
+  //           _profiles[1]
+  //         ),
+  //          ProfileCard(
+  //           _profiles[2]
+  //         ),
+  //          ProfileCard(
+  //           _profiles[3]
+  //         )
+  //     ] 
+  //   );
+  // }
 }
