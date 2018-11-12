@@ -40,8 +40,6 @@ void logOut(){
 
 DatabaseFunctions.logOut((){});
 Navigator.pop(context);
-
-
 }
 
 //

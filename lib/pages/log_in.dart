@@ -62,11 +62,6 @@ void loginButtonPressed(){
  });
 }
 
-
-
-// }
-
-
 void signUpButtonPressed() {print('signUp');}
 
 void onEmailChange(){ _email =_emailController.text;}

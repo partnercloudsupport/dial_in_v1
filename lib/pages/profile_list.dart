@@ -10,26 +10,93 @@ import 'feed.dart';
 import '../data/item.dart';
 import '../database_functions.dart';
 
-class ProfileList extends StatelessWidget{
+class ProfileList extends StatefulWidget{
+ _ProfileListState createState() => new _ProfileListState();
+}
 
-List<Profile> profiles;
 
+class _ProfileListState extends State<ProfileList>{
 
+    List<Profile> _profiles;
 
-@override
-    Widget build(BuildContext context) {
-      return ListView( children: <Widget>[
+    @override
+    initState(){
 
-          ProfileCard(
-            Profile(  
+    _profiles = [
+
+      Profile(  
             updatedAt: DateTime.now(),
             objectId: "", type: ProfileType.barista, 
-            properties: [Item("title", "value", "se gueId", "viewControllerId", "databaseId", "placeHolderText", TextInputType.text)],
-            image: Image.asset('assets/images/DialInWhiteLogo.png'),
+            properties: [
+              Item(title: "One",value:"One" ,segueId: "One",viewControllerId: "One",databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ),
+              Item(title: "One",value:"One" ,segueId: "Two",viewControllerId: "One",databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ),
+              Item(title: "One",value:"One" ,segueId: "Three",viewControllerId: "One",databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ),
+              Item(title: "One",value:"One" ,segueId: "Four",viewControllerId: "One",databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ), 
+            ],
+            image: Image.asset('assets/images/user.png'),
             databaseId: DatabaseFunctions.lot,
             viewContollerId: ViewControllerIds.lot,
             orderNumber: 0
             ),
+
+      Profile(  
+            updatedAt: DateTime.now(),
+            objectId: "", type: ProfileType.barista, 
+            properties: [
+              Item(title: "One",value:"One" ,segueId: "One",viewControllerId: "One",databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ),
+              Item(title: "One",value:"One" ,segueId: "Two",viewControllerId: "One",databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ),
+              Item(title: "One",value:"One" ,segueId: "Three",viewControllerId: "One",databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ),
+              Item(title: "One",value:"One" ,segueId: "Four",viewControllerId: "One",databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ), 
+            ],
+            image: Image.asset('assets/images/user.png'),
+            databaseId: DatabaseFunctions.lot,
+            viewContollerId: ViewControllerIds.lot,
+            orderNumber: 0
+            ),
+      Profile(  
+            updatedAt: DateTime.now(),
+            objectId: "", type: ProfileType.barista, 
+            properties: [
+              Item(title: "One",value:"One" ,segueId: "One",viewControllerId: "One",databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ),
+              Item(title: "One",value:"One" ,segueId: "Two",viewControllerId: "One",databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ),
+              Item(title: "One",value:"One" ,segueId: "Three",viewControllerId: "One",databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ),
+              Item(title: "One",value:"One" ,segueId: "Four",viewControllerId: "One",databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ), 
+            ],
+            image: Image.asset('assets/images/user.png'),
+            databaseId: DatabaseFunctions.lot,
+            viewContollerId: ViewControllerIds.lot,
+            orderNumber: 0
+            ),
+      Profile(  
+            updatedAt: DateTime.now(),
+            objectId: "", type: ProfileType.barista, 
+            properties: [
+              Item(title: "One",value:"One" ,segueId: "One",viewControllerId: "One",databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ),
+              Item(title: "One",value:"One" ,segueId: "Two",viewControllerId: "One",databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ),
+              Item(title: "One",value:"One" ,segueId: "Three",viewControllerId: "One",databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ),
+              Item(title: "One",value:"One" ,segueId: "Four",viewControllerId: "One",databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ),             
+                          ],
+            image: Image.asset('assets/images/user.png'),
+            databaseId: DatabaseFunctions.lot,
+            viewContollerId: ViewControllerIds.lot,
+            orderNumber: 0
+            ),
+    ];
+    }
+
+
+    @override
+    Widget build(BuildContext context) {
+      return ListView( children: <Widget>[
+
+          ProfileCard(
+            _profiles[1]
+          ),
+           ProfileCard(
+            _profiles[2]
+          ),
+           ProfileCard(
+            _profiles[3]
           )
       ] 
     );

@@ -15,17 +15,16 @@ class Item{
      List<List<String>> inputViewDataSet; 
      TextInputType keyboardType; 
     
-    Item(
-        String title,
-        String value,
-        String segueId,
-        String viewControllerId,
-        String databaseId,
-        String placeHolderText,
-        TextInputType keyboardType,
-        [String inputViewDataSet]
-       
-    );
+    Item({
+        this.title,
+        this.value,
+        this.segueId,
+        this.viewControllerId,
+        this.databaseId,
+        this.placeHolderText,
+        this.keyboardType,
+        this.inputViewDataSet   
+    });
 }
 
 // class Items {

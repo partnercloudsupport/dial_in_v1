@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../widgets/custom_widgets.dart';
 import 'profile_list.dart';
 import '../theme/appColors.dart';
+import '../data/profile.dart';
 
 
 class FeedPage extends StatefulWidget {
@@ -15,11 +16,20 @@ class FeedPageState extends State<FeedPage> with SingleTickerProviderStateMixin{
 
 TabController controller;
 TabViewDataArray _lists;
+List<Profile> _profileList;
 
 
 @override
 void initState() { 
   super.initState();
+
+  _profileList = [
+
+    
+
+
+
+  ];
   _lists = TabViewDataArray([
 
     TabViewData(ProfileList(), Tab(icon: Icon(Icons.public))),

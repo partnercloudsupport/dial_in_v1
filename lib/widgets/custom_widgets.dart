@@ -285,7 +285,7 @@ class ProfileCard extends StatelessWidget {
       /// Profile picture
       ///
       Container(
-          child: CircularPicture(Image.asset('assets/images/user.png'), 60.0)),
+          child: CircularPicture(profile.image, 60.0)),
 
       Expanded(
           child: Row(children: <Widget>[
@@ -299,7 +299,7 @@ class ProfileCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Container(
-                          margin: EdgeInsets.all(10.0), child: Text('Main')),
+                          margin: EdgeInsets.all(10.0), child: Text(profile.properties[0].title)),
                       Container(
                         margin: EdgeInsets.all(10.0),
                         child: Text('Second'),
@@ -414,7 +414,7 @@ class AddButton extends StatelessWidget {
 
 
 
-////////////////////////////////// Custom Classes ///////////////////////
+////////////////////////////////// Custom Classes ///////////////////////////////////////
 
 
 
