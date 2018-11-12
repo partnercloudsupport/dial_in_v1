@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "681837140826",
+    "firebase_url": "https://dial-in-21c50.firebaseio.com",
+    "project_id": "dial-in-21c50",
+    "storage_bucket": "dial-in-21c50.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:681837140826:android:ce58290a1ecee2af",
+        "android_client_info": {
+          "package_name": "com.example.dialinv1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "681837140826-8427lekl3hh6b4eltamt2b6tool4p04g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBck_5BFGYx8i-bIVPJbhnLhk0CJiy5Ek"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
