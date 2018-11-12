@@ -38,7 +38,7 @@ Future<void> logIn(String emailUser, String password,
           // try {
           //   FirebaseUser user = await FirebaseAuth.instance
           //       .signInWithEmailAndPassword(email: emailUser, password: password);
-          //   completion(true, StringLabels.loggedIn);
+            completion(true, StringLabels.loggedIn);
           // } catch (e) {
           //   completion(false, e.message);
           // }

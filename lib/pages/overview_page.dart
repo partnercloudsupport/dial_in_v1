@@ -36,6 +36,14 @@ controller.dispose();
 super.dispose();
 }
 
+void logOut(){
+
+DatabaseFunctions.logOut((){});
+Navigator.pop(context);
+
+
+}
+
 //
 /// UI Build
 ///
@@ -47,7 +55,7 @@ super.dispose();
       /// App bar 
       ///
       appBar: AppBar(title: Text(StringLabels.overview, style: TextStyle( fontWeight: FontWeight.w700),), automaticallyImplyLeading: false,
-      leading: RawMaterialButton( onPressed: () =>  DatabaseFunctions.logOut((){Navigator.pop(context);}) , 
+      leading: RawMaterialButton( onPressed: (){logOut();}, 
       child: Icon(Icons.exit_to_app),), 
       actions: <Widget>[ 
         RawMaterialButton( onPressed: () => Navigator.pop(context), child: Icon(Icons.menu))  ], ),
