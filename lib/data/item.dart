@@ -9,7 +9,6 @@ class Item{
      String title; 
      String value; 
      String segueId;
-     String viewControllerId; 
      String databaseId; 
      String placeHolderText; 
      List<List<String>> inputViewDataSet; 
@@ -19,7 +18,6 @@ class Item{
         this.title,
         this.value,
         this.segueId,
-        this.viewControllerId,
         this.databaseId,
         this.placeHolderText,
         this.keyboardType,

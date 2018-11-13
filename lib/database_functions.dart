@@ -4,99 +4,114 @@
 // import 'package:google_sign_in/google_sign_in.dart';
 // import 'package:google_sign_in/google_sign_in.dart';
 // import 'package:firebase_core/firebase_core.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'data/strings.dart';
+import 'data/profile.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'data/images.dart';
+import 'package:flutter/services.dart' show rootBundle;
+import 'dart:math';
+import 'dart:typed_data';
+import 'dart:async';
+import 'dart:io';
+
 
 class DatabaseFunctions {
-  static String coreDataId = 'coreDataId';
-  static String updatedAt = 'updatedAt';
-  static String userName = 'username';
-  static String email = 'email';
-  static String currentUser = 'currentUser';
-  static String password = 'password';
-  static String username = 'username';
-  static String objectId = 'objectId';
-  static String brewWeight = 'brewWeight';
-  static String Barista = 'Barista';
-  static String name = 'name';
-  static String data = 'data';
-  static String User = 'User';
-  static String altitude = 'altitude';
-  static String method = 'method';
-  static String density = 'density';
-  static String moisture = 'moistureContent';
-  static String aW = 'waterActivity';
-  static String notes = 'notes';
-  static String level = 'level';
-  static String barista = 'barista';
-  static String date = 'date';
-  static String totalScore = 'totalScore';
-  static String recipeId = 'recipeId';
-  static String tasteBalance = 'tasteBalance';
-  static String tactile = 'tactile';
-  static String sweet = 'sweet';
-  static String acidic = 'acidic';
-  static String flavour = 'flavour';
-  static String bitter = 'bitter';
-  static String weight = 'weight';
-  static String texture = 'texture';
-  static String finish = 'finish';
-  static String grindSetting = 'grindSetting';
-  static String descriptors = 'descriptors';
-  static String body = 'body';
-  static String balance = 'balance';
-  static String afterTaste = 'afterTaste';
-  static String water = 'Water';
-  static String brewingEquipment = 'BrewingEquipment';
-  static String coffee = 'Coffee';
-  static String grinder = 'Grinder';
-  static String creationDate = 'createdAt';
-  static String recipe = 'Recipe';
-  static String brewingDose = 'dose';
-  static String yield = 'yield';
-  static String time = 'time';
-  static String temparature = 'temparature';
-  static String tds = 'tds';
-  static String score = 'score';
-  static String preinfusion = 'preInfusion';
-  static String coffeeId = 'coffeeID';
-  static String producer = 'producer';
-  static String lot = 'lot';
-  static String farm = 'farm';
-  static String region = 'region';
-  static String country = 'country';
-  static String beanType = 'beanType';
-  static String beanSize = 'beanSize';
-  static String roastProfile = 'roastProfile';
-  static String roastDate = 'roastDate';
-  static String processingMethod = 'processingMethod';
-  static String roasteryName = 'roasteryName';
-  static String grinderId = 'grinderId';
-  static String grinderMake = 'grinderMake';
-  static String grinderModel = 'grinderModel';
-  static String equipmentMake = 'equipmentMake';
-  static String equipmentModel = 'equipmentModel';
-  static String burrs = 'burrs';
-  static String testTemparature = 'testTemparature';
-  static String gh = 'gh';
-  static String kh = 'kh';
-  static String ppm = 'ppm';
-  static String ph = 'ph';
-  static String equipmentId = 'equipmentId';
-  static String equipmentType = 'equipmentType';
-  static String waterID = 'waterId';
-  static String user = 'user';
-  static String userImage = 'userPicture';
-  static String brewingEquipmentImage = 'brewingEquipmentImage';
-  static String coffeeImage = 'coffeeImage';
-  static String grinderImage = 'grinderImage';
-  static String recipeImage = 'recipeImage';
-  static String waterImage = 'waterImage';
-  static String picture = 'picture';
+  static const String viewContollerId = 'viewContollerId';
+  static const String type = 'type';
+  static const String databaseId = 'databaseId';
+  static const String coreDataId = 'coreDataId';
+  static const String updatedAt = 'updatedAt';
+  static const String userName = 'username';
+  static const String email = 'email';
+  static const String currentUser = 'currentUser';
+  static const String password = 'password';
+  static const String username = 'username';
+  static const String objectId = 'objectId';
+  static const String brewWeight = 'brewWeight';
+  static const String Barista = 'Barista';
+  static const String name = 'name';
+  static const String data = 'data';
+  static const String User = 'User';
+  static const String altitude = 'altitude';
+  static const String method = 'method';
+  static const String density = 'density';
+  static const String moisture = 'moistureContent';
+  static const String aW = 'waterActivity';
+  static const String notes = 'notes';
+  static const String level = 'level';
+  static const String barista = 'barista';
+  static const String date = 'date';
+  static const String totalScore = 'totalScore';
+  static const String recipeId = 'recipeId';
+  static const String tasteBalance = 'tasteBalance';
+  static const String tactile = 'tactile';
+  static const String sweet = 'sweet';
+  static const String acidic = 'acidic';
+  static const String flavour = 'flavour';
+  static const String bitter = 'bitter';
+  static const String weight = 'weight';
+  static const String texture = 'texture';
+  static const String finish = 'finish';
+  static const String grindSetting = 'grindSetting';
+  static const String descriptors = 'descriptors';
+  static const String body = 'body';
+  static const String balance = 'balance';
+  static const String afterTaste = 'afterTaste';
+  static const String water = 'Water';
+  static const String brewingEquipment = 'BrewingEquipment';
+  static const String coffee = 'Coffee';
+  static const String grinder = 'Grinder';
+  static const String creationDate = 'createdAt';
+  static const String recipe = 'Recipe';
+  static const String brewingDose = 'dose';
+  static const String yield = 'yield';
+  static const String time = 'time';
+  static const String temparature = 'temparature';
+  static const String tds = 'tds';
+  static const String score = 'score';
+  static const String preinfusion = 'preInfusion';
+  static const String coffeeId = 'coffeeID';
+  static const String producer = 'producer';
+  static const String lot = 'lot';
+  static const String farm = 'farm';
+  static const String region = 'region';
+  static const String country = 'country';
+  static const String beanType = 'beanType';
+  static const String beanSize = 'beanSize';
+  static const String roastProfile = 'roastProfile';
+  static const String roastDate = 'roastDate';
+  static const String processingMethod = 'processingMethod';
+  static const String roasteryName = 'roasteryName';
+  static const String grinderId = 'grinderId';
+  static const String grinderMake = 'grinderMake';
+  static const String grinderModel = 'grinderModel';
+  static const String equipmentMake = 'equipmentMake';
+  static const String equipmentModel = 'equipmentModel';
+  static const String burrs = 'burrs';
+  static const String testTemparature = 'testTemparature';
+  static const String gh = 'gh';
+  static const String kh = 'kh';
+  static const String ppm = 'ppm';
+  static const String ph = 'ph';
+  static const String equipmentId = 'equipmentId';
+  static const String equipmentType = 'equipmentType';
+  static const String waterID = 'waterId';
+  static const String user = 'user';
+  static const String userImage = 'userPicture';
+  static const String brewingEquipmentImage = 'brewingEquipmentImage';
+  static const String coffeeImage = 'coffeeImage';
+  static const String grinderImage = 'grinderImage';
+  static const String recipeImage = 'recipeImage';
+  static const String waterImage = 'waterImage';
+  static const String picture = 'picture';
+  static const String imagePath = 'imagePath';
+  static const String image = 'image';
+  static const String orderNumber = 'orderNumber';
 
   static Future<void> logIn(String emailUser, String password,
       Function(bool, String) completion) async {
@@ -124,5 +139,52 @@ class DatabaseFunctions {
     signOutView();
     // await FirebaseAuth.instance.signOut();
     print('Logged out');
-}
+  }
+
+  static Future<void> getCurrentUserId(Function completion (String userId ) ) async {
+  FirebaseUser user = await FirebaseAuth.instance.currentUser();
+  print(user.uid);
+  completion(user.uid.toString());
+  }
+
+  static void saveProfile(Profile profile){
+
+      // Future<void> file = Images.getFile('assets/images/coffee-beanSmaller512x512.png', (file){    
+      // Images.getFile(profile.image.image.toString(), (file){    
+        
+      // final StorageReference storageReference = 
+      //   FirebaseStorage.instance.ref().child(file.path);
+      // final StorageUploadTask task = 
+      //   storageReference.putFile(file);
+
+    Map <String, dynamic> _properties = new Map <String, dynamic>();
+
+     for (var i = 0; i < profile.properties.length; i++) {
+          
+        _properties[profile.properties[i].databaseId] = profile.properties[i].value;
+      
+        }
+      DatabaseFunctions.getCurrentUserId( (userId){
+
+      _properties[DatabaseFunctions.image] = profile.image;
+      _properties[DatabaseFunctions.orderNumber] = profile.orderNumber;
+      _properties[DatabaseFunctions.user] = userId;
+      // _properties[DatabaseFunctions.imagePath] = file.toString();
+      
+
+    Firestore.instance.
+      collection(profile.databaseId).
+      document()
+      .setData(_properties);
+      }
+      );
+      // }
+      // );
+  }
+
+  static void getImage(String id, Function completion(Image image)){
+    Image pic = Image.asset(id);
+    completion(pic);
+  } 
+
 }

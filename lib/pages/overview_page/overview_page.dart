@@ -1,15 +1,13 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../data/strings.dart';
-import '../widgets/custom_widgets.dart';
-import 'sign_up.dart';
-import '../theme/appColors.dart';
+import '../../data/strings.dart';
+import '../../widgets/custom_widgets.dart';
+import '../../theme/appColors.dart';
 import 'data.dart';
-import '../data/profile.dart';
 import 'feed.dart';
 import 'user_profile.dart';
-import '../database_functions.dart';
+import '../../database_functions.dart';
 
 
 class OverviewPage extends StatefulWidget{
@@ -93,11 +91,11 @@ class TabViewDataArray{
    
     this.ref = [
 
-    TabViewData(FeedPage(), Tab(icon: Icon(Icons.public), text: "Feed")),
+    TabViewData(new FeedPage(), Tab(icon: Icon(Icons.public), text: "Feed")),
    
-    TabViewData(DataPage(),Tab(icon: Icon(Icons.list), text: "Data"),),
+    TabViewData(new DataPage(),Tab(icon: Icon(Icons.list), text: "Data"),),
 
-    TabViewData(UserProfilePage(),Tab(icon: Icon(Icons.portrait), text: "User"),),
+    TabViewData(new UserProfilePage(),Tab(icon: Icon(Icons.portrait), text: "User"),),
     ];
  }
 }

@@ -348,4 +348,19 @@ class  StringLabels {
         static List<List<String>> roastTypes = [["","Unknown",StringLabels.espresso, StringLabels.filter ,StringLabels.medium , StringLabels.dark, StringLabels.light, StringLabels.mediumDark, StringLabels.cinnamon, StringLabels.newEngland, StringLabels.american, StringLabels.city, StringLabels.fullCity, StringLabels.vienna, StringLabels.french, StringLabels.italian, StringLabels.spanish]];
         
         static List<List<String>> baristaLevels = [["","Unknown",StringLabels.beginner, StringLabels.amatuer ,StringLabels.junior , StringLabels.intermediate, StringLabels.medium, StringLabels.professional, StringLabels.senior, StringLabels.lead]];
+
+        static List<List<String>>  processingMethods =
+            [[
+                "",
+                "Unknown",
+                StringLabels.washed,
+                StringLabels.natural,
+                StringLabels.semiWashed,
+                StringLabels.honey,
+                StringLabels.whiteHoney,
+                StringLabels.redHoney,
+                StringLabels.blackHoney,
+                StringLabels.wetHulled,
+                StringLabels.pulpNatural,
+                ]];
      }

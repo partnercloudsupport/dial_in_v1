@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../data/strings.dart';
-import '../widgets/custom_widgets.dart';
-import 'sign_up.dart';
-import '../theme/appColors.dart';
+import '../../data/strings.dart';
+import '../../widgets/custom_widgets.dart';
 
 
 class UserProfilePage extends StatefulWidget{

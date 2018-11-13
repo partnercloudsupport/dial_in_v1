@@ -19,7 +19,6 @@ class Profile{
     // Is it water , coffee, grinder , machine etc?
     
     Profile({
-      @required 
         this.updatedAt,
         this.objectId,
         this.type,

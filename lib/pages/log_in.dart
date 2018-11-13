@@ -2,12 +2,9 @@ import 'package:flutter/material.dart';
 import '../data/strings.dart';
 import '../widgets/custom_widgets.dart';
 import 'sign_up.dart';
-import 'overview_page.dart';
-import '../database_functions.dart';
-// import 'package:firebase_database/ui/firebase_animated_list.dart';
-// import 'package:firebase_database/firebase_database.dart';
-// import 'package:google_sign_in/google_sign_in.dart';
+import 'overview_page/overview_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
 
 
 
@@ -29,7 +26,7 @@ class _MyHomePageState extends State<MyHomePage> {
   TextEditingController _passwordController = new TextEditingController();
 
   /// Functions
-void forgotPassword() {  print(" Forgot password button pressed");  }
+void forgotPassword() {   print(" Forgot password button pressed");  }
 
 Future<void> logIn(String emailUser, String password,
       Function(bool, String) completion) async {

@@ -402,10 +402,15 @@ class CountLabel extends StatelessWidget {
 ///
 
 class AddButton extends StatelessWidget {
+
+  final Function _onPressed;
+
+  AddButton(this._onPressed);
+
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
-      onPressed: () => {},
+      onPressed: _onPressed,
       child: Icon(Icons.add),
     );
   }

@@ -20,14 +20,19 @@ dependencies:
     sdk: flutter
     # firebase_core: "^0.2.4"
     # firebase_database: "^1.0.1"
+  firebase_database: ^0.4.1
+  firebase_core: any
+  firebase_auth: ^0.6.2+1
+  firebase_storage:
+  image_picker:
+  
+ 
+
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
-  firebase_database: ^0.4.1
-  firebase_core: any
-  google_sign_in: ^3.2.4
-  firebase_auth: ^0.6.2+1
+ 
   
 
 
@@ -53,18 +58,19 @@ flutter:
   #  - images/a_dot_ham.jpeg
 
   assets:
-     - assets/images/cherries.jpg
-     - assets/images/DialInWhiteLogo.png
-     - assets/images/user.png
-     - assets/images/back_icon.png
-     - assets/images/cherriestwo.jpg
-     - assets/images/addProfileButtonWithOrangeTint.png
-     - assets/images/logout.png
-     - assets/images/aeropressSmaller512x512.png
-     - assets/images/whiteRecipe200X200.png
-     - assets/images/drop.png
-     - assets/images/whiteRecipe200X200.png
-     - assets/images/coffee-beanSmaller512x512.png
+    - assets/images/
+    #  - assets/images/cherries.jpg
+    #  - assets/images/DialInWhiteLogo.png
+    #  - assets/images/user.png
+    #  - assets/images/back_icon.png
+    #  - assets/images/cherriestwo.jpg
+    #  - assets/images/addProfileButtonWithOrangeTint.png
+    #  - assets/images/logout.png
+    #  - assets/images/aeropressSmaller512x512.png
+    #  - assets/images/whiteRecipe200X200.png
+    #  - assets/images/drop.png
+    #  - assets/images/whiteRecipe200X200.png
+    #  - assets/images/coffee-beanSmaller512x512.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
