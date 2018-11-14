@@ -21,6 +21,7 @@ import 'dart:io';
 
 
 class DatabaseFunctions {
+  static const String age = 'age';
   static const String viewContollerId = 'viewContollerId';
   static const String type = 'type';
   static const String databaseId = 'databaseId';

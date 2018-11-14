@@ -299,10 +299,10 @@ class ProfileCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Container(
-                          margin: EdgeInsets.all(10.0), child: Text(profile.properties[0].title)),
+                          margin: EdgeInsets.all(10.0), child: Text(profile.properties[0].value)),
                       Container(
                         margin: EdgeInsets.all(10.0),
-                        child: Text('Second'),
+                        child: Text(profile.properties[1].value),
                       )
                     ]))),
 
@@ -316,10 +316,10 @@ class ProfileCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
                       Container(
-                          margin: EdgeInsets.all(10.0), child: Text('Third')),
+                          margin: EdgeInsets.all(10.0), child: Text(profile.properties[2].value)),
                       Container(
                         margin: EdgeInsets.all(10.0),
-                        child: Text('Fourth'),
+                        child: Text(profile.properties[3].value),
                       )
                     ])))
       ]))

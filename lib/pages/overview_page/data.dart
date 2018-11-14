@@ -100,6 +100,12 @@ class DataPageState extends State<DataPage>
         floatingActionButton: AddButton(() {
           setState(() {
 
+            
+          });
+        }));
+  }
+}
+
             // DatabaseFunctions.getCurrentUserId((userId) {
             //   Firestore.instance.collection('Barista').document().setData({
             //     'name': 'Willy',
@@ -109,22 +115,18 @@ class DataPageState extends State<DataPage>
             //   });
             // });
 
-            DatabaseFunctions.saveProfile(new Profile(
-                databaseId: DatabaseFunctions.Barista,
-                // image: image,
-                orderNumber: 0,
-                properties: [
-                  Item(databaseId: 'name', value: 'Ian'),
-                  Item(databaseId: 'level', value: 'Junior'),
-                  Item(databaseId: 'notes', value: 'Shitty'),
-                  Item(databaseId: 'age', value: '24'),
-                ]
-              )
-            );
-          });
-        }));
-  }
-}
+            // DatabaseFunctions.saveProfile(new Profile(
+            //     databaseId: DatabaseFunctions.Barista,
+            //     // image: image,
+            //     orderNumber: 0,
+            //     properties: [
+            //       Item(databaseId: 'name', value: 'Ian'),
+            //       Item(databaseId: 'level', value: 'Junior'),
+            //       Item(databaseId: 'notes', value: 'Shitty'),
+            //       Item(databaseId: 'age', value: '24'),
+            //     ]
+            //   )
+            // );
 
 // Firestore.instance
 // .collection('Barista')

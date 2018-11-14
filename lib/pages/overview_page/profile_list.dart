@@ -6,6 +6,7 @@ import '../../data/profile.dart';
 import '../../data/item.dart';
 import '../../database_functions.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../data/functions.dart';
 
 class ProfileList extends StatefulWidget{
 
@@ -22,76 +23,18 @@ class _ProfileListState extends State<ProfileList>{
     @override
     initState(){
 
-    _profiles = [
-
-      Profile(  
-            updatedAt: DateTime.now(),
-            objectId: "", type: ProfileType.barista, 
-            properties: [
-              Item(title: "One",value:"One" ,segueId: "One",viewControllerId: "One",databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ),
-              Item(title: "One",value:"One" ,segueId: "Two",viewControllerId: "One",databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ),
-              Item(title: "One",value:"One" ,segueId: "Three",viewControllerId: "One",databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ),
-              Item(title: "One",value:"One" ,segueId: "Four",viewControllerId: "One",databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ), 
-            ],
-            image: Image.asset('assets/images/user.png'),
-            databaseId: DatabaseFunctions.lot,
-            viewContollerId: ViewControllerIds.lot,
-            orderNumber: 0
-            ),
-
-      Profile(  
-            updatedAt: DateTime.now(),
-            objectId: "", type: ProfileType.barista, 
-            properties: [
-              Item(title: "One",value:"One" ,segueId: "One",viewControllerId: "One",databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ),
-              Item(title: "One",value:"One" ,segueId: "Two",viewControllerId: "One",databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ),
-              Item(title: "One",value:"One" ,segueId: "Three",viewControllerId: "One",databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ),
-              Item(title: "One",value:"One" ,segueId: "Four",viewControllerId: "One",databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ), 
-            ],
-            image: Image.asset('assets/images/user.png'),
-            databaseId: DatabaseFunctions.lot,
-            viewContollerId: ViewControllerIds.lot,
-            orderNumber: 0
-            ),
-      Profile(  
-            updatedAt: DateTime.now(),
-            objectId: "", type: ProfileType.barista, 
-            properties: [
-              Item(title: "One",value:"One" ,segueId: "One",viewControllerId: "One",databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ),
-              Item(title: "One",value:"One" ,segueId: "Two",viewControllerId: "One",databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ),
-              Item(title: "One",value:"One" ,segueId: "Three",viewControllerId: "One",databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ),
-              Item(title: "One",value:"One" ,segueId: "Four",viewControllerId: "One",databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ), 
-            ],
-            image: Image.asset('assets/images/user.png'),
-            databaseId: DatabaseFunctions.lot,
-            viewContollerId: ViewControllerIds.lot,
-            orderNumber: 0
-            ),
-      Profile(  
-            updatedAt: DateTime.now(),
-            objectId: "", type: ProfileType.barista, 
-            properties: [
-              Item(title: "One",value:"One" ,segueId: "One",viewControllerId: "One",databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ),
-              Item(title: "One",value:"One" ,segueId: "Two",viewControllerId: "One",databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ),
-              Item(title: "One",value:"One" ,segueId: "Three",viewControllerId: "One",databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ),
-              Item(title: "One",value:"One" ,segueId: "Four",viewControllerId: "One",databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ),             
-                          ],
-            image: Image.asset('assets/images/user.png'),
-            databaseId: DatabaseFunctions.lot,
-            viewContollerId: ViewControllerIds.lot,
-            orderNumber: 0
-            ),
-    ];
+    
 
     super.initState();
  }
 
-Widget _buildProfileCard(BuildContext context, DocumentSnapshot document){
 
-  List<Item> _properties= new List<Item>();
+Widget _buildProfileCard(BuildContext context, DocumentSnapshot document, String databaseId){
 
-  for (var i = 0; i < document.data.entries.length; i++) {
+  List<Item> _properties = new List<Item>();
 
+  for (var i = 0; i < document.data.length; i++) {
+    // if (document.data[i].isNotEmpty){
       if (
       document.data[i].toString() != DatabaseFunctions.updatedAt ||
       document.data[i].toString() != DatabaseFunctions.objectId ||
@@ -101,42 +44,54 @@ Widget _buildProfileCard(BuildContext context, DocumentSnapshot document){
       document.data[i].toString() != DatabaseFunctions.orderNumber
       ){
 
-        _properties.add(document.data[i]);
+        _properties.add(Functions.createItemWithData(document.data[i]));
         
       }
-
+  // }
   }
   Profile profile = new Profile(
-    updatedAt: document[DatabaseFunctions.updatedAt],
-    objectId: document[DatabaseFunctions.objectId].toString(),
+    updatedAt: document.data[DatabaseFunctions.updatedAt],
+    objectId: document.documentID,
     // image: document[DatabaseFunctions.image].toString(),
-    databaseId: document[DatabaseFunctions.databaseId].toString(),
-    type: document[DatabaseFunctions.type],
-    orderNumber: document[DatabaseFunctions.orderNumber],
-    viewContollerId: document[DatabaseFunctions.viewContollerId],
+    databaseId: document.data[DatabaseFunctions.databaseId].toString(),
+    orderNumber: document.data[DatabaseFunctions.orderNumber],
+    viewContollerId: document.data[DatabaseFunctions.viewContollerId],
     properties: _properties
     );
 
   return ProfileCard(profile);
 }
 
+Widget _buildCard(BuildContext context, DocumentSnapshot document,String databaseId){
+  return Column(children: <Widget>[
+    
+     Text(document.data[DatabaseFunctions.name].toString()),
+     Text(document.data[DatabaseFunctions.level].toString()),
+     Text(document.data[DatabaseFunctions.age].toString()),
+     Text(document.data[DatabaseFunctions.notes].toString())
+     
+     ]
+  );
+  }
+
+
 
 @override
     Widget build(BuildContext context) {
-      return _profiles.length > 0 ? 
-      StreamBuilder(stream: Firestore.instance.collection(widget._listDatabaseId).snapshots(),
-      builder: (context, snapshot){if (!snapshot.hasData) return const Center(child: Text('Loading'),) ;
+      return
+      StreamBuilder(stream: Firestore.instance.collection(widget._listDatabaseId).snapshots(),initialData: 10,
+
+      builder: (context, snapshot){if (!snapshot.hasData) return const Center(child: Text('Loading'));
       return
       ListView.builder(
-        itemBuilder: (BuildContext context, int index) =>  ProfileCard(_profiles[index]),
-        itemCount: _profiles.length,
+        itemExtent: 80,
+        itemCount: snapshot.data.documents.length,
+        itemBuilder: (BuildContext context, int index) => 
+          _buildCard(context, snapshot.data.documents[index], widget._listDatabaseId));
+      }
       );
-      
-      
-      })
-       : Center(child: Text('No Data'),);
+    }
 }
-
   //   @override
   //   Widget build(BuildContext context) {
   //     return ListView( children: <Widget>[
@@ -153,4 +108,65 @@ Widget _buildProfileCard(BuildContext context, DocumentSnapshot document){
   //     ] 
   //   );
   // }
-}
+
+
+
+// _profiles = [
+
+//       Profile(  
+//             updatedAt: DateTime.now(),
+//             objectId: "", type: ProfileType.barista, 
+//             properties: [
+//               Item(title: "One",value:"One" ,segueId: "One", databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ),
+//               Item(title: "One",value:"One" ,segueId: "Two", databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ),
+//               Item(title: "One",value:"One" ,segueId: "Three", databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ),
+//               Item(title: "One",value:"One" ,segueId: "Four", databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ), 
+//             ],
+//             image: Image.asset('assets/images/user.png'),
+//             databaseId: DatabaseFunctions.lot,
+//             viewContollerId: ViewControllerIds.lot,
+//             orderNumber: 0
+//             ),
+
+//       Profile(  
+//             updatedAt: DateTime.now(),
+//             objectId: "", type: ProfileType.barista, 
+//             properties: [
+//               Item(title: "One",value:"One" ,segueId: "One", databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ),
+//               Item(title: "One",value:"One" ,segueId: "Two", databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ),
+//               Item(title: "One",value:"One" ,segueId: "Three", databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ),
+//               Item(title: "One",value:"One" ,segueId: "Four", databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ), 
+//             ],
+//             image: Image.asset('assets/images/user.png'),
+//             databaseId: DatabaseFunctions.lot,
+//             viewContollerId: ViewControllerIds.lot,
+//             orderNumber: 0
+//             ),
+//       Profile(  
+//             updatedAt: DateTime.now(),
+//             objectId: "", type: ProfileType.barista, 
+//             properties: [
+//               Item(title: "One",value:"One" ,segueId: "One", databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ),
+//               Item(title: "One",value:"One" ,segueId: "Two", databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ),
+//               Item(title: "One",value:"One" ,segueId: "Three", databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ),
+//               Item(title: "One",value:"One" ,segueId: "Four", databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ), 
+//             ],
+//             image: Image.asset('assets/images/user.png'),
+//             databaseId: DatabaseFunctions.lot,
+//             viewContollerId: ViewControllerIds.lot,
+//             orderNumber: 0
+//             ),
+//       Profile(  
+//             updatedAt: DateTime.now(),
+//             objectId: "", type: ProfileType.barista, 
+//             properties: [
+//               Item(title: "One",value:"One" ,segueId: "One", databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ),
+//               Item(title: "One",value:"One" ,segueId: "Two", databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ),
+//               Item(title: "One",value:"One" ,segueId: "Three", databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ),
+//               Item(title: "One",value:"One" ,segueId: "Four", databaseId: "One",placeHolderText: "One", keyboardType:TextInputType.text ),             
+//                           ],
+//             image: Image.asset('assets/images/user.png'),
+//             databaseId: DatabaseFunctions.lot,
+//             viewContollerId: ViewControllerIds.lot,
+//             orderNumber: 0
+//             ),  
