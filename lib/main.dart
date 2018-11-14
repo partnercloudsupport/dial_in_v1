@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 
 void main() {
   // _testSignInWithGoogle();
-  // debugPaintSizeEnabled = true;
+  debugPaintSizeEnabled = true;
 
 
 
