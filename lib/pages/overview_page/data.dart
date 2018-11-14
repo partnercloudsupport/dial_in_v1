@@ -32,21 +32,27 @@ class DataPageState extends State<DataPage>
   void initState() {
     super.initState();
     _lists = TabViewDataArray([
-      TabViewData(ProfileList(), Tab(icon: Icon(Icons.public))),
       TabViewData(
-        ProfileList(),
+        ProfileList(DatabaseFunctions.recipe),
+        Tab(icon: Icon(Icons.public))),
+      TabViewData(
+        ProfileList(DatabaseFunctions.coffee),
         Tab(icon: Icon(Icons.list)),
       ),
       TabViewData(
-        ProfileList(),
+        ProfileList(DatabaseFunctions.grinder),
         Tab(icon: Icon(Icons.portrait)),
       ),
       TabViewData(
-        ProfileList(),
+        ProfileList(DatabaseFunctions.brewingEquipment),
         Tab(icon: Icon(Icons.portrait)),
       ),
       TabViewData(
-        ProfileList(),
+        ProfileList(DatabaseFunctions.water),
+        Tab(icon: Icon(Icons.portrait)),
+      ),
+      TabViewData(
+        ProfileList(DatabaseFunctions.Barista),
         Tab(icon: Icon(Icons.portrait)),
       ),
     ]);
@@ -74,12 +80,14 @@ class DataPageState extends State<DataPage>
                     indicatorPadding: EdgeInsets.all(0.0),
                     labelPadding: EdgeInsets.all(0.0),
                     controller: controller,
+                    // isScrollable: true,
                     tabs: <Widget>[
                       _lists.ref[0].tab,
                       _lists.ref[1].tab,
                       _lists.ref[2].tab,
                       _lists.ref[3].tab,
                       _lists.ref[4].tab,
+                      _lists.ref[5].tab,
                     ]),
               ),
             ),
@@ -92,6 +100,7 @@ class DataPageState extends State<DataPage>
                   _lists.ref[2].screen,
                   _lists.ref[3].screen,
                   _lists.ref[4].screen,
+                  _lists.ref[5].screen,
                 ],
               ),
             ),

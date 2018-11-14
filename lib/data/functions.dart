@@ -3,6 +3,7 @@ import '../database_functions.dart';
 import 'strings.dart';
 import 'package:flutter/material.dart';
 import 'profile.dart';
+import 'images.dart';
 
 
 
@@ -36,7 +37,7 @@ class Functions{
               updatedAt: DateTime.now(),
               objectId: '',
               type: ProfileType.recipe,
-              // image: document[DatabaseFunctions.image].toString(),
+              image: Image.asset(Images.whiteRecipe200X200),
               databaseId: databaseId,
               orderNumber: 0,
               properties: _properties
@@ -48,7 +49,7 @@ class Functions{
               updatedAt: DateTime.now(),
               objectId: '',
               type: ProfileType.coffee,
-              // image: document[DatabaseFunctions.image].toString(),
+              image: Image.asset(Images.coffeeBeans),
               databaseId: databaseId,
               orderNumber: 1,
               properties: _properties
@@ -60,7 +61,7 @@ class Functions{
               updatedAt: DateTime.now(),
               objectId: '',
               type: ProfileType.grinder,
-              // image: document[DatabaseFunctions.image].toString(),
+              image: Image.asset(Images.grinder),
               databaseId: databaseId,
               orderNumber: 0,
               properties: _properties
@@ -72,7 +73,7 @@ class Functions{
               updatedAt: DateTime.now(),
               objectId: '',
               type: ProfileType.equipment,
-              // image: document[DatabaseFunctions.image].toString(),
+              image: Image.asset(Images.groupHandle),
               databaseId: databaseId,
               orderNumber: 0,
               properties: _properties
@@ -84,7 +85,7 @@ class Functions{
               updatedAt: DateTime.now(),
               objectId: '',
               type: ProfileType.water,
-              // image: document[DatabaseFunctions.image].toString(),
+              image: Image.asset(Images.water),
               databaseId: databaseId,
               orderNumber: 0,
               properties: _properties

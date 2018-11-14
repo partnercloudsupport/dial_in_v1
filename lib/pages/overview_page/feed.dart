@@ -4,6 +4,7 @@ import '../../widgets/custom_widgets.dart';
 import 'profile_list.dart';
 import '../../theme/appColors.dart';
 import '../../data/profile.dart';
+import '../../database_functions.dart';
 
 
 class FeedPage extends StatefulWidget {
@@ -32,9 +33,9 @@ void initState() {
   ];
   _lists = TabViewDataArray([
 
-    TabViewData(ProfileList(), Tab(icon: Icon(Icons.public))),
+    TabViewData(ProfileList(DatabaseFunctions.public), Tab(icon: Icon(Icons.public))),
    
-    TabViewData(ProfileList(),Tab(icon: Icon(Icons.verified_user)),),
+    TabViewData(ProfileList(DatabaseFunctions.friends),Tab(icon: Icon(Icons.verified_user)),),
 
     ]);
   controller = new TabController( vsync: this, length: _lists.ref.length);

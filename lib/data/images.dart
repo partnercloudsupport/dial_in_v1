@@ -19,6 +19,11 @@ class Images{
     static String drop = 'assets/images/drop.png';
     static String whiteRecipe200X200 = 'assets/images/whiteRecipe200X200.png';
     static String beanSmaller512x512 = 'images/coffee-beanSmaller512x512.png';
+    static String coffeeBeans = 'assets/images/coffee-beanSmaller512x512.png';
+    static String grinder = 'assets/images/grinderSmaller512x512.png';
+    static String groupHandle = 'assets/images/whiteGrouphandle80x80@2x.png';
+    static String water = 'assets/images/drop.png';
+
 
   static  Future<void> getFile(String filePath, Function(File) completion) async{
 

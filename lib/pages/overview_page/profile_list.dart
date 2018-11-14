@@ -10,7 +10,9 @@ import '../../data/functions.dart';
 
 class ProfileList extends StatefulWidget{
 
- final String _listDatabaseId = 'Barista';
+ final String _listDatabaseId;
+
+ ProfileList(this._listDatabaseId);
 
  _ProfileListState createState() => new _ProfileListState();
 }
