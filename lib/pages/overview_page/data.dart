@@ -34,26 +34,26 @@ class DataPageState extends State<DataPage>
     _lists = TabViewDataArray([
       TabViewData(
         ProfileList(DatabaseFunctions.recipe),
-        Tab(icon: Icon(Icons.public))),
+        Tab(icon: Icon(Icons.list))),
       TabViewData(
         ProfileList(DatabaseFunctions.coffee),
-        Tab(icon: Icon(Icons.list)),
+        Tab(icon: Icon(Icons.rounded_corner)),
       ),
       TabViewData(
         ProfileList(DatabaseFunctions.grinder),
-        Tab(icon: Icon(Icons.portrait)),
+        Tab(icon: Icon(Icons.cloud_off)),
       ),
       TabViewData(
         ProfileList(DatabaseFunctions.brewingEquipment),
-        Tab(icon: Icon(Icons.portrait)),
+        Tab(icon: Icon(Icons.watch_later)),
       ),
       TabViewData(
         ProfileList(DatabaseFunctions.water),
-        Tab(icon: Icon(Icons.portrait)),
+        Tab(icon: Icon(Icons.branding_watermark)),
       ),
       TabViewData(
         ProfileList(DatabaseFunctions.Barista),
-        Tab(icon: Icon(Icons.portrait)),
+        Tab(icon: Icon(Icons.people)),
       ),
     ]);
     controller = new TabController(vsync: this, length: _lists.ref.length);

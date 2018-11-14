@@ -97,7 +97,7 @@ class Functions{
               updatedAt: DateTime.now(),
               objectId: '',
               type: ProfileType.barista,
-              // image: document[DatabaseFunctions.image].toString(),
+              image: Image.asset(Images.user),
               databaseId: databaseId,
               orderNumber: 0,
               properties: _properties
@@ -110,7 +110,7 @@ class Functions{
               updatedAt: DateTime.now(),
               objectId: '',
               type: ProfileType.barista,
-              // image: document[DatabaseFunctions.image].toString(),
+              image: Image.asset(Images.user),
               databaseId: databaseId,
               orderNumber: 0,
               properties: _properties
