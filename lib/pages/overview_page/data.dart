@@ -17,6 +17,7 @@ import 'dart:async';
 import 'dart:io';
 import '../../data/profile.dart';
 import '../../data/item.dart';
+import '../profile_page.dart';
 
 class DataPage extends StatefulWidget {
   @override
@@ -34,26 +35,34 @@ class DataPageState extends State<DataPage>
     _lists = TabViewDataArray([
       TabViewData(
         ProfileList(DatabaseFunctions.recipe),
-        Tab(icon: Icon(Icons.list))),
+        Tab(icon: Icon(Icons.list),),
+        ProfileType.recipe
+      ),
+        
       TabViewData(
         ProfileList(DatabaseFunctions.coffee),
         Tab(icon: Icon(Icons.rounded_corner)),
+        ProfileType.coffee
       ),
       TabViewData(
         ProfileList(DatabaseFunctions.grinder),
         Tab(icon: Icon(Icons.cloud_off)),
+        ProfileType.grinder
       ),
       TabViewData(
         ProfileList(DatabaseFunctions.brewingEquipment),
         Tab(icon: Icon(Icons.watch_later)),
+        ProfileType.equipment
       ),
       TabViewData(
         ProfileList(DatabaseFunctions.water),
         Tab(icon: Icon(Icons.branding_watermark)),
+        ProfileType.water
       ),
       TabViewData(
         ProfileList(DatabaseFunctions.Barista),
         Tab(icon: Icon(Icons.people)),
+        ProfileType.barista
       ),
     ]);
     controller = new TabController(vsync: this, length: _lists.ref.length);
@@ -107,10 +116,10 @@ class DataPageState extends State<DataPage>
           ],
         ),
         floatingActionButton: AddButton(() {
-          setState(() {
 
-            
-          });
+          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
+          ProfilePage(isCopying: false, isEditing: false, isNew: true, type: _lists.ref[controller.index].type, referance: '',)));
+
         }));
   }
 }

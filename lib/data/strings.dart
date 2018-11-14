@@ -15,6 +15,8 @@ class  StringLabels {
         static const String ok = 'OK';
         static const String warning = 'Warning';
         static const String age = "Age";
+        static const String profile = 'Profile';
+        static const String ratios = 'Ratios';
 
 
 

@@ -8,6 +8,7 @@ import 'data.dart';
 import 'feed.dart';
 import 'user_profile.dart';
 import '../../database_functions.dart';
+import '../../data/profile.dart';
 
 
 class OverviewPage extends StatefulWidget{
@@ -91,11 +92,11 @@ class TabViewDataArray{
    
     this.ref = [
 
-    TabViewData(new FeedPage(), Tab(icon: Icon(Icons.public), text: "Feed")),
+    TabViewData(new FeedPage(), Tab(icon: Icon(Icons.public), text: "Feed"), ProfileType.feed),
    
-    TabViewData(new DataPage(),Tab(icon: Icon(Icons.list), text: "Data"),),
+    TabViewData(new DataPage(),Tab(icon: Icon(Icons.list), text: "Data"), ProfileType.feed),
 
-    TabViewData(new UserProfilePage(),Tab(icon: Icon(Icons.portrait), text: "User"),),
+    TabViewData(new UserProfilePage(),Tab(icon: Icon(Icons.portrait), text: "User"), ProfileType.none),
     ];
  }
 }

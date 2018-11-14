@@ -33,9 +33,9 @@ void initState() {
   ];
   _lists = TabViewDataArray([
 
-    TabViewData(ProfileList(DatabaseFunctions.public), Tab(icon: Icon(Icons.public))),
+    TabViewData(ProfileList(DatabaseFunctions.public), Tab(icon: Icon(Icons.public)), ProfileType.feed),
    
-    TabViewData(ProfileList(DatabaseFunctions.friends),Tab(icon: Icon(Icons.verified_user)),),
+    TabViewData(ProfileList(DatabaseFunctions.friends),Tab(icon: Icon(Icons.verified_user)),ProfileType.feed),
 
     ]);
   controller = new TabController( vsync: this, length: _lists.ref.length);

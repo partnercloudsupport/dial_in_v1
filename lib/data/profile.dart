@@ -72,6 +72,6 @@ class Profile{
 
 enum ProfileType{
 
-  recipe, coffee, water, grinder, equipment, barista
+  recipe, coffee, water, grinder, equipment, barista, feed, none
 
 }

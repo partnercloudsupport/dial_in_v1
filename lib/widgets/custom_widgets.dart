@@ -279,7 +279,10 @@ class ProfileCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return 
+    // Container(margin: EdgeInsets.all(10.0),child: 
+    Card(
+        // margin: EdgeInsets.all(10.0),
         child: Row(children: <Widget>[
       ///
       /// Profile picture
@@ -324,6 +327,7 @@ class ProfileCard extends StatelessWidget {
                     ])))
       ]))
     ]));
+    // ,);
   }
 }
 
@@ -427,10 +431,11 @@ class AddButton extends StatelessWidget {
 /// Tab View Data
 class TabViewData{
 
+  ProfileType type;
   Widget screen;
   Tab tab;
   
-  TabViewData(this.screen, this.tab);
+  TabViewData(this.screen, this.tab, this.type);
 
 }
 
