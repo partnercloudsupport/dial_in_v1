@@ -103,7 +103,8 @@ class Functions{
               );
       break;
 
-      default:   
+      default: 
+
       return  new Profile(
               updatedAt: DateTime.now(),
               objectId: '',
@@ -119,6 +120,9 @@ class Functions{
   
 
 static Item createBlankItem(String databaseId){
+
+  Item _item;
+
     switch (databaseId){
 
 ///
@@ -126,7 +130,7 @@ static Item createBlankItem(String databaseId){
 /// 
     case DatabaseFunctions.date:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.date , value: '',
         databaseId: DatabaseFunctions.date, 
         placeHolderText: StringLabels.enterDescription,
@@ -135,7 +139,7 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.equipmentId:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.brewingEquipment , value: '' ,
         databaseId: DatabaseFunctions.equipmentId, 
         placeHolderText: StringLabels.enterDescription,
@@ -144,7 +148,7 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.grinderId:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.grinder , value: '' ,
         databaseId: DatabaseFunctions.grinderId, 
         placeHolderText: StringLabels.enterDescription,
@@ -153,7 +157,7 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.grindSetting:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.grindSetting , value: '' ,
         databaseId: DatabaseFunctions.grindSetting, 
         placeHolderText: StringLabels.enterValue,
@@ -162,7 +166,7 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.waterID:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.water , value: '' ,
         databaseId: DatabaseFunctions.waterID, 
         placeHolderText: StringLabels.enterDescription,
@@ -171,7 +175,7 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.temparature:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.temparature , value: '' ,
         databaseId: DatabaseFunctions.temparature, 
         placeHolderText: StringLabels.enterTemparature,
@@ -180,7 +184,7 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.brewingDose:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.brewingDose , value: '' ,
         databaseId: DatabaseFunctions.brewingDose, 
         placeHolderText: StringLabels.enterValue,
@@ -189,7 +193,7 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.preinfusion:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.preinfusion , value: '' ,
         databaseId: DatabaseFunctions.preinfusion, 
         placeHolderText: StringLabels.enterDescription,
@@ -198,7 +202,7 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.yield:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.yield , value: '' ,
         databaseId: DatabaseFunctions.yield, 
         placeHolderText: StringLabels.enterValue,
@@ -207,7 +211,7 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.brewWeight:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.brewWeight , value: '' ,
         databaseId: DatabaseFunctions.brewWeight, 
         placeHolderText: StringLabels.enterValue,
@@ -216,7 +220,7 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.time:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.time , value: '' ,
         databaseId: DatabaseFunctions.time, 
         placeHolderText: StringLabels.enterValue,
@@ -225,7 +229,7 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.tds:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.tds , value: '' ,
         databaseId: DatabaseFunctions.tds, 
         placeHolderText: StringLabels.enterValue,
@@ -235,7 +239,7 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.notes:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.brewingEquipment , value: '' ,
         databaseId: DatabaseFunctions.date, 
         placeHolderText: StringLabels.enterDescription,
@@ -244,7 +248,7 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.flavour:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.flavour , value: '' ,
         databaseId: DatabaseFunctions.flavour, 
         placeHolderText: StringLabels.flavour,
@@ -253,7 +257,7 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.body:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.body , value: '' ,
         databaseId: DatabaseFunctions.body, 
         placeHolderText: StringLabels.enterValue,
@@ -262,7 +266,7 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.balance:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.balance , value: '' ,
         databaseId: DatabaseFunctions.balance, 
         placeHolderText: StringLabels.enterValue,
@@ -271,7 +275,7 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.afterTaste:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.afterTaste , value: '' ,
         databaseId: DatabaseFunctions.afterTaste, 
         placeHolderText: StringLabels.enterDescription,
@@ -280,7 +284,7 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.descriptors:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.descriptors , value: '' ,
         databaseId: DatabaseFunctions.descriptors, 
         placeHolderText: StringLabels.descriptors,
@@ -289,7 +293,7 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.coffeeId:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.coffee , value: '' ,
         databaseId: DatabaseFunctions.coffeeId, 
         placeHolderText: StringLabels.enterDescription,
@@ -303,7 +307,7 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.waterID:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.waterID , value: '' ,
         databaseId: DatabaseFunctions.waterID, 
         placeHolderText: StringLabels.enterDescription,
@@ -312,7 +316,7 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.date:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.date , value: '' ,
         databaseId: DatabaseFunctions.date, 
         placeHolderText: StringLabels.enterDescription,
@@ -321,7 +325,7 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.ppm:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.ppm , value: '' ,
         databaseId: DatabaseFunctions.ppm, 
         placeHolderText: StringLabels.enterDescription,
@@ -330,7 +334,7 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.gh:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.gh , value: '' ,
         databaseId: DatabaseFunctions.gh, 
         placeHolderText: StringLabels.gh,
@@ -339,7 +343,7 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.kh:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.kh , value: '' ,
         databaseId: DatabaseFunctions.kh, 
         placeHolderText: StringLabels.kh,
@@ -348,7 +352,7 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.ph:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.ph , value: '' ,
         databaseId: DatabaseFunctions.ph, 
         placeHolderText: StringLabels.ph,
@@ -362,7 +366,7 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.region:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.region , value: '' ,
         databaseId: DatabaseFunctions.region, 
         placeHolderText: StringLabels.enterDescription,
@@ -371,7 +375,7 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.farm:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.farm , value: '' ,
         databaseId: DatabaseFunctions.farm, 
         placeHolderText: StringLabels.enterDescription,
@@ -380,7 +384,7 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.producer:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.producer , value: '' ,
         databaseId: DatabaseFunctions.producer, 
         placeHolderText: StringLabels.enterDescription,
@@ -389,7 +393,7 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.lot:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.lot , value: '' ,
         databaseId: DatabaseFunctions.lot, 
         placeHolderText: StringLabels.enterDescription,
@@ -398,7 +402,7 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.altitude:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.altitude , value: '' ,
         databaseId: DatabaseFunctions.altitude, 
         placeHolderText: StringLabels.enterDescription,
@@ -409,7 +413,7 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.roastDate:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.roastDate , value: '' ,
         databaseId: DatabaseFunctions.roastDate, 
         placeHolderText: StringLabels.enterDescription,
@@ -418,7 +422,7 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.roastProfile:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.roastProfile , value: '' ,
         databaseId: DatabaseFunctions.roastProfile, 
         placeHolderText: StringLabels.enterDescription,
@@ -427,7 +431,7 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.roasteryName:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.roasteryName , value: '' ,
         databaseId: DatabaseFunctions.roasteryName, 
         placeHolderText: StringLabels.enterDescription,
@@ -436,7 +440,7 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.beanType:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.beanType , value: '' ,
         databaseId: DatabaseFunctions.beanType, 
         placeHolderText: StringLabels.enterDescription,
@@ -446,7 +450,7 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.beanSize:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.beanSize , value: '' ,
         databaseId: DatabaseFunctions.beanSize, 
         placeHolderText: StringLabels.enterDescription,
@@ -456,7 +460,7 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.processingMethod:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.processingMethod , value: '' ,
         databaseId: DatabaseFunctions.processingMethod, 
         placeHolderText: StringLabels.enterDescription,
@@ -466,7 +470,7 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.density:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.density , value: '' ,
         databaseId: DatabaseFunctions.density, 
         placeHolderText: StringLabels.enterDescription,
@@ -475,7 +479,7 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.aW:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.aW , value: '' ,
         databaseId: DatabaseFunctions.aW, 
         placeHolderText: StringLabels.enterDescription,
@@ -484,7 +488,7 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.moisture:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.moisture , value: '' ,
         databaseId: DatabaseFunctions.moisture, 
         placeHolderText: StringLabels.enterDescription,
@@ -496,7 +500,7 @@ static Item createBlankItem(String databaseId){
 ///
     case DatabaseFunctions.grinderId:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.grinderId , value: '' ,
         databaseId: DatabaseFunctions.grinderId, 
         placeHolderText: StringLabels.enterDescription,
@@ -505,7 +509,7 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.burrs:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.burrs , value: '' ,
         databaseId: DatabaseFunctions.burrs, 
         placeHolderText: StringLabels.enterDescription,
@@ -514,7 +518,7 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.grinderMake:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.grinderMake , value: '' ,
         databaseId: DatabaseFunctions.grinderMake, 
         placeHolderText: StringLabels.enterDescription,
@@ -523,7 +527,7 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.grinderModel:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.grinderModel , value: '' ,
         databaseId: DatabaseFunctions.grinderModel, 
         placeHolderText: StringLabels.enterDescription,
@@ -536,7 +540,7 @@ static Item createBlankItem(String databaseId){
 ///
     case DatabaseFunctions.equipmentId:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.equipmentId , value: '' ,
         databaseId: DatabaseFunctions.equipmentId, 
         placeHolderText: StringLabels.enterDescription,
@@ -545,7 +549,7 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.equipmentType:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.equipmentType , value: '' ,
         databaseId: DatabaseFunctions.equipmentType, 
         placeHolderText: StringLabels.enterDescription,
@@ -554,7 +558,7 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.equipmentModel:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.equipmentModel , value: '' ,
         databaseId: DatabaseFunctions.equipmentModel, 
         placeHolderText: StringLabels.enterDescription,
@@ -563,7 +567,7 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.method:   
       
-      return Item(
+      _item = new Item(
         title: StringLabels.method , value: '' ,
         databaseId: DatabaseFunctions.method, 
         placeHolderText: StringLabels.enterDescription,
@@ -571,20 +575,27 @@ static Item createBlankItem(String databaseId){
       break;
 
     default:
-      return Item(
+      _item = new Item(
         title: StringLabels.method , value: '' ,
         databaseId: DatabaseFunctions.method, 
         placeHolderText: StringLabels.enterDescription,
         keyboardType: TextInputType.text,);
       break;
     }
+
+    return _item;
   }
 
 
-  static Item createItemWithData(Map<String, dynamic> item){
+static Item createItemWithData(Map<String, dynamic> item){
 
-    String key = item.keys.first.toString();
-    
+   Item _item;
+
+    item.forEach((key,aValue){            
+
+    dynamic value;
+
+    if ( aValue != null ){ value = aValue;} else {value = '';}
     switch (key){
 
 ///
@@ -592,8 +603,8 @@ static Item createBlankItem(String databaseId){
 /// 
     case DatabaseFunctions.date:   
       
-      return Item(
-        title: StringLabels.date , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.date , value: value ,
         databaseId: DatabaseFunctions.date, 
         placeHolderText: StringLabels.enterDescription,
         keyboardType: TextInputType.text,);
@@ -601,8 +612,8 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.equipmentId:   
       
-      return Item(
-        title: StringLabels.brewingEquipment , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.brewingEquipment , value: value ,
         databaseId: DatabaseFunctions.equipmentId, 
         placeHolderText: StringLabels.enterDescription,
         keyboardType: TextInputType.text,);
@@ -610,8 +621,8 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.grinderId:   
       
-      return Item(
-        title: StringLabels.grinder , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.grinder , value: value ,
         databaseId: DatabaseFunctions.grinderId, 
         placeHolderText: StringLabels.enterDescription,
         keyboardType: TextInputType.text,);
@@ -619,8 +630,8 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.grindSetting:   
       
-      return Item(
-        title: StringLabels.grindSetting , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.grindSetting , value: value ,
         databaseId: DatabaseFunctions.grindSetting, 
         placeHolderText: StringLabels.enterValue,
         keyboardType: TextInputType.text,);
@@ -628,8 +639,8 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.waterID:   
       
-      return Item(
-        title: StringLabels.water , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.water , value: value ,
         databaseId: DatabaseFunctions.waterID, 
         placeHolderText: StringLabels.enterDescription,
         keyboardType: TextInputType.text,);
@@ -637,8 +648,8 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.temparature:   
       
-      return Item(
-        title: StringLabels.temparature , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.temparature , value: value ,
         databaseId: DatabaseFunctions.temparature, 
         placeHolderText: StringLabels.enterTemparature,
         keyboardType: TextInputType.text,);
@@ -646,8 +657,8 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.brewingDose:   
       
-      return Item(
-        title: StringLabels.brewingDose , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.brewingDose , value: value ,
         databaseId: DatabaseFunctions.brewingDose, 
         placeHolderText: StringLabels.enterValue,
         keyboardType: TextInputType.number,);
@@ -655,8 +666,8 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.preinfusion:   
       
-      return Item(
-        title: StringLabels.preinfusion , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.preinfusion , value: value ,
         databaseId: DatabaseFunctions.preinfusion, 
         placeHolderText: StringLabels.enterDescription,
         keyboardType: TextInputType.text,);
@@ -664,8 +675,8 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.yield:   
       
-      return Item(
-        title: StringLabels.yield , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.yield , value: value ,
         databaseId: DatabaseFunctions.yield, 
         placeHolderText: StringLabels.enterValue,
         keyboardType: TextInputType.number,);
@@ -673,8 +684,8 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.brewWeight:   
       
-      return Item(
-        title: StringLabels.brewWeight , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.brewWeight , value: value ,
         databaseId: DatabaseFunctions.brewWeight, 
         placeHolderText: StringLabels.enterValue,
         keyboardType: TextInputType.number,);
@@ -682,8 +693,8 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.time:   
       
-      return Item(
-        title: StringLabels.time , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.time , value: value ,
         databaseId: DatabaseFunctions.time, 
         placeHolderText: StringLabels.enterValue,
         keyboardType: TextInputType.number,);
@@ -691,8 +702,8 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.tds:   
       
-      return Item(
-        title: StringLabels.tds , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.tds , value: value ,
         databaseId: DatabaseFunctions.tds, 
         placeHolderText: StringLabels.enterValue,
         keyboardType: TextInputType.number,);
@@ -701,8 +712,8 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.notes:   
       
-      return Item(
-        title: StringLabels.brewingEquipment , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.brewingEquipment , value: value ,
         databaseId: DatabaseFunctions.date, 
         placeHolderText: StringLabels.enterDescription,
         keyboardType: TextInputType.text,);
@@ -710,8 +721,8 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.flavour:   
       
-      return Item(
-        title: StringLabels.flavour , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.flavour , value: value ,
         databaseId: DatabaseFunctions.flavour, 
         placeHolderText: StringLabels.flavour,
         keyboardType: TextInputType.number,);
@@ -719,8 +730,8 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.body:   
       
-      return Item(
-        title: StringLabels.body , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.body , value: value ,
         databaseId: DatabaseFunctions.body, 
         placeHolderText: StringLabels.enterValue,
         keyboardType: TextInputType.number,);
@@ -728,8 +739,8 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.balance:   
       
-      return Item(
-        title: StringLabels.balance , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.balance , value: value ,
         databaseId: DatabaseFunctions.balance, 
         placeHolderText: StringLabels.enterValue,
         keyboardType: TextInputType.number,);
@@ -737,8 +748,8 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.afterTaste:   
       
-      return Item(
-        title: StringLabels.afterTaste , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.afterTaste , value: value ,
         databaseId: DatabaseFunctions.afterTaste, 
         placeHolderText: StringLabels.enterDescription,
         keyboardType: TextInputType.text,);
@@ -746,8 +757,8 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.descriptors:   
       
-      return Item(
-        title: StringLabels.descriptors , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.descriptors , value: value ,
         databaseId: DatabaseFunctions.descriptors, 
         placeHolderText: StringLabels.descriptors,
         keyboardType: TextInputType.text,);
@@ -755,8 +766,8 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.coffeeId:   
       
-      return Item(
-        title: StringLabels.coffee , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.coffee , value: value ,
         databaseId: DatabaseFunctions.coffeeId, 
         placeHolderText: StringLabels.enterDescription,
         keyboardType: TextInputType.text,);
@@ -769,8 +780,8 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.waterID:   
       
-      return Item(
-        title: StringLabels.waterID , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.waterID , value: value ,
         databaseId: DatabaseFunctions.waterID, 
         placeHolderText: StringLabels.enterDescription,
         keyboardType: TextInputType.text,);
@@ -778,8 +789,8 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.date:   
       
-      return Item(
-        title: StringLabels.date , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.date , value: value ,
         databaseId: DatabaseFunctions.date, 
         placeHolderText: StringLabels.enterDescription,
         keyboardType: TextInputType.number,);
@@ -787,8 +798,8 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.ppm:   
       
-      return Item(
-        title: StringLabels.ppm , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.ppm , value: value ,
         databaseId: DatabaseFunctions.ppm, 
         placeHolderText: StringLabels.enterDescription,
         keyboardType: TextInputType.number,);
@@ -796,8 +807,8 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.gh:   
       
-      return Item(
-        title: StringLabels.gh , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.gh , value: value ,
         databaseId: DatabaseFunctions.gh, 
         placeHolderText: StringLabels.gh,
         keyboardType: TextInputType.number,);
@@ -805,8 +816,8 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.kh:   
       
-      return Item(
-        title: StringLabels.kh , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.kh , value: value ,
         databaseId: DatabaseFunctions.kh, 
         placeHolderText: StringLabels.kh,
         keyboardType: TextInputType.number,);
@@ -814,8 +825,8 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.ph:   
       
-      return Item(
-        title: StringLabels.ph , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.ph , value: value ,
         databaseId: DatabaseFunctions.ph, 
         placeHolderText: StringLabels.ph,
         keyboardType: TextInputType.number,);
@@ -828,8 +839,8 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.region:   
       
-      return Item(
-        title: StringLabels.region , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.region , value: value ,
         databaseId: DatabaseFunctions.region, 
         placeHolderText: StringLabels.enterDescription,
         keyboardType: TextInputType.text,);
@@ -837,8 +848,8 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.farm:   
       
-      return Item(
-        title: StringLabels.farm , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.farm , value: value ,
         databaseId: DatabaseFunctions.farm, 
         placeHolderText: StringLabels.enterDescription,
         keyboardType: TextInputType.text,);
@@ -846,8 +857,8 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.producer:   
       
-      return Item(
-        title: StringLabels.producer , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.producer , value: value ,
         databaseId: DatabaseFunctions.producer, 
         placeHolderText: StringLabels.enterDescription,
         keyboardType: TextInputType.text,);
@@ -855,8 +866,8 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.lot:   
       
-      return Item(
-        title: StringLabels.lot , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.lot , value: value ,
         databaseId: DatabaseFunctions.lot, 
         placeHolderText: StringLabels.enterDescription,
         keyboardType: TextInputType.text,);
@@ -864,8 +875,8 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.altitude:   
       
-      return Item(
-        title: StringLabels.altitude , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.altitude , value: value ,
         databaseId: DatabaseFunctions.altitude, 
         placeHolderText: StringLabels.enterDescription,
         keyboardType: TextInputType.text,);
@@ -875,8 +886,8 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.roastDate:   
       
-      return Item(
-        title: StringLabels.roastDate , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.roastDate , value: value ,
         databaseId: DatabaseFunctions.roastDate, 
         placeHolderText: StringLabels.enterDescription,
         keyboardType: TextInputType.text,);
@@ -884,8 +895,8 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.roastProfile:   
       
-      return Item(
-        title: StringLabels.roastProfile , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.roastProfile , value: value ,
         databaseId: DatabaseFunctions.roastProfile, 
         placeHolderText: StringLabels.enterDescription,
         keyboardType: TextInputType.text,);
@@ -893,8 +904,8 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.roasteryName:   
       
-      return Item(
-        title: StringLabels.roasteryName , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.roasteryName , value: value ,
         databaseId: DatabaseFunctions.roasteryName, 
         placeHolderText: StringLabels.enterDescription,
         keyboardType: TextInputType.text,);
@@ -902,8 +913,8 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.beanType:   
       
-      return Item(
-        title: StringLabels.beanType , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.beanType , value: value ,
         databaseId: DatabaseFunctions.beanType, 
         placeHolderText: StringLabels.enterDescription,
         keyboardType: TextInputType.text,
@@ -912,8 +923,8 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.beanSize:   
       
-      return Item(
-        title: StringLabels.beanSize , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.beanSize , value: value ,
         databaseId: DatabaseFunctions.beanSize, 
         placeHolderText: StringLabels.enterDescription,
         keyboardType: TextInputType.text,
@@ -922,8 +933,8 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.processingMethod:   
       
-      return Item(
-        title: StringLabels.processingMethod , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.processingMethod , value: value ,
         databaseId: DatabaseFunctions.processingMethod, 
         placeHolderText: StringLabels.enterDescription,
         keyboardType: TextInputType.text,
@@ -932,8 +943,8 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.density:   
       
-      return Item(
-        title: StringLabels.density , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.density , value: value ,
         databaseId: DatabaseFunctions.density, 
         placeHolderText: StringLabels.enterDescription,
         keyboardType: TextInputType.number,);
@@ -941,8 +952,8 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.aW:   
       
-      return Item(
-        title: StringLabels.aW , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.aW , value: value ,
         databaseId: DatabaseFunctions.aW, 
         placeHolderText: StringLabels.enterDescription,
         keyboardType: TextInputType.number,);
@@ -950,8 +961,8 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.moisture:   
       
-      return Item(
-        title: StringLabels.moisture , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.moisture , value: value ,
         databaseId: DatabaseFunctions.moisture, 
         placeHolderText: StringLabels.enterDescription,
         keyboardType: TextInputType.number,);
@@ -962,8 +973,8 @@ static Item createBlankItem(String databaseId){
 ///
     case DatabaseFunctions.grinderId:   
       
-      return Item(
-        title: StringLabels.grinderId , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.grinderId , value: value ,
         databaseId: DatabaseFunctions.grinderId, 
         placeHolderText: StringLabels.enterDescription,
         keyboardType: TextInputType.text,);
@@ -971,8 +982,8 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.burrs:   
       
-      return Item(
-        title: StringLabels.burrs , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.burrs , value: value ,
         databaseId: DatabaseFunctions.burrs, 
         placeHolderText: StringLabels.enterDescription,
         keyboardType: TextInputType.text,);
@@ -980,8 +991,8 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.grinderMake:   
       
-      return Item(
-        title: StringLabels.grinderMake , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.grinderMake , value: value ,
         databaseId: DatabaseFunctions.grinderMake, 
         placeHolderText: StringLabels.enterDescription,
         keyboardType: TextInputType.text,);
@@ -989,8 +1000,8 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.grinderModel:   
       
-      return Item(
-        title: StringLabels.grinderModel , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.grinderModel , value: value ,
         databaseId: DatabaseFunctions.grinderModel, 
         placeHolderText: StringLabels.enterDescription,
         keyboardType: TextInputType.text,);
@@ -1002,8 +1013,8 @@ static Item createBlankItem(String databaseId){
 ///
     case DatabaseFunctions.equipmentId:   
       
-      return Item(
-        title: StringLabels.equipmentId , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.equipmentId , value: value ,
         databaseId: DatabaseFunctions.equipmentId, 
         placeHolderText: StringLabels.enterDescription,
         keyboardType: TextInputType.text,);
@@ -1011,8 +1022,8 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.equipmentType:   
       
-      return Item(
-        title: StringLabels.equipmentType , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.equipmentType , value: value ,
         databaseId: DatabaseFunctions.equipmentType, 
         placeHolderText: StringLabels.enterDescription,
         keyboardType: TextInputType.text,);
@@ -1020,8 +1031,8 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.equipmentModel:   
       
-      return Item(
-        title: StringLabels.equipmentModel , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.equipmentModel , value: value ,
         databaseId: DatabaseFunctions.equipmentModel, 
         placeHolderText: StringLabels.enterDescription,
         keyboardType: TextInputType.text,);
@@ -1029,20 +1040,56 @@ static Item createBlankItem(String databaseId){
 
     case DatabaseFunctions.method:   
       
-      return Item(
-        title: StringLabels.method , value: item.toString() ,
+      _item = new Item(
+        title: StringLabels.method , value: value ,
         databaseId: DatabaseFunctions.method, 
+        placeHolderText: StringLabels.enterDescription,
+        keyboardType: TextInputType.text,);
+      break;
+   
+    ///
+    /// Barista
+    ///   
+    /// 
+    
+      case DatabaseFunctions.level:   
+      
+      _item = new Item(
+        title: StringLabels.level , value: value ,
+        databaseId: DatabaseFunctions.level, 
         placeHolderText: StringLabels.enterDescription,
         keyboardType: TextInputType.text,);
       break;
 
-    default:
-      return Item(
-        title: StringLabels.method , value: item.toString() ,
-        databaseId: DatabaseFunctions.method, 
+      case DatabaseFunctions.name:   
+      
+      _item = new Item(
+        title: StringLabels.name , value: value ,
+        databaseId: DatabaseFunctions.name, 
         placeHolderText: StringLabels.enterDescription,
         keyboardType: TextInputType.text,);
       break;
-    }
-  }
+
+      case DatabaseFunctions.age:   
+      
+      _item = new Item(
+        title: StringLabels.age , value: value ,
+        databaseId: DatabaseFunctions.age, 
+        placeHolderText: StringLabels.enterDescription,
+        keyboardType: TextInputType.text,);
+      break;
+
+      default:
+
+        _item = new Item(
+          title: StringLabels.method , value: value ,
+          databaseId: DatabaseFunctions.method, 
+          placeHolderText: StringLabels.enterDescription,
+          keyboardType: TextInputType.text,);
+        break;
+
+      }
+    });
+  return  _item;
+  } 
 }

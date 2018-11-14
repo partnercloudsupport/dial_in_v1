@@ -6,15 +6,15 @@ import 'item.dart';
 
 class Profile{
 
-     DateTime updatedAt;
-     String objectId; 
-     String databaseId;
-     List<Item> properties;
-     Image image;
-     ProfileType type;
-     String viewContollerId; 
-     int referanceNumber; 
-     int orderNumber; 
+     @required DateTime updatedAt;
+     @required String objectId; 
+     @required String databaseId;
+     @required List<Item> properties;
+     @required Image image;
+     @required ProfileType type;
+     @required String viewContollerId; 
+     @required int referanceNumber; 
+     @required int orderNumber = 0; 
     
     // Is it water , coffee, grinder , machine etc?
     
@@ -29,6 +29,7 @@ class Profile{
         this.orderNumber,
         }
     ){
+      
         switch (type) {
             
         case ProfileType.recipe:

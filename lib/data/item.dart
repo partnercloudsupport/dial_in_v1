@@ -6,13 +6,13 @@ import '../database_functions.dart';
 
 class Item{
 
-     String title; 
-     String value; 
-     String segueId;
-     String databaseId; 
-     String placeHolderText; 
-     List<List<String>> inputViewDataSet; 
-     TextInputType keyboardType; 
+     @required String title; 
+     @required dynamic value; 
+     @required String segueId = '';
+     @required String databaseId; 
+     @required String placeHolderText; 
+     @required List<List<String>> inputViewDataSet = List<List<String>>();
+     @required TextInputType keyboardType = TextInputType.text;
     
     Item({
         this.title,
@@ -22,7 +22,12 @@ class Item{
         this.placeHolderText,
         this.keyboardType,
         this.inputViewDataSet   
-    });
+    })
+    {
+      if (this.inputViewDataSet == null){  this.inputViewDataSet = List<List<String>>(); }
+      if (this.segueId == null){  this.segueId = ''; }
+      if (this.keyboardType == null){ this.keyboardType = TextInputType.text;}
+    }
 }
 
 // class Items {

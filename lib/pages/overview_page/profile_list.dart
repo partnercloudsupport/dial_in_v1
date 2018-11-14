@@ -32,32 +32,38 @@ class _ProfileListState extends State<ProfileList>{
 Widget _buildProfileCard(BuildContext context, DocumentSnapshot document, String databaseId){
 
   List<Item> _properties = new List<Item>();
+  document.data.forEach((key, value) {
 
-  for (var i = 0; i < document.data.length; i++) {
-    // if (document.data[i].isNotEmpty){
-      if (
-      document.data[i].toString() != DatabaseFunctions.updatedAt ||
-      document.data[i].toString() != DatabaseFunctions.objectId ||
-      document.data[i].toString() != DatabaseFunctions.databaseId ||
-      document.data[i].toString() != DatabaseFunctions.type ||
-      document.data[i].toString() != DatabaseFunctions.orderNumber ||
-      document.data[i].toString() != DatabaseFunctions.orderNumber
-      ){
+      if ( key != DatabaseFunctions.updatedAt){
 
-        _properties.add(Functions.createItemWithData(document.data[i]));
-        
-      }
-  // }
-  }
-  Profile profile = new Profile(
-    updatedAt: document.data[DatabaseFunctions.updatedAt],
-    objectId: document.documentID,
-    // image: document[DatabaseFunctions.image].toString(),
-    databaseId: document.data[DatabaseFunctions.databaseId].toString(),
-    orderNumber: document.data[DatabaseFunctions.orderNumber],
-    viewContollerId: document.data[DatabaseFunctions.viewContollerId],
-    properties: _properties
-    );
+      if ( key != DatabaseFunctions.objectId) {
+
+      if ( key != DatabaseFunctions.databaseId){
+
+      if ( key != DatabaseFunctions.databaseId){
+
+      if ( key != DatabaseFunctions.orderNumber){
+
+      if ( key != DatabaseFunctions.user){  
+
+         Map<String, dynamic> item = {key: value};
+        _properties.add(Functions.createItemWithData(item));
+      }}}}
+  }}});
+
+  Profile profile = Functions.createProfile(widget._listDatabaseId, _properties);
+
+
+  // Profile profile = new Profile(
+  //   updatedAt: document.data[DatabaseFunctions.updatedAt],
+  //   objectId: document.documentID,
+  //   // image: document[DatabaseFunctions.image].toString(),
+  //   databaseId: document.data[DatabaseFunctions.databaseId].toString(),
+  //   orderNumber: document.data[DatabaseFunctions.orderNumber],
+  //   viewContollerId: document.data[DatabaseFunctions.viewContollerId],
+  //   properties: _properties,
+  //   type: ProfileType.barista,
+  //   );
 
   return ProfileCard(profile);
 }
@@ -87,7 +93,7 @@ Widget _buildCard(BuildContext context, DocumentSnapshot document,String databas
         itemExtent: 80,
         itemCount: snapshot.data.documents.length,
         itemBuilder: (BuildContext context, int index) => 
-          _buildCard(context, snapshot.data.documents[index], widget._listDatabaseId));
+          _buildProfileCard(context, snapshot.data.documents[index], widget._listDatabaseId));
       }
       );
     }
