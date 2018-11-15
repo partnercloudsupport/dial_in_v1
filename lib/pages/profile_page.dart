@@ -15,14 +15,15 @@ class ProfilePage extends StatefulWidget{
   @required ProfileType type; 
   @required String referance;
   String appBarTitle;
+  // Profile profile;
 
 
   ProfilePage({this.isCopying, this.isEditing, this.isNew, this.type, this.referance}){
     
 
-    if (isNew || isCopying){ this.appBarTitle = StringLabels.newe + Functions.getProfileTypeString(type) + StringLabels.profile; }
+    if (isNew || isCopying){ this.appBarTitle = StringLabels.newe + ' ' + Functions.getProfileTypeString(type) + ' ' + StringLabels.profile; }
    
-    
+    // profile.image = Image.asset(Images.coffeeBeans);
 
 
 
@@ -49,12 +50,12 @@ class ProfilePageState extends State<ProfilePage>{
   /// Set back button depending on state
   _backCancelButton =  widget.isEditing ? 
   RawMaterialButton(child: Text(StringLabels.cancel),onPressed:(){ widget.isEditing = false;} ,):  
-  RawMaterialButton(child: Text(StringLabels.back),onPressed:(){ Navigator.pop(context); } ,);
+  RawMaterialButton(child: Icon(Icons.arrow_back),onPressed:(){ Navigator.pop(context); } ,);
 
   /// Set save button depending on state
   _saveEditButton =  widget.isEditing ? 
   RawMaterialButton(child: Text(StringLabels.save),onPressed:(){ print('big job');} ,):  
-  RawMaterialButton(child: Text(StringLabels.edit),onPressed:(){ widget.isEditing = true; } ,);
+  RawMaterialButton(child: Icon(Icons.edit),onPressed:(){ widget.isEditing = true; } ,);
 
   super.initState();
   }
@@ -67,7 +68,7 @@ class ProfilePageState extends State<ProfilePage>{
   Widget build(BuildContext context) {
     return new Scaffold(
 
-      appBar: AppBar(centerTitle: true, title: Text(StringLabels.profile, style: TextStyle( fontWeight: FontWeight.w700),), automaticallyImplyLeading: false,
+      appBar: AppBar(centerTitle: true, title: Text(widget.appBarTitle, style: TextStyle( fontWeight: FontWeight.w700, fontSize: 15.0),), automaticallyImplyLeading: false,
       leading: _backCancelButton, 
       actions: <Widget>[ _saveEditButton  ],),
       body: ListView(children: <Widget>[
@@ -75,7 +76,9 @@ class ProfilePageState extends State<ProfilePage>{
       Column(children: <Widget>[  
 
           /// Profile Image
-      ProfileImage(),
+      ProfileImage(Image.asset(Images.coffeeBeans)),
+
+      FlatButton(onPressed: (){}, child: Text(StringLabels.changeImage),),
 
       CoffeeCard(),
           
@@ -202,21 +205,21 @@ String _label;
 ///
 class ProfileInputCard extends StatelessWidget {
   
-double _padding = 20.0;
-double _margin = 10.0;
-double _cornerRadius = 20.0; 
-double _textFieldWidth = 150.0;
+final double _padding = 20.0;
+final double _margin = 10.0;
+final double _cornerRadius = 20.0; 
+final double _textFieldWidth = 150.0;
 
-String imageRefString;
-String title;
-Function(String) onAttributeTextChange;
-Function(String) onProfileTextPressed;
-String profileTextfieldText = 'sdvsv';
-String attributeTextfieldText;
-String attributeHintText;
-String profileHintText = StringLabels.chooseProfile;
-String attributeTitle;
-double _spacing = 15.0;
+final String imageRefString;
+final String title;
+final Function(String) onAttributeTextChange;
+final Function(String) onProfileTextPressed;
+final String profileTextfieldText;
+final String attributeTextfieldText;
+final String attributeHintText;
+final String profileHintText = StringLabels.chooseProfile;
+final String attributeTitle;
+final double _spacing = 15.0;
 
 
 ProfileInputCard({
@@ -224,16 +227,15 @@ ProfileInputCard({
   this.title,
   this.onAttributeTextChange,
   this.onProfileTextPressed,
-  this.profileTextfieldText,
   this.attributeTextfieldText,
   this.attributeHintText,
   this.attributeTitle,
+  this.profileTextfieldText
 });
 
   @override
   Widget build(BuildContext context) {
     return 
-          
           Card(margin: EdgeInsets.all(_margin),child: 
           Container(padding: EdgeInsets.all(_padding), child: 
           Column(crossAxisAlignment: CrossAxisAlignment.center,children: <Widget>[
@@ -259,8 +261,8 @@ ProfileInputCard({
             Row(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.start, children:<Widget>[ 
               //  Container(child: Text(StringLabels.profile, style: Theme.of(context).textTheme.subtitle,),), 
                RawMaterialButton(onPressed: (){}, child: 
-               Text(StringLabels.selectProfile),)]),
-               
+               Text(StringLabels.selectProfile, style: TextStyle(fontSize: 20),),)]),
+
             Container(width: _spacing, height: _spacing,),
              Row(children:<Widget>[ 
             // Container(width: _textFieldWidth, child:Text('wfewfwf'),)
@@ -282,16 +284,15 @@ ProfileInputCard({
 
 class UserDateInputCard extends StatelessWidget {
   
-  double _padding = 20.0;
-  double _margin = 10.0;
-  double _cornerRadius = 20.0; 
-  double _textFieldWidth = 150.0;
-  double _spacing = 15.0;
+  final double _padding = 20.0;
+  final double _margin = 10.0;
+  final double _cornerRadius = 20.0; 
+  final double _textFieldWidth = 150.0;
+  final double _spacing = 15.0;
 
-
-  Function(String) onDateTextPressed;
-  Function(String) onCoffeePressed;
-  Function(String) onBaristaPressed;
+  final Function(String) onDateTextPressed;
+  final Function(String) onCoffeePressed;
+  final Function(String) onBaristaPressed;
 
   UserDateInputCard({
     this.onDateTextPressed,
@@ -301,8 +302,7 @@ class UserDateInputCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return 
-          
+    return     
           Container(margin: EdgeInsets.all(_margin),child: 
             Container(padding: EdgeInsets.all(_padding), child: 
             Column(crossAxisAlignment: CrossAxisAlignment.center,children: <Widget>[
@@ -335,12 +335,13 @@ class UserDateInputCard extends StatelessWidget {
 
 
 class ProfileImage extends StatelessWidget {
-  double _padding = 20.0;
-  double _margin = 10.0;
-  double _textFieldWidth = 120.0;
-  double _cornerRadius = 20.0; 
-  Widget _backCancelButton;
-  Widget _saveEditButton;
+  final double _padding = 20.0;
+  final double _margin = 10.0;
+  final double _textFieldWidth = 120.0;
+  final double _cornerRadius = 20.0;
+  final Image _image; 
+
+  ProfileImage(this._image);
 
   @override
   Widget build(BuildContext context) {
@@ -364,13 +365,10 @@ class ProfileImage extends StatelessWidget {
 
 class CoffeeCard extends StatelessWidget {
 
-  double _padding = 20.0;
-  double _margin = 10.0;
-  double _textFieldWidth = 120.0;
-  double _cornerRadius = 20.0; 
-  Widget _backCancelButton;
-  Widget _saveEditButton;
-  Function _onCoffeePressed;
+  final double _padding = 20.0;
+  final double _margin = 10.0;
+  final double _textFieldWidth = 120.0;
+  final double _cornerRadius = 20.0; 
 
   @override
   Widget build(BuildContext context){
@@ -386,15 +384,14 @@ class CoffeeCard extends StatelessWidget {
 
 class RatioCard extends StatelessWidget {
   
-double _padding = 20.0;
-double _margin = 10.0;
-double _cornerRadius = 20.0; 
-double _textFieldWidth = 150.0;
-double _spacing = 15.0;
-
-Function(String) dosePressed;
-Function(String) yieldPressed;
-Function(String) brewWeightPressed;
+final double _padding = 20.0;
+final double _margin = 10.0;
+final double _cornerRadius = 20.0; 
+final double _textFieldWidth = 150.0;
+final double _spacing = 15.0;
+final Function(String) dosePressed;
+final Function(String) yieldPressed;
+final Function(String) brewWeightPressed;
 
 RatioCard({
   this.dosePressed,

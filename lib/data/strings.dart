@@ -23,6 +23,7 @@ class  StringLabels {
         static const String none = 'None';
         static const String feed = 'Feed';
         static const String selectProfile = 'Select profile';
+        static const String changeImage = 'Change image';
 
 
 
