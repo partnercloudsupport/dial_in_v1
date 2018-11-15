@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../data/images.dart';
 import '../widgets/custom_widgets.dart';
+import '../data/functions.dart';
 
 class ProfilePage extends StatefulWidget{
 
@@ -13,11 +14,14 @@ class ProfilePage extends StatefulWidget{
   @required bool isNew;
   @required ProfileType type; 
   @required String referance;
+  String appBarTitle;
+
 
   ProfilePage({this.isCopying, this.isEditing, this.isNew, this.type, this.referance}){
     
 
-
+    if (isNew || isCopying){ this.appBarTitle = StringLabels.newe + Functions.getProfileTypeString(type) + StringLabels.profile; }
+   
     
 
 
@@ -68,10 +72,10 @@ class ProfilePageState extends State<ProfilePage>{
       actions: <Widget>[ _saveEditButton  ],),
       body: ListView(children: <Widget>[
 
-        Column(children: <Widget>[  
+      Column(children: <Widget>[  
 
           /// Profile Image
-       ProfileImage(),
+      ProfileImage(),
 
       CoffeeCard(),
           
@@ -207,7 +211,7 @@ String imageRefString;
 String title;
 Function(String) onAttributeTextChange;
 Function(String) onProfileTextPressed;
-String profileTextfieldText;
+String profileTextfieldText = 'sdvsv';
 String attributeTextfieldText;
 String attributeHintText;
 String profileHintText = StringLabels.chooseProfile;
@@ -231,8 +235,8 @@ ProfileInputCard({
     return 
           
           Card(margin: EdgeInsets.all(_margin),child: 
-            Container(padding: EdgeInsets.all(_padding), child: 
-            Column(crossAxisAlignment: CrossAxisAlignment.center,children: <Widget>[
+          Container(padding: EdgeInsets.all(_padding), child: 
+          Column(crossAxisAlignment: CrossAxisAlignment.center,children: <Widget>[
 
           Row(crossAxisAlignment: CrossAxisAlignment.end, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: <Widget>[
 
@@ -246,31 +250,31 @@ ProfileInputCard({
 
             ]),
 
-              Container(width: _spacing, height: _spacing,),
+            Container(width: _spacing, height: _spacing,),
 
-
-              Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.center ,children: <Widget>[
-
-             Expanded(child: 
-             Column(crossAxisAlignment: CrossAxisAlignment.start,children: <Widget>[
-
-              Container(child: Text(StringLabels.profile, style: Theme.of(context).textTheme.subtitle,),),
-              Container(width: _spacing, height: _spacing,),
-              Container(width: _textFieldWidth , child:TextField(textAlign: TextAlign.start,
-              decoration: new InputDecoration.collapsed( 
-              hintText: profileHintText),
-              onChanged:onProfileTextPressed ,
-              ))]),),   
+            Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.start ,children: <Widget>[
 
             Expanded(child: 
-            Column(crossAxisAlignment: CrossAxisAlignment.end,children: <Widget>[
-              Container(child:Text(attributeTitle, style: Theme.of(context).textTheme.subtitle,),),
-              Container(width: _spacing, height: _spacing,),
-              Container(width: _textFieldWidth , child:TextField(textAlign: TextAlign.end,
-                decoration: new InputDecoration.collapsed(
-                hintText: attributeHintText,
-                
-                ), onChanged:onAttributeTextChange ,))]),)
+            Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.end,children: <Widget>[
+            Row(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.start, children:<Widget>[ 
+              //  Container(child: Text(StringLabels.profile, style: Theme.of(context).textTheme.subtitle,),), 
+               RawMaterialButton(onPressed: (){}, child: 
+               Text(StringLabels.selectProfile),)]),
+               
+            Container(width: _spacing, height: _spacing,),
+             Row(children:<Widget>[ 
+            // Container(width: _textFieldWidth, child:Text('wfewfwf'),)
+            ])
+            ]),),   
+
+            Expanded(child: 
+            Column(crossAxisAlignment: CrossAxisAlignment.end, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: <Widget>[
+            Container(child:Text(attributeTitle, style: Theme.of(context).textTheme.subtitle,),),
+            Container(width: _spacing, height: _spacing,),
+            Container(width: _textFieldWidth , child:TextField(textAlign: TextAlign.end,
+              decoration: new InputDecoration.collapsed(
+              hintText: attributeHintText,),
+              onChanged:onAttributeTextChange ,))]),)
 
             ],)]),),);
   }
@@ -278,32 +282,22 @@ ProfileInputCard({
 
 class UserDateInputCard extends StatelessWidget {
   
-double _padding = 20.0;
-double _margin = 10.0;
-double _cornerRadius = 20.0; 
-double _textFieldWidth = 150.0;
-double _spacing = 15.0;
+  double _padding = 20.0;
+  double _margin = 10.0;
+  double _cornerRadius = 20.0; 
+  double _textFieldWidth = 150.0;
+  double _spacing = 15.0;
 
-// String imageRefString;
-// String title;
-Function(String) onDateTextPressed;
-Function(String) onCoffeePressed;
-Function(String) onBaristaPressed;
-// String profileTextfieldText;
-// String attributeTextfieldText;
-// String attributeHintText;
-// String profileHintText = StringLabels.chooseProfile;
-// String attributeTitle;
 
-UserDateInputCard({
-  this.onDateTextPressed,
-  this.onCoffeePressed,
-  this.onBaristaPressed,
-  // this.profileTextfieldText,
-  // this.attributeTextfieldText,
-  // this.attributeHintText,
-  // this.attributeTitle,
-});
+  Function(String) onDateTextPressed;
+  Function(String) onCoffeePressed;
+  Function(String) onBaristaPressed;
+
+  UserDateInputCard({
+    this.onDateTextPressed,
+    this.onCoffeePressed,
+    this.onBaristaPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -381,18 +375,12 @@ class CoffeeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context){
     return
-     Container(margin: EdgeInsets.all(_margin),child: Center( child:
-
-         Container(margin: EdgeInsets.all(_margin) ,padding: EdgeInsets.all(_margin), child:
-            Column(crossAxisAlignment: CrossAxisAlignment.center,children: <Widget>[
-              Container(child:Text(StringLabels.coffee, style: Theme.of(context).textTheme.title,),),
-              Container(width: 10.0, height: 10.0,),
-              Container(width: _textFieldWidth , child: TextField(textAlign: TextAlign.center,
-                decoration: new InputDecoration.collapsed(
-                hintText: StringLabels.selectCoffee,
-                ), onChanged: _onCoffeePressed ,))]),)   
-     )
-     );
+        Container(margin: EdgeInsets.all(_margin) ,padding: EdgeInsets.all(_margin), child:
+          Column(crossAxisAlignment: CrossAxisAlignment.center,children: <Widget>[
+            Container(child:Text(StringLabels.coffee, style: Theme.of(context).textTheme.title,),),
+            Container(width: 10.0, height: 10.0),
+            RawMaterialButton(onPressed: (){},child: Text(StringLabels.selectCoffee),),
+          ]),) ;  
   }
 }
 
@@ -455,8 +443,6 @@ RatioCard({
                 hintText: StringLabels.enterInfo,
                 ), onChanged: brewWeightPressed ,))]),)           
             ],),
-
-
 
             ],),
           );

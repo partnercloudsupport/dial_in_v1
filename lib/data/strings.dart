@@ -20,6 +20,11 @@ class  StringLabels {
         static const String strength = 'Strength';
         static const String changeProfile = 'Change profile';
         static const String chooseProfile = 'Choose profile';
+        static const String none = 'None';
+        static const String feed = 'Feed';
+        static const String selectProfile = 'Select profile';
+
+
 
 
 

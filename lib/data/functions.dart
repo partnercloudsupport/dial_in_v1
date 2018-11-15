@@ -9,6 +9,48 @@ import 'images.dart';
 
 class Functions{
 
+
+  static String getProfileTypeString(ProfileType type){
+    
+    switch (type){
+
+      case ProfileType.recipe:   
+      return  StringLabels.recipe;
+      break;
+
+      case ProfileType.coffee:   
+      return  StringLabels.coffee;
+      break;
+
+      case ProfileType.water:   
+      return  StringLabels.water;
+      break;
+
+      case ProfileType.equipment:   
+      return  StringLabels.brewingEquipment;
+      break;
+
+      case ProfileType.grinder:   
+      return  StringLabels.grinder;
+      break;
+
+      case ProfileType.barista:   
+      return  StringLabels.barista;
+      break;
+
+      case ProfileType.none:   
+      return  StringLabels.none;
+      break;
+
+      case ProfileType.feed:   
+      return  StringLabels.feed;
+      break;
+
+      default:   
+      return  StringLabels.feed;
+      break;
+    }
+  }
   // static Profile createBlankProfile(ProfileType profileType){
   //   switch(profileType){
 
