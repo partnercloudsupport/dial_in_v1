@@ -117,6 +117,11 @@ class ProfilePageState extends State<ProfilePage>{
             attributeHintText: StringLabels.enterValue,
             attributeTitle: StringLabels.preinfusion
           ),
+
+          RatioCard(
+            dosePressed:(dose){} ,
+            yieldPressed:((yield){}) ,
+            brewWeightPressed:(brewWeight){}),
           
 
             ///Score Section
@@ -241,7 +246,7 @@ ProfileInputCard({
 
             ]),
 
-                          Container(width: _spacing, height: _spacing,),
+              Container(width: _spacing, height: _spacing,),
 
 
               Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.center ,children: <Widget>[
@@ -388,6 +393,73 @@ class CoffeeCard extends StatelessWidget {
                 ), onChanged: _onCoffeePressed ,))]),)   
      )
      );
+  }
+}
+
+class RatioCard extends StatelessWidget {
+  
+double _padding = 20.0;
+double _margin = 10.0;
+double _cornerRadius = 20.0; 
+double _textFieldWidth = 150.0;
+double _spacing = 15.0;
+
+Function(String) dosePressed;
+Function(String) yieldPressed;
+Function(String) brewWeightPressed;
+
+RatioCard({
+  this.dosePressed,
+  this.yieldPressed,
+  this.brewWeightPressed,
+});
+
+  @override
+  Widget build(BuildContext context) {
+    return 
+          
+          Container(margin: EdgeInsets.all(_margin), padding: EdgeInsets.all(_padding), child: 
+            Column(crossAxisAlignment: CrossAxisAlignment.center,children: <Widget>[
+
+
+          Container(margin: EdgeInsets.fromLTRB(0.0,0.0,0.0,_padding) ,child:
+          Text(StringLabels.ratios, style: Theme.of(context).textTheme.title,),),
+
+            Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.center ,children: <Widget>[
+
+             Expanded(child: 
+             Column(crossAxisAlignment: CrossAxisAlignment.center,children: <Widget>[
+              Container(child: Text(StringLabels.brewingDose, style: Theme.of(context).textTheme.subtitle,),),
+              Container(width: 15.0, height: _spacing,),
+              Container(width: _textFieldWidth , child:TextField(textAlign: TextAlign.center, keyboardType: TextInputType.number,
+              decoration: new InputDecoration.collapsed( 
+              hintText: StringLabels.enterInfo),
+              onChanged: dosePressed ,
+              ))]),),   
+
+            Expanded(child: 
+            Column(crossAxisAlignment: CrossAxisAlignment.center ,children: <Widget>[
+              Container(child:Text(StringLabels.yield, style: Theme.of(context).textTheme.subtitle,),),
+              Container(width: 10.0, height: _spacing,),
+              Container(width: _textFieldWidth , child:TextField(textAlign: TextAlign.center, keyboardType: TextInputType.number,
+                decoration: new InputDecoration.collapsed(
+                hintText: StringLabels.enterInfo,
+                ), onChanged: yieldPressed ,))]),),   
+
+            Expanded(child: 
+            Column(crossAxisAlignment: CrossAxisAlignment.center ,children: <Widget>[
+              Container(child:Text(StringLabels.brewWeight, style: Theme.of(context).textTheme.subtitle,),),
+              Container(width: 10.0, height: _spacing,),
+              Container(width: _textFieldWidth , child: TextField(textAlign: TextAlign.center, keyboardType: TextInputType.number,
+                decoration: new InputDecoration.collapsed(
+                hintText: StringLabels.enterInfo,
+                ), onChanged: brewWeightPressed ,))]),)           
+            ],),
+
+
+
+            ],),
+          );
   }
 }
   
