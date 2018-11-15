@@ -39,6 +39,7 @@ class ProfilePageState extends State<ProfilePage>{
   Widget _backCancelButton;
   Widget _saveEditButton;
 
+
   void initState() { 
 
   /// Set back button depending on state
@@ -70,165 +71,53 @@ class ProfilePageState extends State<ProfilePage>{
         Column(children: <Widget>[  
 
           /// Profile Image
-          Container(margin: EdgeInsets.all(_margin), 
-          width: 200.0, height: 200.0 ,decoration:    
-           BoxDecoration(boxShadow: [
-            BoxShadow(
-            color: Colors.black,
-            blurRadius:1.0, // has the effect of softening the shadow
-            spreadRadius: 1.0, // has the effect of extending the shadow
-            offset: Offset(
-              1.0, // horizontal, move right 10
-              1.0, // vertical, move down 10
-            ),
-          )],borderRadius: BorderRadius.circular(_cornerRadius))
-          ,child: ClipRRect(borderRadius: BorderRadius.all(Radius.circular(_cornerRadius)) , child: Image.asset(Images.cherries,fit: BoxFit.cover,))),
+       ProfileImage(),
+
+      CoffeeCard(),
+          
+       UserDateInputCard(),
+
 
           ///Water Section
-          Card(margin: EdgeInsets.all(_margin),child: 
-            Container(padding: EdgeInsets.all(_padding), child: 
-            Column(crossAxisAlignment: CrossAxisAlignment.center,children: <Widget>[
-
-           Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.center ,children: <Widget>[
-
-             Expanded(child:
-              Container(margin: EdgeInsets.all(_margin) ,child:
-              Text(StringLabels.water, style: Theme.of(context).textTheme.title,),),),
-
+          ///
+           ProfileInputCard(
+            imageRefString: Images.drop,
+            title: StringLabels.water,
+            onAttributeTextChange:(text){},
+            onProfileTextPressed: (text){},
+            profileTextfieldText: '',
+            attributeTextfieldText: '',
+            attributeHintText: StringLabels.enterValue,
+            attributeTitle: StringLabels.temparature
+          ),
           
-          Container(margin: EdgeInsets.all(_margin), 
-          width: 40.0, height: 40.0 ,decoration:    
-           BoxDecoration(boxShadow: [
-            BoxShadow(
-            color: Colors.black,
-            blurRadius:1.0, // has the effect of softening the shadow
-            spreadRadius: 1.0, // has the effect of extending the shadow
-            offset: Offset(
-              1.0, // horizontal, move right 10
-              1.0, // vertical, move down 10
-            ),
-          )],borderRadius: BorderRadius.circular(20.0))
-          ,child: ClipRRect(borderRadius: BorderRadius.all(Radius.circular(_cornerRadius)) , child: Image.asset(Images.cherries,fit: BoxFit.cover,))),
-            ]),
+          /// Grinder
 
-              Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.center ,children: <Widget>[
-
-             Expanded(child: 
-             Column(crossAxisAlignment: CrossAxisAlignment.start,children: <Widget>[
-              Container(margin: EdgeInsets.all(_margin) ,child: Text(StringLabels.profile, style: Theme.of(context).textTheme.subtitle,),),
-              Container(width: _textFieldWidth , child:TextField(textAlign: TextAlign.start,
-              decoration: new InputDecoration.collapsed( 
-              hintText: 'Username'                 ),
-              onChanged:(text){} ,))]),),   
-
-            Expanded(child: 
-            Column(crossAxisAlignment: CrossAxisAlignment.end,children: <Widget>[
-              Container(margin: EdgeInsets.all(_margin) , child:Text(StringLabels.temparature, style: Theme.of(context).textTheme.subtitle,),),
-              Container(width: _textFieldWidth , child:TextField(textAlign: TextAlign.end,
-                decoration: new InputDecoration.collapsed(
-                hintText: 'Username'
-                ), onChanged:(text){} ,))]),)
-
-            ],)]),),),
-
-          /// Ratios
-          
-            Card(margin: EdgeInsets.all(_margin),child: 
-            Container(padding: EdgeInsets.all(_padding), child: 
-            Column(crossAxisAlignment: CrossAxisAlignment.center,children: <Widget>[
-
-              Container(margin: EdgeInsets.all(_margin) ,child:
-              Text(StringLabels.ratios, style: Theme.of(context).textTheme.title,),),
-
-              Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.center ,children: <Widget>[
-
-             Expanded(child: 
-             Column(crossAxisAlignment: CrossAxisAlignment.center,children: <Widget>[
-              Container(margin: EdgeInsets.all(_margin) ,child: Text(StringLabels.brewingDose, style: Theme.of(context).textTheme.subtitle,),),
-              Container(width: _textFieldWidth , child:TextField(textAlign: TextAlign.center,
-              decoration: new InputDecoration.collapsed( 
-              hintText: StringLabels.brewingDose                 ),
-              onChanged:(text){} ,))]),),   
-
-            Expanded(child: 
-            Column(crossAxisAlignment: CrossAxisAlignment.center,children: <Widget>[
-              Container(margin: EdgeInsets.all(_margin) ,child:Text(StringLabels.yield, style: Theme.of(context).textTheme.subtitle,),),
-              Container(width: _textFieldWidth , child:TextField(textAlign: TextAlign.center,
-                decoration: new InputDecoration.collapsed(
-                hintText: StringLabels.yield
-                ), onChanged:(text){} ,))]),),
-
-            Expanded(child: 
-            Column(crossAxisAlignment: CrossAxisAlignment.center,children: <Widget>[
-              Container(margin: EdgeInsets.all(_margin) ,child:Text(StringLabels.brewWeight, style: Theme.of(context).textTheme.subtitle,),),
-              Container(width: _textFieldWidth , child:TextField(textAlign: TextAlign.center,
-                decoration: new InputDecoration.collapsed(
-                hintText: StringLabels.brewWeight
-                ), onChanged:(text){} ,))]),)   
-
-            ],)]),),),
-
-            
-          /// Grinder section
-            Card(margin: EdgeInsets.all(_margin),child: 
-            Container(padding: EdgeInsets.all(_padding), child: 
-            Column(crossAxisAlignment: CrossAxisAlignment.center,children: <Widget>[
-
-              Container(margin: EdgeInsets.all(_margin) ,child:
-              Text(StringLabels.grinder , style: Theme.of(context).textTheme.title,),),
-
-            Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.center ,children: <Widget>[
-
-             Expanded(child: 
-             Column(crossAxisAlignment: CrossAxisAlignment.center,children: <Widget>[
-              Container(margin: EdgeInsets.all(_margin) ,child: Text(StringLabels.profile, style: Theme.of(context).textTheme.subtitle,),),
-              Container(width: _textFieldWidth , child:TextField(textAlign: TextAlign.center,
-              decoration: new InputDecoration.collapsed( 
-              hintText: 'Username'                 ),
-              onChanged:(text){} ,))]),),   
-
-            Expanded(child: 
-            Column(crossAxisAlignment: CrossAxisAlignment.center,children: <Widget>[
-              Container(margin: EdgeInsets.all(_margin) ,child: Text(StringLabels.grindSetting, style: Theme.of(context).textTheme.subtitle,),),
-              Container(width: _textFieldWidth , child:TextField(textAlign: TextAlign.center,
-                decoration: new InputDecoration.collapsed(
-                hintText: 'setting'
-                ), onChanged:(text){} ,))]),)
-
-            ],)]),),),
-
+          ProfileInputCard(
+            imageRefString: Images.grinder,
+            title: StringLabels.grinder,
+            onAttributeTextChange:(text){},
+            onProfileTextPressed: (text){},
+            profileTextfieldText: '',
+            attributeTextfieldText: '',
+            attributeHintText: StringLabels.enterValue,
+            attributeTitle: StringLabels.grindSetting
+          ),
 
 
           /// Equipment
+          /// 
+           ProfileInputCard(
+            imageRefString: Images.aeropressSmaller512x512,
+            title: StringLabels.brewingEquipment,
+            onAttributeTextChange:(text){},
+            onProfileTextPressed: (text){},
+            profileTextfieldText: '',
+            attributeTextfieldText: '',
+            attributeHintText: StringLabels.enterValue,
+            attributeTitle: StringLabels.preinfusion
+          ),
           
-           Card(margin: EdgeInsets.all(_margin),child: 
-            Container(padding: EdgeInsets.all(_padding), child: 
-            Column(crossAxisAlignment: CrossAxisAlignment.center,children: <Widget>[
-
-              Container(margin: EdgeInsets.all(_margin) ,child:
-              Text(StringLabels.brewingEquipment , style: Theme.of(context).textTheme.title,),),
-
-            Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.center ,children: <Widget>[
-
-             Expanded(child: 
-             Column(crossAxisAlignment: CrossAxisAlignment.center,children: <Widget>[
-              Container(margin: EdgeInsets.all(_margin) ,child: Text(StringLabels.profile, style: Theme.of(context).textTheme.subtitle,),),
-              Container(width: _textFieldWidth , child:TextField(textAlign: TextAlign.center,
-              decoration: new InputDecoration.collapsed( 
-              hintText: 'Equipment'                 ),
-              onChanged:(text){} ,))]),),   
-
-            Expanded(child: 
-            Column(crossAxisAlignment: CrossAxisAlignment.center,children: <Widget>[
-              Container(margin: EdgeInsets.all(_margin) ,child: Text(StringLabels.grindSetting, style: Theme.of(context).textTheme.subtitle,),),
-              Container(width: _textFieldWidth , child:TextField(textAlign: TextAlign.center,
-                decoration: new InputDecoration.collapsed(
-                hintText: 'Preinfusion'
-                ), onChanged:(text){} ,))]),)
-
-            ],)]),),),
-
-
 
             ///Score Section
             Card(child: Column(crossAxisAlignment: CrossAxisAlignment.center,children: <Widget>[
@@ -259,9 +148,14 @@ class ProfilePageState extends State<ProfilePage>{
               Slider(value: 0.1, onChanged: (value){},)]), 
 
             
-
+/// End of score
             ],)],),
             ),
+
+
+
+
+
         ],)
       ],
       ),    
@@ -292,3 +186,208 @@ String _label;
     );
   }
 }
+
+
+////
+/// Widgets
+///
+class ProfileInputCard extends StatelessWidget {
+  
+double _padding = 20.0;
+double _margin = 10.0;
+double _cornerRadius = 20.0; 
+double _textFieldWidth = 150.0;
+
+String imageRefString;
+String title;
+Function(String) onAttributeTextChange;
+Function(String) onProfileTextPressed;
+String profileTextfieldText;
+String attributeTextfieldText;
+String attributeHintText;
+String profileHintText = StringLabels.chooseProfile;
+String attributeTitle;
+double _spacing = 15.0;
+
+
+ProfileInputCard({
+  this.imageRefString,
+  this.title,
+  this.onAttributeTextChange,
+  this.onProfileTextPressed,
+  this.profileTextfieldText,
+  this.attributeTextfieldText,
+  this.attributeHintText,
+  this.attributeTitle,
+});
+
+  @override
+  Widget build(BuildContext context) {
+    return 
+          
+          Card(margin: EdgeInsets.all(_margin),child: 
+            Container(padding: EdgeInsets.all(_padding), child: 
+            Column(crossAxisAlignment: CrossAxisAlignment.center,children: <Widget>[
+
+          Row(crossAxisAlignment: CrossAxisAlignment.end, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: <Widget>[
+
+          Container(margin: EdgeInsets.fromLTRB(0.0,0.0,0.0,_margin) ,child:
+          Text(title, style: Theme.of(context).textTheme.title,),),
+
+          Container(margin: EdgeInsets.fromLTRB(0.0,0.0,0.0,_margin), 
+          width: 40.0, height: 40.0 , child: Image.asset(imageRefString,fit: BoxFit.cover,)),
+              
+          // Container(width: 10.0, height: 10.0,),
+
+            ]),
+
+                          Container(width: _spacing, height: _spacing,),
+
+
+              Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.center ,children: <Widget>[
+
+             Expanded(child: 
+             Column(crossAxisAlignment: CrossAxisAlignment.start,children: <Widget>[
+
+              Container(child: Text(StringLabels.profile, style: Theme.of(context).textTheme.subtitle,),),
+              Container(width: _spacing, height: _spacing,),
+              Container(width: _textFieldWidth , child:TextField(textAlign: TextAlign.start,
+              decoration: new InputDecoration.collapsed( 
+              hintText: profileHintText),
+              onChanged:onProfileTextPressed ,
+              ))]),),   
+
+            Expanded(child: 
+            Column(crossAxisAlignment: CrossAxisAlignment.end,children: <Widget>[
+              Container(child:Text(attributeTitle, style: Theme.of(context).textTheme.subtitle,),),
+              Container(width: _spacing, height: _spacing,),
+              Container(width: _textFieldWidth , child:TextField(textAlign: TextAlign.end,
+                decoration: new InputDecoration.collapsed(
+                hintText: attributeHintText,
+                
+                ), onChanged:onAttributeTextChange ,))]),)
+
+            ],)]),),);
+  }
+}
+
+class UserDateInputCard extends StatelessWidget {
+  
+double _padding = 20.0;
+double _margin = 10.0;
+double _cornerRadius = 20.0; 
+double _textFieldWidth = 150.0;
+double _spacing = 15.0;
+
+// String imageRefString;
+// String title;
+Function(String) onDateTextPressed;
+Function(String) onCoffeePressed;
+Function(String) onBaristaPressed;
+// String profileTextfieldText;
+// String attributeTextfieldText;
+// String attributeHintText;
+// String profileHintText = StringLabels.chooseProfile;
+// String attributeTitle;
+
+UserDateInputCard({
+  this.onDateTextPressed,
+  this.onCoffeePressed,
+  this.onBaristaPressed,
+  // this.profileTextfieldText,
+  // this.attributeTextfieldText,
+  // this.attributeHintText,
+  // this.attributeTitle,
+});
+
+  @override
+  Widget build(BuildContext context) {
+    return 
+          
+          Container(margin: EdgeInsets.all(_margin),child: 
+            Container(padding: EdgeInsets.all(_padding), child: 
+            Column(crossAxisAlignment: CrossAxisAlignment.center,children: <Widget>[
+
+            Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.center ,children: <Widget>[
+
+             Expanded(child: 
+             Column(crossAxisAlignment: CrossAxisAlignment.start,children: <Widget>[
+              Container(child: Text(StringLabels.date, style: Theme.of(context).textTheme.subtitle,),),
+              Container(width: 15.0, height: _spacing,),
+              Container(width: _textFieldWidth , child:TextField(textAlign: TextAlign.start,
+              decoration: new InputDecoration.collapsed( 
+              hintText: StringLabels.enterInfo),
+              onChanged:onDateTextPressed ,
+              ))]),),   
+
+            Expanded(child: 
+            Column(crossAxisAlignment: CrossAxisAlignment.end,children: <Widget>[
+              Container(child:Text(StringLabels.barista, style: Theme.of(context).textTheme.subtitle,),),
+              Container(width: 10.0, height: _spacing,),
+              Container(width: _textFieldWidth , child:TextField(textAlign: TextAlign.end,
+                decoration: new InputDecoration.collapsed(
+                hintText: StringLabels.enterInfo,
+                ), onChanged:onCoffeePressed ,))]),)           
+            ],),
+  
+          ]),),);
+  }
+}
+
+
+class ProfileImage extends StatelessWidget {
+  double _padding = 20.0;
+  double _margin = 10.0;
+  double _textFieldWidth = 120.0;
+  double _cornerRadius = 20.0; 
+  Widget _backCancelButton;
+  Widget _saveEditButton;
+
+  @override
+  Widget build(BuildContext context) {
+    return 
+     /// Profile Image
+          Container(margin: EdgeInsets.all(_margin), 
+          width: 200.0, height: 200.0 ,decoration:    
+           BoxDecoration(boxShadow: [
+            BoxShadow(
+            color: Colors.black,
+            blurRadius:1.0, // has the effect of softening the shadow
+            spreadRadius: 1.0, // has the effect of extending the shadow
+            offset: Offset(
+              1.0, // horizontal, move right 10
+              1.0, // vertical, move down 10
+            ),
+          )],borderRadius: BorderRadius.circular(_cornerRadius))
+          ,child: ClipRRect(borderRadius: BorderRadius.all(Radius.circular(_cornerRadius)) , child: Image.asset(Images.cherries,fit: BoxFit.cover,)));
+  }
+}
+
+class CoffeeCard extends StatelessWidget {
+
+  double _padding = 20.0;
+  double _margin = 10.0;
+  double _textFieldWidth = 120.0;
+  double _cornerRadius = 20.0; 
+  Widget _backCancelButton;
+  Widget _saveEditButton;
+  Function _onCoffeePressed;
+
+  @override
+  Widget build(BuildContext context){
+    return
+     Container(margin: EdgeInsets.all(_margin),child: Center( child:
+
+         Container(margin: EdgeInsets.all(_margin) ,padding: EdgeInsets.all(_margin), child:
+            Column(crossAxisAlignment: CrossAxisAlignment.center,children: <Widget>[
+              Container(child:Text(StringLabels.coffee, style: Theme.of(context).textTheme.title,),),
+              Container(width: 10.0, height: 10.0,),
+              Container(width: _textFieldWidth , child: TextField(textAlign: TextAlign.center,
+                decoration: new InputDecoration.collapsed(
+                hintText: StringLabels.selectCoffee,
+                ), onChanged: _onCoffeePressed ,))]),)   
+     )
+     );
+  }
+}
+  

@@ -4,11 +4,6 @@ import 'pages/log_in.dart';
 import 'theme/app_theme.dart';
 import 'pages/sign_up.dart';
 import 'widgets/custom_widgets.dart';
-import 'package:flutter/material.dart';
-
-
-
-
 
 void main() {
   // _testSignInWithGoogle();

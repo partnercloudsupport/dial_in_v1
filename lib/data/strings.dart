@@ -18,6 +18,8 @@ class  StringLabels {
         static const String profile = 'Profile';
         static const String ratios = 'Ratios';
         static const String strength = 'Strength';
+        static const String changeProfile = 'Change profile';
+        static const String chooseProfile = 'Choose profile';
 
 
 
