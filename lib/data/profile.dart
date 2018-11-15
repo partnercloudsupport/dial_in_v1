@@ -14,7 +14,8 @@ class Profile{
      @required ProfileType type;
      @required String viewContollerId; 
      @required int referanceNumber; 
-     @required int orderNumber = 0; 
+     @required int orderNumber = 0;
+     List<Profile> profiles; 
     
     // Is it water , coffee, grinder , machine etc?
     
@@ -27,6 +28,7 @@ class Profile{
         this.databaseId,
         this.viewContollerId,
         this.orderNumber,
+        this.profiles
         }
     ){
       

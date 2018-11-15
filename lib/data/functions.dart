@@ -51,23 +51,179 @@ class Functions{
       break;
     }
   }
-  // static Profile createBlankProfile(ProfileType profileType){
-  //   switch(profileType){
 
-  //     case ProfileType.recipe:   
-    
-  //     return  new Profile(
-  //             updatedAt: DateTime.now(),
-  //             objectId: '',
-  //             // image: document[DatabaseFunctions.image].toString(),
-  //             databaseId: DatabaseFunctions.databaseId,
-  //             orderNumber: 0,
-  //             properties: pr
-  //             );
-        
-  //     break;
-  //   }
-  // }
+
+  static Profile createBlankProfile(ProfileType profileType){
+    switch(profileType){
+
+      case ProfileType.recipe:   
+      return  new Profile(
+              updatedAt: DateTime.now(),
+              objectId: '',
+              // image: document[DatabaseFunctions.image].toString(),
+              databaseId: DatabaseFunctions.databaseId,
+              orderNumber: 0,
+              properties: [
+                createBlankItem(DatabaseFunctions.barista),
+                createBlankItem(DatabaseFunctions.date),
+                createBlankItem(DatabaseFunctions.grindSetting),
+                createBlankItem(DatabaseFunctions.temparature),
+                createBlankItem(DatabaseFunctions.brewingDose),
+                createBlankItem(DatabaseFunctions.preinfusion),
+                createBlankItem(DatabaseFunctions.yield),
+                createBlankItem(DatabaseFunctions.brewWeight),
+                createBlankItem(DatabaseFunctions.time),
+                createBlankItem(DatabaseFunctions.tds),
+                createBlankItem(DatabaseFunctions.notes),
+                createBlankItem(DatabaseFunctions.flavour),
+                createBlankItem(DatabaseFunctions.body),
+                createBlankItem(DatabaseFunctions.balance),
+                createBlankItem(DatabaseFunctions.afterTaste),
+                createBlankItem(DatabaseFunctions.strength),
+                createBlankItem(DatabaseFunctions.descriptors),
+              ],
+              profiles: [
+                createBlankProfile(ProfileType.coffee),
+                createBlankProfile(ProfileType.barista),
+                createBlankProfile(ProfileType.equipment),
+                createBlankProfile(ProfileType.grinder),
+                createBlankProfile(ProfileType.water),
+                createBlankProfile(ProfileType.barista),
+              ]
+              );
+      break;
+
+      case ProfileType.water:   
+      return  new Profile(
+              updatedAt: DateTime.now(),
+              objectId: '',
+              // image: document[DatabaseFunctions.image].toString(),
+              databaseId: DatabaseFunctions.databaseId,
+              orderNumber: 0,
+              properties: [
+                createBlankItem(DatabaseFunctions.waterID),
+                createBlankItem(DatabaseFunctions.date),
+                createBlankItem(DatabaseFunctions.ppm),
+                createBlankItem(DatabaseFunctions.gh),
+                createBlankItem(DatabaseFunctions.kh),
+                createBlankItem(DatabaseFunctions.ph),
+              ]
+              );
+      break;
+
+      case ProfileType.coffee:   
+      return  new Profile(
+              updatedAt: DateTime.now(),
+              objectId: '',
+              // image: document[DatabaseFunctions.image].toString(),
+              databaseId: DatabaseFunctions.databaseId,
+              orderNumber: 0,
+              properties: [
+                createBlankItem(DatabaseFunctions.coffeeId),
+                createBlankItem(DatabaseFunctions.country),
+                createBlankItem(DatabaseFunctions.region),
+                createBlankItem(DatabaseFunctions.farm),
+                createBlankItem(DatabaseFunctions.producer),
+                createBlankItem(DatabaseFunctions.lot),
+                createBlankItem(DatabaseFunctions.altitude),
+                createBlankItem(DatabaseFunctions.roastDate),
+                createBlankItem(DatabaseFunctions.roastProfile),
+                createBlankItem(DatabaseFunctions.roasteryName),
+                createBlankItem(DatabaseFunctions.beanType),
+                createBlankItem(DatabaseFunctions.beanSize),
+                createBlankItem(DatabaseFunctions.processingMethod),
+                createBlankItem(DatabaseFunctions.density),
+                createBlankItem(DatabaseFunctions.aW),
+                createBlankItem(DatabaseFunctions.moisture),
+              ]
+              );
+      break;
+
+      case ProfileType.equipment:   
+      return  new Profile(
+              updatedAt: DateTime.now(),
+              objectId: '',
+              // image: document[DatabaseFunctions.image].toString(),
+              databaseId: DatabaseFunctions.databaseId,
+              orderNumber: 0,
+              properties: [
+                createBlankItem(DatabaseFunctions.equipmentId),
+                createBlankItem(DatabaseFunctions.equipmentMake),
+                createBlankItem(DatabaseFunctions.equipmentModel),
+                createBlankItem(DatabaseFunctions.method),
+                createBlankItem(DatabaseFunctions.type),
+              ],
+              );
+      break;
+
+      case ProfileType.feed:   
+      return  new Profile(
+              updatedAt: DateTime.now(),
+              objectId: '',
+              // image: document[DatabaseFunctions.image].toString(),
+              databaseId: DatabaseFunctions.databaseId,
+              orderNumber: 0,
+              properties: [createBlankItem(DatabaseFunctions.type),],
+              );
+      break;
+
+      case ProfileType.grinder:   
+      return  new Profile(
+              updatedAt: DateTime.now(),
+              objectId: '',
+              // image: document[DatabaseFunctions.image].toString(),
+              databaseId: DatabaseFunctions.databaseId,
+              orderNumber: 0,
+              properties: [
+                createBlankItem(DatabaseFunctions.grinderId),
+                createBlankItem(DatabaseFunctions.grinderMake),
+                createBlankItem(DatabaseFunctions.grinderModel),
+                createBlankItem(DatabaseFunctions.method),
+                createBlankItem(DatabaseFunctions.type),
+              ],
+              );
+      break;
+
+      case ProfileType.none:   
+      return  new Profile(
+              updatedAt: DateTime.now(),
+              objectId: '',
+              // image: document[DatabaseFunctions.image].toString(),
+              databaseId: DatabaseFunctions.databaseId,
+              orderNumber: 0,
+              properties: [createBlankItem(DatabaseFunctions.type)],
+              );
+      break;
+
+      case ProfileType.barista:   
+      return  new Profile(
+              updatedAt: DateTime.now(),
+              objectId: '',
+              // image: document[DatabaseFunctions.image].toString(),
+              databaseId: DatabaseFunctions.databaseId,
+              orderNumber: 0,
+              properties: [createBlankItem(DatabaseFunctions.type)],
+              );
+      break;
+
+      default:   
+      return  new Profile(
+              updatedAt: DateTime.now(),
+              objectId: '',
+              // image: document[DatabaseFunctions.image].toString(),
+              databaseId: DatabaseFunctions.databaseId,
+              orderNumber: 0,
+              properties: [
+                createBlankItem(DatabaseFunctions.name),
+                createBlankItem(DatabaseFunctions.level),
+                createBlankItem(DatabaseFunctions.notes)
+              ],
+              );
+      break;
+      
+      
+    }
+  }
 
 
   static Profile createProfile(String databaseId, List<Item> _properties){
@@ -82,7 +238,12 @@ class Functions{
               image: Image.asset(Images.whiteRecipe200X200),
               databaseId: databaseId,
               orderNumber: 0,
-              properties: _properties
+              properties: _properties,
+              profiles:  [
+
+                createProfile(databaseId, _properties)
+
+              ]
               );
       break;
 

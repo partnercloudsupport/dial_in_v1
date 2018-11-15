@@ -84,7 +84,6 @@ class ProfilePageState extends State<ProfilePage>{
           
        UserDateInputCard(),
 
-
           ///Water Section
           ///
            ProfileInputCard(
@@ -108,7 +107,7 @@ class ProfilePageState extends State<ProfilePage>{
             profileTextfieldText: '',
             attributeTextfieldText: '',
             attributeHintText: StringLabels.enterValue,
-            attributeTitle: StringLabels.grindSetting
+            attributeTitle: StringLabels.setting
           ),
 
 
@@ -139,63 +138,69 @@ class ProfilePageState extends State<ProfilePage>{
 
             Column(children: <Widget>[
 
-            Column(crossAxisAlignment: CrossAxisAlignment.center,children: <Widget>[
-             Container(margin: EdgeInsets.all(_margin) , child:Text(StringLabels.strength),),
-              Slider(value: 0.1, onChanged: (value){},)]),
+            ScoreSlider(StringLabels.strength, 0.0 , (value){}),
 
-            Column(crossAxisAlignment: CrossAxisAlignment.center,children: <Widget>[
-               Container(margin: EdgeInsets.all(_margin) , child:Text(StringLabels.balance),),
-              Slider(value: 0.1, onChanged: (value){},)]),
+            ScoreSlider(StringLabels.balance, 0.0 , (value){}),
 
-            Column(crossAxisAlignment: CrossAxisAlignment.center,children: <Widget>[
-               Container(margin: EdgeInsets.all(_margin) , child: Text(StringLabels.flavour),),
-              Slider(value: 0.1, onChanged: (value){},)]),
+            ScoreSlider(StringLabels.flavour, 0.0 , (value){}),
 
-            Column(crossAxisAlignment: CrossAxisAlignment.center,children: <Widget>[
-               Container(margin: EdgeInsets.all(_margin) , child: Text(StringLabels.body),),
-              Slider(value: 0.1, onChanged: (value){},)]),
+            ScoreSlider(StringLabels.body, 0.0 , (value){}),
 
-            Column(crossAxisAlignment: CrossAxisAlignment.center,children: <Widget>[
-               Container(margin: EdgeInsets.all(_margin) , child: Text(StringLabels.afterTaste),),
-              Slider(value: 0.1, onChanged: (value){},)]), 
-
+            ScoreSlider(StringLabels.afterTaste, 0.0 , (value){})
             
 /// End of score
             ],)],),
             ),
-
-
-
-
-
         ],)
       ],
       ),    
     );}
 }
 
-class ScoreSlider extends StatefulWidget{ScoreSliderState createState() => new ScoreSliderState();}
+class ScoreSlider extends StatefulWidget{
+  
+final double _value ;
+final String _label;
+final Function(double) _sliderValue;
+
+  ScoreSlider(this._label, this._value, this._sliderValue);
+
+  ScoreSliderState createState() => new ScoreSliderState();}
+
 class ScoreSliderState extends State<ScoreSlider>{
 
-double _value = 0;
+double _value;
 String _label;
+double _margin = 10.0;
+
+@override
+  void initState() { 
+    _value = widget._value;
+    _label = widget._label;
+    super.initState();
+  }
 
 @override
   Widget build(BuildContext context) {
-    return Slider(
+    return 
+    
+     Column(crossAxisAlignment: CrossAxisAlignment.center,children: <Widget>[
+               Container(margin: EdgeInsets.all(_margin) , child: Text(widget._label),),
+    Slider(
       value: _value,
-      onChanged:(value){setState(() { _value = value; });} ,
+      onChanged:(value){setState(() { _value = value;  });  widget._sliderValue;} ,
       onChangeEnd:(value){}  ,
       onChangeStart:(value){} ,
       min: 0,
       max: 10,
       divisions: 10 ,
-      label: _value.toString() ,
+      label: _value.toInt().toString() ,
       activeColor: Theme.of(context).sliderTheme.inactiveTrackColor ,
       inactiveColor: Theme.of(context).sliderTheme.inactiveTrackColor,
       // semanticFormatterCallback: ,
 
-    );
+    )
+     ]);
   }
 }
 
@@ -219,7 +224,7 @@ final String attributeTextfieldText;
 final String attributeHintText;
 final String profileHintText = StringLabels.chooseProfile;
 final String attributeTitle;
-final double _spacing = 15.0;
+final double _spacing = 5.0;
 
 
 ProfileInputCard({
@@ -238,49 +243,38 @@ ProfileInputCard({
     return 
           Card(margin: EdgeInsets.all(_margin),child: 
           Container(padding: EdgeInsets.all(_padding), child: 
-          Column(crossAxisAlignment: CrossAxisAlignment.center,children: <Widget>[
+          Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: <Widget>[
 
-          Row(crossAxisAlignment: CrossAxisAlignment.end, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: <Widget>[
+          Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.spaceBetween,children: <Widget>[
 
           Container(margin: EdgeInsets.fromLTRB(0.0,0.0,0.0,_margin) ,child:
           Text(title, style: Theme.of(context).textTheme.title,),),
 
+          RawMaterialButton(onPressed: (){}, child: 
+               Text(StringLabels.selectProfile, style: TextStyle(fontSize: 20),),)
+
+          ]),
+
+          Column(crossAxisAlignment: CrossAxisAlignment.end, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: <Widget>[
+
           Container(margin: EdgeInsets.fromLTRB(0.0,0.0,0.0,_margin), 
           width: 40.0, height: 40.0 , child: Image.asset(imageRefString,fit: BoxFit.cover,)),
-              
-          // Container(width: 10.0, height: 10.0,),
 
-            ]),
-
-            Container(width: _spacing, height: _spacing,),
-
-            Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.start ,children: <Widget>[
-
-            Expanded(child: 
-            Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.end,children: <Widget>[
-            Row(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.start, children:<Widget>[ 
-              //  Container(child: Text(StringLabels.profile, style: Theme.of(context).textTheme.subtitle,),), 
-               RawMaterialButton(onPressed: (){}, child: 
-               Text(StringLabels.selectProfile, style: TextStyle(fontSize: 20),),)]),
-
-            Container(width: _spacing, height: _spacing,),
-             Row(children:<Widget>[ 
-            // Container(width: _textFieldWidth, child:Text('wfewfwf'),)
-            ])
-            ]),),   
-
-            Expanded(child: 
-            Column(crossAxisAlignment: CrossAxisAlignment.end, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: <Widget>[
-            Container(child:Text(attributeTitle, style: Theme.of(context).textTheme.subtitle,),),
+          Container(width: _spacing, height: _spacing,),
+  
+          Column(crossAxisAlignment: CrossAxisAlignment.end, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: <Widget>[
+            Container(child: Text(attributeTitle, style: Theme.of(context).textTheme.subtitle,),),
             Container(width: _spacing, height: _spacing,),
             Container(width: _textFieldWidth , child:TextField(textAlign: TextAlign.end,
               decoration: new InputDecoration.collapsed(
               hintText: attributeHintText,),
-              onChanged:onAttributeTextChange ,))]),)
+            onChanged:onAttributeTextChange ,))])
 
-            ],)]),),);
+            ])])));
   }
 }
+
+/// User profile
 
 class UserDateInputCard extends StatelessWidget {
   
@@ -310,25 +304,22 @@ class UserDateInputCard extends StatelessWidget {
             Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.center ,children: <Widget>[
 
              Expanded(child: 
-             Column(crossAxisAlignment: CrossAxisAlignment.start,children: <Widget>[
+             Column(crossAxisAlignment: CrossAxisAlignment.center,children: <Widget>[
               Container(child: Text(StringLabels.date, style: Theme.of(context).textTheme.subtitle,),),
               Container(width: 15.0, height: _spacing,),
-              Container(width: _textFieldWidth , child:TextField(textAlign: TextAlign.start,
-              decoration: new InputDecoration.collapsed( 
-              hintText: StringLabels.enterInfo),
-              onChanged:onDateTextPressed ,
-              ))]),),   
+              RawMaterialButton(onPressed: (){},child: Text(StringLabels.date, style: TextStyle(fontSize: 20)))
+              
+              ]),),   
 
             Expanded(child: 
-            Column(crossAxisAlignment: CrossAxisAlignment.end,children: <Widget>[
+            Column(crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
               Container(child:Text(StringLabels.barista, style: Theme.of(context).textTheme.subtitle,),),
               Container(width: 10.0, height: _spacing,),
-              Container(width: _textFieldWidth , child:TextField(textAlign: TextAlign.end,
-                decoration: new InputDecoration.collapsed(
-                hintText: StringLabels.enterInfo,
-                ), onChanged:onCoffeePressed ,))]),)           
+              RawMaterialButton(onPressed: (){},child: Text(StringLabels.barista ,style: TextStyle(fontSize: 20)))
+              ]),)           
+            
+            
             ],),
-  
           ]),),);
   }
 }

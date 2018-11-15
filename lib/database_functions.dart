@@ -21,6 +21,7 @@ import 'dart:io';
 
 
 class DatabaseFunctions {
+  static const String strength ='strength';
   static const String friends = 'friends';
   static const String public = 'public';
   static const String age = 'age';
