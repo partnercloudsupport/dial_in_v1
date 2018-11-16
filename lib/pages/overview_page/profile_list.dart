@@ -36,17 +36,17 @@ Widget _buildProfileCard(BuildContext context, DocumentSnapshot document, String
   List<Item> _properties = new List<Item>();
   document.data.forEach((key, value) {
 
-      if ( key != DatabaseFunctions.updatedAt){
+      if ( key != DatabaseIds.updatedAt){
 
-      if ( key != DatabaseFunctions.objectId) {
+      if ( key != DatabaseIds.objectId) {
 
-      if ( key != DatabaseFunctions.databaseId){
+      if ( key != DatabaseIds.databaseId){
 
-      if ( key != DatabaseFunctions.databaseId){
+      if ( key != DatabaseIds.databaseId){
 
-      if ( key != DatabaseFunctions.orderNumber){
+      if ( key != DatabaseIds.orderNumber){
 
-      if ( key != DatabaseFunctions.user){  
+      if ( key != DatabaseIds.user){  
 
          Map<String, dynamic> item = {key: value};
         _properties.add(Functions.createItemWithData(item));
@@ -61,10 +61,10 @@ Widget _buildProfileCard(BuildContext context, DocumentSnapshot document, String
 Widget _buildCard(BuildContext context, DocumentSnapshot document,String databaseId){
   return Column(children: <Widget>[
     
-     Text(document.data[DatabaseFunctions.name].toString()),
-     Text(document.data[DatabaseFunctions.level].toString()),
-     Text(document.data[DatabaseFunctions.age].toString()),
-     Text(document.data[DatabaseFunctions.notes].toString())
+     Text(document.data[DatabaseIds.name].toString()),
+     Text(document.data[DatabaseIds.level].toString()),
+     Text(document.data[DatabaseIds.age].toString()),
+     Text(document.data[DatabaseIds.notes].toString())
      
      ]
   );

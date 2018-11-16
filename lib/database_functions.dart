@@ -21,6 +21,86 @@ import 'dart:io';
 
 
 class DatabaseFunctions {
+
+
+  static Future<void> logIn(String emailUser, String password,
+      Function(bool, String) completion) async {
+          // try {
+          //   FirebaseUser user = await FirebaseAuth.instance
+          //       .signInWithEmailAndPassword(email: emailUser, password: password);
+          //   completion(true, StringLabels.loggedIn);
+          // } catch (e) {
+          //   completion(false, e);
+          // }
+  }
+
+  static Future<void> signUp(String emailUser, String password,
+      Function(bool, String) completion) async {
+    // try {
+    //   FirebaseUser user = await FirebaseAuth.instance
+    //       .createUserWithEmailAndPassword(email: emailUser, password: password);
+    //   completion(true, StringLabels.signedYouUp);
+    // } catch (e) {
+    //   print(e.message);
+    // }
+  }
+
+  static Future <void> logOut(Function signOutView)  async{
+    signOutView();
+    // await FirebaseAuth.instance.signOut();
+    print('Logged out');
+  }
+
+  static Future<void> getCurrentUserId(Function completion (String userId ) ) async {
+  FirebaseUser user = await FirebaseAuth.instance.currentUser();
+  print(user.uid);
+  completion(user.uid.toString());
+  }
+
+  static void saveProfile(Profile profile){
+
+      // Future<void> file = Images.getFile('assets/images/coffee-beanSmaller512x512.png', (file){    
+      // Images.getFile(profile.image.image.toString(), (file){    
+        
+      // final StorageReference storageReference = 
+      //   FirebaseStorage.instance.ref().child(file.path);
+      // final StorageUploadTask task = 
+      //   storageReference.putFile(file);
+
+    Map <String, dynamic> _properties = new Map <String, dynamic>();
+
+     for (var i = 0; i < profile.properties.length; i++) {
+          
+        _properties[profile.properties[i].databaseId] = profile.properties[i].value;
+      
+        }
+      DatabaseFunctions.getCurrentUserId( (userId){
+
+      _properties[DatabaseIds.image] = profile.image;
+      _properties[DatabaseIds.orderNumber] = profile.orderNumber;
+      _properties[DatabaseIds.user] = userId;
+      // _properties[DatabaseFunctions.imagePath] = file.toString();
+      
+
+    Firestore.instance.
+      collection(profile.databaseId).
+      document()
+      .setData(_properties);
+      }
+      );
+      // }
+      // );
+  }
+
+  static void getImage(String id, Function completion(Image image)){
+    Image pic = Image.asset(id);
+    completion(pic);
+  } 
+
+}
+
+class DatabaseIds{
+
   static const String strength ='strength';
   static const String friends = 'friends';
   static const String public = 'public';
@@ -116,79 +196,4 @@ class DatabaseFunctions {
   static const String imagePath = 'imagePath';
   static const String image = 'image';
   static const String orderNumber = 'orderNumber';
-
-  static Future<void> logIn(String emailUser, String password,
-      Function(bool, String) completion) async {
-          // try {
-          //   FirebaseUser user = await FirebaseAuth.instance
-          //       .signInWithEmailAndPassword(email: emailUser, password: password);
-          //   completion(true, StringLabels.loggedIn);
-          // } catch (e) {
-          //   completion(false, e);
-          // }
   }
-
-  static Future<void> signUp(String emailUser, String password,
-      Function(bool, String) completion) async {
-    // try {
-    //   FirebaseUser user = await FirebaseAuth.instance
-    //       .createUserWithEmailAndPassword(email: emailUser, password: password);
-    //   completion(true, StringLabels.signedYouUp);
-    // } catch (e) {
-    //   print(e.message);
-    // }
-  }
-
-  static Future <void> logOut(Function signOutView)  async{
-    signOutView();
-    // await FirebaseAuth.instance.signOut();
-    print('Logged out');
-  }
-
-  static Future<void> getCurrentUserId(Function completion (String userId ) ) async {
-  FirebaseUser user = await FirebaseAuth.instance.currentUser();
-  print(user.uid);
-  completion(user.uid.toString());
-  }
-
-  static void saveProfile(Profile profile){
-
-      // Future<void> file = Images.getFile('assets/images/coffee-beanSmaller512x512.png', (file){    
-      // Images.getFile(profile.image.image.toString(), (file){    
-        
-      // final StorageReference storageReference = 
-      //   FirebaseStorage.instance.ref().child(file.path);
-      // final StorageUploadTask task = 
-      //   storageReference.putFile(file);
-
-    Map <String, dynamic> _properties = new Map <String, dynamic>();
-
-     for (var i = 0; i < profile.properties.length; i++) {
-          
-        _properties[profile.properties[i].databaseId] = profile.properties[i].value;
-      
-        }
-      DatabaseFunctions.getCurrentUserId( (userId){
-
-      _properties[DatabaseFunctions.image] = profile.image;
-      _properties[DatabaseFunctions.orderNumber] = profile.orderNumber;
-      _properties[DatabaseFunctions.user] = userId;
-      // _properties[DatabaseFunctions.imagePath] = file.toString();
-      
-
-    Firestore.instance.
-      collection(profile.databaseId).
-      document()
-      .setData(_properties);
-      }
-      );
-      // }
-      // );
-  }
-
-  static void getImage(String id, Function completion(Image image)){
-    Image pic = Image.asset(id);
-    completion(pic);
-  } 
-
-}

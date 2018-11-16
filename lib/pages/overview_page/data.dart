@@ -34,33 +34,33 @@ class DataPageState extends State<DataPage>
     super.initState();
     _lists = TabViewDataArray([
       TabViewData(
-        ProfileList(DatabaseFunctions.recipe),
+        ProfileList(DatabaseIds.recipe),
         Tab(icon: Icon(Icons.list),),
         ProfileType.recipe
       ),
         
       TabViewData(
-        ProfileList(DatabaseFunctions.coffee),
+        ProfileList(DatabaseIds.coffee),
         Tab(icon: Icon(Icons.rounded_corner)),
         ProfileType.coffee
       ),
       TabViewData(
-        ProfileList(DatabaseFunctions.grinder),
+        ProfileList(DatabaseIds.grinder),
         Tab(icon: Icon(Icons.cloud_off)),
         ProfileType.grinder
       ),
       TabViewData(
-        ProfileList(DatabaseFunctions.brewingEquipment),
+        ProfileList(DatabaseIds.brewingEquipment),
         Tab(icon: Icon(Icons.watch_later)),
         ProfileType.equipment
       ),
       TabViewData(
-        ProfileList(DatabaseFunctions.water),
+        ProfileList(DatabaseIds.water),
         Tab(icon: Icon(Icons.branding_watermark)),
         ProfileType.water
       ),
       TabViewData(
-        ProfileList(DatabaseFunctions.Barista),
+        ProfileList(DatabaseIds.Barista),
         Tab(icon: Icon(Icons.people)),
         ProfileType.barista
       ),
@@ -124,7 +124,7 @@ class DataPageState extends State<DataPage>
   }
 }
 
-            // DatabaseFunctions.getCurrentUserId((userId) {
+            // DatabaseIds.getCurrentUserId((userId) {
             //   Firestore.instance.collection('Barista').document().setData({
             //     'name': 'Willy',
             //     'user': userId,
@@ -133,8 +133,8 @@ class DataPageState extends State<DataPage>
             //   });
             // });
 
-            // DatabaseFunctions.saveProfile(new Profile(
-            //     databaseId: DatabaseFunctions.Barista,
+            // DatabaseIds.saveProfile(new Profile(
+            //     databaseId: DatabaseIds.Barista,
             //     // image: image,
             //     orderNumber: 0,
             //     properties: [
@@ -161,7 +161,7 @@ class DataPageState extends State<DataPage>
 //     document()
 //     .setData({
 //         'name': 'jane',
-//         'user': DatabaseFunctions.getCurrentUserId() ,
+//         'user': DatabaseIds.getCurrentUserId() ,
 //         'notes': 'nothing yet',
 //         'level': 'bottom',
 //         // 'array': List<String>('One': 'yes','two':'fuck')
@@ -173,7 +173,7 @@ class DataPageState extends State<DataPage>
 //     document()
 //     .setData({
 //         'name': 'billy',
-//         'user':  DatabaseFunctions.getCurrentUserId(),
+//         'user':  DatabaseIds.getCurrentUserId(),
 //         'notes': 'nothing yet',
 //         'level': 'top',
 //         // 'array': List<String>('One': 'yes','two':'fuck')
@@ -185,7 +185,7 @@ class DataPageState extends State<DataPage>
 //     document()
 //     .setData({
 //         'name': 'tom',
-//         'user': DatabaseFunctions.getCurrentUserId() ,
+//         'user': DatabaseIds.getCurrentUserId() ,
 //         'notes': 'nothing yet',
 //         'level': 'bottom',
 //         // 'array': List<String>('One': 'yes','two':'fuck')

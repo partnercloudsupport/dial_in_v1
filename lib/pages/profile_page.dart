@@ -6,16 +6,17 @@ import 'package:flutter/material.dart';
 import '../data/images.dart';
 import '../widgets/custom_widgets.dart';
 import '../data/functions.dart';
+import '../database_functions.dart';
 
 class ProfilePage extends StatefulWidget{
 
-  @required bool isCopying;
-  @required bool isEditing; 
-  @required bool isNew;
-  @required ProfileType type; 
-  @required String referance;
+  @required final bool isCopying;
+  @required final bool isEditing; 
+  @required final bool isNew;
+  @required final ProfileType type; 
+  @required final String referance;
   String appBarTitle;
-  // Profile profile;
+  Profile _profile;
 
 
   ProfilePage({this.isCopying, this.isEditing, this.isNew, this.type, this.referance}){
@@ -24,14 +25,9 @@ class ProfilePage extends StatefulWidget{
     if (isNew || isCopying){ this.appBarTitle = StringLabels.newe + ' ' + Functions.getProfileTypeString(type) + ' ' + StringLabels.profile; }
    
     // profile.image = Image.asset(Images.coffeeBeans);
-
-
-
-
-
-
-  
+    _profile = Functions.createBlankProfile(type);
   }
+
   ProfilePageState createState() => new ProfilePageState();
 }
 
@@ -43,19 +39,30 @@ class ProfilePageState extends State<ProfilePage>{
   double _cornerRadius = 20.0; 
   Widget _backCancelButton;
   Widget _saveEditButton;
+  Profile _profile;
+  @required  bool _isCopying; 
+  @required  bool _isEditing; 
+  @required  bool _isNew; 
+
 
 
   void initState() { 
+  
+  _isCopying =  widget.isCopying;
+  _isEditing =  widget.isEditing;
+  _isNew = widget.isNew;
 
   /// Set back button depending on state
-  _backCancelButton =  widget.isEditing ? 
-  RawMaterialButton(child: Text(StringLabels.cancel),onPressed:(){ widget.isEditing = false;} ,):  
-  RawMaterialButton(child: Icon(Icons.arrow_back),onPressed:(){ Navigator.pop(context); } ,);
-
+  // _backCancelButton =  _isEditing ? 
+  // RawMaterialButton(child: Icon(Icons.arrow_back), onPressed:(){ Navigator.pop(context); } ,):
+  // RawMaterialButton(child: Text(StringLabels.cancel), onPressed:(){ setState((){_isEditing = false; print(_isEditing.toString());});});  
+ 
   /// Set save button depending on state
-  _saveEditButton =  widget.isEditing ? 
-  RawMaterialButton(child: Text(StringLabels.save),onPressed:(){ print('big job');} ,):  
-  RawMaterialButton(child: Icon(Icons.edit),onPressed:(){ widget.isEditing = true; } ,);
+  // _saveEditButton =  widget.isEditing ? 
+  // RawMaterialButton(child: Icon(Icons.edit),onPressed:(){ _isEditing = true; } ,):
+  // RawMaterialButton(child: Text(StringLabels.save),onPressed:(){ print('big job');} ,);  
+
+  _profile = widget._profile;
 
   super.initState();
   }
@@ -69,13 +76,19 @@ class ProfilePageState extends State<ProfilePage>{
     return new Scaffold(
 
       appBar: AppBar(centerTitle: true, title: Text(widget.appBarTitle, style: TextStyle( fontWeight: FontWeight.w700, fontSize: 15.0),), automaticallyImplyLeading: false,
-      leading: _backCancelButton, 
-      actions: <Widget>[ _saveEditButton  ],),
+      leading:  _isEditing ? 
+        RawMaterialButton(child: Icon(Icons.cancel), onPressed:(){ setState((){_isEditing = false; print(_isEditing.toString());});}):
+        RawMaterialButton(child: Icon(Icons.arrow_back), onPressed:(){ Navigator.pop(context); } ,),
+      actions: <Widget>[  _isEditing ? 
+        RawMaterialButton(child: Icon(Icons.save_alt),onPressed:(){ print('big job');} ,):
+        RawMaterialButton(child: Icon(Icons.edit),onPressed:(){ setState((){_isEditing = true; print(_isEditing);}); }),  
+           ],),
+
       body: ListView(children: <Widget>[
 
       Column(children: <Widget>[  
 
-          /// Profile Image
+      /// Profile Image
       ProfileImage(Image.asset(Images.coffeeBeans)),
 
       FlatButton(onPressed: (){}, child: Text(StringLabels.changeImage),),
@@ -85,11 +98,10 @@ class ProfilePageState extends State<ProfilePage>{
        UserDateInputCard(),
 
           ///Water Section
-          ///
            ProfileInputCard(
             imageRefString: Images.drop,
             title: StringLabels.water,
-            onAttributeTextChange:(text){},
+            onAttributeTextChange:(text){_profile = Functions.setProfileItemValue(profile: _profile, keyDatabaseId: DatabaseIds.temparature, value: text );},
             onProfileTextPressed: (text){},
             profileTextfieldText: '',
             attributeTextfieldText: '',
@@ -102,7 +114,7 @@ class ProfilePageState extends State<ProfilePage>{
           ProfileInputCard(
             imageRefString: Images.grinder,
             title: StringLabels.grinder,
-            onAttributeTextChange:(text){},
+            onAttributeTextChange:(text){_profile = Functions.setProfileItemValue(profile: _profile, keyDatabaseId: DatabaseIds.grindSetting, value: text );},
             onProfileTextPressed: (text){},
             profileTextfieldText: '',
             attributeTextfieldText: '',
@@ -116,7 +128,7 @@ class ProfilePageState extends State<ProfilePage>{
            ProfileInputCard(
             imageRefString: Images.aeropressSmaller512x512,
             title: StringLabels.brewingEquipment,
-            onAttributeTextChange:(text){},
+            onAttributeTextChange:(text){_profile = Functions.setProfileItemValue(profile: _profile, keyDatabaseId: DatabaseIds.preinfusion, value: text );},
             onProfileTextPressed: (text){},
             profileTextfieldText: '',
             attributeTextfieldText: '',
@@ -125,28 +137,32 @@ class ProfilePageState extends State<ProfilePage>{
           ),
 
           RatioCard(
-            dosePressed:(dose){} ,
-            yieldPressed:((yield){}) ,
-            brewWeightPressed:(brewWeight){}),
-          
+            doseChanged:(dose){_profile = Functions.setProfileItemValue(profile: _profile, keyDatabaseId: DatabaseIds.brewingDose, value: dose );} ,
+            yieldChanged:((yield){_profile = Functions.setProfileItemValue(profile: _profile, keyDatabaseId: DatabaseIds.yield, value: yield );}) ,
+            brewWeightChanged:(brewWeight){_profile = Functions.setProfileItemValue(profile: _profile, keyDatabaseId: DatabaseIds.brewWeight, value: brewWeight );}),
 
+          TwoTextfieldCard( titleLeft: StringLabels.time, titleRight: StringLabels.tds,
+            onLeftTextChanged: (text){ Functions.setProfileItemValue(profile: _profile, keyDatabaseId: DatabaseIds.time, value: text );},  
+            onRightTextChanged: (text){ Functions.setProfileItemValue(profile: _profile, keyDatabaseId: DatabaseIds.tds, value: text );},),
+            
+          
             ///Score Section
-            Card(child: Column(crossAxisAlignment: CrossAxisAlignment.center,children: <Widget>[
+          Card(child: Column(crossAxisAlignment: CrossAxisAlignment.center,children: <Widget>[
 
             Container(margin: EdgeInsets.all(_margin) ,child:
               Text(StringLabels.score , style: Theme.of(context).textTheme.title,),),
 
             Column(children: <Widget>[
 
-            ScoreSlider(StringLabels.strength, 0.0 , (value){}),
+            ScoreSlider(StringLabels.strength, 0.0 , (value){ Functions.setProfileItemValue(profile: _profile, keyDatabaseId: DatabaseIds.strength, value: value );}),
 
-            ScoreSlider(StringLabels.balance, 0.0 , (value){}),
+            ScoreSlider(StringLabels.balance, 0.0 , (value){ Functions.setProfileItemValue(profile: _profile, keyDatabaseId: DatabaseIds.balance, value: value );}),
 
-            ScoreSlider(StringLabels.flavour, 0.0 , (value){}),
+            ScoreSlider(StringLabels.flavour, 0.0 , (value){ Functions.setProfileItemValue(profile: _profile, keyDatabaseId: DatabaseIds.flavour, value: value );}),
 
-            ScoreSlider(StringLabels.body, 0.0 , (value){}),
+            ScoreSlider(StringLabels.body, 0.0 , (value){ Functions.setProfileItemValue(profile: _profile, keyDatabaseId: DatabaseIds.body, value: value );}),
 
-            ScoreSlider(StringLabels.afterTaste, 0.0 , (value){})
+            ScoreSlider(StringLabels.afterTaste, 0.0 , (value){ Functions.setProfileItemValue(profile: _profile, keyDatabaseId: DatabaseIds.afterTaste, value: value );})
             
 /// End of score
             ],)],),
@@ -156,6 +172,13 @@ class ProfilePageState extends State<ProfilePage>{
       ),    
     );}
 }
+
+/// End of Page
+/// 
+
+
+/// Widgets
+
 
 class ScoreSlider extends StatefulWidget{
   
@@ -380,14 +403,14 @@ final double _margin = 10.0;
 final double _cornerRadius = 20.0; 
 final double _textFieldWidth = 150.0;
 final double _spacing = 15.0;
-final Function(String) dosePressed;
-final Function(String) yieldPressed;
-final Function(String) brewWeightPressed;
+final Function(String) doseChanged;
+final Function(String) yieldChanged;
+final Function(String) brewWeightChanged;
 
 RatioCard({
-  this.dosePressed,
-  this.yieldPressed,
-  this.brewWeightPressed,
+  this.doseChanged,
+  this.yieldChanged,
+  this.brewWeightChanged,
 });
 
   @override
@@ -410,7 +433,7 @@ RatioCard({
               Container(width: _textFieldWidth , child:TextField(textAlign: TextAlign.center, keyboardType: TextInputType.number,
               decoration: new InputDecoration.collapsed( 
               hintText: StringLabels.enterInfo),
-              onChanged: dosePressed ,
+              onChanged: doseChanged ,
               ))]),),   
 
             Expanded(child: 
@@ -420,7 +443,7 @@ RatioCard({
               Container(width: _textFieldWidth , child:TextField(textAlign: TextAlign.center, keyboardType: TextInputType.number,
                 decoration: new InputDecoration.collapsed(
                 hintText: StringLabels.enterInfo,
-                ), onChanged: yieldPressed ,))]),),   
+                ), onChanged: yieldChanged ,))]),),   
 
             Expanded(child: 
             Column(crossAxisAlignment: CrossAxisAlignment.center ,children: <Widget>[
@@ -429,11 +452,66 @@ RatioCard({
               Container(width: _textFieldWidth , child: TextField(textAlign: TextAlign.center, keyboardType: TextInputType.number,
                 decoration: new InputDecoration.collapsed(
                 hintText: StringLabels.enterInfo,
-                ), onChanged: brewWeightPressed ,))]),)           
+                ), onChanged: brewWeightChanged ,))]),)           
             ],),
 
             ],),
           );
+  }
+}
+
+class TwoTextfieldCard extends StatelessWidget {
+  
+  final double _padding = 20.0;
+  final double _margin = 10.0;
+  final double _cornerRadius = 20.0; 
+  final double _textFieldWidth = 150.0;
+  final double _spacing = 15.0;
+  final String titleLeft;
+  final String titleRight;
+
+  final Function(String) onLeftTextChanged;
+  final Function(String) onRightTextChanged;
+
+  TwoTextfieldCard({
+    @required this.onLeftTextChanged,
+    @required this.onRightTextChanged,
+    @required this.titleLeft,
+    @required this.titleRight
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return     
+          Container(margin: EdgeInsets.all(_margin),child: 
+            Container(padding: EdgeInsets.all(_padding), child: 
+            Column(crossAxisAlignment: CrossAxisAlignment.center,children: <Widget>[
+
+            Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.center ,children: <Widget>[
+
+             Expanded(child: 
+             Column(crossAxisAlignment: CrossAxisAlignment.center,children: <Widget>[
+              Container(child: Text(titleLeft, style: Theme.of(context).textTheme.subtitle,),),
+              Container(width: 15.0, height: _spacing,),
+              Container(width: _textFieldWidth , child: TextField(textAlign: TextAlign.center, keyboardType: TextInputType.number,
+                decoration: new InputDecoration.collapsed(
+                hintText: StringLabels.enterInfo,
+                ), onChanged: onLeftTextChanged ,))
+              
+              ]),),   
+
+            Expanded(child: 
+            Column(crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
+              Container(child:Text(titleRight, style: Theme.of(context).textTheme.subtitle,),),
+              Container(width: 10.0, height: _spacing,),
+              Container(width: _textFieldWidth , child: TextField(textAlign: TextAlign.center, keyboardType: TextInputType.number,
+                decoration: new InputDecoration.collapsed(
+                hintText: StringLabels.enterInfo,
+                ), onChanged: onRightTextChanged ,))
+              ]),)           
+            
+            ],),
+          ]),),);
   }
 }
   
