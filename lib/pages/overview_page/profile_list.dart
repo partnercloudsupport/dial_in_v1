@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../data/strings.dart';
 import '../../widgets/custom_widgets.dart';
 import '../../data/profile.dart';
 import '../../data/item.dart';
@@ -24,9 +23,6 @@ class _ProfileListState extends State<ProfileList>{
 
     @override
     initState(){
-
-    
-
     super.initState();
  }
 

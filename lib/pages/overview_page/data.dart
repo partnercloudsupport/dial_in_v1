@@ -1,22 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../data/strings.dart';
 import '../../widgets/custom_widgets.dart';
-import '../sign_up.dart';
 import '../../theme/appColors.dart';
 import 'profile_list.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import '../../database_functions.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import '../../data/images.dart';
-import 'package:flutter/services.dart' show rootBundle;
-import 'dart:math';
-import 'dart:typed_data';
-import 'dart:async';
-import 'dart:io';
 import '../../data/profile.dart';
-import '../../data/item.dart';
 import '../profile_page.dart';
 
 class DataPage extends StatefulWidget {

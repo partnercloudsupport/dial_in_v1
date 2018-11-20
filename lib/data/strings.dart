@@ -25,6 +25,7 @@ class  StringLabels {
         static const String selectProfile = 'Select profile';
         static const String changeImage = 'Change image';
         static const String setting = 'Setting';
+        static const String error  = 'Error';
 
 
 

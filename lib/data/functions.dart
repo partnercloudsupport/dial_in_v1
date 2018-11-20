@@ -4,6 +4,9 @@ import 'strings.dart';
 import 'package:flutter/material.dart';
 import 'profile.dart';
 import 'images.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '../widgets/custom_widgets.dart';
+
 
 
 
@@ -57,10 +60,81 @@ class Functions{
       break;
 
       default:   
+      return  StringLabels.error;
+      break;
+    }
+  }
+
+  static String getProfileTypeDatabaseId(ProfileType type){
+    
+    switch (type){
+
+      case ProfileType.recipe:   
+      return DatabaseIds.recipe;
+      break;
+
+      case ProfileType.coffee:   
+      return  DatabaseIds.coffee;
+      break;
+
+      case ProfileType.water:   
+      return DatabaseIds.water;
+      break;
+
+      case ProfileType.equipment:   
+      return DatabaseIds.brewingEquipment;
+      break;
+
+      case ProfileType.grinder:   
+      return DatabaseIds.grinder;
+      break;
+
+      case ProfileType.barista:   
+      return DatabaseIds.barista;
+      break;
+
+      default:   
       return  StringLabels.feed;
       break;
     }
   }
+
+
+    static String convertDatabaseIdToTitle(String databaseId){
+    
+    switch (databaseId){
+
+      case DatabaseIds.recipe:   
+      return  StringLabels.recipe;
+      break;
+
+      case DatabaseIds.coffee:   
+      return  StringLabels.coffee;
+      break;
+
+      case DatabaseIds.water:   
+      return  StringLabels.water;
+      break;
+
+      case DatabaseIds.brewingEquipment:   
+      return  StringLabels.brewingEquipment;
+      break;
+
+      case DatabaseIds.grinder:   
+      return  StringLabels.grinder;
+      break;
+
+      case DatabaseIds.Barista:   
+      return  StringLabels.barista;
+      break;
+
+      default:   
+      return  StringLabels.feed;
+      break;
+    }
+  }
+
+  
 
 
   static Profile createBlankProfile(ProfileType profileType){
@@ -201,7 +275,12 @@ class Functions{
               // image: document[DatabaseIds.image].toString(),
               databaseId: DatabaseIds.databaseId,
               orderNumber: 0,
-              properties: [createBlankItem(DatabaseIds.type)],
+              properties: [
+                createBlankItem(DatabaseIds.type),
+                createBlankItem(DatabaseIds.level),
+                createBlankItem(DatabaseIds.name),
+                createBlankItem(DatabaseIds.notes)
+                ],
               );
       break;
 
@@ -1306,4 +1385,76 @@ static Item createItemWithData(Map<String, dynamic> item){
     });
   return  _item;
   } 
+
+  static Widget buildProfileCard(BuildContext context, DocumentSnapshot document, String databaseId){
+
+  List<Item> _properties = new List<Item>();
+  document.data.forEach((key, value) {
+
+      if ( key != DatabaseIds.updatedAt){
+
+      if ( key != DatabaseIds.objectId) {
+
+      if ( key != DatabaseIds.databaseId){
+
+      if ( key != DatabaseIds.databaseId){
+
+      if ( key != DatabaseIds.orderNumber){
+
+      if ( key != DatabaseIds.user){  
+
+         Map<String, dynamic> item = {key: value};
+        _properties.add(Functions.createItemWithData(item));
+      }}}}
+  }}});
+
+  Profile profile = Functions.createProfile(databaseId, _properties);
+
+  return ProfileCard(profile);
 }
+
+
+ static void _showDialog(String databaseID, BuildContext context) {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return SimpleDialog(
+          title: Text(Functions.convertDatabaseIdToTitle(databaseID)),
+          children: <Widget>[
+            StreamBuilder(
+      stream: Firestore.instance.collection(databaseID).snapshots(),initialData: 10,
+
+      builder: (context, snapshot){
+        switch (snapshot.connectionState){
+          case ConnectionState.waiting:
+          case ConnectionState.none:
+            return LinearProgressIndicator();
+          case ConnectionState.active:
+          case ConnectionState.done:
+        
+        print( snapshot.error);
+
+        if (!snapshot.hasData){ return const Center(child: Text('Loading'));}
+        else if (snapshot.hasError){ return const Center(child: Text('Error'));}
+        else if (snapshot.data.documents.length < 1){ return const Center(child: Text('No data')); }
+        else{
+      return
+      ListView.builder(
+        itemExtent: 80,
+        itemCount: snapshot.data.documents.length,
+        itemBuilder: (BuildContext context, int index) => 
+          Functions.buildProfileCard(context, snapshot.data.documents[index], databaseID));}
+      }
+      }
+      )
+          ],
+
+        );
+      },
+    );
+  }
+}
+
+// user defined function
