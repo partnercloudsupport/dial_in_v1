@@ -22,6 +22,7 @@ import '../../data/functions.dart';
 import '../../database_functions.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
+import '../../widgets/custom_widgets.dart';
 
 class CoffeeProfilePage extends StatefulWidget {
   @required final bool isCopying;
@@ -57,6 +58,7 @@ class CoffeeProfilePageState extends State<CoffeeProfilePage> {
   @required bool _isCopying;
   @required bool _isEditing;
   @required bool _isNew;
+  
 
   void initState() {
     _isCopying = widget.isCopying;
@@ -114,19 +116,31 @@ class CoffeeProfilePageState extends State<CoffeeProfilePage> {
                   }),
         ],
       ),
-      body: ListView(
+      body: 
+
+      ListView(
         children: <Widget>[
           Column(
             children: <Widget>[
+
+
+              Row(children: <Widget>[
               /// Profile Image
               ProfileImage(Image.asset(Images.coffeeBeans)),
+
+              Container(padding: EdgeInsets.all(_padding),margin: EdgeInsets.all(_margin),child: 
+              Column(children: <Widget>[
+              Text(StringLabels.public), 
+              Switch(onChanged: (on){setState(() {_profile.isPublic = on;}); }, value: _profile.isPublic,),
+              ],),),
+              ]),
 
               FlatButton(
                 onPressed: () {},
                 child: Text(StringLabels.changeImage),
               ),
 
-              Container(padding: EdgeInsets.all(_padding), margin: EdgeInsets.all(_margin) ,
+              Container(padding: EdgeInsets.all(_padding), margin: EdgeInsets.all(_margin),
                     child: TextField(
                     textAlign: TextAlign.center,
                     keyboardType: TextInputType.text,
@@ -165,9 +179,10 @@ class CoffeeProfilePageState extends State<CoffeeProfilePage> {
           )
         ],
       ),
-    );
-  }
+      );}
 }
+  
+
 
 /// End of Page
 ///
@@ -239,7 +254,7 @@ class OriginDetailsCard extends StatelessWidget {
                     textAlign: TextAlign.start,
                     keyboardType: TextInputType.text,
                     decoration: new InputDecoration(
-                    labelText: StringLabels.lot,
+                    labelText: StringLabels.farm,
                     hintText: StringLabels.enterDescription,
                               ),
                               onChanged: _lot,
@@ -455,44 +470,6 @@ class ProfileInputCard extends StatelessWidget {
   }
 }
 
-
-class ProfileImage extends StatelessWidget {
-  final double _padding = 20.0;
-  final double _margin = 10.0;
-  final double _textFieldWidth = 120.0;
-  final double _cornerRadius = 20.0;
-  final Image _image;
-
-  ProfileImage(this._image);
-
-  @override
-  Widget build(BuildContext context) {
-    return
-
-        /// Profile Image
-        Container(
-            margin: EdgeInsets.all(_margin),
-            width: 200.0,
-            height: 200.0,
-            decoration: BoxDecoration(boxShadow: [
-              BoxShadow(
-                color: Colors.black,
-                blurRadius: 1.0, // has the effect of softening the shadow
-                spreadRadius: 1.0, // has the effect of extending the shadow
-                offset: Offset(
-                  1.0, // horizontal, move right 10
-                  1.0, // vertical, move down 10
-                ),
-              )
-            ], borderRadius: BorderRadius.circular(_cornerRadius)),
-            child: ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(_cornerRadius)),
-                child: Image.asset(
-                  Images.cherries,
-                  fit: BoxFit.cover,
-                )));
-  }
-}
 
 ///Green details
 class GreenDetailsCard extends StatelessWidget {

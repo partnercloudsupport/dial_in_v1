@@ -702,6 +702,15 @@ static Item createBlankItem(String databaseId){
 /// Coffee
 /// 
 
+    case DatabaseIds.country:   
+      
+      _item = new Item(
+        title: StringLabels.country , value: '' ,
+        databaseId: DatabaseIds.country, 
+        placeHolderText: StringLabels.enterDescription,
+        keyboardType: TextInputType.text,);
+      break;
+
     case DatabaseIds.region:   
       
       _item = new Item(

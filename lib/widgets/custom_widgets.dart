@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import '../data/strings.dart';
 import '../theme/appColors.dart';
 import '../data/profile.dart';
+import '../data/functions.dart';
+import '../database_functions.dart';
+import '../data/images.dart';
 
 ///
 /// Background
@@ -268,8 +271,79 @@ class ProfileCard extends StatelessWidget {
   
   final Profile profile;
   final Function function;
+  String _topLeft = 'error';
+  String _topRight = 'error';
+  String _bottomRight = 'error';
+  String _bottomleft = 'error';
 
-  ProfileCard(this.profile, this.function);
+
+  ProfileCard(this.profile, this.function){
+
+    switch(profile.type){
+      case ProfileType.recipe: 
+      _topLeft = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.coffeeId);
+      _topRight = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.date);
+      _bottomRight = profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.brewingEquipment);
+      _bottomleft = profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.score);
+      break;
+
+      case ProfileType.coffee:   
+      _topLeft = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.coffeeId);
+      _topRight = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.processingMethod);
+      _bottomRight = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.roastDate).toString();
+      _bottomleft = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.country);
+      break;
+
+      case ProfileType.water:   
+      _topLeft = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.waterID);
+      _topRight = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.ppm);
+      _bottomRight = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.kh);
+      _bottomleft = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.gh);
+      break;
+
+      case ProfileType.equipment:   
+      _topLeft = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.equipmentId);
+      _topRight = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.equipmentMake);
+      _bottomRight = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.method);
+      _bottomleft = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.equipmentModel); 
+      break;
+
+      case ProfileType.grinder:   
+      _topLeft = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.grinderId);
+      _topRight = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.burrs);
+      _bottomRight = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.grinderMake);
+      _bottomleft = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.grinderModel);      
+      break;
+
+      case ProfileType.barista:   
+      _topLeft = 'error';
+      _topRight = 'error';
+      _bottomRight = 'error';
+      _bottomleft = 'error';       
+      break;
+
+      case ProfileType.none:  
+      _topLeft = 'error none';
+      _topRight = 'error none';
+      _bottomRight = 'error none';
+      _bottomleft = 'error none';       
+      break;  
+
+      case ProfileType.feed:   
+      _topLeft = 'error feed';
+      _topRight = 'error feed';
+      _bottomRight = 'error feed';
+      _bottomleft = 'error feed';       
+      break;  
+
+      default: 
+      _topLeft = 'error default';
+      _topRight = 'error default';
+      _bottomRight = 'error default';
+      _bottomleft = 'error default';              
+      break;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -301,10 +375,10 @@ class ProfileCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Container(
-                          margin: EdgeInsets.all(10.0), child: Text(profile.properties[0].value.toString())),
+                          margin: EdgeInsets.all(10.0), child: Text(_topLeft)),
                       Container(
                         margin: EdgeInsets.all(10.0),
-                        child: Text(profile.properties[1].value.toString()),
+                        child: Text(_topRight),
                       )
                     ]))),
 
@@ -318,10 +392,10 @@ class ProfileCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
                       Container(
-                          margin: EdgeInsets.all(10.0), child: Text(profile.properties[2].value.toString())),
+                          margin: EdgeInsets.all(10.0), child: Text(_bottomleft)),
                       Container(
                         margin: EdgeInsets.all(10.0),
-                        child: Text(profile.properties[3].value.toString()),
+                        child: Text(_bottomRight),
                       )
                     ])))
       ]))
@@ -485,6 +559,44 @@ static Future<void> showAlert({String title, String message, String buttonText, 
     },
   );
 }
+}
+
+class ProfileImage extends StatelessWidget {
+  final double _padding = 20.0;
+  final double _margin = 10.0;
+  final double _textFieldWidth = 120.0;
+  final double _cornerRadius = 20.0;
+  final Image _image;
+
+  ProfileImage(this._image);
+
+  @override
+  Widget build(BuildContext context) {
+    return
+
+        /// Profile Image
+        Container(
+            margin: EdgeInsets.all(_margin),
+            width: 200.0,
+            height: 200.0,
+            decoration: BoxDecoration(boxShadow: [
+              BoxShadow(
+                color: Colors.black,
+                blurRadius: 1.0, // has the effect of softening the shadow
+                spreadRadius: 1.0, // has the effect of extending the shadow
+                offset: Offset(
+                  1.0, // horizontal, move right 10
+                  1.0, // vertical, move down 10
+                ),
+              )
+            ], borderRadius: BorderRadius.circular(_cornerRadius)),
+            child: ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(_cornerRadius)),
+                child: Image.asset(
+                  Images.cherries,
+                  fit: BoxFit.cover,
+                )));
+  }
 }
 
 

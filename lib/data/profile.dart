@@ -22,7 +22,7 @@ class Profile {
   @required
   int orderNumber = 0;
   @required
-  bool public = true;
+  bool isPublic = true;
   List<Profile> profiles;
 
   // Is it water , coffee, grinder , machine etc?
@@ -76,11 +76,16 @@ class Profile {
   }
 
   dynamic getProfileItemValue({String itemDatabaseId}) {
+
+    dynamic value; 
     for (var i = 0; i < this.properties.length; i++) {
       if (this.properties[i].databaseId == itemDatabaseId) {
-        return this.properties[i].value;
+        value = this.properties[i].value;
       }
     }
+
+    if (value == null){return '';} else { return value;}
+
   }
 
   void setProfileProfileTitleValue(

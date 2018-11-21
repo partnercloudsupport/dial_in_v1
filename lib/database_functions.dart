@@ -69,6 +69,7 @@ class DatabaseFunctions {
       _properties[DatabaseIds.image] = profile.image;
       _properties[DatabaseIds.orderNumber] = profile.orderNumber;
       _properties[DatabaseIds.user] = userId;
+      _properties[DatabaseIds.public] = profile.isPublic;
       // _properties[DatabaseFunctions.imagePath] = file.toString();
       
 

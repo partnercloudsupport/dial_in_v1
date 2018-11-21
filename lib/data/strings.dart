@@ -3,6 +3,7 @@
 class  StringLabels {
 
       ///since flutter
+        static const String public = 'Public';
         static const String forgottonPassword = 'Forgotton your password?.';
         static const String welcomeToDialIn = 'Welcome to Dial In.';
         static const String logInWithDetails = 'Log in with your email and password.';
