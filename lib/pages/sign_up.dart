@@ -41,7 +41,6 @@ class SignUpPage extends StatefulWidget{
     _userNameController.addListener(onEmailChange); 
     _emailController.addListener(onEmailChange); 
     _passwordController.addListener(onPasswordChange);    
-      // TODO: implement initState
       super.initState();
     }        
 

@@ -25,16 +25,11 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
 
 class ProfilePage extends StatefulWidget {
-  @required
-  final bool isCopying;
-  @required
-  final bool isEditing;
-  @required
-  final bool isNew;
-  @required
-  final ProfileType type;
-  @required
-  final String referance;
+  @required final bool isCopying;
+  @required final bool isEditing;
+  @required final bool isNew;
+  @required final ProfileType type;
+  @required final String referance;
   String appBarTitle;
   Profile _profile;
 
@@ -62,35 +57,20 @@ class ProfilePageState extends State<ProfilePage> {
   Widget _backCancelButton;
   Widget _saveEditButton;
   Profile _profile;
-  @required
-  bool _isCopying;
-  @required
-  bool _isEditing;
-  @required
-  bool _isNew;
+  @required bool _isCopying;
+  @required bool _isEditing;
+  @required bool _isNew;
 
   void initState() {
     _isCopying = widget.isCopying;
     _isEditing = widget.isEditing;
     _isNew = widget.isNew;
     _profile = widget._profile;
-
-    /// Set back button depending on state
-    // _backCancelButton =  _isEditing ?
-    // RawMaterialButton(child: Icon(Icons.arrow_back), onPressed:(){ Navigator.pop(context); } ,):
-    // RawMaterialButton(child: Text(StringLabels.cancel), onPressed:(){ setState((){_isEditing = false; print(_isEditing.toString());});});
-
-    /// Set save button depending on state
-    // _saveEditButton =  widget.isEditing ?
-    // RawMaterialButton(child: Icon(Icons.edit),onPressed:(){ _isEditing = true; } ,):
-    // RawMaterialButton(child: Text(StringLabels.save),onPressed:(){ print('big job');} ,);
-
     _profile = widget._profile;
-
     super.initState();
   }
 
-// user defined function
+// // user defined function
   void _showDialog(String databaseID) {
     // flutter defined function
     showDialog(
@@ -99,7 +79,9 @@ class ProfilePageState extends State<ProfilePage> {
         // return object of type Dialog
         return SimpleDialog(
           title: Text(Functions.convertDatabaseIdToTitle(databaseID)),
+
           children: <Widget>[
+
             RaisedButton(
               onPressed: () {
 
@@ -111,7 +93,7 @@ class ProfilePageState extends State<ProfilePage> {
                               isCopying: false,
                               isEditing: false,
                               isNew: true,
-                              type: _profile.type,
+                              type: Functions.getProfileDatabaseIdType(databaseID),
                               referance: '',
                             )));
               },
@@ -133,22 +115,25 @@ class ProfilePageState extends State<ProfilePage> {
                         return const Center(child: Text('Loading'));
                       } else if (snapshot.hasError) {
                         return const Center(child: Text('Error'));
-                      } else if (snapshot.data.documents.length < 1) {
-                        return const Center(child: Text('No data'));
+                      // } else if (snapshot.data.documents.length < 1) {
+                      //   return const Center(child: Text('No data'));
                       } else {
 
                         return 
-
                         new Container(
-          height: 100.0,
-          width: 100.0,
-          child: new 
+                          height: 100.0,
+                          width: 100.0,
+                          child: new 
                          ListView.builder(
                             itemExtent: 80,
                             itemCount: snapshot.data.documents.length,
                             itemBuilder: (BuildContext context, int index) =>
                               
-          Functions.buildProfileCard(context, snapshot.data.documents[index], widget._profile.databaseId)));}
+          Functions.buildProfileCard(context, snapshot.data.documents[index], databaseID)
+
+          ))
+          
+          ;}
 
                       }
                   }
@@ -192,7 +177,8 @@ class ProfilePageState extends State<ProfilePage> {
               ? RawMaterialButton(
                   child: Icon(Icons.save_alt),
                   onPressed: () {
-                    print('big job');
+                    Navigator.pop(context);
+                    DatabaseFunctions.saveProfile(_profile);
                   },
                 )
               : RawMaterialButton(
@@ -231,6 +217,7 @@ class ProfilePageState extends State<ProfilePage> {
               ProfileInputCard(
                   imageRefString: Images.drop,
                   title: StringLabels.water,
+                  keyboardType: TextInputType.number,
                   onAttributeTextChange: (text) {
                     _profile = Functions.setProfileItemValue(
                         profile: _profile,
@@ -266,7 +253,8 @@ class ProfilePageState extends State<ProfilePage> {
                   attributeTextfieldText: _profile.getProfileItemValue(
                       itemDatabaseId: DatabaseIds.grindSetting),
                   attributeHintText: StringLabels.enterValue,
-                  attributeTitle: StringLabels.setting),
+                  attributeTitle: StringLabels.setting,
+                  keyboardType: TextInputType.number),
 
               /// Equipment
               ///
@@ -329,9 +317,9 @@ class ProfilePageState extends State<ProfilePage> {
               ),
 
               NotesCard(
+                StringLabels.notes,
                   _profile.getProfileItemValue(
                       itemDatabaseId: DatabaseIds.notes),
-                  StringLabels.notes,
                   (text) {}),
 
               ///Score Section
@@ -382,7 +370,6 @@ class ProfilePageState extends State<ProfilePage> {
                               keyDatabaseId: DatabaseIds.afterTaste,
                               value: value);
                         })
-
                         /// End of score
                       ],
                     )
@@ -474,6 +461,7 @@ class ProfileInputCard extends StatelessWidget {
   final String profileHintText = StringLabels.chooseProfile;
   final String attributeTitle;
   final double _spacing = 5.0;
+  final TextInputType keyboardType;
 
   ProfileInputCard(
       {this.imageRefString,
@@ -483,7 +471,8 @@ class ProfileInputCard extends StatelessWidget {
       this.attributeTextfieldText,
       this.attributeHintText,
       this.attributeTitle,
-      this.profileTextfieldText});
+      this.profileTextfieldText,
+      this.keyboardType});
 
   @override
   Widget build(BuildContext context) {
@@ -532,17 +521,11 @@ class ProfileInputCard extends StatelessWidget {
                           height: _spacing,
                         ),
 
-                        // Container(width: _textFieldWidth, child: TextFormField(decoration: InputDecoration(labelText: 'Enter your username'),),),
-
-                        // TextFormField(decoration: InputDecoration(labelText: 'Enter your username'),).
-
-                        // Column(crossAxisAlignment: CrossAxisAlignment.end, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: <Widget>[
-                        //   Container(child: Text(attributeTitle, style: Theme.of(context).textTheme.subtitle,),),
-                        //   Container(width: _spacing, height: _spacing,),
                         Container(
                             width: _textFieldWidth,
                             child: TextField(
                               textAlign: TextAlign.end,
+                              keyboardType: keyboardType,
                               decoration: new InputDecoration(
                                 labelText: attributeTitle,
                                 hintText: attributeHintText,
@@ -580,8 +563,6 @@ class UserDateInputCardState extends State<UserDateInputCard> {
 
   @override
   void initState() {
-    // TODO: implement initState
-
     _date = widget._date;
     super.initState();
   }
@@ -599,12 +580,7 @@ class UserDateInputCardState extends State<UserDateInputCard> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  //  Expanded(child:
-                  //  Column(crossAxisAlignment: CrossAxisAlignment.center,children: <Widget>[
-                  //   Container(child: Text(StringLabels.date, style: Theme.of(context).textTheme.subtitle,),),
-                  //   Container(width: 15.0, height: widget._spacing,),
-                  //   RawMaterialButton(onPressed: (){},child: Text(StringLabels.date, style: TextStyle(fontSize: 20)))
-                  //   ]),),
+
                   Expanded(
                     child: DateTimePickerFormField(
                       format: widget.dateFormat,
@@ -940,7 +916,7 @@ class NotesCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
         child: Container(
-      height: 400.0,
+      height: 200.0,
       margin: EdgeInsets.all(_margin),
       padding: EdgeInsets.all(_padding),
       child: Column(
@@ -951,8 +927,9 @@ class NotesCard extends StatelessWidget {
           Container(
               child: TextField(
                   textAlign: TextAlign.start,
-                  keyboardType: TextInputType.number,
-                  decoration: new InputDecoration.collapsed(
+                  maxLines: null,
+                  keyboardType: TextInputType.text,
+                  decoration: new InputDecoration(
                     hintText: StringLabels.enterInfo,
                   ),
                   onChanged: _onTextChanged))

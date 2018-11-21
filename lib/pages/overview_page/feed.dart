@@ -17,20 +17,13 @@ class FeedPageState extends State<FeedPage> with SingleTickerProviderStateMixin{
 
 TabController controller;
 TabViewDataArray _lists;
-List<Profile> _profileList;
 
 
 @override
 void initState() { 
   super.initState();
 
-  _profileList = [
 
-    
-
-
-
-  ];
   _lists = TabViewDataArray([
 
     TabViewData(ProfileList(DatabaseIds.public), Tab(icon: Icon(Icons.public)), ProfileType.feed),

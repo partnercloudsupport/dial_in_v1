@@ -19,8 +19,6 @@ class ProfileList extends StatefulWidget{
 
 class _ProfileListState extends State<ProfileList>{
 
-    List<Profile> _profiles;
-
     @override
     initState(){
     super.initState();
@@ -51,20 +49,20 @@ Widget _buildProfileCard(BuildContext context, DocumentSnapshot document, String
 
   Profile profile = Functions.createProfile(widget._listDatabaseId, _properties);
 
-  return ProfileCard(profile);
+  return ProfileCard(profile, (){ });
 }
 
-Widget _buildCard(BuildContext context, DocumentSnapshot document,String databaseId){
-  return Column(children: <Widget>[
+// Widget _buildCard(BuildContext context, DocumentSnapshot document,String databaseId){
+//   return Column(children: <Widget>[
     
-     Text(document.data[DatabaseIds.name].toString()),
-     Text(document.data[DatabaseIds.level].toString()),
-     Text(document.data[DatabaseIds.age].toString()),
-     Text(document.data[DatabaseIds.notes].toString())
+//      Text(document.data[DatabaseIds.name].toString()),
+//      Text(document.data[DatabaseIds.level].toString()),
+//      Text(document.data[DatabaseIds.age].toString()),
+//      Text(document.data[DatabaseIds.notes].toString())
      
-     ]
-  );
-  }
+//      ]
+//   );
+//   }
 
 
 

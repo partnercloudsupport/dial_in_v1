@@ -113,13 +113,9 @@ class CircularPicture extends StatelessWidget {
 ///
 class ActionButton extends StatelessWidget {
   final String _buttonTitle;
-  final void _buttonAction;
+  final Function _buttonAction;
 
   ActionButton(this._buttonTitle, this._buttonAction);
-
-  void actionButtonPressed() {
-    print('login button pressed');
-  }
 
   Widget build(BuildContext context) {
     return RaisedButton(
@@ -129,10 +125,7 @@ class ActionButton extends StatelessWidget {
       color: Colors.orange.shade600.withOpacity(0.6),
       child: Text(_buttonTitle,
           style: TextStyle(fontWeight: FontWeight.w500, fontSize: 25.0)),
-      onPressed: () {
-        actionButtonPressed();
-        _buttonAction;
-      },
+      onPressed: () {_buttonAction;},
     );
   }
 }
@@ -274,16 +267,22 @@ class UserCard extends StatelessWidget {
 class ProfileCard extends StatelessWidget {
   
   final Profile profile;
+  final Function function;
 
-  ProfileCard(this.profile);
+  ProfileCard(this.profile, this.function);
 
   @override
   Widget build(BuildContext context) {
     return 
+
     // Container(margin: EdgeInsets.all(10.0),child: 
     Card(
         // margin: EdgeInsets.all(10.0),
-        child: Row(children: <Widget>[
+        child: 
+        
+        InkWell(child: 
+        
+        Row(children: <Widget>[
       ///
       /// Profile picture
       ///
@@ -326,7 +325,9 @@ class ProfileCard extends StatelessWidget {
                       )
                     ])))
       ]))
-    ]));
+    ]),
+    onTap: function,
+    ));
     // ,);
   }
 }

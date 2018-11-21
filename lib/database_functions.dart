@@ -7,18 +7,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'data/strings.dart';
 import 'data/profile.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'data/images.dart';
-import 'package:flutter/services.dart' show rootBundle;
-import 'dart:math';
-import 'dart:typed_data';
-import 'dart:async';
-import 'dart:io';
-
 
 class DatabaseFunctions {
 
@@ -101,6 +91,7 @@ class DatabaseFunctions {
 
 class DatabaseIds{
 
+  static const String feed = 'feed';
   static const String strength ='strength';
   static const String friends = 'friends';
   static const String public = 'public';

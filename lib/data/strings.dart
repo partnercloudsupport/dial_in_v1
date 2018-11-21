@@ -273,6 +273,7 @@ class  StringLabels {
     
   class ViewControllerIds {
         
+        static const String feed = 'FeedViewController';
         static const String userName = "UserNameViewController";
         static const String name = "NameViewController";
         static const String email = "EmailViewController";

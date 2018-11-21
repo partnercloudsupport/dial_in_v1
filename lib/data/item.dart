@@ -1,6 +1,4 @@
-import 'strings.dart';
 import 'package:flutter/material.dart';
-import '../database_functions.dart';
 
 
 

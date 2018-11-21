@@ -106,7 +106,7 @@ class DataPageState extends State<DataPage>
         floatingActionButton: AddButton(() {
 
           Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
-          ProfilePage(isCopying: false, isEditing: false, isNew: true, type: _lists.ref[controller.index].type, referance: '',)));
+          ProfilePage(isCopying: false, isEditing: true, isNew: true, type: _lists.ref[controller.index].type, referance: '',)));
 
         }));
   }

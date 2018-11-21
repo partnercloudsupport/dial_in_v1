@@ -31,7 +31,7 @@ void forgotPassword() {   print(" Forgot password button pressed");  }
 Future<void> logIn(String emailUser, String password,
       Function(bool, String) completion) async {
           try {
-            FirebaseUser user = await FirebaseAuth.instance
+            await FirebaseAuth.instance
                 .signInWithEmailAndPassword(email: emailUser, password: password);
             completion(true, StringLabels.loggedIn);
           } catch (e) {
@@ -69,7 +69,6 @@ void initState() {
   _emailController.addListener(onEmailChange); 
   _passwordController.addListener(onPasswordChange);
   
-    // TODO: implement initState
     super.initState();
 }
 

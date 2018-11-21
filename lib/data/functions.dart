@@ -6,9 +6,7 @@ import 'profile.dart';
 import 'images.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../widgets/custom_widgets.dart';
-
-
-
+import '../pages/profile_page.dart';
 
 class Functions{
 
@@ -99,6 +97,40 @@ class Functions{
     }
   }
 
+    static ProfileType getProfileDatabaseIdType(String type){
+    
+    switch (type){
+
+      case DatabaseIds.recipe:  
+      return ProfileType.recipe;
+      break;
+
+      case DatabaseIds.coffee:
+      return ProfileType.coffee; 
+      break;
+
+      case DatabaseIds.water:   
+      return ProfileType.water;
+      break;
+
+      case DatabaseIds.brewingEquipment: 
+      return ProfileType.equipment;
+      break;
+
+      case DatabaseIds.grinder: 
+      return ProfileType.grinder; 
+      break;
+
+      case DatabaseIds.Barista:   
+      return ProfileType.barista;
+      break;
+
+      default:   
+      return  ProfileType.none;
+      break;
+    }
+  }
+
 
     static String convertDatabaseIdToTitle(String databaseId){
     
@@ -145,7 +177,9 @@ class Functions{
               updatedAt: DateTime.now(),
               objectId: '',
               // image: document[DatabaseIds.image].toString(),
-              databaseId: DatabaseIds.databaseId,
+              databaseId: DatabaseIds.recipe,
+              type: ProfileType.recipe,
+              viewContollerId: ViewControllerIds.recipe,
               orderNumber: 0,
               properties: [
                 createBlankItem(DatabaseIds.barista),
@@ -182,7 +216,9 @@ class Functions{
               updatedAt: DateTime.now(),
               objectId: '',
               // image: document[DatabaseIds.image].toString(),
-              databaseId: DatabaseIds.databaseId,
+              databaseId: DatabaseIds.water,
+              type: ProfileType.water,
+              viewContollerId: ViewControllerIds.water,
               orderNumber: 0,
               properties: [
                 createBlankItem(DatabaseIds.waterID),
@@ -200,7 +236,9 @@ class Functions{
               updatedAt: DateTime.now(),
               objectId: '',
               // image: document[DatabaseIds.image].toString(),
-              databaseId: DatabaseIds.databaseId,
+              databaseId: DatabaseIds.coffee,
+              type: ProfileType.coffee,
+              viewContollerId: ViewControllerIds.coffee,
               orderNumber: 0,
               properties: [
                 createBlankItem(DatabaseIds.coffeeId),
@@ -228,7 +266,9 @@ class Functions{
               updatedAt: DateTime.now(),
               objectId: '',
               // image: document[DatabaseIds.image].toString(),
-              databaseId: DatabaseIds.databaseId,
+              databaseId: DatabaseIds.brewingEquipment,
+              type: ProfileType.equipment,
+              viewContollerId: ViewControllerIds.brewingEquipment,
               orderNumber: 0,
               properties: [
                 createBlankItem(DatabaseIds.equipmentId),
@@ -245,7 +285,9 @@ class Functions{
               updatedAt: DateTime.now(),
               objectId: '',
               // image: document[DatabaseIds.image].toString(),
-              databaseId: DatabaseIds.databaseId,
+              databaseId: DatabaseIds.feed,
+              type: ProfileType.feed,
+              viewContollerId: ViewControllerIds.feed,
               orderNumber: 0,
               properties: [createBlankItem(DatabaseIds.type),],
               );
@@ -256,7 +298,9 @@ class Functions{
               updatedAt: DateTime.now(),
               objectId: '',
               // image: document[DatabaseIds.image].toString(),
-              databaseId: DatabaseIds.databaseId,
+              databaseId: DatabaseIds.grinder,
+              type: ProfileType.grinder,
+              viewContollerId: ViewControllerIds.grinder,              
               orderNumber: 0,
               properties: [
                 createBlankItem(DatabaseIds.grinderId),
@@ -289,8 +333,9 @@ class Functions{
               updatedAt: DateTime.now(),
               objectId: '',
               // image: document[DatabaseIds.image].toString(),
-              databaseId: DatabaseIds.databaseId,
-              orderNumber: 0,
+              databaseId: DatabaseIds.barista,
+              type: ProfileType.barista,
+              viewContollerId: ViewControllerIds.barista,              orderNumber: 0,
               properties: [createBlankItem(DatabaseIds.type)],
               );
       break;
@@ -1410,51 +1455,54 @@ static Item createItemWithData(Map<String, dynamic> item){
 
   Profile profile = Functions.createProfile(databaseId, _properties);
 
-  return ProfileCard(profile);
+  return ProfileCard(profile,
+  (){ Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
+         new ProfilePage(isCopying: false, isEditing: true, isNew: true, type: profile.type, referance: '',)));});
 }
 
 
- static void _showDialog(String databaseID, BuildContext context) {
-    // flutter defined function
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        // return object of type Dialog
-        return SimpleDialog(
-          title: Text(Functions.convertDatabaseIdToTitle(databaseID)),
-          children: <Widget>[
-            StreamBuilder(
-      stream: Firestore.instance.collection(databaseID).snapshots(),initialData: 10,
+//  static void _showDialog(String databaseID, BuildContext context) {
+//     // flutter defined function
+//     showDialog(
+//       context: context,
+//       builder: (BuildContext context) {
+//         // return object of type Dialog
+//         return SimpleDialog(
+//           title: Text(Functions.convertDatabaseIdToTitle(databaseID)),
+//           children: <Widget>[
+//             StreamBuilder(
+//       stream: Firestore.instance.collection(databaseID).snapshots(),initialData: 10,
 
-      builder: (context, snapshot){
-        switch (snapshot.connectionState){
-          case ConnectionState.waiting:
-          case ConnectionState.none:
-            return LinearProgressIndicator();
-          case ConnectionState.active:
-          case ConnectionState.done:
+//       builder: (context, snapshot){
+//         switch (snapshot.connectionState){
+//           case ConnectionState.waiting:
+//           case ConnectionState.none:
+//             return LinearProgressIndicator();
+//           case ConnectionState.active:
+//           case ConnectionState.done:
         
-        print( snapshot.error);
+//         print( snapshot.error);
 
-        if (!snapshot.hasData){ return const Center(child: Text('Loading'));}
-        else if (snapshot.hasError){ return const Center(child: Text('Error'));}
-        else if (snapshot.data.documents.length < 1){ return const Center(child: Text('No data')); }
-        else{
-      return
-      ListView.builder(
-        itemExtent: 80,
-        itemCount: snapshot.data.documents.length,
-        itemBuilder: (BuildContext context, int index) => 
-          Functions.buildProfileCard(context, snapshot.data.documents[index], databaseID));}
-      }
-      }
-      )
-          ],
+//         if (!snapshot.hasData){ return const Center(child: Text('Loading'));}
+//         else if (snapshot.hasError){ return const Center(child: Text('Error'));}
+//         else if (snapshot.data.documents.length < 1){ return const Center(child: Text('No data')); }
+//         else{
+//       return
+//       ListView.builder(
+//         itemExtent: 80,
+//         itemCount: snapshot.data.documents.length,
+//         itemBuilder: (BuildContext context, int index) => 
+//           Functions.buildProfileCard(context, snapshot.data.documents[index], databaseID));}
+//       }
+//       }
+//       )
+//           ],
 
-        );
-      },
-    );
-  }
-}
+//         );
+//       },
+//     );
+//   }
+// }
 
 // user defined function
+}

@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../data/strings.dart';
 import '../../widgets/custom_widgets.dart';
 
 
@@ -34,9 +33,10 @@ class UserProfileState extends State<UserProfilePage>{
     );
     
     
-    Container( child: Center( child:
+    // Container( child: Center( child:
     
-     Card(child:Icon(Icons.access_time),),)   
+    //  Card(child:Icon(Icons.access_time),),)   
 
-    );}
+    // );
+    }
 }
