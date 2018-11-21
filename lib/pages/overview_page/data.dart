@@ -6,6 +6,8 @@ import 'profile_list.dart';
 import '../../database_functions.dart';
 import '../../data/profile.dart';
 import '../profile_page.dart';
+import '../coffee_profile_page.dart';
+
 
 class DataPage extends StatefulWidget {
   @override
@@ -104,10 +106,17 @@ class DataPageState extends State<DataPage>
           ],
         ),
         floatingActionButton: AddButton(() {
+          
+          if (_lists.ref[controller.index].type == ProfileType.coffee){
+
+          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
+          CoffeeProfilePage(isCopying: false, isEditing: true, isNew: true, type: _lists.ref[controller.index].type, referance: '',)));
+
+          }else{
 
           Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
           ProfilePage(isCopying: false, isEditing: true, isNew: true, type: _lists.ref[controller.index].type, referance: '',)));
-
+          }
         }));
   }
 }

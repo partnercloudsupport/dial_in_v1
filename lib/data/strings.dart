@@ -26,6 +26,8 @@ class  StringLabels {
         static const String changeImage = 'Change image';
         static const String setting = 'Setting';
         static const String error  = 'Error';
+        static const String setDate = 'Set date';
+        static const String harvest = 'Harvest';
 
 
 
