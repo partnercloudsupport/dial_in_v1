@@ -6,7 +6,7 @@ import 'profile.dart';
 import 'images.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../widgets/custom_widgets.dart';
-import '../pages/profile_page.dart';
+import '../pages/profile_pages/profile_page.dart';
 
 class Functions{
 

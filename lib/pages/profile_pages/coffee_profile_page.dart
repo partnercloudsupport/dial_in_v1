@@ -13,13 +13,13 @@ import 'package:flutter/material.dart'
         Text,
         TextStyle,
         required;
-import '../data/profile.dart';
-import '../data/strings.dart';
+import '../../data/profile.dart';
+import '../../data/strings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../data/images.dart';
-import '../data/functions.dart';
-import '../database_functions.dart';
+import '../../data/images.dart';
+import '../../data/functions.dart';
+import '../../database_functions.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
 
@@ -126,7 +126,7 @@ class CoffeeProfilePageState extends State<CoffeeProfilePage> {
                 child: Text(StringLabels.changeImage),
               ),
 
-              Container(padding: EdgeInsets.all(_padding), margin: EdgeInsets.all(_margin) ,width: _textFieldWidth,
+              Container(padding: EdgeInsets.all(_padding), margin: EdgeInsets.all(_margin) ,
                     child: TextField(
                     textAlign: TextAlign.center,
                     keyboardType: TextInputType.text,

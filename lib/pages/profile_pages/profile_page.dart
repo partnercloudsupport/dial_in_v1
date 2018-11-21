@@ -13,13 +13,13 @@ import 'package:flutter/material.dart'
         Text,
         TextStyle,
         required;
-import '../data/profile.dart';
-import '../data/strings.dart';
+import '../../data/profile.dart';
+import '../../data/strings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../data/images.dart';
-import '../data/functions.dart';
-import '../database_functions.dart';
+import '../../data/images.dart';
+import '../../data/functions.dart';
+import '../../database_functions.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
