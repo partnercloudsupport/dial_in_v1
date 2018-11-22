@@ -280,11 +280,18 @@ class ProfileCard extends StatelessWidget {
   ProfileCard(this.profile, this.function){
 
     switch(profile.type){
+      
       case ProfileType.recipe: 
-      _topLeft = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.coffeeId);
-      _topRight = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.date);
-      _bottomRight = profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.brewingEquipment);
-      _bottomleft = profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.score);
+
+      _topLeft = 'profile.getProfileItemValue(itemDatabaseId: DatabaseIds.coffeeId)';
+      _topRight = 'profile.getProfileItemValue(itemDatabaseId: DatabaseIds.date)';
+      _bottomRight = 'profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.brewingEquipment)';
+      _bottomleft = 'profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.score)';
+
+      // _topLeft = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.coffeeId);
+      // _topRight = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.date);
+      // _bottomRight = profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.brewingEquipment);
+      // _bottomleft = profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.score);
       break;
 
       case ProfileType.coffee:   
@@ -316,10 +323,10 @@ class ProfileCard extends StatelessWidget {
       break;
 
       case ProfileType.barista:   
-      _topLeft = 'error';
-      _topRight = 'error';
-      _bottomRight = 'error';
-      _bottomleft = 'error';       
+      _topLeft = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.name);
+      _topRight = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.level);
+      _bottomleft = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.notes);
+      _bottomRight = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.age);       
       break;
 
       case ProfileType.none:  
@@ -378,7 +385,7 @@ class ProfileCard extends StatelessWidget {
                           margin: EdgeInsets.all(10.0), child: Text(_topLeft)),
                       Container(
                         margin: EdgeInsets.all(10.0),
-                        child: Text(_topRight),
+                        child: Text(_bottomleft),
                       )
                     ]))),
 
@@ -392,7 +399,7 @@ class ProfileCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
                       Container(
-                          margin: EdgeInsets.all(10.0), child: Text(_bottomleft)),
+                          margin: EdgeInsets.all(10.0), child: Text(_topRight)),
                       Container(
                         margin: EdgeInsets.all(10.0),
                         child: Text(_bottomRight),

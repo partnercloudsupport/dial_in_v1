@@ -299,7 +299,9 @@ class ProfilePageState extends State<ProfilePage> {
 
               TwoTextfieldCard(
                 titleLeft: StringLabels.time,
+                leftHintText: StringLabels.setTime,
                 titleRight: StringLabels.tds,
+                rightHintText: StringLabels.enterValue,
                 onLeftTextChanged: (text) {
                   Functions.setProfileItemValue(
                       profile: _profile,
@@ -722,85 +724,45 @@ class RatioCard extends StatelessWidget {
           ),
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Expanded(
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        child: Text(
-                          StringLabels.brewingDose,
-                          style: Theme.of(context).textTheme.subtitle,
-                        ),
-                      ),
-                      Container(
-                        width: 15.0,
-                        height: _spacing,
-                      ),
-                      Container(
-                          width: _textFieldWidth,
-                          child: TextField(
-                            textAlign: TextAlign.center,
-                            keyboardType: TextInputType.number,
-                            decoration: new InputDecoration.collapsed(
-                                hintText: StringLabels.enterInfo),
-                            onChanged: doseChanged,
-                          ))
-                    ]),
-              ),
-              Expanded(
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        child: Text(
-                          StringLabels.yield,
-                          style: Theme.of(context).textTheme.subtitle,
-                        ),
-                      ),
-                      Container(
-                        width: 10.0,
-                        height: _spacing,
-                      ),
-                      Container(
-                          width: _textFieldWidth,
-                          child: TextField(
-                            textAlign: TextAlign.center,
-                            keyboardType: TextInputType.number,
-                            decoration: new InputDecoration.collapsed(
-                              hintText: StringLabels.enterInfo,
-                            ),
-                            onChanged: yieldChanged,
-                          ))
-                    ]),
-              ),
-              Expanded(
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        child: Text(
-                          StringLabels.brewWeight,
-                          style: Theme.of(context).textTheme.subtitle,
-                        ),
-                      ),
-                      Container(
-                        width: 10.0,
-                        height: _spacing,
-                      ),
-                      Container(
-                          width: _textFieldWidth,
-                          child: TextField(
-                            textAlign: TextAlign.center,
-                            keyboardType: TextInputType.number,
-                            decoration: new InputDecoration.collapsed(
-                              hintText: StringLabels.enterInfo,
-                            ),
-                            onChanged: brewWeightChanged,
-                          ))
-                    ]),
-              )
+
+          /// Dose
+          Container(width: 100.0,
+                    child: TextField(
+                    textAlign: TextAlign.start,
+                    keyboardType: TextInputType.number,
+                    decoration: new InputDecoration(
+                    labelText: StringLabels.brewingDose,
+                    hintText: StringLabels.enterValue,
+                              ),
+                              onChanged: doseChanged,
+                            )),
+
+         /// Yield 
+         Container(width: 100.0,
+                    child: TextField(
+                    textAlign: TextAlign.start,
+                    keyboardType: TextInputType.number,
+                    decoration: new InputDecoration(
+                    labelText: StringLabels.yield,
+                    hintText: StringLabels.enterValue,
+                              ),
+                              onChanged: yieldChanged,
+                            )),
+
+          /// Brew wieght
+          Container(width: 100.0,
+                    child: TextField(
+                    textAlign: TextAlign.start,
+                    keyboardType: TextInputType.number,
+                    decoration: new InputDecoration(
+                    labelText: StringLabels.brewWeight,
+                    hintText: StringLabels.enterValue,
+                              ),
+                              onChanged: brewWeightChanged,
+                            )),
+
             ],
           ),
         ],
@@ -817,6 +779,8 @@ class TwoTextfieldCard extends StatelessWidget {
   final double _spacing = 15.0;
   final String titleLeft;
   final String titleRight;
+  final String leftHintText;
+  final String rightHintText;
 
   final Function(String) onLeftTextChanged;
   final Function(String) onRightTextChanged;
@@ -825,7 +789,10 @@ class TwoTextfieldCard extends StatelessWidget {
       {@required this.onLeftTextChanged,
       @required this.onRightTextChanged,
       @required this.titleLeft,
-      @required this.titleRight});
+      @required this.leftHintText,
+      @required this.titleRight,
+      @required this.rightHintText
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -838,60 +805,33 @@ class TwoTextfieldCard extends StatelessWidget {
             children: <Widget>[
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  Expanded(
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Container(
-                            child: Text(
-                              titleLeft,
-                              style: Theme.of(context).textTheme.subtitle,
-                            ),
-                          ),
-                          Container(
-                            width: 15.0,
-                            height: _spacing,
-                          ),
-                          Container(
-                              width: _textFieldWidth,
-                              child: TextField(
-                                textAlign: TextAlign.center,
-                                keyboardType: TextInputType.number,
-                                decoration: new InputDecoration.collapsed(
-                                  hintText: StringLabels.enterInfo,
-                                ),
-                                onChanged: onLeftTextChanged,
-                              ))
-                        ]),
-                  ),
-                  Expanded(
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Container(
-                            child: Text(
-                              titleRight,
-                              style: Theme.of(context).textTheme.subtitle,
-                            ),
-                          ),
-                          Container(
-                            width: 10.0,
-                            height: _spacing,
-                          ),
-                          Container(
-                              width: _textFieldWidth,
-                              child: TextField(
-                                textAlign: TextAlign.center,
-                                keyboardType: TextInputType.number,
-                                decoration: new InputDecoration.collapsed(
-                                  hintText: StringLabels.enterInfo,
-                                ),
-                                onChanged: onRightTextChanged,
-                              ))
-                        ]),
-                  )
+
+                 /// Left
+                  Container(width: 100.0,
+                    child: TextField(
+                    textAlign: TextAlign.start,
+                    keyboardType: TextInputType.number,
+                    decoration: new InputDecoration(
+                    labelText: titleLeft,
+                    hintText: leftHintText
+                              ),
+                              onChanged: onLeftTextChanged,
+                            )),
+
+                 // Right 
+                  Container(width: 100.0,
+                    child: TextField(
+                    textAlign: TextAlign.start,
+                    keyboardType: TextInputType.number,
+                    decoration: new InputDecoration(
+                    labelText: titleRight,
+                    hintText: rightHintText
+                              ),
+                              onChanged: onRightTextChanged,
+                            )),
+                 
                 ],
               ),
             ]),

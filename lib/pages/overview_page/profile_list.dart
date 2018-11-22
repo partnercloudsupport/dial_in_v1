@@ -27,44 +27,10 @@ class _ProfileListState extends State<ProfileList>{
 
 Widget _buildProfileCard(BuildContext context, DocumentSnapshot document, String databaseId){
 
-  List<Item> _properties = new List<Item>();
-  document.data.forEach((key, value) {
-
-      if ( key != DatabaseIds.updatedAt){
-
-      if ( key != DatabaseIds.objectId) {
-
-      if ( key != DatabaseIds.databaseId){
-
-      if ( key != DatabaseIds.databaseId){
-
-      if ( key != DatabaseIds.orderNumber){
-
-      if ( key != DatabaseIds.user){  
-
-         Map<String, dynamic> item = {key: value};
-        _properties.add(Functions.createItemWithData(item));
-      }}}}
-  }}});
-
-  Profile profile = Functions.createProfile(widget._listDatabaseId, _properties);
+  Profile profile = Functions.createProfileFromDocumentSnapshot(widget._listDatabaseId, document);
 
   return ProfileCard(profile, (){ });
 }
-
-// Widget _buildCard(BuildContext context, DocumentSnapshot document,String databaseId){
-//   return Column(children: <Widget>[
-    
-//      Text(document.data[DatabaseIds.name].toString()),
-//      Text(document.data[DatabaseIds.level].toString()),
-//      Text(document.data[DatabaseIds.age].toString()),
-//      Text(document.data[DatabaseIds.notes].toString())
-     
-//      ]
-//   );
-//   }
-
-
 
 @override
     Widget build(BuildContext context) {

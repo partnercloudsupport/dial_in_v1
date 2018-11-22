@@ -7,6 +7,8 @@ import 'images.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../widgets/custom_widgets.dart';
 import '../pages/profile_pages/profile_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 class Functions{
 
@@ -360,23 +362,63 @@ class Functions{
   }
 
 
-  static Profile createProfile(String databaseId, List<Item> _properties){
+  static Profile createProfileFromDocumentSnapshot(String databaseId, Doc document){
     
+      DateTime _updatedAt = DateTime.now();
+      String _objectId = ''; 
+      String _databaseId = '';
+      int _orderNumber = 0;
+      String _user = '';
+
+
+      List<Item> _properties = new List<Item>();
+
+        document.data.forEach((key, value) {
+
+      if ( key != DatabaseIds.updatedAt){
+
+      if ( key != DatabaseIds.objectId) {
+
+      if ( key != DatabaseIds.databaseId){
+
+      if ( key != DatabaseIds.orderNumber){
+
+      if ( key != DatabaseIds.user){  
+
+         Map<String, dynamic> item = {key: value};
+        _properties.add(Functions.createItemWithData(item));
+
+      }else{_user = value; }
+      
+      }else{_orderNumber = value;}
+      
+      }else{_databaseId = value;}
+      
+      }else{_objectId = value;}
+      
+      }else{_updatedAt = value;}
+      
+      }
+    );
+
     switch(databaseId){
 
-      case DatabaseIds.recipe:   
+      case DatabaseIds.recipe: 
+
       return  new Profile(
-              updatedAt: DateTime.now(),
-              objectId: '',
+              updatedAt: _updatedAt,
+              objectId: _objectId,
               type: ProfileType.recipe,
               image: Image.asset(Images.whiteRecipe200X200),
-              databaseId: databaseId,
-              orderNumber: 0,
+              databaseId: _databaseId,
+              orderNumber: _orderNumber,
               properties: _properties,
               profiles:  [
-
-                createProfile(databaseId, _properties)
-
+                createProfileFromDocumentSnapshot(databaseId, DatabaseFunctions.getProfile(databaseId, document[DatabaseIds.coffeeId])  )
+                createProfileFromDocumentSnapshot(databaseId, DatabaseFunctions.getProfile(databaseId, document[DatabaseIds.barista])  )
+                createProfileFromDocumentSnapshot(databaseId, DatabaseFunctions.getProfile(databaseId, document[DatabaseIds.equipmentId])  )
+                createProfileFromDocumentSnapshot(databaseId, DatabaseFunctions.getProfile(databaseId, document[DatabaseIds.grinderId])  )
+                createProfileFromDocumentSnapshot(databaseId, DatabaseFunctions.getProfile(databaseId, document[DatabaseIds.waterID])  )
               ]
               );
       break;
@@ -384,7 +426,7 @@ class Functions{
       case DatabaseIds.coffee:   
       return  new Profile(
               updatedAt: DateTime.now(),
-              objectId: '',
+              objectId: _objectId,
               type: ProfileType.coffee,
               image: Image.asset(Images.coffeeBeans),
               databaseId: databaseId,
@@ -396,7 +438,7 @@ class Functions{
       case DatabaseIds.grinder:   
       return  new Profile(
               updatedAt: DateTime.now(),
-              objectId: '',
+              objectId: _objectId,
               type: ProfileType.grinder,
               image: Image.asset(Images.grinder),
               databaseId: databaseId,
@@ -408,7 +450,7 @@ class Functions{
       case DatabaseIds.brewingEquipment:   
       return  new Profile(
               updatedAt: DateTime.now(),
-              objectId: '',
+              objectId: _objectId,
               type: ProfileType.equipment,
               image: Image.asset(Images.groupHandle),
               databaseId: databaseId,
@@ -420,7 +462,7 @@ class Functions{
       case DatabaseIds.water:   
       return  new Profile(
               updatedAt: DateTime.now(),
-              objectId: '',
+              objectId: _objectId,
               type: ProfileType.water,
               image: Image.asset(Images.water),
               databaseId: databaseId,
@@ -432,7 +474,7 @@ class Functions{
       case DatabaseIds.barista:   
       return  new Profile(
               updatedAt: DateTime.now(),
-              objectId: '',
+              objectId: _objectId,
               type: ProfileType.barista,
               image: Image.asset(Images.user),
               databaseId: databaseId,
@@ -445,7 +487,7 @@ class Functions{
 
       return  new Profile(
               updatedAt: DateTime.now(),
-              objectId: '',
+              objectId: _objectId,
               type: ProfileType.barista,
               image: Image.asset(Images.user),
               databaseId: databaseId,
@@ -1426,6 +1468,15 @@ static Item createItemWithData(Map<String, dynamic> item){
         keyboardType: TextInputType.text,);
       break;
 
+      case DatabaseIds.notes:   
+      
+      _item = new Item(
+        title: StringLabels.notes , value: value ,
+        databaseId: DatabaseIds.notes, 
+        placeHolderText: StringLabels.enterDescriptors,
+        keyboardType: TextInputType.text,);
+      break;
+
       default:
 
         _item = new Item(
@@ -1468,6 +1519,7 @@ static Item createItemWithData(Map<String, dynamic> item){
   (){ Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
          new ProfilePage(isCopying: false, isEditing: true, isNew: true, type: profile.type, referance: '',)));});
 }
+
 
 
 //  static void _showDialog(String databaseID, BuildContext context) {

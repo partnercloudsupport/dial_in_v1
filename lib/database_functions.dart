@@ -9,6 +9,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'data/profile.dart';
+import 'data/functions.dart';
+import 'data/item.dart';
+import 'data/images.dart';
 
 class DatabaseFunctions {
 
@@ -88,7 +91,176 @@ class DatabaseFunctions {
     completion(pic);
   } 
 
+  static Future<Profile> getProfileFromFireStoreWithDocRef(String collectionDataBaseId, String docRefernace)async{
+   
+   DocumentSnapshot _document = await Firestore.instance.collection(collectionDataBaseId).document(docRefernace).get();
+    
+   List<Item> _properties = convertDocumentDataToProperties(_document);
+
+   Profile _profile = Functions.createProfile(collectionDataBaseId, _properties);
+
+  return _profile;
+    
+  }
+
+
+  static List<Item> convertDocumentDataToProperties(DocumentSnapshot document){
+
+  List<Item> _properties = new List<Item>();
+  document.data.forEach((key, value) {
+
+      if ( key != DatabaseIds.updatedAt){
+
+      if ( key != DatabaseIds.objectId) {
+
+      if ( key != DatabaseIds.databaseId){
+
+      if ( key != DatabaseIds.databaseId){
+
+      if ( key != DatabaseIds.orderNumber){
+
+      if ( key != DatabaseIds.user){  
+
+         Map<String, dynamic> item = {key: value};
+        _properties.add(Functions.createItemWithData(item));
+      }}}}
+  }}});
+  return _properties;
 }
+
+  static Future<Profile> createProfileFromDocumentSnapshot(String databaseId, DocumentSnapshot document)async{
+    
+      DateTime _updatedAt = DateTime.now();
+      String _objectId = ''; 
+      String _databaseId = '';
+      int _orderNumber = 0;
+      String _user = '';
+
+
+      List<Item> _properties = new List<Item>();
+
+        document.data.forEach((key, value) {
+
+      if ( key != DatabaseIds.updatedAt){
+
+      if ( key != DatabaseIds.objectId) {
+
+      if ( key != DatabaseIds.orderNumber){
+
+      if ( key != DatabaseIds.user){  
+
+         Map<String, dynamic> item = {key: value};
+        _properties.add(Functions.createItemWithData(item));
+
+      }else{_user = value; }
+      
+      }else{_orderNumber = value;}
+      
+      }else{_objectId = value;}
+      
+      }else{_updatedAt = value;}
+      
+      }
+    );
+
+    switch(databaseId){
+
+      case DatabaseIds.recipe: 
+
+      return  new Profile(
+              updatedAt: _updatedAt,
+              objectId: _objectId,
+              type: ProfileType.recipe,
+              image: Image.asset(Images.whiteRecipe200X200),
+              databaseId: _databaseId,
+              orderNumber: _orderNumber,
+              properties: _properties,
+              profiles:  [
+                await DatabaseFunctions.getProfileFromFireStoreWithDocRef(databaseId, document[DatabaseIds.coffeeId]);
+                await DatabaseFunctions.getProfileFromFireStoreWithDocRef(databaseId, document[DatabaseIds.barista]);
+                await DatabaseFunctions.getProfileFromFireStoreWithDocRef(databaseId, document[DatabaseIds.equipmentId]);
+                await DatabaseFunctions.getProfileFromFireStoreWithDocRef(databaseId, document[DatabaseIds.grinderId]);
+                await DatabaseFunctions.getProfileFromFireStoreWithDocRef(databaseId, document[DatabaseIds.waterID]);
+              ]
+              );
+      break;
+
+      case DatabaseIds.coffee:   
+      return  new Profile(
+              updatedAt: _updatedAt,
+              objectId: _objectId,
+              type: ProfileType.coffee,
+              image: Image.asset(Images.coffeeBeans),
+              databaseId: _databaseId,
+              orderNumber: 1,
+              properties: _properties
+              );
+      break;
+
+      case DatabaseIds.grinder:   
+      return  new Profile(
+              updatedAt: DateTime.now(),
+              objectId: _objectId,
+              type: ProfileType.grinder,
+              image: Image.asset(Images.grinder),
+              databaseId: databaseId,
+              orderNumber: 0,
+              properties: _properties
+              );
+      break;
+
+      case DatabaseIds.brewingEquipment:   
+      return  new Profile(
+              updatedAt: DateTime.now(),
+              objectId: _objectId,
+              type: ProfileType.equipment,
+              image: Image.asset(Images.groupHandle),
+              databaseId: databaseId,
+              orderNumber: 0,
+              properties: _properties
+              );
+      break;
+
+      case DatabaseIds.water:   
+      return  new Profile(
+              updatedAt: DateTime.now(),
+              objectId: _objectId,
+              type: ProfileType.water,
+              image: Image.asset(Images.water),
+              databaseId: databaseId,
+              orderNumber: 0,
+              properties: _properties
+              );
+      break;
+
+      case DatabaseIds.barista:   
+      return  new Profile(
+              updatedAt: DateTime.now(),
+              objectId: _objectId,
+              type: ProfileType.barista,
+              image: Image.asset(Images.user),
+              databaseId: databaseId,
+              orderNumber: 0,
+              properties: _properties
+              );
+      break;
+
+      default: 
+
+      return  new Profile(
+              updatedAt: DateTime.now(),
+              objectId: _objectId,
+              type: ProfileType.barista,
+              image: Image.asset(Images.user),
+              databaseId: databaseId,
+              orderNumber: 0,
+              properties: _properties
+              );
+      break;
+    }
+  }
+ }
+
 
 class DatabaseIds{
 
