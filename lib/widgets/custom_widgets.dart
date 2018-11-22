@@ -283,15 +283,15 @@ class ProfileCard extends StatelessWidget {
       
       case ProfileType.recipe: 
 
-      _topLeft = 'profile.getProfileItemValue(itemDatabaseId: DatabaseIds.coffeeId)';
-      _topRight = 'profile.getProfileItemValue(itemDatabaseId: DatabaseIds.date)';
-      _bottomRight = 'profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.brewingEquipment)';
-      _bottomleft = 'profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.score)';
+      // _topLeft = 'topLeft';
+      // _topRight = 'topright';
+      // _bottomRight = 'bottomright';
+      // _bottomleft = 'bottomleft';
 
-      // _topLeft = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.coffeeId);
-      // _topRight = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.date);
-      // _bottomRight = profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.brewingEquipment);
-      // _bottomleft = profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.score);
+      _topLeft = profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.coffee);
+      _topRight = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.date);
+      _bottomRight = profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.brewingEquipment);
+      _bottomleft = profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.score);
       break;
 
       case ProfileType.coffee:   

@@ -208,7 +208,6 @@ class Functions{
                 createBlankProfile(ProfileType.equipment),
                 createBlankProfile(ProfileType.grinder),
                 createBlankProfile(ProfileType.water),
-                createBlankProfile(ProfileType.barista),
               ]
               );
       break;
@@ -335,10 +334,14 @@ class Functions{
               updatedAt: DateTime.now(),
               objectId: '',
               // image: document[DatabaseIds.image].toString(),
-              databaseId: DatabaseIds.barista,
+              databaseId: DatabaseIds.Barista,
               type: ProfileType.barista,
-              viewContollerId: ViewControllerIds.barista,              orderNumber: 0,
-              properties: [createBlankItem(DatabaseIds.type)],
+              viewContollerId: ViewControllerIds.barista,              
+              orderNumber: 0,
+              properties: [
+                createBlankItem(DatabaseIds.type),
+                createBlankItem(DatabaseIds.level)
+                ],
               );
       break;
 
@@ -362,141 +365,6 @@ class Functions{
   }
 
 
-  static Profile createProfileFromDocumentSnapshot(String databaseId, Doc document){
-    
-      DateTime _updatedAt = DateTime.now();
-      String _objectId = ''; 
-      String _databaseId = '';
-      int _orderNumber = 0;
-      String _user = '';
-
-
-      List<Item> _properties = new List<Item>();
-
-        document.data.forEach((key, value) {
-
-      if ( key != DatabaseIds.updatedAt){
-
-      if ( key != DatabaseIds.objectId) {
-
-      if ( key != DatabaseIds.databaseId){
-
-      if ( key != DatabaseIds.orderNumber){
-
-      if ( key != DatabaseIds.user){  
-
-         Map<String, dynamic> item = {key: value};
-        _properties.add(Functions.createItemWithData(item));
-
-      }else{_user = value; }
-      
-      }else{_orderNumber = value;}
-      
-      }else{_databaseId = value;}
-      
-      }else{_objectId = value;}
-      
-      }else{_updatedAt = value;}
-      
-      }
-    );
-
-    switch(databaseId){
-
-      case DatabaseIds.recipe: 
-
-      return  new Profile(
-              updatedAt: _updatedAt,
-              objectId: _objectId,
-              type: ProfileType.recipe,
-              image: Image.asset(Images.whiteRecipe200X200),
-              databaseId: _databaseId,
-              orderNumber: _orderNumber,
-              properties: _properties,
-              profiles:  [
-                createProfileFromDocumentSnapshot(databaseId, DatabaseFunctions.getProfile(databaseId, document[DatabaseIds.coffeeId])  )
-                createProfileFromDocumentSnapshot(databaseId, DatabaseFunctions.getProfile(databaseId, document[DatabaseIds.barista])  )
-                createProfileFromDocumentSnapshot(databaseId, DatabaseFunctions.getProfile(databaseId, document[DatabaseIds.equipmentId])  )
-                createProfileFromDocumentSnapshot(databaseId, DatabaseFunctions.getProfile(databaseId, document[DatabaseIds.grinderId])  )
-                createProfileFromDocumentSnapshot(databaseId, DatabaseFunctions.getProfile(databaseId, document[DatabaseIds.waterID])  )
-              ]
-              );
-      break;
-
-      case DatabaseIds.coffee:   
-      return  new Profile(
-              updatedAt: DateTime.now(),
-              objectId: _objectId,
-              type: ProfileType.coffee,
-              image: Image.asset(Images.coffeeBeans),
-              databaseId: databaseId,
-              orderNumber: 1,
-              properties: _properties
-              );
-      break;
-
-      case DatabaseIds.grinder:   
-      return  new Profile(
-              updatedAt: DateTime.now(),
-              objectId: _objectId,
-              type: ProfileType.grinder,
-              image: Image.asset(Images.grinder),
-              databaseId: databaseId,
-              orderNumber: 0,
-              properties: _properties
-              );
-      break;
-
-      case DatabaseIds.brewingEquipment:   
-      return  new Profile(
-              updatedAt: DateTime.now(),
-              objectId: _objectId,
-              type: ProfileType.equipment,
-              image: Image.asset(Images.groupHandle),
-              databaseId: databaseId,
-              orderNumber: 0,
-              properties: _properties
-              );
-      break;
-
-      case DatabaseIds.water:   
-      return  new Profile(
-              updatedAt: DateTime.now(),
-              objectId: _objectId,
-              type: ProfileType.water,
-              image: Image.asset(Images.water),
-              databaseId: databaseId,
-              orderNumber: 0,
-              properties: _properties
-              );
-      break;
-
-      case DatabaseIds.barista:   
-      return  new Profile(
-              updatedAt: DateTime.now(),
-              objectId: _objectId,
-              type: ProfileType.barista,
-              image: Image.asset(Images.user),
-              databaseId: databaseId,
-              orderNumber: 0,
-              properties: _properties
-              );
-      break;
-
-      default: 
-
-      return  new Profile(
-              updatedAt: DateTime.now(),
-              objectId: _objectId,
-              type: ProfileType.barista,
-              image: Image.asset(Images.user),
-              databaseId: databaseId,
-              orderNumber: 0,
-              properties: _properties
-              );
-      break;
-    }
-  }
   
 
 static Item createBlankItem(String databaseId){
@@ -1491,79 +1359,21 @@ static Item createItemWithData(Map<String, dynamic> item){
   return  _item;
   } 
 
-  static Widget buildProfileCard(BuildContext context, DocumentSnapshot document, String databaseId){
+  static Future<Widget> buildProfileCardFromDocument(BuildContext context, DocumentSnapshot document, String databaseId)async{
 
-  List<Item> _properties = new List<Item>();
-  document.data.forEach((key, value) {
+  Profile profile = await DatabaseFunctions.createProfileFromDocumentSnapshot(databaseId, document);
 
-      if ( key != DatabaseIds.updatedAt){
+  return ProfileCard(profile, (){ });
+  }
 
-      if ( key != DatabaseIds.objectId) {
+  static Future<List<Widget>> buildProfileCardArray(BuildContext context, AsyncSnapshot documents, String databaseId)async{
+    
+      List<Widget> _cardArray = new List<Widget>();
+      if (documents.data.documents != null || documents.data.documents.length != 0){
+      documents.data.documents.forEach((document){  ( buildProfileCardFromDocument(context, document,databaseId ).then(((profile){
+         _cardArray.add(profile);
+       })));  });};
 
-      if ( key != DatabaseIds.databaseId){
-
-      if ( key != DatabaseIds.databaseId){
-
-      if ( key != DatabaseIds.orderNumber){
-
-      if ( key != DatabaseIds.user){  
-
-         Map<String, dynamic> item = {key: value};
-        _properties.add(Functions.createItemWithData(item));
-      }}}}
-  }}});
-
-  Profile profile = Functions.createProfile(databaseId, _properties);
-
-  return ProfileCard(profile,
-  (){ Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
-         new ProfilePage(isCopying: false, isEditing: true, isNew: true, type: profile.type, referance: '',)));});
-}
-
-
-
-//  static void _showDialog(String databaseID, BuildContext context) {
-//     // flutter defined function
-//     showDialog(
-//       context: context,
-//       builder: (BuildContext context) {
-//         // return object of type Dialog
-//         return SimpleDialog(
-//           title: Text(Functions.convertDatabaseIdToTitle(databaseID)),
-//           children: <Widget>[
-//             StreamBuilder(
-//       stream: Firestore.instance.collection(databaseID).snapshots(),initialData: 10,
-
-//       builder: (context, snapshot){
-//         switch (snapshot.connectionState){
-//           case ConnectionState.waiting:
-//           case ConnectionState.none:
-//             return LinearProgressIndicator();
-//           case ConnectionState.active:
-//           case ConnectionState.done:
-        
-//         print( snapshot.error);
-
-//         if (!snapshot.hasData){ return const Center(child: Text('Loading'));}
-//         else if (snapshot.hasError){ return const Center(child: Text('Error'));}
-//         else if (snapshot.data.documents.length < 1){ return const Center(child: Text('No data')); }
-//         else{
-//       return
-//       ListView.builder(
-//         itemExtent: 80,
-//         itemCount: snapshot.data.documents.length,
-//         itemBuilder: (BuildContext context, int index) => 
-//           Functions.buildProfileCard(context, snapshot.data.documents[index], databaseID));}
-//       }
-//       }
-//       )
-//           ],
-
-//         );
-//       },
-//     );
-//   }
-// }
-
-// user defined function
+    return _cardArray;
+  } 
 }

@@ -25,11 +25,16 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
 
 class ProfilePage extends StatefulWidget {
-  @required final bool isCopying;
-  @required final bool isEditing;
-  @required final bool isNew;
-  @required final ProfileType type;
-  @required final String referance;
+  @required
+  final bool isCopying;
+  @required
+  final bool isEditing;
+  @required
+  final bool isNew;
+  @required
+  final ProfileType type;
+  @required
+  final String referance;
   String appBarTitle;
   Profile _profile;
 
@@ -57,9 +62,12 @@ class ProfilePageState extends State<ProfilePage> {
   Widget _backCancelButton;
   Widget _saveEditButton;
   Profile _profile;
-  @required bool _isCopying;
-  @required bool _isEditing;
-  @required bool _isNew;
+  @required
+  bool _isCopying;
+  @required
+  bool _isEditing;
+  @required
+  bool _isNew;
 
   void initState() {
     _isCopying = widget.isCopying;
@@ -79,12 +87,9 @@ class ProfilePageState extends State<ProfilePage> {
         // return object of type Dialog
         return SimpleDialog(
           title: Text(Functions.convertDatabaseIdToTitle(databaseID)),
-
           children: <Widget>[
-
             RaisedButton(
               onPressed: () {
-
                 print('profile butoon pressed');
                 Navigator.push(
                     context,
@@ -93,7 +98,8 @@ class ProfilePageState extends State<ProfilePage> {
                               isCopying: false,
                               isEditing: false,
                               isNew: true,
-                              type: Functions.getProfileDatabaseIdType(databaseID),
+                              type: Functions.getProfileDatabaseIdType(
+                                  databaseID),
                               referance: '',
                             )));
               },
@@ -115,29 +121,39 @@ class ProfilePageState extends State<ProfilePage> {
                         return const Center(child: Text('Loading'));
                       } else if (snapshot.hasError) {
                         return const Center(child: Text('Error'));
-                      // } else if (snapshot.data.documents.length < 1) {
-                      //   return const Center(child: Text('No data'));
+                      } else if (snapshot.data.documents.length < 1) {
+                        return const Center(child: Text('No data'));
                       } else {
-
-                        return 
-                        new Container(
-                          height: 100.0,
-                          width: 100.0,
-                          child: new 
-                         ListView.builder(
-                            itemExtent: 80,
-                            itemCount: snapshot.data.documents.length,
-                            itemBuilder: (BuildContext context, int index) =>
-                              
-          Functions.buildProfileCard(context, snapshot.data.documents[index], databaseID)
-
-          ))
-          
-          ;}
-
+                        return new Container(
+                            height: 100.0,
+                            width: 100.0,
+                            child: new FutureBuilder(
+                                future: Functions.buildProfileCardArray(context, snapshot.data, databaseID),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot futureSnapshot) {
+                                  switch (futureSnapshot.connectionState) {
+                                    case ConnectionState.none:
+                                      return Text('Press button to start.');
+                                    case ConnectionState.active:
+                                    case ConnectionState.waiting:
+                                      return Text('Awaiting result...');
+                                    case ConnectionState.done:
+                                      if (futureSnapshot.hasError)
+                                        return Text(
+                                            'Error: ${futureSnapshot.error}');
+                                      return 
+                                      ListView.builder(
+                                          itemExtent: 80,
+                                          itemCount: futureSnapshot.data.length,
+                                          itemBuilder: (BuildContext context,
+                                                  int index) =>
+                                              futureSnapshot.data[index]);
+                                  }
+                                  return null; // unreachable
+                                }));
                       }
                   }
-                )
+                })
           ],
         );
       },
@@ -319,7 +335,7 @@ class ProfilePageState extends State<ProfilePage> {
               ),
 
               NotesCard(
-                StringLabels.notes,
+                  StringLabels.notes,
                   _profile.getProfileItemValue(
                       itemDatabaseId: DatabaseIds.notes),
                   (text) {}),
@@ -372,6 +388,7 @@ class ProfilePageState extends State<ProfilePage> {
                               keyDatabaseId: DatabaseIds.afterTaste,
                               value: value);
                         })
+
                         /// End of score
                       ],
                     )
@@ -517,12 +534,10 @@ class ProfileInputCard extends StatelessWidget {
                               imageRefString,
                               fit: BoxFit.cover,
                             )),
-
                         Container(
                           width: _spacing,
                           height: _spacing,
                         ),
-
                         Container(
                             width: _textFieldWidth,
                             child: TextField(
@@ -582,7 +597,6 @@ class UserDateInputCardState extends State<UserDateInputCard> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-
                   Expanded(
                     child: DateTimePickerFormField(
                       format: widget.dateFormat,
@@ -590,7 +604,6 @@ class UserDateInputCardState extends State<UserDateInputCard> {
                       onChanged: (dt) => setState(() => _date = dt),
                     ),
                   ),
-
                   Expanded(
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -726,43 +739,44 @@ class RatioCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-
-          /// Dose
-          Container(width: 100.0,
-                    child: TextField(
+              /// Dose
+              Container(
+                  width: 100.0,
+                  child: TextField(
                     textAlign: TextAlign.start,
                     keyboardType: TextInputType.number,
                     decoration: new InputDecoration(
-                    labelText: StringLabels.brewingDose,
-                    hintText: StringLabels.enterValue,
-                              ),
-                              onChanged: doseChanged,
-                            )),
+                      labelText: StringLabels.brewingDose,
+                      hintText: StringLabels.enterValue,
+                    ),
+                    onChanged: doseChanged,
+                  )),
 
-         /// Yield 
-         Container(width: 100.0,
-                    child: TextField(
+              /// Yield
+              Container(
+                  width: 100.0,
+                  child: TextField(
                     textAlign: TextAlign.start,
                     keyboardType: TextInputType.number,
                     decoration: new InputDecoration(
-                    labelText: StringLabels.yield,
-                    hintText: StringLabels.enterValue,
-                              ),
-                              onChanged: yieldChanged,
-                            )),
+                      labelText: StringLabels.yield,
+                      hintText: StringLabels.enterValue,
+                    ),
+                    onChanged: yieldChanged,
+                  )),
 
-          /// Brew wieght
-          Container(width: 100.0,
-                    child: TextField(
+              /// Brew wieght
+              Container(
+                  width: 100.0,
+                  child: TextField(
                     textAlign: TextAlign.start,
                     keyboardType: TextInputType.number,
                     decoration: new InputDecoration(
-                    labelText: StringLabels.brewWeight,
-                    hintText: StringLabels.enterValue,
-                              ),
-                              onChanged: brewWeightChanged,
-                            )),
-
+                      labelText: StringLabels.brewWeight,
+                      hintText: StringLabels.enterValue,
+                    ),
+                    onChanged: brewWeightChanged,
+                  )),
             ],
           ),
         ],
@@ -791,8 +805,7 @@ class TwoTextfieldCard extends StatelessWidget {
       @required this.titleLeft,
       @required this.leftHintText,
       @required this.titleRight,
-      @required this.rightHintText
-      });
+      @required this.rightHintText});
 
   @override
   Widget build(BuildContext context) {
@@ -807,31 +820,27 @@ class TwoTextfieldCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
+                  /// Left
+                  Container(
+                      width: 100.0,
+                      child: TextField(
+                        textAlign: TextAlign.start,
+                        keyboardType: TextInputType.number,
+                        decoration: new InputDecoration(
+                            labelText: titleLeft, hintText: leftHintText),
+                        onChanged: onLeftTextChanged,
+                      )),
 
-                 /// Left
-                  Container(width: 100.0,
-                    child: TextField(
-                    textAlign: TextAlign.start,
-                    keyboardType: TextInputType.number,
-                    decoration: new InputDecoration(
-                    labelText: titleLeft,
-                    hintText: leftHintText
-                              ),
-                              onChanged: onLeftTextChanged,
-                            )),
-
-                 // Right 
-                  Container(width: 100.0,
-                    child: TextField(
-                    textAlign: TextAlign.start,
-                    keyboardType: TextInputType.number,
-                    decoration: new InputDecoration(
-                    labelText: titleRight,
-                    hintText: rightHintText
-                              ),
-                              onChanged: onRightTextChanged,
-                            )),
-                 
+                  // Right
+                  Container(
+                      width: 100.0,
+                      child: TextField(
+                        textAlign: TextAlign.start,
+                        keyboardType: TextInputType.number,
+                        decoration: new InputDecoration(
+                            labelText: titleRight, hintText: rightHintText),
+                        onChanged: onRightTextChanged,
+                      )),
                 ],
               ),
             ]),

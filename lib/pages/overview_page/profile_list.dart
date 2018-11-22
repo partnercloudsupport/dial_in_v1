@@ -24,42 +24,56 @@ class _ProfileListState extends State<ProfileList>{
     super.initState();
  }
 
-
-Widget _buildProfileCard(BuildContext context, DocumentSnapshot document, String databaseId){
-
-  Profile profile = Functions.createProfileFromDocumentSnapshot(widget._listDatabaseId, document);
-
-  return ProfileCard(profile, (){ });
-}
-
 @override
     Widget build(BuildContext context) {
       return
       StreamBuilder(
       stream: Firestore.instance.collection(widget._listDatabaseId).snapshots(),initialData: 10,
 
-      builder: (context, snapshot){
-        switch (snapshot.connectionState){
-          case ConnectionState.waiting:
-          case ConnectionState.none:
-            return LinearProgressIndicator();
-          case ConnectionState.active:
-          case ConnectionState.done:
-        
-        print( snapshot.error);
-
-        if (!snapshot.hasData){ return const Center(child: Text('Loading'));}
-        else if (snapshot.hasError){ return const Center(child: Text('Error'));}
-        else if (snapshot.data.documents.length < 1){ return const Center(child: Text('No data')); }
-        else{
-      return
-      ListView.builder(
-        itemExtent: 80,
-        itemCount: snapshot.data.documents.length,
-        itemBuilder: (BuildContext context, int index) => 
-          _buildProfileCard(context, snapshot.data.documents[index], widget._listDatabaseId));}
-      }
-      }
+     builder: (context, snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.waiting:
+                    case ConnectionState.none:
+                      return LinearProgressIndicator();
+                    case ConnectionState.active:
+                    case ConnectionState.done:
+                      if (!snapshot.hasData) {
+                        return const Center(child: Text('Loading'));
+                      } else if (snapshot.hasError) {
+                        return const Center(child: Text('Error'));
+                      } else if (snapshot.data.documents.length < 1) {
+                        return const Center(child: Text('No data'));
+                      } else {
+                        return new Container(
+                            height: 100.0,
+                            width: 100.0,
+                            child: new FutureBuilder(
+                                future: Functions.buildProfileCardArray(context, snapshot, widget._listDatabaseId),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot futureSnapshot) {
+                                  switch (futureSnapshot.connectionState) {
+                                    case ConnectionState.none:
+                                      return Text('Press button to start.');
+                                    case ConnectionState.active:
+                                    case ConnectionState.waiting:
+                                      return Text('Awaiting result...');
+                                    case ConnectionState.done:
+                                      if (futureSnapshot.hasError)
+                                        return Text(
+                                            'Error: ${futureSnapshot.error}');
+                                      return 
+                                      ListView.builder(
+                                          itemExtent: 80,
+                                          itemCount: futureSnapshot.data.length,
+                                          itemBuilder: (BuildContext context,
+                                                  int index) =>
+                                              futureSnapshot.data[index]);
+                                  }
+                                  return null; // unreachable
+                                }));
+                      }
+                  }
+                }
       );
     }
 }

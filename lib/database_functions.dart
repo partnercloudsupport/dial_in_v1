@@ -93,14 +93,17 @@ class DatabaseFunctions {
 
   static Future<Profile> getProfileFromFireStoreWithDocRef(String collectionDataBaseId, String docRefernace)async{
    
-   DocumentSnapshot _document = await Firestore.instance.collection(collectionDataBaseId).document(docRefernace).get();
-    
-   List<Item> _properties = convertDocumentDataToProperties(_document);
+    Profile _profile;
 
-   Profile _profile = Functions.createProfile(collectionDataBaseId, _properties);
-
-  return _profile;
+    await Firestore.instance.collection(collectionDataBaseId).document(docRefernace).get().then((doc){
     
+    if (doc.exists) {
+          DatabaseFunctions.createProfileFromDocumentSnapshot(collectionDataBaseId, doc).then((profile){_profile = profile;});
+      } else {
+          _profile = Functions.createBlankProfile(Functions.getProfileDatabaseIdType(collectionDataBaseId));
+      }
+  }); 
+    return _profile;
   }
 
 
@@ -128,14 +131,51 @@ class DatabaseFunctions {
   return _properties;
 }
 
+
+
+  static Future<List<Profile>> createProfilesFromDataSnapshot(String databaseId, List<DocumentSnapshot> data)async{
+
+      List<Profile> documents = new List<Profile>();
+
+       data.forEach((document){  createProfileFromDocumentSnapshot(databaseId, document).then(((profile){
+         documents.add(profile);
+       }));  });
+
+    return documents;
+  }
+
   static Future<Profile> createProfileFromDocumentSnapshot(String databaseId, DocumentSnapshot document)async{
     
-      DateTime _updatedAt = DateTime.now();
-      String _objectId = ''; 
-      String _databaseId = '';
-      int _orderNumber = 0;
-      String _user = '';
+      DateTime _updatedAt;
+      String _objectId; 
+      int _orderNumber;
 
+      Profile _coffee;
+      Profile _barista;
+      Profile _equipment;
+      Profile _grinder;
+      Profile _water;
+
+      if (document.data.containsKey(DatabaseIds.updatedAt)) { _updatedAt = document.data[DatabaseIds.updatedAt];} else {_updatedAt = DateTime.now();}
+      if (document.data.containsKey(DatabaseIds.objectId)) { _objectId = document.data[DatabaseIds.objectId];} else {_objectId = '';}
+      if (document.data.containsKey(DatabaseIds.orderNumber)) { _orderNumber = document.data[DatabaseIds.orderNumber];} else {_orderNumber = 0;}
+
+      if (databaseId == DatabaseIds.recipe){
+      if (document.data.containsKey(DatabaseIds.coffeeId)) {_coffee = await DatabaseFunctions.getProfileFromFireStoreWithDocRef(databaseId , document.data[DatabaseIds.coffeeId]);}
+      else{_coffee = Functions.createBlankProfile(ProfileType.coffee);}
+
+      if (document.data.containsKey(DatabaseIds.barista)) {_barista = await DatabaseFunctions.getProfileFromFireStoreWithDocRef(databaseId , document.data[DatabaseIds.barista]);}
+      else{_barista = Functions.createBlankProfile(ProfileType.barista);}
+
+      if (document.data.containsKey(DatabaseIds.equipmentId)) {_equipment = await DatabaseFunctions.getProfileFromFireStoreWithDocRef(databaseId , document.data[DatabaseIds.equipmentId]);}
+      else{_equipment = Functions.createBlankProfile(ProfileType.equipment);} 
+
+      if (document.data.containsKey(DatabaseIds.grinderId)) {_grinder = await DatabaseFunctions.getProfileFromFireStoreWithDocRef(databaseId , document.data[DatabaseIds.grinderId]);}
+      else{_grinder = Functions.createBlankProfile(ProfileType.grinder);} 
+      
+      if (document.data.containsKey(DatabaseIds.waterID)) {_water = await DatabaseFunctions.getProfileFromFireStoreWithDocRef(databaseId , document.data[DatabaseIds.waterID]);}
+      else{_water = Functions.createBlankProfile(ProfileType.water);} 
+      }
 
       List<Item> _properties = new List<Item>();
 
@@ -146,13 +186,9 @@ class DatabaseFunctions {
       if ( key != DatabaseIds.objectId) {
 
       if ( key != DatabaseIds.orderNumber){
-
-      if ( key != DatabaseIds.user){  
-
+  
          Map<String, dynamic> item = {key: value};
         _properties.add(Functions.createItemWithData(item));
-
-      }else{_user = value; }
       
       }else{_orderNumber = value;}
       
@@ -172,15 +208,15 @@ class DatabaseFunctions {
               objectId: _objectId,
               type: ProfileType.recipe,
               image: Image.asset(Images.whiteRecipe200X200),
-              databaseId: _databaseId,
+              databaseId: databaseId,
               orderNumber: _orderNumber,
               properties: _properties,
               profiles:  [
-                await DatabaseFunctions.getProfileFromFireStoreWithDocRef(databaseId, document[DatabaseIds.coffeeId]);
-                await DatabaseFunctions.getProfileFromFireStoreWithDocRef(databaseId, document[DatabaseIds.barista]);
-                await DatabaseFunctions.getProfileFromFireStoreWithDocRef(databaseId, document[DatabaseIds.equipmentId]);
-                await DatabaseFunctions.getProfileFromFireStoreWithDocRef(databaseId, document[DatabaseIds.grinderId]);
-                await DatabaseFunctions.getProfileFromFireStoreWithDocRef(databaseId, document[DatabaseIds.waterID]);
+                _coffee,
+                _barista,
+                _equipment,
+                _grinder,
+                _water,
               ]
               );
       break;
@@ -191,8 +227,8 @@ class DatabaseFunctions {
               objectId: _objectId,
               type: ProfileType.coffee,
               image: Image.asset(Images.coffeeBeans),
-              databaseId: _databaseId,
-              orderNumber: 1,
+              databaseId: databaseId,
+              orderNumber: _orderNumber,
               properties: _properties
               );
       break;
@@ -204,7 +240,7 @@ class DatabaseFunctions {
               type: ProfileType.grinder,
               image: Image.asset(Images.grinder),
               databaseId: databaseId,
-              orderNumber: 0,
+              orderNumber: _orderNumber,
               properties: _properties
               );
       break;
@@ -216,7 +252,7 @@ class DatabaseFunctions {
               type: ProfileType.equipment,
               image: Image.asset(Images.groupHandle),
               databaseId: databaseId,
-              orderNumber: 0,
+              orderNumber: _orderNumber,
               properties: _properties
               );
       break;
@@ -228,7 +264,7 @@ class DatabaseFunctions {
               type: ProfileType.water,
               image: Image.asset(Images.water),
               databaseId: databaseId,
-              orderNumber: 0,
+              orderNumber: _orderNumber,
               properties: _properties
               );
       break;
@@ -240,7 +276,7 @@ class DatabaseFunctions {
               type: ProfileType.barista,
               image: Image.asset(Images.user),
               databaseId: databaseId,
-              orderNumber: 0,
+              orderNumber: _orderNumber,
               properties: _properties
               );
       break;
