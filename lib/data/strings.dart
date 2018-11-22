@@ -3,6 +3,8 @@
 class  StringLabels {
 
       ///since flutter
+        static const String noData = 'No data';
+        static const String loading = 'Loading...';
         static const String setTime = 'Set Time';
         static const String public = 'Public';
         static const String forgottonPassword = 'Forgotton your password?.';

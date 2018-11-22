@@ -26,9 +26,9 @@ void initState() {
 
   _lists = TabViewDataArray([
 
-    TabViewData(ProfileList(DatabaseIds.public), Tab(icon: Icon(Icons.public)), ProfileType.feed),
+    TabViewData(ProfileList(DatabaseIds.public,(profile){}), Tab(icon: Icon(Icons.public)), ProfileType.feed),
    
-    TabViewData(ProfileList(DatabaseIds.friends),Tab(icon: Icon(Icons.verified_user)),ProfileType.feed),
+    TabViewData(ProfileList(DatabaseIds.friends,(profile){}),Tab(icon: Icon(Icons.verified_user)),ProfileType.feed),
 
     ]);
   controller = new TabController( vsync: this, length: _lists.ref.length);

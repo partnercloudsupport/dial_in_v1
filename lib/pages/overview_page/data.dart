@@ -24,33 +24,33 @@ class DataPageState extends State<DataPage>
     super.initState();
     _lists = TabViewDataArray([
       TabViewData(
-        ProfileList(DatabaseIds.recipe),
+        ProfileList(DatabaseIds.recipe,(profile){}),
         Tab(icon: Icon(Icons.list),),
         ProfileType.recipe
       ),
         
       TabViewData(
-        ProfileList(DatabaseIds.coffee),
+        ProfileList(DatabaseIds.coffee,(profile){}),
         Tab(icon: Icon(Icons.rounded_corner)),
         ProfileType.coffee
       ),
       TabViewData(
-        ProfileList(DatabaseIds.grinder),
+        ProfileList(DatabaseIds.grinder,(profile){}),
         Tab(icon: Icon(Icons.cloud_off)),
         ProfileType.grinder
       ),
       TabViewData(
-        ProfileList(DatabaseIds.brewingEquipment),
+        ProfileList(DatabaseIds.brewingEquipment,(profile){}),
         Tab(icon: Icon(Icons.watch_later)),
         ProfileType.equipment
       ),
       TabViewData(
-        ProfileList(DatabaseIds.water),
+        ProfileList(DatabaseIds.water,(profile){}),
         Tab(icon: Icon(Icons.branding_watermark)),
         ProfileType.water
       ),
       TabViewData(
-        ProfileList(DatabaseIds.Barista),
+        ProfileList(DatabaseIds.Barista,(profile){}),
         Tab(icon: Icon(Icons.people)),
         ProfileType.barista
       ),

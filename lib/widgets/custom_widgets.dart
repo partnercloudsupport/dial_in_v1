@@ -269,15 +269,15 @@ class UserCard extends StatelessWidget {
 ///Profile card
 class ProfileCard extends StatelessWidget {
   
+  final Function(Profile) _giveprofile;
   final Profile profile;
-  final Function function;
   String _topLeft = 'error';
   String _topRight = 'error';
   String _bottomRight = 'error';
   String _bottomleft = 'error';
 
 
-  ProfileCard(this.profile, this.function){
+  ProfileCard(this.profile, this._giveprofile){
 
     switch(profile.type){
       
@@ -355,13 +355,8 @@ class ProfileCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return 
-
-    // Container(margin: EdgeInsets.all(10.0),child: 
-    Card(
-        // margin: EdgeInsets.all(10.0),
-        child: 
-        
-        InkWell(child: 
+    Card(child: 
+        InkWell(onTapDown:  _giveprofile(profile) ,child: 
         
         Row(children: <Widget>[
       ///
@@ -407,7 +402,6 @@ class ProfileCard extends StatelessWidget {
                     ])))
       ]))
     ]),
-    onTap: function,
     ));
     // ,);
   }

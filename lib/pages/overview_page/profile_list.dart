@@ -6,12 +6,14 @@ import '../../data/item.dart';
 import '../../database_functions.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../data/functions.dart';
+import '../../data/strings.dart';
 
 class ProfileList extends StatefulWidget{
 
  final String _listDatabaseId;
+ final Function(Profile) _giveProfile;
 
- ProfileList(this._listDatabaseId);
+ ProfileList(this._listDatabaseId, this._giveProfile);
 
  _ProfileListState createState() => new _ProfileListState();
 }
@@ -19,8 +21,13 @@ class ProfileList extends StatefulWidget{
 
 class _ProfileListState extends State<ProfileList>{
 
+  Function(Profile) _giveProfile;
+  String _listDatabaseId;
+
     @override
     initState(){
+    _giveProfile = widget._giveProfile; 
+    _listDatabaseId = widget._listDatabaseId; 
     super.initState();
  }
 
@@ -28,9 +35,9 @@ class _ProfileListState extends State<ProfileList>{
     Widget build(BuildContext context) {
       return
       StreamBuilder(
-      stream: Firestore.instance.collection(widget._listDatabaseId).snapshots(),initialData: 10,
-
-     builder: (context, snapshot) {
+      stream: Firestore.instance.collection(_listDatabaseId).snapshots(),
+      initialData: 10,
+      builder: (context, snapshot) {
                   switch (snapshot.connectionState) {
                     case ConnectionState.waiting:
                     case ConnectionState.none:
@@ -45,29 +52,25 @@ class _ProfileListState extends State<ProfileList>{
                         return const Center(child: Text('No data'));
                       } else {
                         return new Container(
-                            height: 100.0,
-                            width: 100.0,
+                            height: 200.0,
+                            width: 150.0,
                             child: new FutureBuilder(
-                                future: Functions.buildProfileCardArray(context, snapshot, widget._listDatabaseId),
-                                builder: (BuildContext context,
-                                    AsyncSnapshot futureSnapshot) {
+                                future: Functions.buildProfileCardArray(context, snapshot, _listDatabaseId, _giveProfile),
+                                builder: (BuildContext context, AsyncSnapshot futureSnapshot) {
                                   switch (futureSnapshot.connectionState) {
-                                    case ConnectionState.none:
-                                      return Text('Press button to start.');
+                                    case ConnectionState.none: return Text('Press button to start.');  
                                     case ConnectionState.active:
-                                    case ConnectionState.waiting:
-                                      return Text('Awaiting result...');
+                                    case ConnectionState.waiting: return Center(child: Text(StringLabels.loading));                                     
                                     case ConnectionState.done:
-                                      if (futureSnapshot.hasError)
-                                        return Text(
-                                            'Error: ${futureSnapshot.error}');
+                                      if (futureSnapshot.hasError){return Text('Error: ${futureSnapshot.error}');}
+                                      else if (futureSnapshot.data == null){ return Center(child: Text(StringLabels.noData));}
+                                      else{
                                       return 
                                       ListView.builder(
                                           itemExtent: 80,
                                           itemCount: futureSnapshot.data.length,
-                                          itemBuilder: (BuildContext context,
-                                                  int index) =>
-                                              futureSnapshot.data[index]);
+                                          itemBuilder: (BuildContext context, int index) =>
+                                              futureSnapshot.data[index]);}
                                   }
                                   return null; // unreachable
                                 }));

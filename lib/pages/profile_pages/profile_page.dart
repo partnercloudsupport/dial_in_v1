@@ -23,6 +23,7 @@ import '../../database_functions.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
+import '../overview_page/profile_list.dart';
 
 class ProfilePage extends StatefulWidget {
   @required
@@ -105,60 +106,14 @@ class ProfilePageState extends State<ProfilePage> {
               },
               child: Text('Add new profile'),
             ),
-            StreamBuilder(
-                stream: Firestore.instance.collection(databaseID).snapshots(),
-                initialData: 10,
-                builder: (context, snapshot) {
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.waiting:
-                    case ConnectionState.none:
-                      return LinearProgressIndicator();
-                    case ConnectionState.active:
-                    case ConnectionState.done:
-                      print(snapshot.error);
-
-                      if (!snapshot.hasData) {
-                        return const Center(child: Text('Loading'));
-                      } else if (snapshot.hasError) {
-                        return const Center(child: Text('Error'));
-                      } else if (snapshot.data.documents.length < 1) {
-                        return const Center(child: Text('No data'));
-                      } else {
-                        return new Container(
-                            height: 100.0,
-                            width: 100.0,
-                            child: new FutureBuilder(
-                                future: Functions.buildProfileCardArray(context, snapshot.data, databaseID),
-                                builder: (BuildContext context,
-                                    AsyncSnapshot futureSnapshot) {
-                                  switch (futureSnapshot.connectionState) {
-                                    case ConnectionState.none:
-                                      return Text('Press button to start.');
-                                    case ConnectionState.active:
-                                    case ConnectionState.waiting:
-                                      return Text('Awaiting result...');
-                                    case ConnectionState.done:
-                                      if (futureSnapshot.hasError)
-                                        return Text(
-                                            'Error: ${futureSnapshot.error}');
-                                      return 
-                                      ListView.builder(
-                                          itemExtent: 80,
-                                          itemCount: futureSnapshot.data.length,
-                                          itemBuilder: (BuildContext context,
-                                                  int index) =>
-                                              futureSnapshot.data[index]);
-                                  }
-                                  return null; // unreachable
-                                }));
-                      }
-                  }
-                })
+            ProfileList(databaseID,(profile){  profile.setSubProfile(profile);})
           ],
         );
       },
     );
   }
+
+  
 
   ///
   /// UI Build
@@ -497,7 +452,8 @@ class ProfileInputCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
         margin: EdgeInsets.all(_margin),
-        child: Container(
+        child: InkWell(onTap: onProfileTextPressed
+        ,child: Container(
             padding: EdgeInsets.all(_padding),
             child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -550,7 +506,7 @@ class ProfileInputCard extends StatelessWidget {
                               onChanged: onAttributeTextChange,
                             ))
                       ])
-                ])));
+                ]))));
   }
 }
 

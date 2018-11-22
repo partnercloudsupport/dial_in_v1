@@ -76,16 +76,18 @@ class Profile {
   }
 
   dynamic getProfileItemValue({String itemDatabaseId}) {
-
-    dynamic value; 
+    dynamic value;
     for (var i = 0; i < this.properties.length; i++) {
       if (this.properties[i].databaseId == itemDatabaseId) {
         value = this.properties[i].value;
       }
     }
 
-    if (value == null){return '';} else { return value;}
-
+    if (value == null) {
+      return '';
+    } else {
+      return value;
+    }
   }
 
   void setProfileProfileTitleValue(
@@ -136,7 +138,6 @@ class Profile {
   }
 
   String getProfileProfileTitleValue({String profileDatabaseId}) {
-
     String value = 'Error';
 
     if (this.profiles != null) {
@@ -156,12 +157,13 @@ class Profile {
               break;
 
             case DatabaseIds.brewingEquipment:
-              value = getProfileItemValue(
-                  itemDatabaseId: DatabaseIds.equipmentId);
+              value =
+                  getProfileItemValue(itemDatabaseId: DatabaseIds.equipmentId);
               break;
 
             case DatabaseIds.grinder:
-              value = getProfileItemValue(itemDatabaseId: DatabaseIds.grinderId);
+              value =
+                  getProfileItemValue(itemDatabaseId: DatabaseIds.grinderId);
               break;
 
             case DatabaseIds.barista:
@@ -176,6 +178,16 @@ class Profile {
       }
     }
     return value;
+  }
+
+  void setSubProfile(Profile profile) {
+    if (this.profiles != null){
+      for (var i = 0; i < this.profiles.length; i++) {
+        if (this.profiles[i].type == profile.type) {
+          this.profiles[i] = profile;
+        }
+      }
+    }
   }
 }
 
