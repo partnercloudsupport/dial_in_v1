@@ -203,7 +203,8 @@ class ProfilePageState extends State<ProfilePage> {
                   attributeTextfieldText: _profile.getProfileItemValue(
                       itemDatabaseId: DatabaseIds.temparature),
                   attributeHintText: StringLabels.enterValue,
-                  attributeTitle: StringLabels.temparature),
+                  attributeTitle: StringLabels.temparature,
+                  profileName: _profile.getProfileProfileTitleValue( profileDatabaseId: DatabaseIds.water)),
 
               /// Grinder
 
@@ -225,7 +226,9 @@ class ProfilePageState extends State<ProfilePage> {
                       itemDatabaseId: DatabaseIds.grindSetting),
                   attributeHintText: StringLabels.enterValue,
                   attributeTitle: StringLabels.setting,
-                  keyboardType: TextInputType.number),
+                  keyboardType: TextInputType.number,
+                  profileName: _profile.getProfileProfileTitleValue( profileDatabaseId: DatabaseIds.grinder)),
+
 
               /// Equipment
               ///
@@ -246,7 +249,9 @@ class ProfilePageState extends State<ProfilePage> {
                   attributeTextfieldText: _profile.getProfileItemValue(
                       itemDatabaseId: DatabaseIds.preinfusion),
                   attributeHintText: StringLabels.enterValue,
-                  attributeTitle: StringLabels.preinfusion),
+                  attributeTitle: StringLabels.preinfusion,
+                  profileName: _profile.getProfileProfileTitleValue( profileDatabaseId: DatabaseIds.brewingEquipment)),
+
 
               RatioCard(doseChanged: (dose) {
                 _profile = Functions.setProfileItemValue(
@@ -436,6 +441,7 @@ class ProfileInputCard extends StatelessWidget {
   final String attributeTitle;
   final double _spacing = 5.0;
   final TextInputType keyboardType;
+  final String profileName;
 
   ProfileInputCard(
       {this.imageRefString,
@@ -446,7 +452,8 @@ class ProfileInputCard extends StatelessWidget {
       this.attributeHintText,
       this.attributeTitle,
       this.profileTextfieldText,
-      this.keyboardType});
+      this.keyboardType,
+      this.profileName});
 
   @override
   Widget build(BuildContext context) {
@@ -473,7 +480,7 @@ class ProfileInputCard extends StatelessWidget {
                         RawMaterialButton(
                           onPressed: onProfileTextPressed,
                           child: Text(
-                            StringLabels.selectProfile,
+                            profileName,
                             style: TextStyle(fontSize: 20),
                           ),
                         )
