@@ -76,6 +76,7 @@ class Profile {
   }
 
   dynamic getProfileItemValue({String itemDatabaseId}) {
+    
     dynamic value;
     for (var i = 0; i < this.properties.length; i++) {
       if (this.properties[i].databaseId == itemDatabaseId) {
@@ -145,29 +146,27 @@ class Profile {
         if (this.profiles[i].databaseId == profileDatabaseId) {
           switch (profileDatabaseId) {
             case DatabaseIds.recipe:
-              value = getProfileItemValue(itemDatabaseId: DatabaseIds.recipeId);
+              value = this.profiles[i].getProfileItemValue(itemDatabaseId: DatabaseIds.recipeId);
               break;
 
             case DatabaseIds.coffee:
-              value = getProfileItemValue(itemDatabaseId: DatabaseIds.coffeeId);
+              value = this.profiles[i].getProfileItemValue(itemDatabaseId: DatabaseIds.coffeeId);
               break;
 
             case DatabaseIds.water:
-              value = getProfileItemValue(itemDatabaseId: DatabaseIds.waterID);
+              value = this.profiles[i].getProfileItemValue(itemDatabaseId: DatabaseIds.waterID);
               break;
 
             case DatabaseIds.brewingEquipment:
-              value =
-                  getProfileItemValue(itemDatabaseId: DatabaseIds.equipmentId);
+              value = this.profiles[i].getProfileItemValue(itemDatabaseId: DatabaseIds.equipmentId);
               break;
 
             case DatabaseIds.grinder:
-              value =
-                  getProfileItemValue(itemDatabaseId: DatabaseIds.grinderId);
+              value = this.profiles[i].getProfileItemValue(itemDatabaseId: DatabaseIds.grinderId);
               break;
 
             case DatabaseIds.barista:
-              value = getProfileItemValue(itemDatabaseId: DatabaseIds.name);
+              value = this.profiles[i].getProfileItemValue(itemDatabaseId: DatabaseIds.name);
               break;
 
             default:

@@ -1426,6 +1426,7 @@ class Functions {
   }
 
   static Future<Widget> buildProfileCardFromDocument(BuildContext context, DocumentSnapshot document, String databaseId, Function(Profile) giveprofile) async {
+    
     Profile profile = await DatabaseFunctions.createProfileFromDocumentSnapshot(
         databaseId, document);
 
@@ -1438,14 +1439,14 @@ class Functions {
 
     if (documents.data.documents != null || documents.data.documents.length != 0) {
       documents.data.documents.forEach((document) {
-        buildProfileCardFromDocument(context, document, databaseId, giveProfile)
+        buildProfileCardFromDocument(context, document, databaseId ,giveProfile)
             .then(((profile) { _cardArray.add(profile); }));
       });
     }
     return _cardArray;
   }
 
-  static StreamBuilder createStreamProfileListView(BuildContext context, String profileTypeDatabaseId, Function(Profile) giveProfile){
+  static StreamBuilder createStreamProfileListView(BuildContext context, String profileTypeDatabaseId,  ProfilePageState parent ,Function(Profile) giveProfile){
     return StreamBuilder(
         stream:
         Firestore.instance.collection(profileTypeDatabaseId).snapshots(),

@@ -24,6 +24,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
 import '../overview_page/profile_list.dart';
+import 'package:flutter/foundation.dart';
+import 'package:meta/meta.dart';
+
+
 
 class ProfilePage extends StatefulWidget {
   @required
@@ -37,10 +41,9 @@ class ProfilePage extends StatefulWidget {
   @required
   final String referance;
   String appBarTitle;
-  Profile _profile;
+  Profile profile;
 
-  ProfilePage(
-      {this.isCopying, this.isEditing, this.isNew, this.type, this.referance}) {
+  ProfilePage({this.isCopying, this.isEditing, this.isNew, this.type, this.referance, this.profile}) {
     if (isNew || isCopying) {
       this.appBarTitle = StringLabels.newe +
           ' ' +
@@ -48,8 +51,7 @@ class ProfilePage extends StatefulWidget {
           ' ' +
           StringLabels.profile;
     }
-
-    _profile = Functions.createBlankProfile(type);
+    if (isNew){ profile = Functions.createBlankProfile(type); }
   }
 
   ProfilePageState createState() => new ProfilePageState();
@@ -74,8 +76,7 @@ class ProfilePageState extends State<ProfilePage> {
     _isCopying = widget.isCopying;
     _isEditing = widget.isEditing;
     _isNew = widget.isNew;
-    _profile = widget._profile;
-    _profile = widget._profile;
+    _profile = widget.profile;
     super.initState();
   }
 
@@ -106,7 +107,9 @@ class ProfilePageState extends State<ProfilePage> {
               },
               child: Text('Add new profile'),
             ),
-            ProfileList(databaseID,(profile){  profile.setSubProfile(profile);})
+            ProfileList(databaseID,(sentProfile){ setState(() {
+                       _profile.setSubProfile(sentProfile);   
+                        }); }, false)
           ],
         );
       },
@@ -174,11 +177,8 @@ class ProfilePageState extends State<ProfilePage> {
                 child: Text(StringLabels.changeImage),
               ),
 
-              CoffeeCard(() {
-                _showDialog(DatabaseIds.coffee);
-              },
-                  _profile.getProfileProfileTitleValue(
-                      profileDatabaseId: DatabaseIds.coffee)),
+              CoffeeCard(() { _showDialog(DatabaseIds.coffee);},
+              _profile.getProfileProfileTitleValue( profileDatabaseId: DatabaseIds.coffee)),
 
               UserDateInputCard(onBaristaPressed: () {
                 _showDialog(DatabaseIds.Barista);
@@ -632,7 +632,7 @@ class CoffeeCard extends StatelessWidget {
   final double _textFieldWidth = 120.0;
   final double _cornerRadius = 20.0;
   final Function _openOptions;
-  String coffee;
+  final String coffee;
 
   CoffeeCard(this._openOptions, this.coffee);
 
@@ -651,7 +651,7 @@ class CoffeeCard extends StatelessWidget {
             ),
             Container(
               child: Text(
-                StringLabels.coffee,
+                coffee,
                 style: Theme.of(context).textTheme.title,
               ),
             ),

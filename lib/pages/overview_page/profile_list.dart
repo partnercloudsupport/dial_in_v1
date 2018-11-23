@@ -7,13 +7,15 @@ import '../../database_functions.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../data/functions.dart';
 import '../../data/strings.dart';
+import '../profile_pages/profile_page.dart';
 
 class ProfileList extends StatefulWidget{
 
  final String _listDatabaseId;
  final Function(Profile) _giveProfile;
+ final bool _isOnOverviewScreen;
 
- ProfileList(this._listDatabaseId, this._giveProfile);
+ ProfileList(this._listDatabaseId, this._giveProfile, this._isOnOverviewScreen);
 
  _ProfileListState createState() => new _ProfileListState();
 }
@@ -23,13 +25,29 @@ class _ProfileListState extends State<ProfileList>{
 
   Function(Profile) _giveProfile;
   String _listDatabaseId;
+  bool _isOnOverviewScreen;
 
     @override
     initState(){
     _giveProfile = widget._giveProfile; 
-    _listDatabaseId = widget._listDatabaseId; 
+    _listDatabaseId = widget._listDatabaseId;
+    _isOnOverviewScreen = widget._isOnOverviewScreen;
     super.initState();
- }
+   }
+
+   void _dealWithProfileSelection(Profile profile){
+
+     if (_isOnOverviewScreen){
+
+       Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
+          ProfilePage(isCopying: false, isEditing: true, isNew: true, type: profile.type, referance: profile.objectId, profile: profile)));
+
+     }else{
+
+       _giveProfile(profile);
+       Navigator.pop(context);
+     }
+   }
 
 @override
     Widget build(BuildContext context) {
@@ -55,7 +73,7 @@ class _ProfileListState extends State<ProfileList>{
                             height: 200.0,
                             width: 150.0,
                             child: new FutureBuilder(
-                                future: Functions.buildProfileCardArray(context, snapshot, _listDatabaseId, _giveProfile),
+                                future: Functions.buildProfileCardArray(context, snapshot, _listDatabaseId, _dealWithProfileSelection),
                                 builder: (BuildContext context, AsyncSnapshot futureSnapshot) {
                                   switch (futureSnapshot.connectionState) {
                                     case ConnectionState.none: return Text('Press button to start.');  

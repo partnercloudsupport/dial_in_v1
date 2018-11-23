@@ -5,6 +5,7 @@ import '../data/profile.dart';
 import '../data/functions.dart';
 import '../database_functions.dart';
 import '../data/images.dart';
+import '../pages/profile_pages/profile_page.dart';
 
 ///
 /// Background
@@ -276,18 +277,11 @@ class ProfileCard extends StatelessWidget {
   String _bottomRight = 'error';
   String _bottomleft = 'error';
 
-
   ProfileCard(this.profile, this._giveprofile){
 
     switch(profile.type){
       
       case ProfileType.recipe: 
-
-      // _topLeft = 'topLeft';
-      // _topRight = 'topright';
-      // _bottomRight = 'bottomright';
-      // _bottomleft = 'bottomleft';
-
       _topLeft = profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.coffee);
       _topRight = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.date);
       _bottomRight = profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.brewingEquipment);
@@ -356,9 +350,11 @@ class ProfileCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return 
     Card(child: 
-        InkWell(onTapDown:  _giveprofile(profile) ,child: 
+      InkWell(onTap:() => _giveprofile(profile)
+       
+      ,child: 
         
-        Row(children: <Widget>[
+      Row(children: <Widget>[
       ///
       /// Profile picture
       ///
@@ -497,14 +493,7 @@ class AddButton extends StatelessWidget {
 }
 
 
-
-
-
-
-
 ////////////////////////////////// Custom Classes ///////////////////////////////////////
-
-
 
 ///
 /// Tab View Data
