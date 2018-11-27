@@ -186,6 +186,23 @@ class ProfilePageState extends State<ProfilePage> {
                 _showDialog(DatabaseIds.Barista);
               }),
 
+
+              /// Coffee and Barista Card
+
+              DoubleProfileInputCard(
+                leftHintText: StringLabels.selectCoffee,        /// StringLabels.selectCoffee,
+                leftImageRefString: Images.coffeeBeans,
+                leftTextfieldText:  _profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.coffee),
+                leftTitle: StringLabels.coffee,
+                onLeftProfileTextPressed: (){_showDialog(DatabaseIds.coffee);},
+                
+                rightHintText: StringLabels.chooseBarista,
+                rightImageRefString: Images.user,
+                rightTextfieldText: _profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.Barista),
+                rightTitle: StringLabels.barista ,
+                onRightProfileTextPressed: (){_showDialog(DatabaseIds.Barista);} ), 
+        
+
               ///Water Section
             
               ProfileInputCard(
@@ -573,6 +590,169 @@ class _ProfileInputCardState extends State<ProfileInputCard> {
                 ])));
   }
 }
+
+class DoubleProfileInputCard extends StatefulWidget {
+
+  final double _padding = 20.0;
+  final double _margin = 10.0;
+  final double _cornerRadius = 20.0;
+  final double _textFieldWidth = 150.0;
+  final double _spacing = 5.0; 
+
+  final String leftImageRefString;
+  final String leftTitle;
+  final String leftTextfieldText;
+  final String leftHintText;
+  final Function onLeftProfileTextPressed;
+  final String rightImageRefString;
+  final String rightTitle;
+  final String rightTextfieldText;
+  final String rightHintText;
+  final Function onRightProfileTextPressed;
+ 
+
+  DoubleProfileInputCard({   
+    @required this.leftImageRefString,
+    @required this.leftTitle,
+    @required this.leftTextfieldText,
+    @required this.leftHintText,
+    @required this.onLeftProfileTextPressed,
+
+    @required this.rightImageRefString,
+    @required this.rightTitle,
+    @required this.rightTextfieldText,
+    @required this.rightHintText,
+    @required this.onRightProfileTextPressed,
+    });
+
+      _DoubleProfileInputCardState createState() => new _DoubleProfileInputCardState();
+}
+
+class _DoubleProfileInputCardState extends State<DoubleProfileInputCard> {
+
+      TextEditingController _leftController;
+       FocusNode _leftFocus;
+     
+      TextEditingController _rightController;
+       FocusNode _rightFocus;
+
+    
+      @override
+       void initState() {
+
+            _leftFocus = new FocusNode();
+            _leftFocus.addListener(handleLeftProfileTextfieldFocus);
+            _rightFocus = new FocusNode();
+            _rightFocus.addListener(handleRightProfileTextfieldFocus);
+
+            super.initState();
+      }
+
+      @override
+          void didUpdateWidget(Widget oldWidget) {
+            _leftController = new TextEditingController(text: widget.leftTextfieldText);
+            _rightController = new TextEditingController(text: widget.rightTextfieldText);
+           super.didUpdateWidget(oldWidget);
+          }
+
+      @override
+      void dispose() {
+        // Clean up the controller when the Widget is removed from the Widget tree
+        _leftController.dispose();
+        _rightController.dispose();
+        super.dispose();
+      }
+
+
+      void handleLeftProfileTextfieldFocus(){
+        if (_leftFocus.hasFocus){
+        widget.onLeftProfileTextPressed();
+        _leftFocus.unfocus();  
+        }
+      }
+
+      void handleRightProfileTextfieldFocus(){
+        if (_rightFocus.hasFocus){
+        widget.onRightProfileTextPressed();
+        _rightFocus.unfocus();  
+        }
+      }
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+        margin: EdgeInsets.all(widget._margin),
+          child: Container(
+            padding: EdgeInsets.all(widget._padding),
+            child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+
+                  /// Left profile selection
+                  Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+
+                        Container(
+                            margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, widget._margin),
+                            width: 40.0,
+                            height: 40.0,
+                            child: Image.asset(
+                              widget.leftImageRefString,
+                              fit: BoxFit.cover,
+                            )),
+
+                        Container(
+                          width: widget._textFieldWidth,
+                          margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, widget._margin),
+                          child: TextFormField(
+                              textAlign: TextAlign.end,
+                              decoration: new InputDecoration(
+                                labelText: widget.leftTitle,
+                                hintText: widget.leftHintText,
+                              ),
+                              focusNode: _leftFocus,
+                              controller: _leftController,
+                              )
+                        ),
+                 
+                      ]),
+
+                  /// Right
+                  Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+
+                        Container(
+                            margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, widget._margin),
+                            width: 40.0,
+                            height: 40.0,
+                            child: Image.asset(
+                              widget.rightImageRefString,
+                              fit: BoxFit.cover,
+                            )),
+
+                        Container(
+                          width: widget._textFieldWidth,
+                          margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, widget._margin),
+                          child: TextFormField(
+                              textAlign: TextAlign.end,
+                              decoration: new InputDecoration(
+                                labelText: widget.rightTitle,
+                                hintText: widget.rightHintText,
+                              ),
+                              focusNode: _rightFocus,
+                              controller: _rightController,),
+                        ),
+                      ]),
+                ])));
+  }
+}
+
 
 /// User profile
 

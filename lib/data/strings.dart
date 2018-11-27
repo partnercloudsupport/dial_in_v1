@@ -32,6 +32,7 @@ class  StringLabels {
         static const String error  = 'Error';
         static const String setDate = 'Set date';
         static const String harvest = 'Harvest';
+        static const String chooseBarista = 'Choose barista';
 
 
 
