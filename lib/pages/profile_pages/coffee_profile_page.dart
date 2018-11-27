@@ -124,16 +124,15 @@ class CoffeeProfilePageState extends State<CoffeeProfilePage> {
             children: <Widget>[
 
 
-              Row(children: <Widget>[
-              /// Profile Image
-              ProfileImage(Image.asset(Images.coffeeBeans)),
-
+              ///Public profile switch
               Container(padding: EdgeInsets.all(_padding),margin: EdgeInsets.all(_margin),child: 
               Column(children: <Widget>[
               Text(StringLabels.public), 
               Switch(onChanged: (on){setState(() {_profile.isPublic = on;}); }, value: _profile.isPublic,),
               ],),),
-              ]),
+              
+              /// Profile Image
+              ProfileImage(Image.asset(Images.coffeeBeans)),
 
               FlatButton(
                 onPressed: () {},

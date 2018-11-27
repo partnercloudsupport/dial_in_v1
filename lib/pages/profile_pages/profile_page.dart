@@ -168,6 +168,15 @@ class ProfilePageState extends State<ProfilePage> {
           Column(
             children: <Widget>[
 
+
+            ///Public profile switch
+            Container(padding: EdgeInsets.all(_padding),margin: EdgeInsets.all(_margin),child: 
+            Column(children: <Widget>[
+            Text(StringLabels.public), 
+            Switch(onChanged: (on){setState(() {_profile.isPublic = on;}); }, value: _profile.isPublic,),
+            ],),),
+
+
               /// Profile Image
               
               ProfileImage(Image.asset(Images.coffeeBeans)),
@@ -808,7 +817,7 @@ class ProfileImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return
-
+        
         /// Profile Image
         Container(
             margin: EdgeInsets.all(_margin),
