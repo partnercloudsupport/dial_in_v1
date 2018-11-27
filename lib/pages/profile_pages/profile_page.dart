@@ -177,20 +177,19 @@ class ProfilePageState extends State<ProfilePage> {
                 child: Text(StringLabels.changeImage),
               ),
 
-              CoffeeCard(() { _showDialog(DatabaseIds.coffee);},
-              _profile.getProfileProfileTitleValue( profileDatabaseId: DatabaseIds.coffee)),
 
-              UserDateInputCard(
-              barista:_profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.Barista),
-              onBaristaPressed: () {
-                _showDialog(DatabaseIds.Barista);
-              }),
+              DateInputCard(
+                  _profile.getProfileItemValue(itemDatabaseId: DatabaseIds.date),
+                  (dateTime){_profile = Functions.setProfileItemValue(
+                    profile: _profile,
+                    keyDatabaseId: DatabaseIds.date,
+                    value: dateTime);}),
 
 
               /// Coffee and Barista Card
 
               DoubleProfileInputCard(
-                leftHintText: StringLabels.selectCoffee,        /// StringLabels.selectCoffee,
+                leftHintText: StringLabels.selectCoffee,        
                 leftImageRefString: Images.coffeeBeans,
                 leftTextfieldText:  _profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.coffee),
                 leftTitle: StringLabels.coffee,
@@ -756,34 +755,30 @@ class _DoubleProfileInputCardState extends State<DoubleProfileInputCard> {
 
 /// User profile
 
-class UserDateInputCard extends StatefulWidget {
+class DateInputCard extends StatefulWidget {
   final double _padding = 20.0;
   final double _margin = 10.0;
   final double _cornerRadius = 20.0;
   final double _textFieldWidth = 150.0;
   final double _spacing = 15.0;
-  final dateFormat = DateFormat("EEEE, MMMM d, yyyy 'at' h:mma");
+  final _dateFormat = DateFormat("EEEE, MMMM d, yyyy 'at' h:mma");
+  final DateTime _dateTime;
+  Function(DateTime) onDateChanged; 
 
-  final Function onBaristaPressed;
-  DateTime _date;
-  String barista;
+  DateInputCard(this._dateTime,this.onDateChanged);
 
-  UserDateInputCard({
-    this.onBaristaPressed,
-    this.barista
-  });
-
-  UserDateInputCardState createState() => new UserDateInputCardState();
+  _DateInputCardState createState() => new _DateInputCardState();
 }
 
-class UserDateInputCardState extends State<UserDateInputCard> {
-  DateTime _date;
+class _DateInputCardState extends State<DateInputCard> {
+  DateTime _dateTime;
 
   @override
-  void initState() {
-    _date = widget._date;
-    super.initState();
-  }
+    void didUpdateWidget(Widget oldWidget) {
+      
+       _dateTime = widget._dateTime;
+      super.didUpdateWidget(oldWidget);
+    }
 
   @override
   Widget build(BuildContext context) {
@@ -800,31 +795,11 @@ class UserDateInputCardState extends State<UserDateInputCard> {
                 children: <Widget>[
                   Expanded(
                     child: DateTimePickerFormField(
-                      format: widget.dateFormat,
+                      format: widget._dateFormat,
+                      initialDate: widget._dateTime,
                       decoration: InputDecoration(labelText: 'Date'),
-                      onChanged: (dt) => setState(() => _date = dt),
+                      onChanged: widget.onDateChanged),
                     ),
-                  ),
-                  Expanded(
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Container(
-                            child: Text(
-                              StringLabels.barista,
-                              style: Theme.of(context).textTheme.subtitle,
-                            ),
-                          ),
-                          Container(
-                            width: 10.0,
-                            height: widget._spacing,
-                          ),
-                          RawMaterialButton(
-                              onPressed: widget.onBaristaPressed,
-                              child: Text(widget.barista,
-                                  style: TextStyle(fontSize: 20)))
-                        ]),
-                  )
                 ],
               ),
             ]),

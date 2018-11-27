@@ -357,7 +357,7 @@ class Functions {
       case DatabaseIds.date:
         _item = new Item(
           title: StringLabels.date,
-          value: '',
+          value: DateTime.now(),
           databaseId: DatabaseIds.date,
           placeHolderText: StringLabels.enterDescription,
           keyboardType: TextInputType.text,
@@ -476,9 +476,9 @@ class Functions {
 
       case DatabaseIds.notes:
         _item = new Item(
-          title: StringLabels.brewingEquipment,
+          title: StringLabels.notes,
           value: '',
-          databaseId: DatabaseIds.date,
+          databaseId: DatabaseIds.notes,
           placeHolderText: StringLabels.enterDescription,
           keyboardType: TextInputType.text,
         );
