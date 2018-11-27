@@ -521,6 +521,12 @@ class _ProfileInputCardState extends State<ProfileInputCard> {
         }
       }
 
+       @override
+          void didUpdateWidget(Widget oldWidget) {
+            _profileTextController = new TextEditingController(text: widget.profileName);
+           super.didUpdateWidget(oldWidget);
+      }
+
 
   @override
   Widget build(BuildContext context) {
@@ -534,13 +540,17 @@ class _ProfileInputCardState extends State<ProfileInputCard> {
                 children: <Widget>[
 
                   /// Left profile selection
-                  Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
+             
+                       Container(
+                            width: 40.0,
+                            height: 40.0,
+                            child: Image.asset(
+                              widget.imageRefString,
+                              fit: BoxFit.cover,
+                            )),
+
                         Container(
                           width: widget._textFieldWidth,
-                          margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, widget._margin),
                           child: TextFormField(
                               textAlign: TextAlign.end,
                               keyboardType: widget.keyboardType,
@@ -550,32 +560,10 @@ class _ProfileInputCardState extends State<ProfileInputCard> {
                               ),
                               focusNode: _textFocus,
                               controller: _profileTextController,)
-                        ),
-                 
-                      ]),
-
-                  /// Right
-                  Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
+                      ),
 
                         Container(
-                            margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, widget._margin),
-                            width: 40.0,
-                            height: 40.0,
-                            child: Image.asset(
-                              widget.imageRefString,
-                              fit: BoxFit.cover,
-                            )),
-
-                        Container(
-                          width: widget._spacing,
-                          height: widget._spacing,
-                        ),
-
-                        Container(
-                            width: widget._textFieldWidth,
+                            width: 120.0,
                             child: TextFormField(
                               textAlign: TextAlign.end,
                               keyboardType: widget.keyboardType,
@@ -585,9 +573,9 @@ class _ProfileInputCardState extends State<ProfileInputCard> {
                               ),
                               controller: _attributeController,
                             ))
-                      ])
-                ])));
-  }
+                      ]
+            )));
+            }
 }
 
 class DoubleProfileInputCard extends StatefulWidget {
