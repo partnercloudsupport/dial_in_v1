@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import '../data/strings.dart';
 import '../theme/appColors.dart';
 import '../data/profile.dart';
-import '../data/functions.dart';
 import '../database_functions.dart';
 import '../data/images.dart';
-import '../pages/profile_pages/profile_page.dart';
 
 ///
 /// Background
