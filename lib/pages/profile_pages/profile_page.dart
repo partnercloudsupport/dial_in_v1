@@ -167,7 +167,9 @@ class ProfilePageState extends State<ProfilePage> {
         children: <Widget>[
           Column(
             children: <Widget>[
+
               /// Profile Image
+              
               ProfileImage(Image.asset(Images.coffeeBeans)),
 
               FlatButton(
@@ -185,6 +187,7 @@ class ProfilePageState extends State<ProfilePage> {
               }),
 
               ///Water Section
+            
               ProfileInputCard(
                   imageRefString: Images.drop,
                   title: StringLabels.water,
@@ -252,8 +255,9 @@ class ProfilePageState extends State<ProfilePage> {
                   attributeTitle: StringLabels.preinfusion,
                   profileName: _profile.getProfileProfileTitleValue( profileDatabaseId: DatabaseIds.brewingEquipment)),
 
+            /// Ratio card
 
-              RatioCard(doseChanged: (dose) {
+            RatioCard(doseChanged: (dose) {
                 _profile = Functions.setProfileItemValue(
                     profile: _profile,
                     keyDatabaseId: DatabaseIds.brewingDose,
@@ -477,11 +481,15 @@ class ProfileInputCard extends StatefulWidget {
 class _ProfileInputCardState extends State<ProfileInputCard> {
 
       TextEditingController _controller;
+      FocusNode _textFocus;
 
       @override
        void initState() {
             _controller = new TextEditingController(text: widget.attributeValue);
             _controller.addListener(sendAttributeValue);
+            _textFocus = new FocusNode();
+            _textFocus.addListener(widget.onProfileTextPressed);
+
             super.initState();
       }
 
@@ -495,6 +503,7 @@ class _ProfileInputCardState extends State<ProfileInputCard> {
       void sendAttributeValue(){
         widget.onAttributeTextChange(_controller.text);
       }
+
 
   @override
   Widget build(BuildContext context) {
@@ -552,6 +561,7 @@ class _ProfileInputCardState extends State<ProfileInputCard> {
                                 hintText: widget.attributeHintText,
                               ),
                               controller: _controller,
+                              focusNode: _textFocus,
                             ))
                       ])
                 ]))));
@@ -727,7 +737,9 @@ class RatioCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return 
+    
+    Card(child:Container(
       margin: EdgeInsets.all(_margin),
       padding: EdgeInsets.all(_padding),
       child: Column(
@@ -786,7 +798,7 @@ class RatioCard extends StatelessWidget {
           ),
         ],
       ),
-    );
+    ));
   }
 }
 
