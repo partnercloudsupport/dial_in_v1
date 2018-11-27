@@ -63,7 +63,6 @@ class ProfilePageState extends State<ProfilePage> {
   double _margin = 10.0;
   double _textFieldWidth = 120.0;
   double _cornerRadius = 20.0;
-  Profile _profile;
   @required
   bool _isCopying;
   @required
@@ -71,49 +70,47 @@ class ProfilePageState extends State<ProfilePage> {
   @required
   bool _isNew;
 
+  Profile _profile;
+  Widget _profileStructure;
+
   void initState() {
     _isCopying = widget.isCopying;
     _isEditing = widget.isEditing;
     _isNew = widget.isNew;
     _profile = widget.profile;
+
+    switch(_profile.type){
+      case ProfileType.barista:
+
+      break;
+
+      case ProfileType.coffee:
+
+      break;
+
+      case ProfileType.equipment:
+      break;
+
+      case ProfileType.feed:
+      break;
+
+      case ProfileType.grinder:
+      break;
+
+      case ProfileType.none:
+      break;
+
+      case ProfileType.recipe:
+      _profileStructure = RecipePage(_profile, _margin, (key, value){_profile.setProfileItemValue(itemDatabaseId: key, value: value);} ,_showDialog);
+      break;
+
+      default:
+      break;
+    }
     super.initState();
   }
 
-// // user defined function
-  void _showDialog(String databaseID) {
-    // flutter defined function
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        // return object of type Dialog
-        return SimpleDialog(
-          title: Text(Functions.convertDatabaseIdToTitle(databaseID)),
-          children: <Widget>[
-            RaisedButton(
-              onPressed: () {
-                print('profile butoon pressed');
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) => ProfilePage(
-                              isCopying: false,
-                              isEditing: false,
-                              isNew: true,
-                              type: Functions.getProfileDatabaseIdType(
-                                  databaseID),
-                              referance: '',
-                            )));
-              },
-              child: Text('Add new profile'),
-            ),
-            ProfileList(databaseID,(sentProfile){ setState(() {
-                       _profile.setSubProfile(sentProfile);   
-                        }); }, false)
-          ],
-        );
-      },
-    );
-  }
+
 
   
   ///
@@ -188,12 +185,48 @@ class ProfilePageState extends State<ProfilePage> {
             
             /// All below changes depending on profile
 
-            RecipePage(_profile, _margin, (key, value){_profile.setProfileItemValue(itemDatabaseId: key, value: value);} ,_showDialog)
+              _profileStructure
 
             ],
           )
         ],
       ),
+    );
+  }
+
+  // // user defined function
+  void _showDialog(String databaseID) {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return SimpleDialog(
+          title: Text(Functions.convertDatabaseIdToTitle(databaseID)),
+          children: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                print('profile butoon pressed');
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => ProfilePage(
+                              isCopying: false,
+                              isEditing: false,
+                              isNew: true,
+                              type: Functions.getProfileDatabaseIdType(
+                                  databaseID),
+                              referance: '',
+                            )));
+              },
+              child: Text('Add new profile'),
+            ),
+            ProfileList(databaseID,(sentProfile){ setState(() {
+                       _profile.setSubProfile(sentProfile);   
+                        }); }, false)
+          ],
+        );
+      },
     );
   }
 }
