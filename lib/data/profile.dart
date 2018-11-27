@@ -91,6 +91,7 @@ class Profile {
     }
   }
 
+
   void setProfileProfileTitleValue(
       {String profileDatabaseId, String profileDatabaseIdref}) {
     for (var i = 0; i < this.profiles.length; i++) {
@@ -165,7 +166,7 @@ class Profile {
               value = this.profiles[i].getProfileItemValue(itemDatabaseId: DatabaseIds.grinderId);
               break;
 
-            case DatabaseIds.barista:
+            case DatabaseIds.Barista:
               value = this.profiles[i].getProfileItemValue(itemDatabaseId: DatabaseIds.name);
               break;
 
@@ -173,6 +174,19 @@ class Profile {
               return 'Error';
               break;
           }
+        }
+      }
+    }
+    return value;
+  }
+
+    String getProfileProfileRefernace({String profileDatabaseId}) {
+    String value = '';
+
+    if (this.profiles != null) {
+      for (var i = 0; i < this.profiles.length; i++) {
+        if (this.profiles[i].databaseId == profileDatabaseId) {
+              value = this.profiles[i].objectId;
         }
       }
     }

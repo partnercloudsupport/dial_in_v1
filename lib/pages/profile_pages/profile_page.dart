@@ -20,7 +20,6 @@ import 'package:flutter/material.dart';
 import '../../data/images.dart';
 import '../../data/functions.dart';
 import '../../database_functions.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
 import '../overview_page/profile_list.dart';
@@ -117,7 +116,6 @@ class ProfilePageState extends State<ProfilePage> {
   }
 
   
-
   ///
   /// UI Build
   ///
@@ -180,7 +178,9 @@ class ProfilePageState extends State<ProfilePage> {
               CoffeeCard(() { _showDialog(DatabaseIds.coffee);},
               _profile.getProfileProfileTitleValue( profileDatabaseId: DatabaseIds.coffee)),
 
-              UserDateInputCard(onBaristaPressed: () {
+              UserDateInputCard(
+              barista:_profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.Barista),
+              onBaristaPressed: () {
                 _showDialog(DatabaseIds.Barista);
               }),
 
@@ -298,7 +298,10 @@ class ProfilePageState extends State<ProfilePage> {
                   StringLabels.notes,
                   _profile.getProfileItemValue(
                       itemDatabaseId: DatabaseIds.notes),
-                  (text) {}),
+                  (text) {Functions.setProfileItemValue(
+                              profile: _profile,
+                              keyDatabaseId: DatabaseIds.notes,
+                              value: text);}),
 
               ///Score Section
               Card(
@@ -347,9 +350,19 @@ class ProfilePageState extends State<ProfilePage> {
                               profile: _profile,
                               keyDatabaseId: DatabaseIds.afterTaste,
                               value: value);
-                        })
+                        }),
 
                         /// End of score
+                        
+                        NotesCard(
+                        StringLabels.descriptors,
+                        _profile.getProfileItemValue(
+                            itemDatabaseId: DatabaseIds.descriptors),
+                        (text) {Functions.setProfileItemValue(
+                              profile: _profile,
+                              keyDatabaseId: DatabaseIds.descriptors,
+                              value: text);}), 
+                        
                       ],
                     )
                   ],
@@ -405,7 +418,7 @@ class ScoreSliderState extends State<ScoreSlider> {
               setState(() {
                 _value = value;
               });
-              widget._sliderValue;
+              widget._sliderValue(value);
             },
             onChangeEnd: (value) {},
             onChangeStart: (value) {},
@@ -415,7 +428,7 @@ class ScoreSliderState extends State<ScoreSlider> {
             label: _value.toInt().toString(),
             activeColor: Theme.of(context).sliderTheme.inactiveTrackColor,
             inactiveColor: Theme.of(context).sliderTheme.inactiveTrackColor,
-            // semanticFormatterCallback: ,
+            
           )
         ]);
   }
@@ -424,7 +437,8 @@ class ScoreSliderState extends State<ScoreSlider> {
 ////
 /// Widgets
 ///
-class ProfileInputCard extends StatelessWidget {
+class ProfileInputCard extends StatefulWidget {
+
   final double _padding = 20.0;
   final double _margin = 10.0;
   final double _cornerRadius = 20.0;
@@ -442,6 +456,7 @@ class ProfileInputCard extends StatelessWidget {
   final double _spacing = 5.0;
   final TextInputType keyboardType;
   final String profileName;
+  final String attributeValue;
 
   ProfileInputCard(
       {this.imageRefString,
@@ -453,15 +468,41 @@ class ProfileInputCard extends StatelessWidget {
       this.attributeTitle,
       this.profileTextfieldText,
       this.keyboardType,
-      this.profileName});
+      this.profileName,
+      this.attributeValue});
+
+      _ProfileInputCardState createState() => new _ProfileInputCardState();
+}
+
+class _ProfileInputCardState extends State<ProfileInputCard> {
+
+      TextEditingController _controller;
+
+      @override
+       void initState() {
+            _controller = new TextEditingController(text: widget.attributeValue);
+            _controller.addListener(sendAttributeValue);
+            super.initState();
+      }
+
+      @override
+      void dispose() {
+        // Clean up the controller when the Widget is removed from the Widget tree
+        _controller.dispose();
+        super.dispose();
+      }
+
+      void sendAttributeValue(){
+        widget.onAttributeTextChange(_controller.text);
+      }
 
   @override
   Widget build(BuildContext context) {
     return Card(
-        margin: EdgeInsets.all(_margin),
-        child: InkWell(onTap: onProfileTextPressed
+        margin: EdgeInsets.all(widget._margin),
+        child: InkWell(onTap: widget.onProfileTextPressed
         ,child: Container(
-            padding: EdgeInsets.all(_padding),
+            padding: EdgeInsets.all(widget._padding),
             child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -471,16 +512,16 @@ class ProfileInputCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Container(
-                          margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, _margin),
+                          margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, widget._margin),
                           child: Text(
-                            title,
+                            widget.title,
                             style: Theme.of(context).textTheme.caption,
                           ),
                         ),
                         RawMaterialButton(
-                          onPressed: onProfileTextPressed,
+                          onPressed: widget.onProfileTextPressed,
                           child: Text(
-                            profileName,
+                            widget.profileName,
                             style: TextStyle(fontSize: 20),
                           ),
                         )
@@ -490,27 +531,27 @@ class ProfileInputCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Container(
-                            margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, _margin),
+                            margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, widget._margin),
                             width: 40.0,
                             height: 40.0,
                             child: Image.asset(
-                              imageRefString,
+                              widget.imageRefString,
                               fit: BoxFit.cover,
                             )),
                         Container(
-                          width: _spacing,
-                          height: _spacing,
+                          width: widget._spacing,
+                          height: widget._spacing,
                         ),
                         Container(
-                            width: _textFieldWidth,
-                            child: TextField(
+                            width: widget._textFieldWidth,
+                            child: TextFormField(
                               textAlign: TextAlign.end,
-                              keyboardType: keyboardType,
+                              keyboardType: widget.keyboardType,
                               decoration: new InputDecoration(
-                                labelText: attributeTitle,
-                                hintText: attributeHintText,
+                                labelText: widget.attributeTitle,
+                                hintText: widget.attributeHintText,
                               ),
-                              onChanged: onAttributeTextChange,
+                              controller: _controller,
                             ))
                       ])
                 ]))));
@@ -529,10 +570,11 @@ class UserDateInputCard extends StatefulWidget {
 
   final Function onBaristaPressed;
   DateTime _date;
-  String _barista;
+  String barista;
 
   UserDateInputCard({
     this.onBaristaPressed,
+    this.barista
   });
 
   UserDateInputCardState createState() => new UserDateInputCardState();
@@ -583,7 +625,7 @@ class UserDateInputCardState extends State<UserDateInputCard> {
                           ),
                           RawMaterialButton(
                               onPressed: widget.onBaristaPressed,
-                              child: Text(StringLabels.barista,
+                              child: Text(widget.barista,
                                   style: TextStyle(fontSize: 20)))
                         ]),
                   )

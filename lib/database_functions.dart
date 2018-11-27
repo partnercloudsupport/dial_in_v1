@@ -10,7 +10,6 @@ import 'data/images.dart';
 
 class DatabaseFunctions {
 
-
   static Future<void> logIn(String emailUser, String password,
       Function(bool, String) completion) async {
           // try {
@@ -61,15 +60,21 @@ class DatabaseFunctions {
           
         _properties[profile.properties[i].databaseId] = profile.properties[i].value;
       
-        }
-      DatabaseFunctions.getCurrentUserId( (userId){
+      }
+      DatabaseFunctions.getCurrentUserId((userId){
 
-      _properties[DatabaseIds.image] = profile.image;
-      _properties[DatabaseIds.orderNumber] = profile.orderNumber;
-      _properties[DatabaseIds.user] = userId;
-      _properties[DatabaseIds.public] = profile.isPublic;
-      // _properties[DatabaseFunctions.imagePath] = file.toString();
+        _properties[DatabaseIds.image] = profile.image;
+        _properties[DatabaseIds.orderNumber] = profile.orderNumber;
+        _properties[DatabaseIds.user] = userId;
+        _properties[DatabaseIds.public] = profile.isPublic;
+        // _properties[DatabaseFunctions.imagePath] = file.toString();
       
+        _properties[DatabaseIds.coffeeId] = profile.getProfileProfileRefernace(profileDatabaseId: DatabaseIds.coffee);
+        _properties[DatabaseIds.waterID] = profile.getProfileProfileRefernace(profileDatabaseId: DatabaseIds.water);
+        _properties[DatabaseIds.grinderId] = profile.getProfileProfileRefernace(profileDatabaseId: DatabaseIds.grinder);
+        _properties[DatabaseIds.barista] = profile.getProfileProfileRefernace(profileDatabaseId: DatabaseIds.Barista);
+        _properties[DatabaseIds.equipmentId] = profile.getProfileProfileRefernace(profileDatabaseId: DatabaseIds.brewingEquipment);
+         
 
     Firestore.instance.
       collection(profile.databaseId).
@@ -77,8 +82,7 @@ class DatabaseFunctions {
       .setData(_properties);
       }
       );
-      // }
-      // );
+
   }
 
   static void getImage(String id, Function completion(Image image)){
@@ -87,8 +91,10 @@ class DatabaseFunctions {
   } 
 
   static Future<Profile> getProfileFromFireStoreWithDocRef(String collectionDataBaseId, String docRefernace)async{
-   
+    
     Profile _profile;
+
+    if (docRefernace != ''){
 
     await Firestore.instance.collection(collectionDataBaseId).document(docRefernace).get().then((doc){
     
@@ -98,6 +104,8 @@ class DatabaseFunctions {
           _profile = Functions.createBlankProfile(Functions.getProfileDatabaseIdType(collectionDataBaseId));
       }
   }); 
+    }else{_profile = Functions.createBlankProfile(Functions.getProfileDatabaseIdType(collectionDataBaseId));}
+
     return _profile;
   }
 
@@ -142,7 +150,7 @@ class DatabaseFunctions {
   static Future<Profile> createProfileFromDocumentSnapshot(String databaseId, DocumentSnapshot document)async{
     
       DateTime _updatedAt;
-      String _objectId; 
+      String _objectId = document.documentID;
       int _orderNumber;
 
       Profile _coffee;
@@ -152,14 +160,13 @@ class DatabaseFunctions {
       Profile _water;
 
       if (document.data.containsKey(DatabaseIds.updatedAt)) { _updatedAt = document.data[DatabaseIds.updatedAt];} else {_updatedAt = DateTime.now();}
-      if (document.data.containsKey(DatabaseIds.objectId)) { _objectId = document.data[DatabaseIds.objectId];} else {_objectId = '';}
       if (document.data.containsKey(DatabaseIds.orderNumber)) { _orderNumber = document.data[DatabaseIds.orderNumber];} else {_orderNumber = 0;}
 
       if (databaseId == DatabaseIds.recipe){
       if (document.data.containsKey(DatabaseIds.coffeeId)) {_coffee = await DatabaseFunctions.getProfileFromFireStoreWithDocRef(databaseId , document.data[DatabaseIds.coffeeId]);}
       else{_coffee = Functions.createBlankProfile(ProfileType.coffee);}
 
-      if (document.data.containsKey(DatabaseIds.barista)) {_barista = await DatabaseFunctions.getProfileFromFireStoreWithDocRef(databaseId , document.data[DatabaseIds.barista]);}
+      if (document.data.containsKey(DatabaseIds.Barista)) {_barista = await DatabaseFunctions.getProfileFromFireStoreWithDocRef(databaseId , document.data[DatabaseIds.Barista]);}
       else{_barista = Functions.createBlankProfile(ProfileType.barista);}
 
       if (document.data.containsKey(DatabaseIds.equipmentId)) {_equipment = await DatabaseFunctions.getProfileFromFireStoreWithDocRef(databaseId , document.data[DatabaseIds.equipmentId]);}
@@ -178,19 +185,14 @@ class DatabaseFunctions {
 
       if ( key != DatabaseIds.updatedAt){
 
-      if ( key != DatabaseIds.objectId) {
-
       if ( key != DatabaseIds.orderNumber){
   
          Map<String, dynamic> item = {key: value};
         _properties.add(Functions.createItemWithData(item));
       
       }else{_orderNumber = value;}
-      
-      }else{_objectId = value;}
-      
+          
       }else{_updatedAt = value;}
-      
       }
     );
 
