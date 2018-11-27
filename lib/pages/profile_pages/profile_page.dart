@@ -201,8 +201,6 @@ class ProfilePageState extends State<ProfilePage> {
                   onProfileTextPressed: () {
                     _showDialog(DatabaseIds.water);
                   },
-                  profileTextfieldText: _profile.getProfileItemValue(
-                      itemDatabaseId: DatabaseIds.waterID),
                   attributeTextfieldText: _profile.getProfileItemValue(
                       itemDatabaseId: DatabaseIds.temparature),
                   attributeHintText: StringLabels.enterValue,
@@ -223,8 +221,6 @@ class ProfilePageState extends State<ProfilePage> {
                   onProfileTextPressed: () {
                     _showDialog(DatabaseIds.grinder);
                   },
-                  profileTextfieldText: _profile.getProfileItemValue(
-                      itemDatabaseId: DatabaseIds.grinderId),
                   attributeTextfieldText: _profile.getProfileItemValue(
                       itemDatabaseId: DatabaseIds.grindSetting),
                   attributeHintText: StringLabels.enterValue,
@@ -247,8 +243,6 @@ class ProfilePageState extends State<ProfilePage> {
                   onProfileTextPressed: () {
                     _showDialog(DatabaseIds.brewingEquipment);
                   },
-                  profileTextfieldText: _profile.getProfileItemValue(
-                      itemDatabaseId: DatabaseIds.equipmentId),
                   attributeTextfieldText: _profile.getProfileItemValue(
                       itemDatabaseId: DatabaseIds.preinfusion),
                   attributeHintText: StringLabels.enterValue,
@@ -452,7 +446,6 @@ class ProfileInputCard extends StatefulWidget {
   final String title;
   final Function(String) onAttributeTextChange;
   final Function onProfileTextPressed;
-  final String profileTextfieldText;
   final String attributeTextfieldText;
   final String attributeHintText;
   final String profileHintText = StringLabels.chooseProfile;
@@ -460,7 +453,7 @@ class ProfileInputCard extends StatefulWidget {
   final double _spacing = 5.0;
   final TextInputType keyboardType;
   final String profileName;
-  final String attributeValue;
+  
 
   ProfileInputCard(
       {this.imageRefString,
@@ -470,38 +463,46 @@ class ProfileInputCard extends StatefulWidget {
       this.attributeTextfieldText,
       this.attributeHintText,
       this.attributeTitle,
-      this.profileTextfieldText,
       this.keyboardType,
       this.profileName,
-      this.attributeValue});
+      });
 
       _ProfileInputCardState createState() => new _ProfileInputCardState();
 }
 
 class _ProfileInputCardState extends State<ProfileInputCard> {
 
-      TextEditingController _controller;
+      TextEditingController _attributeController;
+      TextEditingController _profileTextController;
       FocusNode _textFocus;
 
       @override
        void initState() {
-            _controller = new TextEditingController(text: widget.attributeValue);
-            _controller.addListener(sendAttributeValue);
+            _attributeController = new TextEditingController(text: widget.attributeTextfieldText);
+            _attributeController.addListener(sendAttributeValue);
+            _profileTextController = new TextEditingController(text: widget.profileName);
             _textFocus = new FocusNode();
-            _textFocus.addListener(widget.onProfileTextPressed);
-
+            _textFocus.addListener(handleProfileTextfieldFocus);
             super.initState();
       }
 
       @override
       void dispose() {
         // Clean up the controller when the Widget is removed from the Widget tree
-        _controller.dispose();
+        _attributeController.dispose();
+        _profileTextController.dispose();
         super.dispose();
       }
 
       void sendAttributeValue(){
-        widget.onAttributeTextChange(_controller.text);
+        widget.onAttributeTextChange(_attributeController.text);
+      }
+
+      void handleProfileTextfieldFocus(){
+        if (_textFocus.hasFocus){
+        widget.onProfileTextPressed();
+        _textFocus.unfocus();  
+        }
       }
 
 
@@ -509,36 +510,40 @@ class _ProfileInputCardState extends State<ProfileInputCard> {
   Widget build(BuildContext context) {
     return Card(
         margin: EdgeInsets.all(widget._margin),
-        child: InkWell(onTap: widget.onProfileTextPressed
-        ,child: Container(
+          child: Container(
             padding: EdgeInsets.all(widget._padding),
             child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
+
+                  /// Left profile selection
                   Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Container(
+                          width: widget._textFieldWidth,
                           margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, widget._margin),
-                          child: Text(
-                            widget.title,
-                            style: Theme.of(context).textTheme.caption,
-                          ),
+                          child: TextFormField(
+                              textAlign: TextAlign.end,
+                              keyboardType: widget.keyboardType,
+                              decoration: new InputDecoration(
+                                labelText: widget.title,
+                                hintText: StringLabels.selectProfile,
+                              ),
+                              focusNode: _textFocus,
+                              controller: _profileTextController,)
                         ),
-                        RawMaterialButton(
-                          onPressed: widget.onProfileTextPressed,
-                          child: Text(
-                            widget.profileName,
-                            style: TextStyle(fontSize: 20),
-                          ),
-                        )
+                 
                       ]),
+
+                  /// Right
                   Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
+
                         Container(
                             margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, widget._margin),
                             width: 40.0,
@@ -547,10 +552,12 @@ class _ProfileInputCardState extends State<ProfileInputCard> {
                               widget.imageRefString,
                               fit: BoxFit.cover,
                             )),
+
                         Container(
                           width: widget._spacing,
                           height: widget._spacing,
                         ),
+
                         Container(
                             width: widget._textFieldWidth,
                             child: TextFormField(
@@ -560,11 +567,10 @@ class _ProfileInputCardState extends State<ProfileInputCard> {
                                 labelText: widget.attributeTitle,
                                 hintText: widget.attributeHintText,
                               ),
-                              controller: _controller,
-                              focusNode: _textFocus,
+                              controller: _attributeController,
                             ))
                       ])
-                ]))));
+                ])));
   }
 }
 
