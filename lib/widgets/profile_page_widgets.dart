@@ -364,8 +364,9 @@ class DateInputCard extends StatefulWidget {
   final _dateFormat = DateFormat("EEEE, MMMM d, yyyy 'at' h:mma");
   final DateTime _dateTime;
   Function(DateTime) onDateChanged; 
+  String _title;
 
-  DateInputCard(this._dateTime,this.onDateChanged);
+  DateInputCard(this._title, this._dateTime, this.onDateChanged);
 
   _DateInputCardState createState() => new _DateInputCardState();
 }
@@ -397,7 +398,7 @@ class _DateInputCardState extends State<DateInputCard> {
                     child: DateTimePickerFormField(
                       format: widget._dateFormat,
                       initialDate: widget._dateTime,
-                      decoration: InputDecoration(labelText: 'Date'),
+                      decoration: InputDecoration(labelText: widget._title),
                       onChanged: widget.onDateChanged),
                     ),
                 ],

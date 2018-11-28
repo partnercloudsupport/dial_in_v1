@@ -20,13 +20,13 @@ import 'package:flutter/material.dart';
 import '../../data/images.dart';
 import '../../data/functions.dart';
 import '../../database_functions.dart';
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-import 'package:intl/intl.dart';
+
 import '../overview_page/profile_list.dart';
 import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 import '../../widgets/profile_page_widgets.dart';
 import '../../pages/profile_pages/recipe_profile_page.dart';
+import '../../pages/profile_pages/water_profile_page.dart';
 
 
 
@@ -79,6 +79,7 @@ class ProfilePageState extends State<ProfilePage> {
     _isNew = widget.isNew;
     _profile = widget.profile;
 
+
     switch(_profile.type){
       case ProfileType.barista:
 
@@ -100,8 +101,12 @@ class ProfilePageState extends State<ProfilePage> {
       case ProfileType.none:
       break;
 
+      case ProfileType.water:
+      _profileStructure = WaterPage(_profile, _margin, (key, value){ _profile.setProfileItemValue(itemDatabaseId: key, value: value);}, _showDialog);
+      break;
+
       case ProfileType.recipe:
-      _profileStructure = RecipePage(_profile, _margin, (key, value){_profile.setProfileItemValue(itemDatabaseId: key, value: value);} ,_showDialog);
+      _profileStructure = RecipePage(_profile, _margin, (key, value){_profile.setProfileItemValue(itemDatabaseId: key, value: value);},_showDialog);
       break;
 
       default:
@@ -110,9 +115,44 @@ class ProfilePageState extends State<ProfilePage> {
     super.initState();
   }
 
+@override
+void didUpdateWidget(Widget oldWidget) {
 
+    switch(_profile.type){
+      case ProfileType.barista:
 
-  
+      break;
+
+      case ProfileType.coffee:
+
+      break;
+
+      case ProfileType.equipment:
+      break;
+
+      case ProfileType.feed:
+      break;
+
+      case ProfileType.grinder:
+      break;
+
+      case ProfileType.none:
+      break;
+
+      case ProfileType.water:
+      _profileStructure = WaterPage(_profile, _margin, (key, value){ _profile.setProfileItemValue(itemDatabaseId: key, value: value);}, _showDialog);
+      break;
+
+      case ProfileType.recipe:
+      _profileStructure = RecipePage(_profile, _margin, (key, value){_profile.setProfileItemValue(itemDatabaseId: key, value: value);},_showDialog);
+      break;
+
+      default:
+      break;
+    }
+    super.didUpdateWidget(oldWidget);
+}
+
   ///
   /// UI Build
   ///
@@ -185,13 +225,53 @@ class ProfilePageState extends State<ProfilePage> {
             
             /// All below changes depending on profile
 
-              _profileStructure
+             _returnPageStructure(_profile)
 
             ],
           )
         ],
       ),
     );
+  }
+
+  Widget _returnPageStructure(Profile profile){
+
+    Widget _structure;
+
+    switch(profile.type){
+      case ProfileType.barista:
+        
+      break;
+
+      case ProfileType.coffee:
+
+      break;
+
+      case ProfileType.equipment:
+      break;
+
+      case ProfileType.feed:
+      break;
+
+      case ProfileType.grinder:
+      break;
+
+      case ProfileType.none:
+      break;
+
+      case ProfileType.water:
+      _structure = WaterPage(_profile, _margin, (key, value){ _profile.setProfileItemValue(itemDatabaseId: key, value: value);}, _showDialog);
+      break;
+
+      case ProfileType.recipe:
+      _structure = RecipePage(_profile, _margin, (key, value){_profile.setProfileItemValue(itemDatabaseId: key, value: value);},_showDialog);
+      break;
+
+      default:
+      break;
+    }
+
+    return _structure;
   }
 
   // // user defined function

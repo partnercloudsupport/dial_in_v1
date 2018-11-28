@@ -38,7 +38,6 @@ final Profile _profile;
 // Sets a String and Value in the Parent profie
 Function(String , dynamic) _setProfileItemValue;
 
-
   RecipePage(this._profile, this._margin, this._setProfileItemValue, this._showOptions);
 
 _RecipePageState createState() => new _RecipePageState();
@@ -47,13 +46,28 @@ _RecipePageState createState() => new _RecipePageState();
 
 class _RecipePageState extends State<RecipePage> {
   
- ///
+ Profile _profile;
+
+  @override
+  void didUpdateWidget(Widget oldWidget) {
+      super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void didChangeDependencies(){
+    setState(() {
+        });
+    super.didChangeDependencies();
+  }
+
+  ///
   /// UI Build
   ///
   @override
   Widget build(BuildContext context) {
     return new Column(children: <Widget>[ 
-              DateInputCard(
+
+              DateInputCard(StringLabels.date,
                   widget._profile.getProfileItemValue(itemDatabaseId: DatabaseIds.date),
                   (dateTime){widget._setProfileItemValue( DatabaseIds.date, dateTime);}),
 
@@ -112,7 +126,7 @@ class _RecipePageState extends State<RecipePage> {
 
 
               /// Equipment
-              ///
+              
               ProfileInputCard(
                   imageRefString: Images.aeropressSmaller512x512,
                   title: StringLabels.brewingEquipment,
