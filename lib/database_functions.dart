@@ -69,12 +69,13 @@ class DatabaseFunctions {
         _properties[DatabaseIds.public] = profile.isPublic;
         // _properties[DatabaseFunctions.imagePath] = file.toString();
       
+      if (profile.type == ProfileType.recipe){
         _properties[DatabaseIds.coffeeId] = profile.getProfileProfileRefernace(profileDatabaseId: DatabaseIds.coffee);
         _properties[DatabaseIds.waterID] = profile.getProfileProfileRefernace(profileDatabaseId: DatabaseIds.water);
         _properties[DatabaseIds.grinderId] = profile.getProfileProfileRefernace(profileDatabaseId: DatabaseIds.grinder);
         _properties[DatabaseIds.barista] = profile.getProfileProfileRefernace(profileDatabaseId: DatabaseIds.Barista);
         _properties[DatabaseIds.equipmentId] = profile.getProfileProfileRefernace(profileDatabaseId: DatabaseIds.brewingEquipment);
-         
+      }  
 
     Firestore.instance.
       collection(profile.databaseId).

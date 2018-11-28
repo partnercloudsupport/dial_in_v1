@@ -4,6 +4,8 @@ import '../theme/appColors.dart';
 import '../data/profile.dart';
 import '../database_functions.dart';
 import '../data/images.dart';
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:intl/intl.dart';
 
 ///
 /// Background
@@ -586,6 +588,60 @@ class ProfileImage extends StatelessWidget {
                 )));
   }
 }
+
+class DateInputCard extends StatefulWidget {
+  final double _padding = 20.0;
+  final double _margin = 10.0;
+  final double _cornerRadius = 20.0;
+  final double _textFieldWidth = 150.0;
+  final _dateFormat = DateFormat("EEEE, MMMM d, yyyy 'at' h:mma");
+  final DateTime _dateTime;
+  Function(DateTime) onDateChanged; 
+  String _title;
+
+  DateInputCard(this._title, this._dateTime, this.onDateChanged);
+
+  _DateInputCardState createState() => new _DateInputCardState();
+}
+
+class _DateInputCardState extends State<DateInputCard> {
+  DateTime _dateTime;
+
+  @override
+    void didUpdateWidget(Widget oldWidget) {
+      
+       _dateTime = widget._dateTime;
+      super.didUpdateWidget(oldWidget);
+    }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.all(widget._margin),
+      child: Container(
+        padding: EdgeInsets.all(widget._padding),
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Expanded(
+                    child: DateTimePickerFormField(
+                      format: widget._dateFormat,
+                      initialDate: widget._dateTime,
+                      decoration: InputDecoration(labelText: widget._title),
+                      onChanged: widget.onDateChanged),
+                    ),
+                ],
+              ),
+            ]),
+      ),
+    );
+  }
+}
+
 
 
 

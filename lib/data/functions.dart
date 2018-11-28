@@ -10,6 +10,7 @@ import '../pages/profile_pages/profile_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Functions {
+
   static Profile setProfileItemValue(
       {Profile profile, String keyDatabaseId, dynamic value}) {
     for (var i = 0; i < profile.properties.length; i++) {
@@ -17,12 +18,13 @@ class Functions {
         profile.properties[i].value = value;
       }
     }
-
     return profile;
   }
 
   static String getProfileTypeString(ProfileType type) {
+
     switch (type) {
+
       case ProfileType.recipe:
         return StringLabels.recipe;
         break;
@@ -62,7 +64,9 @@ class Functions {
   }
 
   static String getProfileTypeDatabaseId(ProfileType type) {
+
     switch (type) {
+
       case ProfileType.recipe:
         return DatabaseIds.recipe;
         break;
@@ -212,6 +216,7 @@ class Functions {
               createBlankItem(DatabaseIds.gh),
               createBlankItem(DatabaseIds.kh),
               createBlankItem(DatabaseIds.ph),
+              createBlankItem(DatabaseIds.notes),
             ]);
         break;
 

@@ -12,6 +12,7 @@ import 'package:meta/meta.dart';
 import '../../widgets/profile_page_widgets.dart';
 import '../../data/profile.dart';
 import '../../data/strings.dart';
+import '../../widgets/custom_widgets.dart';
 
 
 class WaterPage extends StatefulWidget{
@@ -23,7 +24,6 @@ final Profile _profile;
 // Sets a String and Value in the Parent profie
 final Function(String , dynamic) _setProfileItemValue;
 
-
   WaterPage(this._profile, this._margin, this._setProfileItemValue, this._showOptions);
 
 _WaterPageState createState() => new _WaterPageState();
@@ -31,7 +31,17 @@ _WaterPageState createState() => new _WaterPageState();
 
 
 class _WaterPageState extends State<WaterPage> {
-  
+  final double _padding = 20.0;
+  final double _margin = 10.0;
+  final double _cornerRadius = 20.0;
+  Profile _profile;
+
+  @override 
+  void initState() {
+    _profile = widget._profile;
+      super.initState();
+    }
+
  ///
   /// UI Build
   ///
@@ -39,17 +49,34 @@ class _WaterPageState extends State<WaterPage> {
   Widget build(BuildContext context) {
     return new Column(children: <Widget>[
 
+                  /// Name
+                  Container(margin: EdgeInsets.all(_margin),padding: EdgeInsets.all(_padding),
+                  child: TextField(
+                    textAlign: TextAlign.start,
+                    keyboardType: TextInputType.text,
+                    decoration: new InputDecoration(
+                      labelText: StringLabels.name,
+                      hintText: StringLabels.enterNickname,
+                    ),
+                    onChanged: (name){{widget._setProfileItemValue( DatabaseIds.waterID, name);}}),
+                  ),
+
+                  /// Date
                   DateInputCard(StringLabels.dateTested,
                   widget._profile.getProfileItemValue(itemDatabaseId: DatabaseIds.date),
                   (dateTime){widget._setProfileItemValue( DatabaseIds.date, dateTime);}),
 
+                  /// Details
                   WaterDetailsCard(
                     (totalPpm){widget._setProfileItemValue( DatabaseIds.ppm, totalPpm);},
                     (ghPpm){widget._setProfileItemValue( DatabaseIds.gh, ghPpm);},
                     (khPpm){widget._setProfileItemValue( DatabaseIds.kh, khPpm);},
-                    (pH){widget._setProfileItemValue( DatabaseIds.ph, pH);}
-                    )
+                    (pH){widget._setProfileItemValue( DatabaseIds.ph, pH);}),
 
+                  /// Notes
+                   NotesCard(StringLabels.notes,
+                    _profile.getProfileItemValue(itemDatabaseId: DatabaseIds.notes),
+                    (text){_profile.setProfileItemValue(itemDatabaseId:  DatabaseIds.notes);}) 
     ]);
     }
 }
@@ -123,7 +150,9 @@ WaterDetailsCard(this._totalPpm, this._ghPpm, this._khPpm, this._pH);
                     hintText: StringLabels.enterDescription,
                               ),
                               onChanged: _pH,
-                            )),                  
+                            )),      
+
+          /// Notes                              
         ],),
     ],),)
     );

@@ -27,20 +27,21 @@ import '../overview_page/profile_list.dart';
 import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 import '../../widgets/profile_page_widgets.dart';
+import '../../widgets/custom_widgets.dart';
 
 
 class RecipePage extends StatefulWidget{
 
-final Function(String) _showOptions;
-final double _margin; 
-final Profile _profile;
+  final Function(String) _showOptions;
+  final double _margin; 
+  final Profile _profile;
 
-// Sets a String and Value in the Parent profie
-Function(String , dynamic) _setProfileItemValue;
+  // Sets a String and Value in the Parent profie
+  Function(String , dynamic) _setProfileItemValue;
 
   RecipePage(this._profile, this._margin, this._setProfileItemValue, this._showOptions);
 
-_RecipePageState createState() => new _RecipePageState();
+  _RecipePageState createState() => new _RecipePageState();
 }
 
 
@@ -50,7 +51,7 @@ class _RecipePageState extends State<RecipePage> {
 
   @override
   void didUpdateWidget(Widget oldWidget) {
-      super.didUpdateWidget(oldWidget);
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -67,13 +68,12 @@ class _RecipePageState extends State<RecipePage> {
   Widget build(BuildContext context) {
     return new Column(children: <Widget>[ 
 
+              /// Date
               DateInputCard(StringLabels.date,
                   widget._profile.getProfileItemValue(itemDatabaseId: DatabaseIds.date),
                   (dateTime){widget._setProfileItemValue( DatabaseIds.date, dateTime);}),
 
-
               /// Coffee and Barista Card
-
               DoubleProfileInputCard(
                 leftHintText: StringLabels.selectCoffee,        
                 leftImageRefString: Images.coffeeBeans,
@@ -87,9 +87,7 @@ class _RecipePageState extends State<RecipePage> {
                 rightTitle: StringLabels.barista ,
                 onRightProfileTextPressed: (){widget._showOptions(DatabaseIds.Barista);} ), 
         
-
               ///Water Section
-            
               ProfileInputCard(
                   imageRefString: Images.drop,
                   title: StringLabels.water,
@@ -107,7 +105,6 @@ class _RecipePageState extends State<RecipePage> {
                   profileName: widget._profile.getProfileProfileTitleValue( profileDatabaseId: DatabaseIds.water)),
 
               /// Grinder
-
               ProfileInputCard(
                   imageRefString: Images.grinder,
                   title: StringLabels.grinder,
@@ -123,7 +120,6 @@ class _RecipePageState extends State<RecipePage> {
                   attributeTitle: StringLabels.setting,
                   keyboardType: TextInputType.number,
                   profileName: widget._profile.getProfileProfileTitleValue( profileDatabaseId: DatabaseIds.grinder)),
-
 
               /// Equipment
               
