@@ -355,7 +355,6 @@ class _DoubleProfileInputCardState extends State<DoubleProfileInputCard> {
 
 /// User profile
 
-
 class ProfileImage extends StatelessWidget {
   final double _padding = 20.0;
   final double _margin = 10.0;

@@ -27,6 +27,10 @@ import 'package:meta/meta.dart';
 import '../../widgets/profile_page_widgets.dart';
 import '../../pages/profile_pages/recipe_profile_page.dart';
 import '../../pages/profile_pages/water_profile_page.dart';
+import '../../pages/profile_pages/equipment_profile_page.dart';
+import '../../pages/profile_pages/grinder_profile_page.dart';
+import '../../pages/profile_pages/barista_profile_page.dart';
+import '../../pages/profile_pages/coffee_profile_page.dart';
 
 
 
@@ -79,77 +83,11 @@ class ProfilePageState extends State<ProfilePage> {
     _isNew = widget.isNew;
     _profile = widget.profile;
 
-
-    switch(_profile.type){
-      case ProfileType.barista:
-
-      break;
-
-      case ProfileType.coffee:
-
-      break;
-
-      case ProfileType.equipment:
-      break;
-
-      case ProfileType.feed:
-      break;
-
-      case ProfileType.grinder:
-      break;
-
-      case ProfileType.none:
-      break;
-
-      case ProfileType.water:
-      _profileStructure = WaterPage(_profile, _margin, (key, value){ _profile.setProfileItemValue(itemDatabaseId: key, value: value);}, _showDialog);
-      break;
-
-      case ProfileType.recipe:
-      _profileStructure = RecipePage(_profile, _margin, (key, value){_profile.setProfileItemValue(itemDatabaseId: key, value: value);},_showDialog);
-      break;
-
-      default:
-      break;
-    }
     super.initState();
   }
 
 @override
 void didUpdateWidget(Widget oldWidget) {
-
-    switch(_profile.type){
-      case ProfileType.barista:
-
-      break;
-
-      case ProfileType.coffee:
-
-      break;
-
-      case ProfileType.equipment:
-      break;
-
-      case ProfileType.feed:
-      break;
-
-      case ProfileType.grinder:
-      break;
-
-      case ProfileType.none:
-      break;
-
-      case ProfileType.water:
-      _profileStructure = WaterPage(_profile, _margin, (key, value){ _profile.setProfileItemValue(itemDatabaseId: key, value: value);}, _showDialog);
-      break;
-
-      case ProfileType.recipe:
-      _profileStructure = RecipePage(_profile, _margin, (key, value){_profile.setProfileItemValue(itemDatabaseId: key, value: value);},_showDialog);
-      break;
-
-      default:
-      break;
-    }
     super.didUpdateWidget(oldWidget);
 }
 
@@ -240,27 +178,29 @@ void didUpdateWidget(Widget oldWidget) {
 
     switch(profile.type){
       case ProfileType.barista:
-        
+      _structure = BaristaPage(_profile, _margin, (key, value){ _profile.setProfileItemValue(itemDatabaseId: key, value: value);});
       break;
 
       case ProfileType.coffee:
-
+      _structure = CoffeeProfilePage(_profile, _margin, (key, value){ _profile.setProfileItemValue(itemDatabaseId: key, value: value);});
       break;
 
       case ProfileType.equipment:
+      _structure = EquipmentPage(_profile, _margin, (key, value){ _profile.setProfileItemValue(itemDatabaseId: key, value: value);});
       break;
 
       case ProfileType.feed:
       break;
 
       case ProfileType.grinder:
+      _structure = GrinderPage(_profile, _margin, (key, value){ _profile.setProfileItemValue(itemDatabaseId: key, value: value);});
       break;
 
       case ProfileType.none:
       break;
 
       case ProfileType.water:
-      _structure = WaterPage(_profile, _margin, (key, value){ _profile.setProfileItemValue(itemDatabaseId: key, value: value);}, _showDialog);
+      _structure = WaterPage(_profile, _margin, (key, value){ _profile.setProfileItemValue(itemDatabaseId: key, value: value);});
       break;
 
       case ProfileType.recipe:

@@ -17,14 +17,13 @@ import '../../widgets/custom_widgets.dart';
 
 class WaterPage extends StatefulWidget{
 
-final Function(String) _showOptions;
 final double _margin; 
 final Profile _profile;
 
 // Sets a String and Value in the Parent profie
 final Function(String , dynamic) _setProfileItemValue;
 
-  WaterPage(this._profile, this._margin, this._setProfileItemValue, this._showOptions);
+  WaterPage(this._profile, this._margin, this._setProfileItemValue);
 
 _WaterPageState createState() => new _WaterPageState();
 }
@@ -33,7 +32,6 @@ _WaterPageState createState() => new _WaterPageState();
 class _WaterPageState extends State<WaterPage> {
   final double _padding = 20.0;
   final double _margin = 10.0;
-  final double _cornerRadius = 20.0;
   Profile _profile;
 
   @override 
@@ -84,7 +82,6 @@ class _WaterPageState extends State<WaterPage> {
 class WaterDetailsCard extends StatelessWidget {
   final double _padding = 20.0;
   final double _margin = 10.0;
-  final double _cornerRadius = 20.0;
   final double _textFieldWidth = 150.0;
   final Function(String) _totalPpm;
   final Function(String) _ghPpm;
@@ -108,7 +105,7 @@ WaterDetailsCard(this._totalPpm, this._ghPpm, this._khPpm, this._pH);
                     keyboardType: TextInputType.number,
                     decoration: new InputDecoration(
                     labelText: StringLabels.ppm,
-                    hintText: StringLabels.enterDescription,
+                    hintText: StringLabels.enterValue,
                               ),
                               onChanged: _totalPpm,
                             )),
@@ -120,7 +117,7 @@ WaterDetailsCard(this._totalPpm, this._ghPpm, this._khPpm, this._pH);
                     keyboardType: TextInputType.number,
                     decoration: new InputDecoration(
                     labelText: StringLabels.gh,
-                    hintText: StringLabels.enterDescription,
+                    hintText: StringLabels.enterValue,
                               ),
                               onChanged: _ghPpm,
                             )),                  
@@ -136,7 +133,7 @@ WaterDetailsCard(this._totalPpm, this._ghPpm, this._khPpm, this._pH);
                     keyboardType: TextInputType.number,
                     decoration: new InputDecoration(
                     labelText: StringLabels.kh,
-                    hintText: StringLabels.enterDescription,
+                    hintText: StringLabels.enterValue,
                               ),
                               onChanged: _khPpm,
                             )),
@@ -147,7 +144,7 @@ WaterDetailsCard(this._totalPpm, this._ghPpm, this._khPpm, this._pH);
                     keyboardType: TextInputType.number,
                     decoration: new InputDecoration(
                     labelText: StringLabels.ph,
-                    hintText: StringLabels.enterDescription,
+                    hintText: StringLabels.enterValue,
                               ),
                               onChanged: _pH,
                             )),      

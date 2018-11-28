@@ -106,17 +106,10 @@ class DataPageState extends State<DataPage>
           ],
         ),
         floatingActionButton: AddButton(() {
-          
-          if (_lists.ref[controller.index].type == ProfileType.coffee){
-
-          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
-          CoffeeProfilePage(isCopying: false, isEditing: true, isNew: true, type: _lists.ref[controller.index].type, referance: '',)));
-
-          }else{
 
           Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
           ProfilePage(isCopying: false, isEditing: true, isNew: true, type: _lists.ref[controller.index].type, referance: '',)));
-          }
+        
         }));
   }
 }

@@ -1,19 +1,127 @@
-import 'package:flutter/material.dart'
-    show
-        AppBar,
-        BuildContext,
-        FontWeight,
-        Icon,
-        Icons,
-        Navigator,
-        RawMaterialButton,
-        Scaffold,
-        State,
-        StatefulWidget,
-        Text,
-        TextStyle,
-        required;
-import '../../data/profile.dart';
+// import 'package:flutter/material.dart'
+//     show
+//         AppBar,
+//         BuildContext,
+//         FontWeight,
+//         Icon,
+//         Icons,
+//         Navigator,
+//         RawMaterialButton,
+//         Scaffold,
+//         State,
+//         StatefulWidget,
+//         Text,
+//         TextStyle,
+//         required;
+// import '../../data/profile.dart';
+// import '../../data/strings.dart';
+// import 'package:flutter/cupertino.dart';
+// import 'package:flutter/material.dart';
+// import '../../data/images.dart';
+// import '../../data/functions.dart';
+// import '../../database_functions.dart';
+// import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+// import 'package:intl/intl.dart';
+// import '../../widgets/custom_widgets.dart';
+
+// class CoffeeProfilePage extends StatefulWidget {
+//   @required final bool isCopying;
+//   @required final bool isEditing;
+//   @required final bool isNew;
+//   @required final ProfileType type;
+//   @required final String referance;
+//   String appBarTitle;
+//   Profile _profile;
+
+//   CoffeeProfilePage(
+//       {this.isCopying, this.isEditing, this.isNew, this.type, this.referance}) {
+//     if (isNew || isCopying) {
+//       this.appBarTitle = StringLabels.newe +
+//           ' ' +
+//           Functions.getProfileTypeString(type) +
+//           ' ' +
+//           StringLabels.profile;
+//     }
+
+//     _profile = Functions.createBlankProfile(type);
+//   }
+
+//   CoffeeProfilePageState createState() => new CoffeeProfilePageState();
+// }
+
+// class CoffeeProfilePageState extends State<CoffeeProfilePage> {
+//   double _padding = 20.0;
+//   double _margin = 10.0;
+//   double _textFieldWidth = 120.0;
+//   Profile _profile;
+//   @required bool _isCopying;
+//   @required bool _isEditing;
+//   @required bool _isNew;
+  
+
+//   void initState() {
+//     _isCopying = widget.isCopying;
+//     _isEditing = widget.isEditing;
+//     _isNew = widget.isNew;
+//     _profile = widget._profile;
+//     _profile = widget._profile;
+//     super.initState();
+//   }
+
+//   ///
+//   /// UI Build
+//   ///
+//   @override
+//   Widget build(BuildContext context) {
+//     return new Scaffold(
+//       appBar: AppBar(
+//         centerTitle: true,
+//         title: Text(
+//           widget.appBarTitle,
+//           style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15.0),
+//         ),
+//         automaticallyImplyLeading: false,
+//         leading: _isEditing
+//             ? RawMaterialButton(
+//                 child: Icon(Icons.cancel),
+//                 onPressed: () {
+//                   setState(() {
+//                     _isEditing = false;
+//                     print(_isEditing.toString());
+//                   });
+//                 })
+//             : RawMaterialButton(
+//                 child: Icon(Icons.arrow_back),
+//                 onPressed: () {
+//                   Navigator.pop(context);
+//                 },
+//               ),
+//         actions: <Widget>[
+//           _isEditing
+//               ? RawMaterialButton(
+//                   child: Icon(Icons.save_alt),
+//                   onPressed: () {
+//                     Navigator.pop(context);
+//                     DatabaseFunctions.saveProfile(_profile);
+//                   },
+//                 )
+//               : RawMaterialButton(
+//                   child: Icon(Icons.edit),
+//                   onPressed: () {
+//                     setState(() {
+//                       _isEditing = true;
+//                       print(_isEditing);
+//                     });
+//                   }),
+//         ],
+//       ),
+//       body: 
+
+//       ListView(
+//         children: <Widget>[
+
+
+
 import '../../data/strings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,49 +130,33 @@ import '../../data/functions.dart';
 import '../../database_functions.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
+import '../overview_page/profile_list.dart';
+import 'package:flutter/foundation.dart';
+import 'package:meta/meta.dart';
+import '../../widgets/profile_page_widgets.dart';
+import '../../data/profile.dart';
+import '../../data/strings.dart';
 import '../../widgets/custom_widgets.dart';
 
 class CoffeeProfilePage extends StatefulWidget {
-  @required final bool isCopying;
-  @required final bool isEditing;
-  @required final bool isNew;
-  @required final ProfileType type;
-  @required final String referance;
-  String appBarTitle;
-  Profile _profile;
+  final double _margin;
+  final Profile _profile;
 
-  CoffeeProfilePage(
-      {this.isCopying, this.isEditing, this.isNew, this.type, this.referance}) {
-    if (isNew || isCopying) {
-      this.appBarTitle = StringLabels.newe +
-          ' ' +
-          Functions.getProfileTypeString(type) +
-          ' ' +
-          StringLabels.profile;
-    }
+// Sets a String and Value in the Parent profile
+  final Function(String, dynamic) _setProfileItemValue;
 
-    _profile = Functions.createBlankProfile(type);
-  }
+  CoffeeProfilePage(this._profile, this._margin, this._setProfileItemValue);
 
-  CoffeeProfilePageState createState() => new CoffeeProfilePageState();
+  _CoffeeProfilePageState createState() => new _CoffeeProfilePageState();
 }
 
-class CoffeeProfilePageState extends State<CoffeeProfilePage> {
-  double _padding = 20.0;
-  double _margin = 10.0;
-  double _textFieldWidth = 120.0;
-  double _cornerRadius = 20.0;
+class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
+  final double _padding = 20.0;
+  final double _margin = 10.0;
   Profile _profile;
-  @required bool _isCopying;
-  @required bool _isEditing;
-  @required bool _isNew;
-  
 
+  @override
   void initState() {
-    _isCopying = widget.isCopying;
-    _isEditing = widget.isEditing;
-    _isNew = widget.isNew;
-    _profile = widget._profile;
     _profile = widget._profile;
     super.initState();
   }
@@ -74,70 +166,9 @@ class CoffeeProfilePageState extends State<CoffeeProfilePage> {
   ///
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          widget.appBarTitle,
-          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15.0),
-        ),
-        automaticallyImplyLeading: false,
-        leading: _isEditing
-            ? RawMaterialButton(
-                child: Icon(Icons.cancel),
-                onPressed: () {
-                  setState(() {
-                    _isEditing = false;
-                    print(_isEditing.toString());
-                  });
-                })
-            : RawMaterialButton(
-                child: Icon(Icons.arrow_back),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-        actions: <Widget>[
-          _isEditing
-              ? RawMaterialButton(
-                  child: Icon(Icons.save_alt),
-                  onPressed: () {
-                    Navigator.pop(context);
-                    DatabaseFunctions.saveProfile(_profile);
-                  },
-                )
-              : RawMaterialButton(
-                  child: Icon(Icons.edit),
-                  onPressed: () {
-                    setState(() {
-                      _isEditing = true;
-                      print(_isEditing);
-                    });
-                  }),
-        ],
-      ),
-      body: 
-
-      ListView(
-        children: <Widget>[
+    return new 
           Column(
             children: <Widget>[
-
-
-              ///Public profile switch
-              Container(padding: EdgeInsets.all(_padding),margin: EdgeInsets.all(_margin),child: 
-              Column(children: <Widget>[
-              Text(StringLabels.public), 
-              Switch(onChanged: (on){setState(() {_profile.isPublic = on;}); }, value: _profile.isPublic,),
-              ],),),
-              
-              /// Profile Image
-              ProfileImage(Image.asset(Images.coffeeBeans)),
-
-              FlatButton(
-                onPressed: () {},
-                child: Text(StringLabels.changeImage),
-              ),
 
               Container(padding: EdgeInsets.all(_padding), margin: EdgeInsets.all(_margin),
                     child: TextField(
@@ -147,40 +178,37 @@ class CoffeeProfilePageState extends State<CoffeeProfilePage> {
                     labelText: StringLabels.name,
                     hintText: StringLabels.enterNickname,
                               ),
-                              onChanged:(name){ _profile.setProfileItemValue(itemDatabaseId: DatabaseIds.coffeeId, value: name);},
+                              onChanged:(name){ widget._setProfileItemValue(DatabaseIds.coffeeId,name);},
                             )),  
 
               RoastingDetailsCard( 
-                 (roastprofile){ _profile.setProfileItemValue(itemDatabaseId: DatabaseIds.roastProfile, value: roastprofile);},
-                 (roastryName){ _profile.setProfileItemValue(itemDatabaseId: DatabaseIds.roasteryName, value: roastryName);},
-                  // _profile.getProfileItemValue(itemDatabaseId: DatabaseIds.roastDate),
+                 (roastprofile){widget._setProfileItemValue( DatabaseIds.roastProfile,  roastprofile);},
+                 (roastryName){widget._setProfileItemValue( DatabaseIds.roasteryName,  roastryName);},
+                  // _profile.getProfileItemValue( DatabaseIds.roastDate),
                   ),
 
               OriginDetailsCard(
-                (altitude){ _profile.setProfileItemValue(itemDatabaseId: DatabaseIds.altitude, value: altitude);},
-                (lot){ _profile.setProfileItemValue(itemDatabaseId: DatabaseIds.lot, value: lot);},
-                (producer){ _profile.setProfileItemValue(itemDatabaseId: DatabaseIds.producer, value: producer);},
-                (farm){ _profile.setProfileItemValue(itemDatabaseId: DatabaseIds.farm, value: farm);},
-                (region){ _profile.setProfileItemValue(itemDatabaseId: DatabaseIds.region, value: region);},
-                (country){ _profile.setProfileItemValue(itemDatabaseId: DatabaseIds.country, value: country);},),
+                (altitude){widget._setProfileItemValue( DatabaseIds.altitude,  altitude);},
+                (lot){widget._setProfileItemValue( DatabaseIds.lot,  lot);},
+                (producer){widget._setProfileItemValue( DatabaseIds.producer,  producer);},
+                (farm){widget._setProfileItemValue( DatabaseIds.farm,  farm);},
+                (region){widget._setProfileItemValue( DatabaseIds.region,  region);},
+                (country){widget._setProfileItemValue( DatabaseIds.country,  country);},),
 
                 GreenDetailsCard(
-                (beanType){_profile.setProfileItemValue(itemDatabaseId: DatabaseIds.beanType, value: beanType );},
-                (beanSize){_profile.setProfileItemValue(itemDatabaseId: DatabaseIds.beanSize, value: beanSize );},
-                (processingMethod){_profile.setProfileItemValue(itemDatabaseId: DatabaseIds.processingMethod, value: processingMethod );},
-                (density){_profile.setProfileItemValue(itemDatabaseId: DatabaseIds.density, value: density );},
-                (altitude){_profile.setProfileItemValue(itemDatabaseId: DatabaseIds.altitude, value: altitude );},
-                (aw){_profile.setProfileItemValue(itemDatabaseId: DatabaseIds.aW, value: aw );},
-                (moi){_profile.setProfileItemValue(itemDatabaseId: DatabaseIds.moisture, value: moi );},
-                (harvest){_profile.setProfileItemValue(itemDatabaseId: DatabaseIds.harvest, value: harvest );})
+                (beanType){widget._setProfileItemValue(DatabaseIds.beanType,  beanType );},
+                (beanSize){widget._setProfileItemValue( DatabaseIds.beanSize,  beanSize );},
+                (processingMethod){widget._setProfileItemValue( DatabaseIds.processingMethod,  processingMethod );},
+                (density){widget._setProfileItemValue( DatabaseIds.density,  density );},
+                (altitude){widget._setProfileItemValue( DatabaseIds.altitude,  altitude );},
+                (aw){widget._setProfileItemValue( DatabaseIds.aW,  aw );},
+                (moi){widget._setProfileItemValue( DatabaseIds.moisture,  moi );},
+                (harvest){widget._setProfileItemValue( DatabaseIds.harvest,  harvest );})
 
               ],
-          )
-        ],
-      ),
-      );}
+          );
+  }
 }
-  
 
 
 /// End of Page

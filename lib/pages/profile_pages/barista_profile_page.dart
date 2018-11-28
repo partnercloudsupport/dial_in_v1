@@ -14,19 +14,19 @@ import '../../data/profile.dart';
 import '../../data/strings.dart';
 import '../../widgets/custom_widgets.dart';
 
-class GrinderPage extends StatefulWidget {
+class BaristaPage extends StatefulWidget {
   final double _margin;
   final Profile _profile;
 
 // Sets a String and Value in the Parent profie
   final Function(String, dynamic) _setProfileItemValue;
 
-  GrinderPage(this._profile, this._margin, this._setProfileItemValue);
+  BaristaPage(this._profile, this._margin, this._setProfileItemValue);
 
-  _GrinderPageState createState() => new _GrinderPageState();
+  _BaristaPageState createState() => new _BaristaPageState();
 }
 
-class _GrinderPageState extends State<GrinderPage> {
+class _BaristaPageState extends State<BaristaPage> {
   final double _padding = 20.0;
   final double _margin = 10.0;
   Profile _profile;
@@ -45,37 +45,32 @@ class _GrinderPageState extends State<GrinderPage> {
     return new Column(children: <Widget>[
 
       /// Details
-      GrinderDetailsCard(
-        (name) {widget._setProfileItemValue(DatabaseIds.grinderId, name);},
-        (burrs) {widget._setProfileItemValue(DatabaseIds.burrs, burrs);},
-        (make) {widget._setProfileItemValue(DatabaseIds.grinderMake, make);},
-        (model) {widget._setProfileItemValue(DatabaseIds.grinderModel, model);},
+      BaristaDetailsCard(
+        (name) {widget._setProfileItemValue(DatabaseIds.name, name);},
+        (level) {widget._setProfileItemValue(DatabaseIds.burrs, level);},
+
       ),
 
       /// Notes
       NotesCard(StringLabels.notes,
-          _profile.getProfileItemValue(itemDatabaseId: DatabaseIds.notes),
+          _profile.getProfileItemValue(itemDatabaseId: DatabaseIds.method),
           (text) {
-        _profile.setProfileItemValue(itemDatabaseId: DatabaseIds.notes);
+        _profile.setProfileItemValue(itemDatabaseId: DatabaseIds.method);
       })
     ]);
   }
 }
 
-class GrinderDetailsCard extends StatelessWidget {
+class BaristaDetailsCard extends StatelessWidget {
   final double _padding = 20.0;
   final double _margin = 10.0;
   final double _textFieldWidth = 150.0;
   final Function(String) _name;
-  final Function(String) _type;
-  final Function(String) _make;
-  final Function(String) _model;
+  final Function(String) _level;
 
-  GrinderDetailsCard(
+  BaristaDetailsCard(
     this._name,
-    this._type,
-    this._make,
-    this._model,
+    this._level,
   );
 
   @override
@@ -106,54 +101,20 @@ class GrinderDetailsCard extends StatelessWidget {
                         _name(name);
                       })),
 
-              /// Burrs
+              /// Level
               Container(
                   width: _textFieldWidth,
                   child: TextField(
                     textAlign: TextAlign.start,
                     keyboardType: TextInputType.text,
                     decoration: new InputDecoration(
-                      labelText: StringLabels.burrs,
+                      labelText: StringLabels.level,
                       hintText: StringLabels.enterType,
                     ),
-                    onChanged: (type) {
-                      _type(type);
+                    onChanged: (level) {
+                      _level(level);
                     },
                   )),
-            ],
-          ),
-
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              /// Make
-              Container(
-                  width: _textFieldWidth,
-                  child: TextField(
-                      textAlign: TextAlign.start,
-                      keyboardType: TextInputType.text,
-                      decoration: new InputDecoration(
-                        labelText: StringLabels.make,
-                        hintText: StringLabels.enterDescription,
-                      ),
-                      onChanged: (make) {
-                        _make(make);
-                      })),
-
-              /// Model
-              Container(
-                  width: _textFieldWidth,
-                  child: TextField(
-                      textAlign: TextAlign.start,
-                      keyboardType: TextInputType.text,
-                      decoration: new InputDecoration(
-                        labelText: StringLabels.model,
-                        hintText: StringLabels.enterDescription,
-                      ),
-                      onChanged: (model) {
-                        _model(model);
-                      })),
             ],
           ),
         ],

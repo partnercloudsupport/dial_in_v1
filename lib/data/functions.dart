@@ -163,11 +163,12 @@ class Functions {
 
   static Profile createBlankProfile(ProfileType profileType) {
     switch (profileType) {
+
       case ProfileType.recipe:
         return new Profile(
             updatedAt: DateTime.now(),
             objectId: '',
-            // image: document[DatabaseIds.image].toString(),
+            image: Image.asset(Images.whiteRecipe200X200),
             databaseId: DatabaseIds.recipe,
             type: ProfileType.recipe,
             viewContollerId: ViewControllerIds.recipe,
@@ -204,7 +205,7 @@ class Functions {
         return new Profile(
             updatedAt: DateTime.now(),
             objectId: '',
-            // image: document[DatabaseIds.image].toString(),
+            image: Image.asset(Images.water),
             databaseId: DatabaseIds.water,
             type: ProfileType.water,
             viewContollerId: ViewControllerIds.water,
@@ -224,7 +225,7 @@ class Functions {
         return new Profile(
             updatedAt: DateTime.now(),
             objectId: '',
-            // image: document[DatabaseIds.image].toString(),
+            image: Image.asset(Images.coffeeBeans),
             databaseId: DatabaseIds.coffee,
             type: ProfileType.coffee,
             viewContollerId: ViewControllerIds.coffee,
@@ -253,7 +254,7 @@ class Functions {
         return new Profile(
           updatedAt: DateTime.now(),
           objectId: '',
-          // image: document[DatabaseIds.image].toString(),
+          image: Image.asset(Images.groupHandle),
           databaseId: DatabaseIds.brewingEquipment,
           type: ProfileType.equipment,
           viewContollerId: ViewControllerIds.brewingEquipment,
@@ -272,7 +273,7 @@ class Functions {
         return new Profile(
           updatedAt: DateTime.now(),
           objectId: '',
-          // image: document[DatabaseIds.image].toString(),
+          image: Image.asset(Images.user),
           databaseId: DatabaseIds.feed,
           type: ProfileType.feed,
           viewContollerId: ViewControllerIds.feed,
@@ -287,7 +288,7 @@ class Functions {
         return new Profile(
           updatedAt: DateTime.now(),
           objectId: '',
-          // image: document[DatabaseIds.image].toString(),
+          image: Image.asset(Images.grinder),
           databaseId: DatabaseIds.grinder,
           type: ProfileType.grinder,
           viewContollerId: ViewControllerIds.grinder,
@@ -322,7 +323,7 @@ class Functions {
         return new Profile(
           updatedAt: DateTime.now(),
           objectId: '',
-          // image: document[DatabaseIds.image].toString(),
+          image: Image.asset(Images.user),
           databaseId: DatabaseIds.Barista,
           type: ProfileType.barista,
           viewContollerId: ViewControllerIds.barista,
