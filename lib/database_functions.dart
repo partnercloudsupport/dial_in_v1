@@ -7,6 +7,39 @@ import 'data/profile.dart';
 import 'data/functions.dart';
 import 'data/item.dart';
 import 'data/images.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'dart:async';
+import 'dart:convert';
+import 'dart:async';
+import 'dart:convert';
+import 'dart:typed_data';
+import 'dart:ui' as ui;
+import 'dart:io';
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:math';
+import 'dart:io';
+import 'dart:async';
+import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+
+import 'package:path_provider/path_provider.dart';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+
+
 
 class DatabaseFunctions {
 
@@ -44,15 +77,31 @@ class DatabaseFunctions {
   completion(user.uid.toString());
   }
 
-  static void saveProfile(Profile profile){
+Future<Null> uploadFie(String filePath)async{
+ 
 
-      // Future<void> file = Images.getFile('assets/images/coffee-beanSmaller512x512.png', (file){    
-      // Images.getFile(profile.image.image.toString(), (file){    
-        
-      // final StorageReference storageReference = 
-      //   FirebaseStorage.instance.ref().child(file.path);
-      // final StorageUploadTask task = 
-      //   storageReference.putFile(file);
+}
+
+
+static Future<void> saveProfile(Profile profile)async{
+
+
+
+  // File _image = File(Images.coffeeBeans);  
+  String downloadUrl;
+
+  // var fileName = "profileImage${Functions.getRandomNumber()}.jpeg";
+  final String filePath = Images.coffeeBeans;
+
+  final ByteData bytes = await rootBundle.load(filePath);
+  final Directory tempDir = Directory.systemTemp;
+  final String filename = '${Random().nextInt(1000)}.jpg';
+  final File file = File('${tempDir.path}/$filename');
+  file.writeAsBytes(bytes.buffer.asInt8List(), mode: FileMode.write);
+
+  final StorageReference firebaseStorageReferance = FirebaseStorage.instance.ref().child(filename);
+  final StorageUploadTask task = await firebaseStorageReferance.putFile(file).onComplete.then
+  ((val) {downloadUrl = val.toString();});
 
     Map <String, dynamic> _properties = new Map <String, dynamic>();
 
@@ -63,11 +112,10 @@ class DatabaseFunctions {
       }
       DatabaseFunctions.getCurrentUserId((userId){
 
-        _properties[DatabaseIds.image] = profile.image;
+        _properties[DatabaseIds.image] = downloadUrl;
         _properties[DatabaseIds.orderNumber] = profile.orderNumber;
         _properties[DatabaseIds.user] = userId;
         _properties[DatabaseIds.public] = profile.isPublic;
-        // _properties[DatabaseFunctions.imagePath] = file.toString();
       
       if (profile.type == ProfileType.recipe){
         _properties[DatabaseIds.coffeeId] = profile.getProfileProfileRefernace(profileDatabaseId: DatabaseIds.coffee);
@@ -293,6 +341,34 @@ class DatabaseFunctions {
     }
   }
  }
+
+ class Storage {
+  Future<String> get localPath async {
+    final dir = await getApplicationDocumentsDirectory();
+    return dir.path;
+  }
+
+  Future<File> get localFile async {
+    final path = await localPath;
+    return File('$path/db.txt');
+  }
+
+  Future<String> readData() async {
+    try {
+      final file = await localFile;
+      String body = await file.readAsString();
+
+      return body;
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
+  Future<File> writeData(String data) async {
+    final file = await localFile;
+    return file.writeAsString("$data");
+  }
+}
 
 
 class DatabaseIds{

@@ -24,6 +24,8 @@ import '../../database_functions.dart';
 import '../overview_page/profile_list.dart';
 import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:async';
 import '../../widgets/profile_page_widgets.dart';
 import '../../pages/profile_pages/recipe_profile_page.dart';
 import '../../pages/profile_pages/water_profile_page.dart';
@@ -31,6 +33,7 @@ import '../../pages/profile_pages/equipment_profile_page.dart';
 import '../../pages/profile_pages/grinder_profile_page.dart';
 import '../../pages/profile_pages/barista_profile_page.dart';
 import '../../pages/profile_pages/coffee_profile_page.dart';
+import 'dart:io';
 
 
 
@@ -74,15 +77,14 @@ class ProfilePageState extends State<ProfilePage> {
   @required
   bool _isNew;
 
+
   Profile _profile;
-  Widget _profileStructure;
 
   void initState() {
     _isCopying = widget.isCopying;
     _isEditing = widget.isEditing;
     _isNew = widget.isNew;
     _profile = widget.profile;
-
     super.initState();
   }
 
@@ -154,10 +156,10 @@ void didUpdateWidget(Widget oldWidget) {
 
             /// Profile Image
               
-              ProfileImage(Image.asset(Images.coffeeBeans)),
+              ProfileImage(_profile.image),
 
               FlatButton(
-                onPressed: () {},
+                onPressed: _getimage,
                 child: Text(StringLabels.changeImage),
               ),
             
@@ -212,6 +214,17 @@ void didUpdateWidget(Widget oldWidget) {
     }
 
     return _structure;
+  }
+
+  Future <Image> _getimage()async{
+
+    File _image;
+    
+    var image = await ImagePicker.pickImage(source: ImageSource.camera);
+    setState(() {
+          _image = image;
+        });
+    return Image.file(_image); 
   }
 
   // // user defined function

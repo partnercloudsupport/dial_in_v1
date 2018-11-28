@@ -8,8 +8,28 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../widgets/custom_widgets.dart';
 import '../pages/profile_pages/profile_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:math';
+import 'dart:io';
+import 'dart:async';
+import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 
 class Functions {
+
+  static Future<File> _getPictureFile(String filePath) async {
+    // get the path to the document directory.
+    Directory appDocDir = await getApplicationDocumentsDirectory();
+    String appDocPath = appDocDir.path;
+    return new File('/Users/earyzhe/Dropbox/dev/FlutterProjects/dial_in_v1/${filePath}');
+  }
+
+
+  static String getRandomNumber(){
+    var rng = new Random();
+    var code = rng.nextInt(900000) + 100000;
+    return code.toString();
+  }
 
   static Profile setProfileItemValue(
       {Profile profile, String keyDatabaseId, dynamic value}) {
@@ -168,7 +188,7 @@ class Functions {
         return new Profile(
             updatedAt: DateTime.now(),
             objectId: '',
-            image: Image.asset(Images.whiteRecipe200X200),
+            image: Image.asset(Images.recipeSmaller),
             databaseId: DatabaseIds.recipe,
             type: ProfileType.recipe,
             viewContollerId: ViewControllerIds.recipe,
@@ -254,7 +274,7 @@ class Functions {
         return new Profile(
           updatedAt: DateTime.now(),
           objectId: '',
-          image: Image.asset(Images.groupHandle),
+          image: Image.asset(Images.aeropressSmaller512x512),
           databaseId: DatabaseIds.brewingEquipment,
           type: ProfileType.equipment,
           viewContollerId: ViewControllerIds.brewingEquipment,

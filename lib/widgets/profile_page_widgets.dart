@@ -375,7 +375,7 @@ class ProfileImage extends StatelessWidget {
             height: 200.0,
             decoration: BoxDecoration(boxShadow: [
               BoxShadow(
-                color: Colors.black,
+                color: Colors.white,
                 blurRadius: 1.0, // has the effect of softening the shadow
                 spreadRadius: 1.0, // has the effect of extending the shadow
                 offset: Offset(
@@ -384,12 +384,10 @@ class ProfileImage extends StatelessWidget {
                 ),
               )
             ], borderRadius: BorderRadius.circular(_cornerRadius)),
-            child: ClipRRect(
+            child: Card(child: ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(_cornerRadius)),
-                child: Image.asset(
-                  Images.cherries,
-                  fit: BoxFit.cover,
-                )));
+                child: _image,
+                ),) );
   }
 }
 
