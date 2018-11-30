@@ -7,32 +7,10 @@ import 'data/profile.dart';
 import 'data/functions.dart';
 import 'data/item.dart';
 import 'data/images.dart';
-import 'package:flutter/services.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'dart:convert';
-import 'dart:typed_data';
-import 'dart:ui' as ui;
-import 'dart:io';
-import 'dart:async';
 import 'package:path/path.dart' as path;
-
-
-import 'package:flutter/material.dart';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'dart:math';
-import 'dart:io';
-import 'package:flutter/services.dart';
-import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
-
-
 
 class DatabaseFunctions {
 
@@ -70,18 +48,25 @@ class DatabaseFunctions {
 
 
   static Future<File> downloadFile(String httpPath)async{
+
     final RegExp regExp = RegExp('([^?/]*\.(png))');
     final String fileName = regExp.stringMatch(httpPath);
     final Directory tempDir = Directory.systemTemp;
+
+    try {
     final File file = File('${tempDir.path}/$fileName');
     final StorageReference firebaseStorageReferance = FirebaseStorage.instance.ref().child(fileName);
-    final StorageFileDownloadTask downloadTask = await firebaseStorageReferance.writeToFile(file);
+    final StorageFileDownloadTask downloadTask = firebaseStorageReferance.writeToFile(file);
     int byteNumber;
     
     await downloadTask.future.then((totalByteCount){  print(totalByteCount); byteNumber = totalByteCount.totalByteCount.toInt();});
     print(byteNumber);
 
   return file;
+     } catch (e){
+       print(e);
+       return Functions.getFile(Images.recipeSmaller);
+     }
 }
 
 /// Upload file
@@ -89,15 +74,14 @@ class DatabaseFunctions {
     
     final StorageReference ref = FirebaseStorage.instance.ref().child(path.basename(file.path));
     final StorageUploadTask uploadTask = ref.putFile(file);
-    return await (await uploadTask.onComplete).ref.getDownloadURL();
+    return await (await uploadTask.onComplete).ref.getDownloadURL().catchError((error){print(error);});
+
   }
 
 /// Save profile 
   static Future<void> saveProfile(Profile profile)async{
 
     String downloadUrl = await _upLoadFileReturnUrl(profile.image, profile.databaseId);
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     Map <String, dynamic> _properties = new Map <String, dynamic>();
 

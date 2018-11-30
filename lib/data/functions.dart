@@ -714,7 +714,7 @@ static Future<File> getFile(String filepath)async{
       case DatabaseIds.roastDate:
         _item = new Item(
           title: StringLabels.roastDate,
-          value: '',
+          value: DateTime.now(),
           databaseId: DatabaseIds.roastDate,
           placeHolderText: StringLabels.enterDescription,
           keyboardType: TextInputType.text,
