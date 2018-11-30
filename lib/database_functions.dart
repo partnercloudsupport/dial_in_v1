@@ -147,10 +147,10 @@ class DatabaseFunctions {
     if (doc.exists) {
           DatabaseFunctions.createProfileFromDocumentSnapshot(collectionDataBaseId, doc).then((profile){_profile = profile;});
       } else {
-          _profile = Functions.createBlankProfile(Functions.getProfileDatabaseIdType(collectionDataBaseId));
+          Functions.createBlankProfile(ProfileType.barista).then((profile){ _profile = profile;});
       }
   }); 
-    }else{_profile = Functions.createBlankProfile(Functions.getProfileDatabaseIdType(collectionDataBaseId));}
+    }else{_profile =  await Functions.createBlankProfile(Functions.getProfileDatabaseIdType(collectionDataBaseId));}
 
     return _profile;
   }
@@ -198,6 +198,7 @@ class DatabaseFunctions {
       DateTime _updatedAt;
       String _objectId = document.documentID;
       int _orderNumber;
+      File _image = await downloadFile(document.data[DatabaseIds.image]);
 
       Profile _coffee;
       Profile _barista;
@@ -210,19 +211,19 @@ class DatabaseFunctions {
 
       if (databaseId == DatabaseIds.recipe){
       if (document.data.containsKey(DatabaseIds.coffeeId)) {_coffee = await DatabaseFunctions.getProfileFromFireStoreWithDocRef(databaseId , document.data[DatabaseIds.coffeeId]);}
-      else{_coffee = Functions.createBlankProfile(ProfileType.coffee);}
+      else{_coffee = await Functions.createBlankProfile(ProfileType.coffee);}
 
       if (document.data.containsKey(DatabaseIds.Barista)) {_barista = await DatabaseFunctions.getProfileFromFireStoreWithDocRef(databaseId , document.data[DatabaseIds.Barista]);}
-      else{_barista = Functions.createBlankProfile(ProfileType.barista);}
+      else{_barista = await Functions.createBlankProfile(ProfileType.barista);}
 
       if (document.data.containsKey(DatabaseIds.equipmentId)) {_equipment = await DatabaseFunctions.getProfileFromFireStoreWithDocRef(databaseId , document.data[DatabaseIds.equipmentId]);}
-      else{_equipment = Functions.createBlankProfile(ProfileType.equipment);} 
+      else{_equipment = await Functions.createBlankProfile(ProfileType.equipment);} 
 
       if (document.data.containsKey(DatabaseIds.grinderId)) {_grinder = await DatabaseFunctions.getProfileFromFireStoreWithDocRef(databaseId , document.data[DatabaseIds.grinderId]);}
-      else{_grinder = Functions.createBlankProfile(ProfileType.grinder);} 
+      else{_grinder = await Functions.createBlankProfile(ProfileType.grinder);} 
       
       if (document.data.containsKey(DatabaseIds.waterID)) {_water = await DatabaseFunctions.getProfileFromFireStoreWithDocRef(databaseId , document.data[DatabaseIds.waterID]);}
-      else{_water = Functions.createBlankProfile(ProfileType.water);} 
+      else{_water = await Functions.createBlankProfile(ProfileType.water);} 
       }
 
       List<Item> _properties = new List<Item>();
@@ -250,7 +251,7 @@ class DatabaseFunctions {
               updatedAt: _updatedAt,
               objectId: _objectId,
               type: ProfileType.recipe,
-              image: Image.asset(Images.whiteRecipe200X200),
+              image: _image,
               databaseId: databaseId,
               orderNumber: _orderNumber,
               properties: _properties,
@@ -269,7 +270,7 @@ class DatabaseFunctions {
               updatedAt: _updatedAt,
               objectId: _objectId,
               type: ProfileType.coffee,
-              image: Image.asset(Images.coffeeBeans),
+              image: _image,
               databaseId: databaseId,
               orderNumber: _orderNumber,
               properties: _properties
@@ -281,7 +282,7 @@ class DatabaseFunctions {
               updatedAt: DateTime.now(),
               objectId: _objectId,
               type: ProfileType.grinder,
-              image: Image.asset(Images.grinder),
+              image: _image,
               databaseId: databaseId,
               orderNumber: _orderNumber,
               properties: _properties
@@ -293,7 +294,7 @@ class DatabaseFunctions {
               updatedAt: DateTime.now(),
               objectId: _objectId,
               type: ProfileType.equipment,
-              image: Image.asset(Images.groupHandle),
+              image: _image,
               databaseId: databaseId,
               orderNumber: _orderNumber,
               properties: _properties
@@ -305,7 +306,7 @@ class DatabaseFunctions {
               updatedAt: DateTime.now(),
               objectId: _objectId,
               type: ProfileType.water,
-              image: Image.asset(Images.water),
+              image: _image,
               databaseId: databaseId,
               orderNumber: _orderNumber,
               properties: _properties
@@ -317,7 +318,7 @@ class DatabaseFunctions {
               updatedAt: DateTime.now(),
               objectId: _objectId,
               type: ProfileType.barista,
-              image: Image.asset(Images.user),
+              image: _image,
               databaseId: databaseId,
               orderNumber: _orderNumber,
               properties: _properties
@@ -330,7 +331,7 @@ class DatabaseFunctions {
               updatedAt: DateTime.now(),
               objectId: _objectId,
               type: ProfileType.barista,
-              image: Image.asset(Images.user),
+              image: _image,
               databaseId: databaseId,
               orderNumber: 0,
               properties: _properties
@@ -425,7 +426,7 @@ class DatabaseIds{
   static const String creationDate = 'createdAt';
   static const String recipe = 'Recipe';
   static const String brewingDose = 'dose';
-  static const String yield = 'yield';
+  static const String yielde = 'yield';
   static const String time = 'time';
   static const String temparature = 'temparature';
   static const String tds = 'tds';

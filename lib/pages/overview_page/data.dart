@@ -6,7 +6,9 @@ import 'profile_list.dart';
 import '../../database_functions.dart';
 import '../../data/profile.dart';
 import '../profile_pages/profile_page.dart';
-import '../profile_pages/coffee_profile_page.dart';
+import 'dart:io';
+import '../../data/functions.dart';
+
 
 
 class DataPage extends StatefulWidget {
@@ -105,10 +107,12 @@ class DataPageState extends State<DataPage>
             ),
           ],
         ),
-        floatingActionButton: AddButton(() {
+        floatingActionButton: AddButton(()async{
+
+          Profile _profile = await Functions.createBlankProfile(_lists.ref[controller.index].type);
 
           Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
-          ProfilePage(isCopying: false, isEditing: true, isNew: true, type: _lists.ref[controller.index].type, referance: '',)));
+          ProfilePage(isCopying: false, isEditing: true, isNew: true, type: _lists.ref[controller.index].type, referance: '',profile: _profile ,)));
         
         }));
   }

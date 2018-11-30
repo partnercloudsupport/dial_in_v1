@@ -192,14 +192,14 @@ static Future<File> getFile(String filepath)async{
     }
   }
 
-  static Profile createBlankProfile(ProfileType profileType) {
+  static Future<Profile> createBlankProfile(ProfileType profileType)async{
     switch (profileType) {
 
       case ProfileType.recipe:
         return new Profile(
             updatedAt: DateTime.now(),
             objectId: '',
-            image: Image.asset(Images.recipeSmaller),
+            image: await getFile(Images.recipeSmaller),
             databaseId: DatabaseIds.recipe,
             type: ProfileType.recipe,
             viewContollerId: ViewControllerIds.recipe,
@@ -211,7 +211,7 @@ static Future<File> getFile(String filepath)async{
               createBlankItem(DatabaseIds.temparature),
               createBlankItem(DatabaseIds.brewingDose),
               createBlankItem(DatabaseIds.preinfusion),
-              createBlankItem(DatabaseIds.yield),
+              createBlankItem(DatabaseIds.yielde),
               createBlankItem(DatabaseIds.brewWeight),
               createBlankItem(DatabaseIds.time),
               createBlankItem(DatabaseIds.tds),
@@ -224,11 +224,11 @@ static Future<File> getFile(String filepath)async{
               createBlankItem(DatabaseIds.descriptors),
             ],
             profiles: [
-              createBlankProfile(ProfileType.coffee),
-              createBlankProfile(ProfileType.barista),
-              createBlankProfile(ProfileType.equipment),
-              createBlankProfile(ProfileType.grinder),
-              createBlankProfile(ProfileType.water),
+              await createBlankProfile(ProfileType.coffee),
+              await createBlankProfile(ProfileType.barista),
+              await createBlankProfile(ProfileType.equipment),
+              await createBlankProfile(ProfileType.grinder),
+              await createBlankProfile(ProfileType.water),
             ]);
         break;
 
@@ -236,7 +236,7 @@ static Future<File> getFile(String filepath)async{
         return new Profile(
             updatedAt: DateTime.now(),
             objectId: '',
-            image: Image.asset(Images.water),
+            image: await getFile(Images.water),
             databaseId: DatabaseIds.water,
             type: ProfileType.water,
             viewContollerId: ViewControllerIds.water,
@@ -256,7 +256,7 @@ static Future<File> getFile(String filepath)async{
         return new Profile(
             updatedAt: DateTime.now(),
             objectId: '',
-            image: Image.asset(Images.coffeeBeans),
+            image: await getFile(Images.coffeeBeans),
             databaseId: DatabaseIds.coffee,
             type: ProfileType.coffee,
             viewContollerId: ViewControllerIds.coffee,
@@ -285,7 +285,7 @@ static Future<File> getFile(String filepath)async{
         return new Profile(
           updatedAt: DateTime.now(),
           objectId: '',
-          image: Image.asset(Images.aeropressSmaller512x512),
+          image: await getFile(Images.aeropressSmaller512x512),
           databaseId: DatabaseIds.brewingEquipment,
           type: ProfileType.equipment,
           viewContollerId: ViewControllerIds.brewingEquipment,
@@ -304,7 +304,7 @@ static Future<File> getFile(String filepath)async{
         return new Profile(
           updatedAt: DateTime.now(),
           objectId: '',
-          image: Image.asset(Images.user),
+          image: await getFile(Images.user),
           databaseId: DatabaseIds.feed,
           type: ProfileType.feed,
           viewContollerId: ViewControllerIds.feed,
@@ -319,7 +319,7 @@ static Future<File> getFile(String filepath)async{
         return new Profile(
           updatedAt: DateTime.now(),
           objectId: '',
-          image: Image.asset(Images.grinder),
+          image: await getFile(Images.grinder),
           databaseId: DatabaseIds.grinder,
           type: ProfileType.grinder,
           viewContollerId: ViewControllerIds.grinder,
@@ -354,7 +354,7 @@ static Future<File> getFile(String filepath)async{
         return new Profile(
           updatedAt: DateTime.now(),
           objectId: '',
-          image: Image.asset(Images.user),
+          image: await getFile(Images.user),
           databaseId: DatabaseIds.Barista,
           type: ProfileType.barista,
           viewContollerId: ViewControllerIds.barista,
@@ -471,11 +471,11 @@ static Future<File> getFile(String filepath)async{
         );
         break;
 
-      case DatabaseIds.yield:
+      case DatabaseIds.yielde:
         _item = new Item(
-          title: StringLabels.yield,
+          title: StringLabels.yielde,
           value: '',
-          databaseId: DatabaseIds.yield,
+          databaseId: DatabaseIds.yielde,
           placeHolderText: StringLabels.enterValue,
           keyboardType: TextInputType.number,
         );
@@ -997,11 +997,11 @@ static Future<File> getFile(String filepath)async{
           );
           break;
 
-        case DatabaseIds.yield:
+        case DatabaseIds.yielde:
           _item = new Item(
-            title: StringLabels.yield,
+            title: StringLabels.yielde,
             value: value,
-            databaseId: DatabaseIds.yield,
+            databaseId: DatabaseIds.yielde,
             placeHolderText: StringLabels.enterValue,
             keyboardType: TextInputType.number,
           );

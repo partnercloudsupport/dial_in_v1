@@ -482,7 +482,7 @@ class RatioCard extends StatelessWidget {
                     textAlign: TextAlign.start,
                     keyboardType: TextInputType.number,
                     decoration: new InputDecoration(
-                      labelText: StringLabels.yield,
+                      labelText: StringLabels.yielde,
                       hintText: StringLabels.enterValue,
                     ),
                     onChanged: yieldChanged,

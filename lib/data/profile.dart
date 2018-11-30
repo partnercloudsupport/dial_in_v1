@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'item.dart';
 import '../database_functions.dart';
+import 'dart:io';
+
 
 class Profile {
   @required
@@ -12,7 +14,7 @@ class Profile {
   @required
   List<Item> properties;
   @required
-  Image image;
+  File image;
   @required
   ProfileType type;
   @required

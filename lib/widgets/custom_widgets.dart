@@ -359,7 +359,8 @@ class ProfileCard extends StatelessWidget {
       /// Profile picture
       ///
       Container(
-          child: CircularPicture(profile.image, 60.0)),
+          child: CircularPicture(Image.file(profile.image), 60.0)),
+          
 
       Expanded(
           child: Row(children: <Widget>[

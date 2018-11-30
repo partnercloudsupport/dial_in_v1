@@ -180,7 +180,7 @@ class  StringLabels {
         static const String coffee = "Coffee";
         static const String grinder = "Grinder";
         static const String brewingDose = "Dose (g)";
-        static const String yield = "Yield (g)";
+        static const String yielde = "Yield (g)";
         static const String time = "Time";
         static const String water = "Water";
         static const String temparature = "Temparature ℃";

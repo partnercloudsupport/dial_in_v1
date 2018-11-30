@@ -59,7 +59,6 @@ class ProfilePage extends StatefulWidget {
           ' ' +
           StringLabels.profile;
     }
-    if (isNew){ profile = Functions.createBlankProfile(type); }
   }
 
   ProfilePageState createState() => new ProfilePageState();
@@ -76,8 +75,6 @@ class ProfilePageState extends State<ProfilePage> {
   bool _isEditing;
   @required
   bool _isNew;
-
-
   Profile _profile;
 
   void initState() {
@@ -87,6 +84,7 @@ class ProfilePageState extends State<ProfilePage> {
     _profile = widget.profile;
     super.initState();
   }
+
 
 @override
 void didUpdateWidget(Widget oldWidget) {
@@ -156,7 +154,7 @@ void didUpdateWidget(Widget oldWidget) {
 
             /// Profile Image
               
-              ProfileImage(_profile.image),
+              ProfileImage(Image.file(_profile.image)),
 
               FlatButton(
                 onPressed: _getimage,

@@ -143,8 +143,8 @@ class _RecipePageState extends State<RecipePage> {
             RatioCard(
               doseChanged: (dose) {
                 widget._setProfileItemValue( DatabaseIds.brewingDose, dose);
-              }, yieldChanged: ((yield) {
-                widget._setProfileItemValue( DatabaseIds.yield, yield);
+              }, yieldChanged: ((yielde) {
+                widget._setProfileItemValue( DatabaseIds.yielde, yielde);
               }), brewWeightChanged: (brewWeight) {
                 widget._setProfileItemValue( DatabaseIds.brewWeight, brewWeight);
               }),
