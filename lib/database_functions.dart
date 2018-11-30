@@ -7,20 +7,17 @@ import 'data/profile.dart';
 import 'data/functions.dart';
 import 'data/item.dart';
 import 'data/images.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'dart:async';
-import 'dart:convert';
-import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'dart:io';
 import 'dart:async';
+import 'package:path/path.dart' as path;
+
 
 import 'package:flutter/material.dart';
 
@@ -29,13 +26,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:math';
 import 'dart:io';
-import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
-
-import 'package:path_provider/path_provider.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 
@@ -43,8 +36,7 @@ import 'package:flutter/foundation.dart';
 
 class DatabaseFunctions {
 
-  static Future<void> logIn(String emailUser, String password,
-      Function(bool, String) completion) async {
+  static Future<void> logIn(String emailUser, String password,Function(bool, String) completion) async {
           // try {
           //   FirebaseUser user = await FirebaseAuth.instance
           //       .signInWithEmailAndPassword(email: emailUser, password: password);
@@ -54,8 +46,7 @@ class DatabaseFunctions {
           // }
   }
 
-  static Future<void> signUp(String emailUser, String password,
-      Function(bool, String) completion) async {
+  static Future<void> signUp(String emailUser, String password, Function(bool, String) completion) async {
     // try {
     //   FirebaseUser user = await FirebaseAuth.instance
     //       .createUserWithEmailAndPassword(email: emailUser, password: password);
@@ -77,31 +68,38 @@ class DatabaseFunctions {
   completion(user.uid.toString());
   }
 
-Future<Null> uploadFie(String filePath)async{
- 
 
+  static Future<File> downloadFile(String httpPath)async{
+    final RegExp regExp = RegExp('([^?/]*\.(png))');
+    final String fileName = regExp.stringMatch(httpPath);
+    final Directory tempDir = Directory.systemTemp;
+    final File file = File('${tempDir.path}/$fileName');
+    final StorageReference firebaseStorageReferance = FirebaseStorage.instance.ref().child(fileName);
+    final StorageFileDownloadTask downloadTask = await firebaseStorageReferance.writeToFile(file);
+    int byteNumber;
+    
+    await downloadTask.future.then((totalByteCount){  print(totalByteCount); byteNumber = totalByteCount.totalByteCount.toInt();});
+    print(byteNumber);
+
+  return file;
 }
 
+/// Upload file
+  static Future<String> _upLoadFileReturnUrl(String filePath, String folder)async{
+    
+    final File file = await Functions.getFile(filePath);
 
-static Future<void> saveProfile(Profile profile)async{
+    final StorageReference ref = FirebaseStorage.instance.ref().child(folder).child(path.basename(file.path));
+    final StorageUploadTask uploadTask = ref.putFile(file);
+    return await (await uploadTask.onComplete).ref.getDownloadURL();
+  }
 
+/// Save profile 
+  static Future<void> saveProfile(Profile profile)async{
 
+    String downloadUrl = await _upLoadFileReturnUrl('assets/images/aeropressSmaller512x512.png', profile.databaseId);
 
-  // File _image = File(Images.coffeeBeans);  
-  String downloadUrl;
-
-  // var fileName = "profileImage${Functions.getRandomNumber()}.jpeg";
-  final String filePath = Images.coffeeBeans;
-
-  final ByteData bytes = await rootBundle.load(filePath);
-  final Directory tempDir = Directory.systemTemp;
-  final String filename = '${Random().nextInt(1000)}.jpg';
-  final File file = File('${tempDir.path}/$filename');
-  file.writeAsBytes(bytes.buffer.asInt8List(), mode: FileMode.write);
-
-  final StorageReference firebaseStorageReferance = FirebaseStorage.instance.ref().child(filename);
-  final StorageUploadTask task = await firebaseStorageReferance.putFile(file).onComplete.then
-  ((val) {downloadUrl = val.toString();});
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     Map <String, dynamic> _properties = new Map <String, dynamic>();
 
@@ -110,7 +108,7 @@ static Future<void> saveProfile(Profile profile)async{
         _properties[profile.properties[i].databaseId] = profile.properties[i].value;
       
       }
-      DatabaseFunctions.getCurrentUserId((userId){
+    DatabaseFunctions.getCurrentUserId((userId){
 
         _properties[DatabaseIds.image] = downloadUrl;
         _properties[DatabaseIds.orderNumber] = profile.orderNumber;
@@ -129,7 +127,7 @@ static Future<void> saveProfile(Profile profile)async{
       document()
       .setData(_properties);
       }
-      );
+    );
 
   }
 

@@ -14,14 +14,25 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+import 'dart:typed_data';
+
 
 class Functions {
 
-  static Future<File> _getPictureFile(String filePath) async {
+  static Future<File> getPictureFile(String filePath) async {
     // get the path to the document directory.
     Directory appDocDir = await getApplicationDocumentsDirectory();
     String appDocPath = appDocDir.path;
     return new File('/Users/earyzhe/Dropbox/dev/FlutterProjects/dial_in_v1/${filePath}');
+  }
+
+static Future<File> getFile(String filepath)async{
+    final ByteData bytes = await rootBundle.load(filepath);
+    final Directory tempDir = Directory.systemTemp;
+    final String filename = '${Random().nextInt(10000)}.png';
+    final File file = File('${tempDir.path}/$filename');
+    file.writeAsBytes(bytes.buffer.asUint8List(), mode: FileMode.write);
+    return file;
   }
 
 
