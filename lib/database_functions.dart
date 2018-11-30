@@ -85,11 +85,9 @@ class DatabaseFunctions {
 }
 
 /// Upload file
-  static Future<String> _upLoadFileReturnUrl(String filePath, String folder)async{
+  static Future<String> _upLoadFileReturnUrl(File file, String folder)async{
     
-    final File file = await Functions.getFile(filePath);
-
-    final StorageReference ref = FirebaseStorage.instance.ref().child(folder).child(path.basename(file.path));
+    final StorageReference ref = FirebaseStorage.instance.ref().child(path.basename(file.path));
     final StorageUploadTask uploadTask = ref.putFile(file);
     return await (await uploadTask.onComplete).ref.getDownloadURL();
   }
@@ -97,7 +95,7 @@ class DatabaseFunctions {
 /// Save profile 
   static Future<void> saveProfile(Profile profile)async{
 
-    String downloadUrl = await _upLoadFileReturnUrl('assets/images/aeropressSmaller512x512.png', profile.databaseId);
+    String downloadUrl = await _upLoadFileReturnUrl(profile.image, profile.databaseId);
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

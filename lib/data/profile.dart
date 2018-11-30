@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'item.dart';
 import '../database_functions.dart';
 import 'dart:io';
+import 'functions.dart';
+import '../data/images.dart';
 
 
 class Profile {
@@ -67,7 +69,10 @@ class Profile {
       default:
         break;
     }
+    // setDefaultPic();
   }
+
+   Future<void> setDefaultPic()async{if (this.image == null){ this.image = await Functions.getFile(Images.recipeSmaller);}}
 
   void setProfileItemValue({String itemDatabaseId, dynamic value}) {
     for (var i = 0; i < this.properties.length; i++) {

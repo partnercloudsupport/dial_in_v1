@@ -33,6 +33,7 @@ import '../../pages/profile_pages/equipment_profile_page.dart';
 import '../../pages/profile_pages/grinder_profile_page.dart';
 import '../../pages/profile_pages/barista_profile_page.dart';
 import '../../pages/profile_pages/coffee_profile_page.dart';
+import '../../data/profile.dart';
 import 'dart:io';
 
 
