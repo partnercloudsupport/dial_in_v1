@@ -41,11 +41,10 @@ class DatabaseFunctions {
   }
 
   static Future<void> getCurrentUserId(Function completion (String userId ) ) async {
-  FirebaseUser user = await FirebaseAuth.instance.currentUser();
-  print(user.uid);
-  completion(user.uid.toString());
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    print(user.uid);
+    completion(user.uid.toString());
   }
-
 
   static Future<File> downloadFile(String httpPath)async{
 
@@ -57,12 +56,11 @@ class DatabaseFunctions {
     final File file = File('${tempDir.path}/$fileName');
     final StorageReference firebaseStorageReferance = FirebaseStorage.instance.ref().child(fileName);
     final StorageFileDownloadTask downloadTask = firebaseStorageReferance.writeToFile(file);
-    int byteNumber;
     
-    await downloadTask.future.then((totalByteCount){  print(totalByteCount); byteNumber = totalByteCount.totalByteCount.toInt();});
-    print(byteNumber);
+    await downloadTask.future.then((totalByteCount){print ('Downloaded ${totalByteCount.totalByteCount.toInt()}');});
 
-  return file;
+    return file;
+
      } catch (e){
        print(e);
        return Functions.getFile(Images.recipeSmaller);

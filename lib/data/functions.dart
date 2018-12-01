@@ -1464,22 +1464,25 @@ static Future<File> getFile(String filepath)async{
 
   static Future<Widget> buildProfileCardFromDocument(BuildContext context, DocumentSnapshot document, String databaseId, Function(Profile) giveprofile) async {
     
-    Profile profile = await DatabaseFunctions.createProfileFromDocumentSnapshot(
+     Profile profile = await DatabaseFunctions.createProfileFromDocumentSnapshot(
         databaseId, document);
 
     return ProfileCard(profile, giveprofile);
   }
 
   static Future<List<Widget>> buildProfileCardArray( BuildContext context, AsyncSnapshot documents, String databaseId, Function(Profile) giveProfile) async {
+      
+    print('Start ${DateTime.now()}');
 
     List<Widget> _cardArray = new List<Widget>();
 
-    if (documents.data.documents != null || documents.data.documents.length != 0) {
+     if (documents.data.documents != null || documents.data.documents.length != 0) {
       documents.data.documents.forEach((document) {
         buildProfileCardFromDocument(context, document, databaseId ,giveProfile)
             .then(((profile) { _cardArray.add(profile); }));
       });
     }
+    print('End ${DateTime.now()}');
     return _cardArray;
   }
 
