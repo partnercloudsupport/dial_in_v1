@@ -1406,7 +1406,6 @@ static Future<File> getFile(String filepath)async{
         ///
         /// Barista
         ///
-        ///
 
         case DatabaseIds.level:
           _item = new Item(
@@ -1464,8 +1463,7 @@ static Future<File> getFile(String filepath)async{
 
   static Future<Widget> buildProfileCardFromDocument(BuildContext context, DocumentSnapshot document, String databaseId, Function(Profile) giveprofile) async {
     
-     Profile profile = await DatabaseFunctions.createProfileFromDocumentSnapshot(
-        databaseId, document);
+    Profile profile = await DatabaseFunctions.createProfileFromDocumentSnapshot(databaseId, document);
 
     return ProfileCard(profile, giveprofile);
   }
@@ -1477,14 +1475,26 @@ static Future<File> getFile(String filepath)async{
     List<Widget> _cardArray = new List<Widget>();
 
      if (documents.data.documents != null || documents.data.documents.length != 0) {
-      documents.data.documents.forEach((document) {
-        buildProfileCardFromDocument(context, document, databaseId ,giveProfile)
-            .then(((profile) { _cardArray.add(profile); }));
-      });
+
+        for(var document in documents.data.documents){  /// <<<<==== changed line
+            Widget result = await buildProfileCardFromDocument(context, document, databaseId ,giveProfile);
+            _cardArray.add(result);
+        }
+
+        // await Future.wait(documents.data.map((DocumentSnapshot document) async {
+        //   Widget result = await buildProfileCardFromDocument(context, document, databaseId ,giveProfile);
+        //   _cardArray.add(result);
+        // }));
+     }
+      print('End ${DateTime.now()}');
+      return _cardArray;
     }
-    print('End ${DateTime.now()}');
-    return _cardArray;
-  }
+    
+  
+
+
+ 
+ 
 
   static StreamBuilder createStreamProfileListView(BuildContext context, String profileTypeDatabaseId,  ProfilePageState parent ,Function(Profile) giveProfile){
     return StreamBuilder(
