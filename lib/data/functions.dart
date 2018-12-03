@@ -7,17 +7,34 @@ import 'images.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../widgets/custom_widgets.dart';
 import '../pages/profile_pages/profile_page.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:math';
 import 'dart:io';
 import 'dart:async';
 import 'package:flutter/services.dart';
-import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:typed_data';
+import 'package:image/image.dart' as Image;
+import 'dart:io' as Io;
+
+
+
 
 
 class Functions {
+
+static File fileToPng(File file){
+  // decodeImage will identify the format of the image and use the appropriate
+  // decoder.
+  Image.Image image = Image.decodeImage(file.readAsBytesSync());
+
+  // Resize the image to a 120x? thumbnail (maintaining the aspect ratio).
+  Image.Image thumbnail = Image.copyResize(image, 120);
+  final String filename = '${Random().nextInt(10000)}.png';
+  // Save the thumbnail as a PNG.
+  File returnFile =new Io.File(filename) ..writeAsBytesSync(Image.encodePng(thumbnail));
+
+  return returnFile;      
+}
 
   static Future<File> getPictureFile(String filePath) async {
     // get the path to the document directory.
@@ -1320,6 +1337,7 @@ static Future<File> getFile(String filepath)async{
         ///
         /// Grinder
         ///
+        
         case DatabaseIds.grinderId:
           _item = new Item(
             title: StringLabels.grinderId,
@@ -1363,6 +1381,7 @@ static Future<File> getFile(String filepath)async{
         ///
         /// Equipment
         ///
+        
         case DatabaseIds.equipmentId:
           _item = new Item(
             title: StringLabels.equipmentId,

@@ -21,15 +21,9 @@ class UserProfileState extends State<UserProfilePage>{
               child: Center(
                   child: CircularPicture(
                       Image.asset('assets/images/user.png'), 100.0))),
-
-
       Text("Name"),
       Text("Username")
-
-
-
-    ]
-
+      ]
     );
     
     

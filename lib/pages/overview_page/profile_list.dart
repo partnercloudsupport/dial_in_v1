@@ -40,7 +40,7 @@ class _ProfileListState extends State<ProfileList>{
      if (_isOnOverviewScreen){
 
        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
-          ProfilePage(isCopying: false, isEditing: true, isNew: false, type: profile.type, referance: profile.objectId, profile: profile)));
+        ProfilePage(isCopying: false, isEditing: true, isNew: false, type: profile.type, referance: profile.objectId, profile: profile)));
 
      }else{
 

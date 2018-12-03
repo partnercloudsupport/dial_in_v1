@@ -13,14 +13,15 @@ import 'package:flutter/material.dart'
         Text,
         TextStyle,
         required;
+        
 import '../../data/profile.dart';
 import '../../data/strings.dart';
+import 'package:path/path.dart' as path;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../data/images.dart';
 import '../../data/functions.dart';
 import '../../database_functions.dart';
-
+import 'dart:io';
 import '../overview_page/profile_list.dart';
 import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
@@ -33,9 +34,7 @@ import '../../pages/profile_pages/equipment_profile_page.dart';
 import '../../pages/profile_pages/grinder_profile_page.dart';
 import '../../pages/profile_pages/barista_profile_page.dart';
 import '../../pages/profile_pages/coffee_profile_page.dart';
-import '../../data/profile.dart';
-import 'dart:io';
-
+import 'package:flutter/cupertino.dart';
 
 
 class ProfilePage extends StatefulWidget {
@@ -46,13 +45,15 @@ class ProfilePage extends StatefulWidget {
   @required
   final bool isNew;
   @required
+  bool isFromProfile = false;
+  @required
   final ProfileType type;
   @required
   final String referance;
   String appBarTitle;
   Profile profile;
 
-  ProfilePage({this.isCopying, this.isEditing, this.isNew, this.type, this.referance, this.profile}) {
+  ProfilePage({this.isCopying, this.isEditing, this.isNew, this.type, this.referance, this.profile, this.isFromProfile}) {
     if (isNew || isCopying) {
       this.appBarTitle = StringLabels.newe +
           ' ' +
@@ -77,15 +78,18 @@ class ProfilePageState extends State<ProfilePage> {
   @required
   bool _isNew;
   Profile _profile;
+  @required
+  bool _isFromProfile;
 
-  void initState() {
+void initState() {
     _isCopying = widget.isCopying;
     _isEditing = widget.isEditing;
     _isNew = widget.isNew;
     _profile = widget.profile;
-    super.initState();
-  }
+    _isFromProfile = widget.isFromProfile;
 
+    super.initState();
+}
 
 @override
 void didUpdateWidget(Widget oldWidget) {
@@ -124,9 +128,9 @@ void didUpdateWidget(Widget oldWidget) {
           _isEditing
               ? RawMaterialButton(
                   child: Icon(Icons.save_alt),
-                  onPressed: () {
-                    Navigator.pop(context);
-                    DatabaseFunctions.saveProfile(_profile);
+                  onPressed: ()async{
+                    var newProfile = await DatabaseFunctions.saveProfile(_profile);
+                    Navigator.pop(context, newProfile);    
                   },
                 )
               : RawMaterialButton(
@@ -144,7 +148,6 @@ void didUpdateWidget(Widget oldWidget) {
           Column(
             children: <Widget>[
 
-
             ///Public profile switch
             Container(padding: EdgeInsets.all(_padding),margin: EdgeInsets.all(_margin),child: 
             Column(children: <Widget>[
@@ -152,15 +155,13 @@ void didUpdateWidget(Widget oldWidget) {
             Switch(onChanged: (on){setState(() {_profile.isPublic = on;}); }, value: _profile.isPublic,),
             ],),),
 
-
             /// Profile Image
-              
-              ProfileImage(Image.file(_profile.image)),
+            ProfileImage(Image.file(_profile.image)),
 
-              FlatButton(
-                onPressed: _getimage,
-                child: Text(StringLabels.changeImage),
-              ),
+            FlatButton(
+              onPressed: (){ _getimage(_profile.image).then((image){ setState(() {_profile.image = image;});});},
+              child: Text(StringLabels.changeImage),
+            ),
             
             /// All below changes depending on profile
 
@@ -215,18 +216,43 @@ void didUpdateWidget(Widget oldWidget) {
     return _structure;
   }
 
-  Future <Image> _getimage()async{
+/// Get image for profile photo
+  Future <File> _getimage(File currentImage)async{
 
-    File _image;
-    
-    var image = await ImagePicker.pickImage(source: ImageSource.camera);
-    setState(() {
-          _image = image;
-        });
-    return Image.file(_image); 
+    File _image = currentImage;
+    print(path.basename(_image.path));
+    CupertinoActionSheet cameraSelection = new CupertinoActionSheet(actions: <Widget>[
+
+          new CupertinoDialogAction(
+              child: const Text(StringLabels.camera),
+              isDestructiveAction: true,
+              onPressed: ()async{ 
+                var image = await ImagePicker.pickImage(source: ImageSource.camera);
+                 if (path.basename(image.path).contains('jpeg'))
+                    {_image = Functions.fileToPng(image);}
+                    Navigator.of(context, rootNavigator: true).pop(StringLabels.camera);
+              }
+          ),
+
+          new CupertinoDialogAction(
+              child: const Text(StringLabels.photoLibrary),
+              isDefaultAction: true,
+              onPressed: ()async{ 
+                var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+                    {_image = Functions.fileToPng(image);}
+                    Navigator.of(context, rootNavigator: true).pop(StringLabels.photoLibrary);
+              }
+          ),
+    ],);
+
+    await showDialog(context: context, builder: (BuildContext context){
+      return cameraSelection ;
+    });
+    print(path.basename(_image.path));
+    return _image; 
   }
 
-  // // user defined function
+  //// user defined function
   void _showDialog(String databaseID) {
     // flutter defined function
     showDialog(
@@ -237,23 +263,25 @@ void didUpdateWidget(Widget oldWidget) {
           title: Text(Functions.convertDatabaseIdToTitle(databaseID)),
           children: <Widget>[
             RaisedButton(
-              onPressed: () {
-                print('profile butoon pressed');
-                Navigator.push(
-                    context,
+              onPressed: ()async{
+                Profile _newProfile = await Functions.createBlankProfile(Functions.getProfileDatabaseIdType(databaseID));
+                Profile result = await Navigator.push(context,
                     MaterialPageRoute(
                         builder: (BuildContext context) => ProfilePage(
                               isCopying: false,
-                              isEditing: false,
+                              isEditing: true,
                               isNew: true,
                               type: Functions.getProfileDatabaseIdType(
                                   databaseID),
                               referance: '',
+                              profile: _newProfile,
                             )));
+               Navigator.pop(context, result);             
+               setState(() {  _profile.setSubProfile(result); });         
               },
               child: Text('Add new profile'),
             ),
-            ProfileList(databaseID,(sentProfile){ setState(() {
+            ProfileList(databaseID,(sentProfile){ setState((){
                        _profile.setSubProfile(sentProfile);   
                         }); }, false)
           ],

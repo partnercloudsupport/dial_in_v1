@@ -40,16 +40,16 @@ class DatabaseFunctions {
     print('Logged out');
   }
 
-  static Future<void> getCurrentUserId(Function completion (String userId ) ) async {
+  static Future<String> getCurrentUserId()async{
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
     print(user.uid);
-    completion(user.uid.toString());
+    return user.uid.toString();
   }
 
   static Future<File> downloadFile(String httpPath)async{
 
-    final RegExp regExp = RegExp('([^?/]*\.(png))');
-    final String fileName = regExp.stringMatch(httpPath);
+    final RegExp regExpPng = RegExp('([^?/]*\.(png))');
+    final String fileName = regExpPng.stringMatch(httpPath);
     final Directory tempDir = Directory.systemTemp;
 
     try {
@@ -58,11 +58,10 @@ class DatabaseFunctions {
     final StorageFileDownloadTask downloadTask = firebaseStorageReferance.writeToFile(file);
     
     await downloadTask.future.then((totalByteCount){print ('Downloaded ${totalByteCount.totalByteCount.toInt()}');});
-
     return file;
 
      } catch (e){
-       print(e);
+       print('Error line 65 DB.func/DowloadFile${e}');
        return Functions.getFile(Images.recipeSmaller);
      }
 }
@@ -77,7 +76,7 @@ class DatabaseFunctions {
   }
 
 /// Save profile 
-  static Future<void> saveProfile(Profile profile)async{
+  static Future<Profile> saveProfile(Profile profile)async{
 
     String downloadUrl = await _upLoadFileReturnUrl(profile.image, profile.databaseId);
 
@@ -88,7 +87,7 @@ class DatabaseFunctions {
         _properties[profile.properties[i].databaseId] = profile.properties[i].value;
       
       }
-    DatabaseFunctions.getCurrentUserId((userId){
+    String userId = await DatabaseFunctions.getCurrentUserId();
 
         _properties[DatabaseIds.image] = downloadUrl;
         _properties[DatabaseIds.orderNumber] = profile.orderNumber;
@@ -101,14 +100,14 @@ class DatabaseFunctions {
         _properties[DatabaseIds.grinderId] = profile.getProfileProfileRefernace(profileDatabaseId: DatabaseIds.grinder);
         _properties[DatabaseIds.barista] = profile.getProfileProfileRefernace(profileDatabaseId: DatabaseIds.Barista);
         _properties[DatabaseIds.equipmentId] = profile.getProfileProfileRefernace(profileDatabaseId: DatabaseIds.brewingEquipment);}  
+ 
+      DocumentReference documentReference = await Firestore.instance.collection(profile.databaseId).add(_properties);
 
-    Firestore.instance.
-      collection(profile.databaseId).
-      document()
-      .setData(_properties);
-      }
-    );
+      final String docId = documentReference.documentID; 
 
+      profile.objectId =  docId;
+
+      return profile;
   }
 
   static void getImage(String id, Function completion(Image image)){
@@ -122,19 +121,16 @@ class DatabaseFunctions {
 
     if (docRefernace != ''){
 
-    await Firestore.instance.collection(collectionDataBaseId).document(docRefernace).get().then((doc){
+    DocumentSnapshot doc = await Firestore.instance.collection(collectionDataBaseId).document(docRefernace).get();
     
     if (doc.exists) {
-          DatabaseFunctions.createProfileFromDocumentSnapshot(collectionDataBaseId, doc).then((profile){_profile = profile;});
+          _profile = await DatabaseFunctions.createProfileFromDocumentSnapshot(collectionDataBaseId, doc);
       } else {
-          Functions.createBlankProfile(ProfileType.barista).then((profile){ _profile = profile;});
+          _profile = await Functions.createBlankProfile(ProfileType.barista);
       }
-  }); 
     }else{_profile =  await Functions.createBlankProfile(Functions.getProfileDatabaseIdType(collectionDataBaseId));}
-
     return _profile;
   }
-
 
   static List<Item> convertDocumentDataToProperties(DocumentSnapshot document){
 
@@ -159,8 +155,6 @@ class DatabaseFunctions {
   }}});
   return _properties;
 }
-
-
 
   static Future<List<Profile>> createProfilesFromDataSnapshot(String databaseId, List<DocumentSnapshot> data)async{
 
@@ -190,20 +184,26 @@ class DatabaseFunctions {
       if (document.data.containsKey(DatabaseIds.orderNumber)) { _orderNumber = document.data[DatabaseIds.orderNumber];} else {_orderNumber = 0;}
 
       if (databaseId == DatabaseIds.recipe){
-      if (document.data.containsKey(DatabaseIds.coffeeId)) {_coffee = await DatabaseFunctions.getProfileFromFireStoreWithDocRef(databaseId , document.data[DatabaseIds.coffeeId]);}
-      else{_coffee = await Functions.createBlankProfile(ProfileType.coffee);}
 
-      if (document.data.containsKey(DatabaseIds.Barista)) {_barista = await DatabaseFunctions.getProfileFromFireStoreWithDocRef(databaseId , document.data[DatabaseIds.Barista]);}
-      else{_barista = await Functions.createBlankProfile(ProfileType.barista);}
+      if (document.data.containsKey(DatabaseIds.coffeeId) && document.data[DatabaseIds.coffeeId] != ""){ 
+        _coffee = await DatabaseFunctions.getProfileFromFireStoreWithDocRef(DatabaseIds.coffee , document.data[DatabaseIds.coffeeId]);}
+        else{_coffee = await Functions.createBlankProfile(ProfileType.coffee);}
 
-      if (document.data.containsKey(DatabaseIds.equipmentId)) {_equipment = await DatabaseFunctions.getProfileFromFireStoreWithDocRef(databaseId , document.data[DatabaseIds.equipmentId]);}
-      else{_equipment = await Functions.createBlankProfile(ProfileType.equipment);} 
+      if (document.data.containsKey(DatabaseIds.barista) && document.data[DatabaseIds.barista] != ""){
+        _barista = await DatabaseFunctions.getProfileFromFireStoreWithDocRef(DatabaseIds.Barista, document.data[DatabaseIds.Barista]);}
+        else{_barista = await Functions.createBlankProfile(ProfileType.barista);}
 
-      if (document.data.containsKey(DatabaseIds.grinderId)) {_grinder = await DatabaseFunctions.getProfileFromFireStoreWithDocRef(databaseId , document.data[DatabaseIds.grinderId]);}
-      else{_grinder = await Functions.createBlankProfile(ProfileType.grinder);} 
+      if (document.data.containsKey(DatabaseIds.equipmentId) && document.data[DatabaseIds.Barista] != ""){
+        _equipment = await DatabaseFunctions.getProfileFromFireStoreWithDocRef(DatabaseIds.brewingEquipment, document.data[DatabaseIds.equipmentId]);}
+        else{_equipment = await Functions.createBlankProfile(ProfileType.equipment);}
+
+      if (document.data.containsKey(DatabaseIds.grinderId) && document.data[DatabaseIds.grinderId] != ""){
+        _grinder = await DatabaseFunctions.getProfileFromFireStoreWithDocRef(DatabaseIds.grinder, document.data[DatabaseIds.grinderId]);}
+        else{_grinder = await Functions.createBlankProfile(ProfileType.grinder);}
       
-      if (document.data.containsKey(DatabaseIds.waterID)) {_water = await DatabaseFunctions.getProfileFromFireStoreWithDocRef(databaseId , document.data[DatabaseIds.waterID]);}
-      else{_water = await Functions.createBlankProfile(ProfileType.water);} 
+      if (document.data.containsKey(DatabaseIds.waterID) && document.data[DatabaseIds.waterID] != ""){
+        _water = await DatabaseFunctions.getProfileFromFireStoreWithDocRef(DatabaseIds.water, document.data[DatabaseIds.waterID]);}
+        else{_water = await Functions.createBlankProfile(ProfileType.water);}
       }
 
       List<Item> _properties = new List<Item>();
