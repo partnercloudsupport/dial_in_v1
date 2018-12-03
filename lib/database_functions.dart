@@ -48,8 +48,15 @@ class DatabaseFunctions {
 
   static Future<File> downloadFile(String httpPath)async{
 
-    final RegExp regExpPng = RegExp('([^?/]*\.(png))');
-    final String fileName = regExpPng.stringMatch(httpPath);
+
+    final RegExp regExpPng = RegExp('([^?/]*\.(png))');    
+    final RegExp regExpjpg = RegExp('([^?/]*\.(jpg))');
+    String fileName;
+
+    if (httpPath.contains(RegExp('png'))){fileName = regExpPng.stringMatch(httpPath);}
+    else if (httpPath.contains(RegExp('jpg'))){fileName = regExpjpg.stringMatch(httpPath);}
+    else {throw('No matching file type') ;}
+
     final Directory tempDir = Directory.systemTemp;
 
     try {

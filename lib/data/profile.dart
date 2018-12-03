@@ -177,6 +177,14 @@ class Profile {
               value = this.profiles[i].getProfileItemValue(itemDatabaseId: DatabaseIds.name);
               break;
 
+            case DatabaseIds.score:
+              value = (this.profiles[i].getProfileItemValue(itemDatabaseId: DatabaseIds.strength) +
+                      this.profiles[i].getProfileItemValue(itemDatabaseId: DatabaseIds.balance) +
+                      this.profiles[i].getProfileItemValue(itemDatabaseId: DatabaseIds.flavour) +
+                      this.profiles[i].getProfileItemValue(itemDatabaseId: DatabaseIds.body) +
+                      this.profiles[i].getProfileItemValue(itemDatabaseId: DatabaseIds.afterTaste)).toString();
+              break;  
+
             default:
               return 'Error';
               break;

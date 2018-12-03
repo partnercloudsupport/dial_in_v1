@@ -36,6 +36,20 @@ static File fileToPng(File file){
   return returnFile;      
 }
 
+static File fileToJpg(File file){
+  // decodeImage will identify the format of the image and use the appropriate
+  // decoder.
+  Image.Image image = Image.decodeImage(file.readAsBytesSync());
+
+  // Resize the image to a 120x? thumbnail (maintaining the aspect ratio).
+  Image.Image thumbnail = Image.copyResize(image, 120);
+  final String filename = '${Random().nextInt(10000)}.jpg';
+  // Save the thumbnail as a PNG.
+  File returnFile =new Io.File(filename) ..writeAsBytesSync(Image.encodeJpg(thumbnail));
+
+  return returnFile;      
+}
+
   static Future<File> getPictureFile(String filePath) async {
     // get the path to the document directory.
     Directory appDocDir = await getApplicationDocumentsDirectory();

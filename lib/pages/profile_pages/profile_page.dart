@@ -221,6 +221,7 @@ void didUpdateWidget(Widget oldWidget) {
 
     File _image = currentImage;
     print(path.basename(_image.path));
+
     CupertinoActionSheet cameraSelection = new CupertinoActionSheet(actions: <Widget>[
 
           new CupertinoDialogAction(
@@ -228,9 +229,8 @@ void didUpdateWidget(Widget oldWidget) {
               isDestructiveAction: true,
               onPressed: ()async{ 
                 var image = await ImagePicker.pickImage(source: ImageSource.camera);
-                 if (path.basename(image.path).contains('jpeg'))
-                    {_image = Functions.fileToPng(image);}
-                    Navigator.of(context, rootNavigator: true).pop(StringLabels.camera);
+                _image = image;
+                Navigator.of(context, rootNavigator: true).pop(image);
               }
           ),
 
@@ -239,8 +239,8 @@ void didUpdateWidget(Widget oldWidget) {
               isDefaultAction: true,
               onPressed: ()async{ 
                 var image = await ImagePicker.pickImage(source: ImageSource.gallery);
-                    {_image = Functions.fileToPng(image);}
-                    Navigator.of(context, rootNavigator: true).pop(StringLabels.photoLibrary);
+                _image = image;
+                 Navigator.of(context, rootNavigator: true).pop(image);
               }
           ),
     ],);
