@@ -226,6 +226,7 @@ class RoastingDetailsCardState extends State<RoastingDetailsCard> {
                       format: widget.dateFormat,
                       decoration: InputDecoration(labelText: StringLabels.date),
                       initialDate: _roastDateValue,
+                      dateOnly: true,
                       onChanged: (date) {
                       if (date != null){           
                       setState(widget._roastDate(date));}}),
@@ -293,7 +294,7 @@ Container(width: _textFieldWidth,
                               onChanged: _giveValue,
                             )); 
   }
-  }                
+}                
         
 class ProfileInputCard extends StatelessWidget {
   final double _padding = 20.0;

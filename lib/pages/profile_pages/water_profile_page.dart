@@ -13,6 +13,8 @@ import '../../widgets/profile_page_widgets.dart';
 import '../../data/profile.dart';
 import '../../data/strings.dart';
 import '../../widgets/custom_widgets.dart';
+import '../../data/item.dart';
+
 
 
 class WaterPage extends StatefulWidget{
@@ -69,7 +71,12 @@ class _WaterPageState extends State<WaterPage> {
                     (totalPpm){widget._setProfileItemValue( DatabaseIds.ppm, totalPpm);},
                     (ghPpm){widget._setProfileItemValue( DatabaseIds.gh, ghPpm);},
                     (khPpm){widget._setProfileItemValue( DatabaseIds.kh, khPpm);},
-                    (pH){widget._setProfileItemValue( DatabaseIds.ph, pH);}),
+                    (pH){widget._setProfileItemValue( DatabaseIds.ph, pH);},
+                    _profile.getProfileItem( DatabaseIds.ppm),
+                    _profile.getProfileItem( DatabaseIds.gh),
+                    _profile.getProfileItem( DatabaseIds.kh),
+                    _profile.getProfileItem( DatabaseIds.ph),
+                    ),
 
                   /// Notes
                    NotesCard(StringLabels.notes,
@@ -87,9 +94,18 @@ class WaterDetailsCard extends StatelessWidget {
   final Function(String) _ghPpm;
   final Function(String) _khPpm;
   final Function(String) _pH;
+  final Item _totalPpmItem;
+  final Item _ghPpmItem;
+  final Item _khPpmItem;
+  final Item _pHItem;
 
 
-WaterDetailsCard(this._totalPpm, this._ghPpm, this._khPpm, this._pH);
+WaterDetailsCard(
+  ///Functions
+  this._totalPpm, this._ghPpm, this._khPpm, this._pH,
+  /// Items 
+  this._totalPpmItem, this._ghPpmItem, this._khPpmItem, this._pHItem,
+  );
 
  @override
   Widget build(BuildContext context) {
@@ -99,55 +115,20 @@ WaterDetailsCard(this._totalPpm, this._ghPpm, this._khPpm, this._pH);
         Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: <Widget>[
 
           ///Total ppm
-          Container(width: _textFieldWidth,
-                    child: TextField(
-                    textAlign: TextAlign.start,
-                    keyboardType: TextInputType.number,
-                    decoration: new InputDecoration(
-                    labelText: StringLabels.ppm,
-                    hintText: StringLabels.enterValue,
-                              ),
-                              onChanged: _totalPpm,
-                            )),
+          TextFieldItemWithInitalValue( _totalPpmItem,(value){ _totalPpm(value);}),
 
           ///gh Ppm
-          Container(width: _textFieldWidth,
-                    child: TextField(
-                    textAlign: TextAlign.start,
-                    keyboardType: TextInputType.number,
-                    decoration: new InputDecoration(
-                    labelText: StringLabels.gh,
-                    hintText: StringLabels.enterValue,
-                              ),
-                              onChanged: _ghPpm,
-                            )),                  
+          TextFieldItemWithInitalValue( _ghPpmItem,(value){ _ghPpm(value);}),               
         ],),
 
         ///Row 2
         Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: <Widget>[
 
           /// kH
-          Container(width: _textFieldWidth,
-                    child: TextField(
-                    textAlign: TextAlign.start,
-                    keyboardType: TextInputType.number,
-                    decoration: new InputDecoration(
-                    labelText: StringLabels.kh,
-                    hintText: StringLabels.enterValue,
-                              ),
-                              onChanged: _khPpm,
-                            )),
+          TextFieldItemWithInitalValue( _khPpmItem,(value){ _khPpm(value);}),
+
           /// pH
-          Container(width: _textFieldWidth,
-                    child: TextField(
-                    textAlign: TextAlign.start,
-                    keyboardType: TextInputType.number,
-                    decoration: new InputDecoration(
-                    labelText: StringLabels.ph,
-                    hintText: StringLabels.enterValue,
-                              ),
-                              onChanged: _pH,
-                            )),      
+          TextFieldItemWithInitalValue( _pHItem,(value){ _pH(value);}),
 
           /// Notes                              
         ],),

@@ -6,6 +6,7 @@ import '../database_functions.dart';
 import '../data/images.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
+import '../data/item.dart';
 
 ///
 /// Background
@@ -642,35 +643,63 @@ class _DateInputCardState extends State<DateInputCard> {
     );
   }
 }
+////
+/// Widgets
+///
 class TextFieldWithInitalValue extends StatelessWidget {
 
-    final double _textFieldWidth = 150.0;
-    TextEditingController _controller;
-    final Function(dynamic) _giveValue;
-    final dynamic _initalValue; 
-    final String _titleLabel;
-    final String _hintText;
+final double _textFieldWidth = 150.0;
+TextEditingController _controller;
+final Function(dynamic) _giveValue;
+final dynamic _initalValue; 
+final String _titleLabel;
+final String _hintText;
+final TextInputType _inputType;
 
-    TextFieldWithInitalValue(this._titleLabel, this._hintText, this._initalValue, this._giveValue)
-    {_controller = new TextEditingController(text: _initalValue);}
+TextFieldWithInitalValue(this._inputType,this._titleLabel, this._hintText, this._initalValue, this._giveValue){_controller = new TextEditingController(text: _initalValue.toString());}
 
-    @override
-    Widget build(BuildContext context) {
-        return
-      Container(
-        width: _textFieldWidth,
-        child: TextField(
-        controller: _controller ,
-        textAlign: TextAlign.start,
-        keyboardType: TextInputType.text,
-        decoration: new InputDecoration(
-        labelText: _titleLabel,
-        hintText: _hintText,
-                  ),
-                  onChanged: _giveValue,
-                )); 
-    }
-  }            
+@override
+  Widget build(BuildContext context) {
+    return
+Container(width: _textFieldWidth,
+                    child: TextField(
+                    controller: _controller ,
+                    textAlign: TextAlign.start,
+                    keyboardType: _inputType,
+                    decoration: new InputDecoration(
+                    labelText: _titleLabel,
+                    hintText: _hintText,
+                              ),
+                              onChanged: _giveValue,
+                            )); 
+  }
+}       
+
+class TextFieldItemWithInitalValue extends StatelessWidget {
+
+final double _textFieldWidth = 150.0;
+TextEditingController _controller;
+final Function(dynamic) _giveValue;
+final Item item;
+
+TextFieldItemWithInitalValue(this.item, this._giveValue){_controller = new TextEditingController(text: item.value);}
+
+@override
+  Widget build(BuildContext context) {
+    return
+Container(width: _textFieldWidth,
+                    child: TextField(
+                    controller: _controller ,
+                    textAlign: TextAlign.start,
+                    keyboardType: item.keyboardType,
+                    decoration: new InputDecoration(
+                    labelText: item.title,
+                    hintText: item.placeHolderText,
+                              ),
+                              onChanged: _giveValue,
+                            )); 
+  }
+}       
 
 
 

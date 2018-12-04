@@ -13,6 +13,8 @@ import '../../widgets/profile_page_widgets.dart';
 import '../../data/profile.dart';
 import '../../data/strings.dart';
 import '../../widgets/custom_widgets.dart';
+import '../../widgets/profile_page_widgets.dart';
+
 
 class BaristaPage extends StatefulWidget {
   final double _margin;
@@ -48,10 +50,12 @@ class _BaristaPageState extends State<BaristaPage> {
       BaristaDetailsCard(
         (name) {widget._setProfileItemValue(DatabaseIds.name, name);},
         (level) {widget._setProfileItemValue(DatabaseIds.burrs, level);},
-
+        _profile.getProfileItemValue(DatabaseIds.name),
+        _profile.getProfileItemValue(DatabaseIds.level),
       ),
 
       /// Notes
+      
       NotesCard(StringLabels.notes,
           _profile.getProfileItemValue( DatabaseIds.method),
           (text) {
@@ -67,10 +71,14 @@ class BaristaDetailsCard extends StatelessWidget {
   final double _textFieldWidth = 150.0;
   final Function(String) _name;
   final Function(String) _level;
+  String _nameValue;
+  String _levelValue;
 
   BaristaDetailsCard(
     this._name,
     this._level,
+    this._nameValue,
+    this._levelValue,
   );
 
   @override
@@ -88,33 +96,13 @@ class BaristaDetailsCard extends StatelessWidget {
             children: <Widget>[
               
               /// Name
-              Container(
-                  width: _textFieldWidth,
-                  child: TextField(
-                      textAlign: TextAlign.start,
-                      keyboardType: TextInputType.text,
-                      decoration: new InputDecoration(
-                        labelText: StringLabels.name,
-                        hintText: StringLabels.enterNickname,
-                      ),
-                      onChanged: (name) {
-                        _name(name);
-                      })),
+              TextFieldWithInitalValue(TextInputType.text, StringLabels.name, StringLabels.enterNickname,
+               _nameValue, (value){ _level(value);}),   
 
               /// Level
-              Container(
-                  width: _textFieldWidth,
-                  child: TextField(
-                    textAlign: TextAlign.start,
-                    keyboardType: TextInputType.text,
-                    decoration: new InputDecoration(
-                      labelText: StringLabels.level,
-                      hintText: StringLabels.enterType,
-                    ),
-                    onChanged: (level) {
-                      _level(level);
-                    },
-                  )),
+              TextFieldWithInitalValue(TextInputType.text, StringLabels.level, StringLabels.enterLevel,
+               _nameValue, (value){ _level(value);}),  
+
             ],
           ),
         ],

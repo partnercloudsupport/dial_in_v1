@@ -10,7 +10,7 @@ class Item{
      @required String databaseId; 
      @required String placeHolderText; 
      @required List<List<String>> inputViewDataSet = List<List<String>>();
-     @required TextInputType keyboardType = TextInputType.text;
+     @required TextInputType keyboardType = TextInputType.text; 
     
     Item({
         this.title,

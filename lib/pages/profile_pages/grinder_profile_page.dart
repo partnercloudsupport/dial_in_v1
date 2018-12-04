@@ -1,14 +1,7 @@
 import '../../data/strings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../data/images.dart';
-import '../../data/functions.dart';
 import '../../database_functions.dart';
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-import 'package:intl/intl.dart';
-import '../overview_page/profile_list.dart';
-import 'package:flutter/foundation.dart';
-import 'package:meta/meta.dart';
 import '../../widgets/profile_page_widgets.dart';
 import '../../data/profile.dart';
 import '../../data/strings.dart';
@@ -25,6 +18,7 @@ class GrinderPage extends StatefulWidget {
 
   _GrinderPageState createState() => new _GrinderPageState();
 }
+
 
 class _GrinderPageState extends State<GrinderPage> {
   final double _padding = 20.0;
@@ -50,6 +44,10 @@ class _GrinderPageState extends State<GrinderPage> {
         (burrs) {widget._setProfileItemValue(DatabaseIds.burrs, burrs);},
         (make) {widget._setProfileItemValue(DatabaseIds.grinderMake, make);},
         (model) {widget._setProfileItemValue(DatabaseIds.grinderModel, model);},
+        _profile.getProfileItemValue(DatabaseIds.name),
+        _profile.getProfileItemValue(DatabaseIds.burrs),        
+        _profile.getProfileItemValue(DatabaseIds.grinderMake),        
+        _profile.getProfileItemValue(DatabaseIds.grinderModel),        
       ),
 
       /// Notes
@@ -67,15 +65,19 @@ class GrinderDetailsCard extends StatelessWidget {
   final double _margin = 10.0;
   final double _textFieldWidth = 150.0;
   final Function(String) _name;
-  final Function(String) _type;
+  final Function(String) _burrs;
   final Function(String) _make;
   final Function(String) _model;
+  final String _nameValue;
+  final String _typeValue;
+  final String _makeValue;
+  final String _modelValue;
 
   GrinderDetailsCard(
-    this._name,
-    this._type,
-    this._make,
-    this._model,
+    /// Functions
+    this._name,this._burrs,this._make,this._model,
+    /// Variables
+    this._nameValue, this._typeValue, this._makeValue, this._modelValue
   );
 
   @override
@@ -93,67 +95,30 @@ class GrinderDetailsCard extends StatelessWidget {
             children: <Widget>[
               
               /// Name
-              Container(
-                  width: _textFieldWidth,
-                  child: TextField(
-                      textAlign: TextAlign.start,
-                      keyboardType: TextInputType.text,
-                      decoration: new InputDecoration(
-                        labelText: StringLabels.name,
-                        hintText: StringLabels.enterNickname,
-                      ),
-                      onChanged: (name) {
-                        _name(name);
-                      })),
+              TextFieldWithInitalValue(TextInputType.text, StringLabels.make, StringLabels.enterDescription,
+               _nameValue, (value){ _name(value);}),
 
               /// Burrs
-              Container(
-                  width: _textFieldWidth,
-                  child: TextField(
-                    textAlign: TextAlign.start,
-                    keyboardType: TextInputType.text,
-                    decoration: new InputDecoration(
-                      labelText: StringLabels.burrs,
-                      hintText: StringLabels.enterType,
-                    ),
-                    onChanged: (type) {
-                      _type(type);
-                    },
-                  )),
+              TextFieldWithInitalValue(TextInputType.text, StringLabels.make, StringLabels.enterDescription,
+               _nameValue, (value){_burrs(value);}),
+
             ],
           ),
+
 
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
+
               /// Make
-              Container(
-                  width: _textFieldWidth,
-                  child: TextField(
-                      textAlign: TextAlign.start,
-                      keyboardType: TextInputType.text,
-                      decoration: new InputDecoration(
-                        labelText: StringLabels.make,
-                        hintText: StringLabels.enterDescription,
-                      ),
-                      onChanged: (make) {
-                        _make(make);
-                      })),
+              TextFieldWithInitalValue(TextInputType.text, StringLabels.make, StringLabels.enterDescription,
+               _nameValue, (value){ _make(value);}),
 
               /// Model
-              Container(
-                  width: _textFieldWidth,
-                  child: TextField(
-                      textAlign: TextAlign.start,
-                      keyboardType: TextInputType.text,
-                      decoration: new InputDecoration(
-                        labelText: StringLabels.model,
-                        hintText: StringLabels.enterDescription,
-                      ),
-                      onChanged: (model) {
-                        _model(model);
-                      })),
+              TextFieldWithInitalValue(TextInputType.text, StringLabels.make, StringLabels.enterDescription,
+               _nameValue, (value){ _make(value);}),
+
             ],
           ),
         ],

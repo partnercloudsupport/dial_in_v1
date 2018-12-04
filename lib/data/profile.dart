@@ -98,6 +98,22 @@ class Profile {
     }
   }
 
+  Item getProfileItem(String itemDatabaseId){
+    
+    Item item;
+    for (var i = 0; i < this.properties.length; i++) {
+      if (this.properties[i].databaseId == itemDatabaseId) {
+        item = this.properties[i];
+      }
+    }
+
+    if (item == null) {
+      return Item();
+    } else {
+      return item;
+    }
+  } 
+
 
   void setProfileProfileTitleValue(
       {String profileDatabaseId, String profileDatabaseIdref}) {

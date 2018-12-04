@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import '../../database_functions.dart';
 import '../../widgets/profile_page_widgets.dart';
 import '../../data/profile.dart';
+import '../../widgets/custom_widgets.dart';
+
 
 class EquipmentPage extends StatefulWidget {
   final double _margin;
@@ -41,6 +43,10 @@ class _EquipmentPageState extends State<EquipmentPage> {
         (type) {widget._setProfileItemValue(DatabaseIds.type, type);},
         (make) {widget._setProfileItemValue(DatabaseIds.equipmentMake, make);},
         (model) {widget._setProfileItemValue(DatabaseIds.equipmentModel, model);},
+        _profile.getProfileItemValue(DatabaseIds.name),
+        _profile.getProfileItemValue(DatabaseIds.type),
+        _profile.getProfileItemValue(DatabaseIds.equipmentMake),
+        _profile.getProfileItemValue(DatabaseIds.equipmentModel),
       ),
 
       /// Notes
@@ -61,12 +67,16 @@ class EquipmentDetailsCard extends StatelessWidget {
   final Function(String) _type;
   final Function(String) _make;
   final Function(String) _model;
+  final String _nameValue;
+  final String _typeValue;
+  final String _makeValue;
+  final String _modelValue;
 
   EquipmentDetailsCard(
-    this._name,
-    this._type,
-    this._make,
-    this._model,
+    /// Functions
+    this._name, this._type, this._make, this._model,
+    /// Values
+    this._nameValue,this._typeValue,this._makeValue,this._modelValue
   );
 
   @override
@@ -84,33 +94,13 @@ class EquipmentDetailsCard extends StatelessWidget {
             children: <Widget>[
               
               /// Name
-              Container(
-                  width: _textFieldWidth,
-                  child: TextField(
-                      textAlign: TextAlign.start,
-                      keyboardType: TextInputType.text,
-                      decoration: new InputDecoration(
-                        labelText: StringLabels.name,
-                        hintText: StringLabels.enterNickname,
-                      ),
-                      onChanged: (name) {
-                        _name(name);
-                      })),
+              TextFieldWithInitalValue(TextInputType.text, StringLabels.name, StringLabels.enterNickname,
+               _nameValue, (value){ _name(value);}), 
 
               /// Type
-              Container(
-                  width: _textFieldWidth,
-                  child: TextField(
-                    textAlign: TextAlign.start,
-                    keyboardType: TextInputType.text,
-                    decoration: new InputDecoration(
-                      labelText: StringLabels.type,
-                      hintText: StringLabels.enterType,
-                    ),
-                    onChanged: (type) {
-                      _type(type);
-                    },
-                  )),
+              TextFieldWithInitalValue(TextInputType.text, StringLabels.type, StringLabels.enterName,
+               _nameValue, (value){ _type(value);}), 
+
             ],
           ),
 
@@ -118,33 +108,14 @@ class EquipmentDetailsCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
+
               /// Make
-              Container(
-                  width: _textFieldWidth,
-                  child: TextField(
-                      textAlign: TextAlign.start,
-                      keyboardType: TextInputType.text,
-                      decoration: new InputDecoration(
-                        labelText: StringLabels.make,
-                        hintText: StringLabels.enterDescription,
-                      ),
-                      onChanged: (make) {
-                        _make(make);
-                      })),
+              TextFieldWithInitalValue(TextInputType.text, StringLabels.make, StringLabels.enterDescription,
+               _nameValue, (value){ _make(value);}),
 
               /// Model
-              Container(
-                  width: _textFieldWidth,
-                  child: TextField(
-                      textAlign: TextAlign.start,
-                      keyboardType: TextInputType.text,
-                      decoration: new InputDecoration(
-                        labelText: StringLabels.model,
-                        hintText: StringLabels.enterDescription,
-                      ),
-                      onChanged: (model) {
-                        _model(model);
-                      })),
+              TextFieldWithInitalValue(TextInputType.text, StringLabels.make, StringLabels.enterDescription,
+               _nameValue, (value){ _make(value);}),
             ],
           ),
         ],

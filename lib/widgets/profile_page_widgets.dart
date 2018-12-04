@@ -578,12 +578,14 @@ class NotesCard extends StatelessWidget {
   final double _margin = 10.0;
   final double _cornerRadius = 20.0;
   final double _textFieldWidth = 150.0;
-  final double _spacing = 15.0;
   final Function(String) _onTextChanged;
   final String _title;
+  TextEditingController controller;
   String _notes;
 
-  NotesCard(this._title, this._notes, this._onTextChanged);
+  NotesCard(this._title, this._notes, this._onTextChanged){
+    controller = new TextEditingController(text: this._notes);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -599,6 +601,7 @@ class NotesCard extends StatelessWidget {
           Text(_title),
           Container(
               child: TextField(
+                  controller: controller,
                   textAlign: TextAlign.start,
                   maxLines: null,
                   keyboardType: TextInputType.text,
@@ -611,3 +614,5 @@ class NotesCard extends StatelessWidget {
     ));
   }
 }
+
+
