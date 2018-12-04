@@ -362,7 +362,7 @@ class DatabaseFunctions {
       break;
     }
   }
- }
+}
 
  class Storage {
   Future<String> get localPath async {
@@ -391,7 +391,6 @@ class DatabaseFunctions {
     return file.writeAsString("$data");
   }
 }
-
 
 class DatabaseIds{
 

@@ -309,6 +309,7 @@ static Future<File> getFile(String filepath)async{
               createBlankItem(DatabaseIds.density),
               createBlankItem(DatabaseIds.aW),
               createBlankItem(DatabaseIds.moisture),
+              createBlankItem(DatabaseIds.roasterName),
             ]);
         break;
 
@@ -767,6 +768,16 @@ static Future<File> getFile(String filepath)async{
           value: '',
           databaseId: DatabaseIds.roasteryName,
           placeHolderText: StringLabels.enterDescription,
+          keyboardType: TextInputType.text,
+        );
+        break;
+
+      case DatabaseIds.roasterName: 
+        _item = new Item(
+          title: StringLabels.roasterName,
+          value: '',
+          databaseId: DatabaseIds.roasterName,
+          placeHolderText: StringLabels.enterName,
           keyboardType: TextInputType.text,
         );
         break;
@@ -1286,6 +1297,16 @@ static Future<File> getFile(String filepath)async{
             keyboardType: TextInputType.text,
           );
           break;
+
+        case DatabaseIds.roasterName:
+          _item = new Item(
+            title: StringLabels.roasterName,
+            value: value,
+            databaseId: DatabaseIds.roasterName,
+            placeHolderText: StringLabels.enterName,
+            keyboardType: TextInputType.text,
+          );
+          break;  
 
         case DatabaseIds.beanType:
           _item = new Item(

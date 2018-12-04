@@ -45,7 +45,9 @@ class ProfilePage extends StatefulWidget {
   @required
   final bool isNew;
   @required
-  bool isFromProfile = false;
+  final bool isOldProfile;
+  @required
+  bool isFromProfile;
   @required
   final ProfileType type;
   @required
@@ -53,7 +55,7 @@ class ProfilePage extends StatefulWidget {
   String appBarTitle;
   Profile profile;
 
-  ProfilePage({this.isCopying, this.isEditing, this.isNew, this.type, this.referance, this.profile, this.isFromProfile}) {
+  ProfilePage({this.isOldProfile, this.isCopying, this.isEditing, this.isNew, this.type, this.referance, this.profile, this.isFromProfile}) {
     if (isNew || isCopying) { this.appBarTitle = StringLabels.newe + ' ' +Functions.getProfileTypeString(type) + ' ' + StringLabels.profile;
     }else if (isEditing){  this.appBarTitle =  StringLabels.editing + ' ' + Functions.getProfileTypeString(type) + ' ' + StringLabels.profile; }
     else{ this.appBarTitle =  Functions.getProfileTypeString(type) + ' ' + StringLabels.profile; }
@@ -73,6 +75,7 @@ class ProfilePageState extends State<ProfilePage> {
   bool _isEditing;
   @required
   bool _isNew;
+  bool _isOldProfile;
   Profile _profile;
   @required
   bool _isFromProfile;
@@ -83,6 +86,7 @@ void initState() {
     _isNew = widget.isNew;
     _profile = widget.profile;
     _isFromProfile = widget.isFromProfile;
+    _isOldProfile = widget.isOldProfile;
     super.initState();
 }
 
@@ -104,8 +108,8 @@ void didUpdateWidget(Widget oldWidget) {
           style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15.0),
         ),
         automaticallyImplyLeading: false,
-        leading: _isEditing || _isNew || _isCopying
-            ? RawMaterialButton(
+        leading: _isEditing ? 
+        RawMaterialButton(
                 child: Icon(Icons.cancel),
                 onPressed: () {
                   setState(() {
@@ -120,16 +124,14 @@ void didUpdateWidget(Widget oldWidget) {
                 },
               ),
         actions: <Widget>[
-          _isEditing
-              ? RawMaterialButton(
+          _isEditing?  
+           RawMaterialButton(
                   child: Icon(Icons.save_alt),
-                  onPressed: ()async{ if(_isEditing) 
+                  onPressed: ()async{ if(_isOldProfile ) 
                     {await DatabaseFunctions.updateProfile(_profile);
                     Navigator.pop(context);}
                     else{var newProfile = await DatabaseFunctions.saveProfile(_profile);
-                    Navigator.pop(context, newProfile);}  
-                  },
-                )
+                    Navigator.pop(context, newProfile);}  },)
               : RawMaterialButton(
                   child: Icon(Icons.edit),
                   onPressed: () {

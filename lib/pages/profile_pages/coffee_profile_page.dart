@@ -39,7 +39,7 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
           Column(
             children: <Widget>[
 
-              TextFieldWithInitalValue(StringLabels.name, StringLabels.enterNickname,
+              TextFieldWithInitalValue(TextInputType.text, StringLabels.name, StringLabels.enterNickname,
                _profile.getProfileItemValue( DatabaseIds.coffeeId),
                 (name){ widget._setProfileItemValue(DatabaseIds.coffeeId,name);}),
 
@@ -67,8 +67,7 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
                 _profile.getProfileItemValue(DatabaseIds.producer) ,
                 _profile.getProfileItemValue(DatabaseIds.lot) ,
                 _profile.getProfileItemValue(DatabaseIds.altitude) ,
-                _profile.getProfileItemValue(DatabaseIds.country),
-                ),
+                _profile.getProfileItemValue(DatabaseIds.country)),
 
                 GreenDetailsCard(
                 (beanType){widget._setProfileItemValue(DatabaseIds.beanType,  beanType );},
@@ -78,8 +77,15 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
                 (altitude){widget._setProfileItemValue( DatabaseIds.altitude,  altitude );},
                 (aw){widget._setProfileItemValue( DatabaseIds.aW,  aw );},
                 (moi){widget._setProfileItemValue( DatabaseIds.moisture,  moi );},
-                (harvest){widget._setProfileItemValue( DatabaseIds.harvest,  harvest );})
-
+                (harvest){widget._setProfileItemValue( DatabaseIds.harvest,  harvest );},
+                _profile.getProfileItemValue(DatabaseIds.beanType),
+                _profile.getProfileItemValue(DatabaseIds.beanSize),
+                _profile.getProfileItemValue(DatabaseIds.processingMethod),
+                _profile.getProfileItemValue(DatabaseIds.density),
+                _profile.getProfileItemValue(DatabaseIds.altitude),
+                _profile.getProfileItemValue(DatabaseIds.aW),
+                _profile.getProfileItemValue(DatabaseIds.moisture),
+                _profile.getProfileItemValue(DatabaseIds.harvest),)
               ],
           );
   }
@@ -125,71 +131,42 @@ class OriginDetailsCard extends StatelessWidget {
         ///Row 1
         Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: <Widget>[
           ///Region
-          TextFieldWithInitalValue(StringLabels.region, StringLabels.enterDescription,
+          TextFieldWithInitalValue(TextInputType.text, StringLabels.region, StringLabels.enterDescription,
                _regionValue,
                 (value){_region(value);}),
           
           ///Farm
-          TextFieldWithInitalValue(StringLabels.farm, StringLabels.enterDescription,
+          TextFieldWithInitalValue(TextInputType.text, StringLabels.farm, StringLabels.enterDescription,
                _farmValue,
                 (value){_farm(value);}),              
         ],),
 
         ///Row 2
         Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: <Widget>[
-          ///Producer
-          Container(width: _textFieldWidth,
-                    child: TextField(
-                    textAlign: TextAlign.start,
-                    keyboardType: TextInputType.text,
-                    decoration: new InputDecoration(
-                    labelText: StringLabels.producer,
-                    hintText: StringLabels.enterDescription,
-                              ),
-                              onChanged: _producer,
-                            )),
-          ///Lot
-          Container(width: _textFieldWidth,
-                    child: TextField(
-                    textAlign: TextAlign.start,
-                    keyboardType: TextInputType.text,
-                    decoration: new InputDecoration(
-                    labelText: StringLabels.farm,
-                    hintText: StringLabels.enterDescription,
-                              ),
-                              onChanged: _lot,
-                            )),                  
+        ///Producer
+          TextFieldWithInitalValue(TextInputType.text, StringLabels.producer, StringLabels.enterName,
+               _producerValue,
+                (value){_producer(value);}), 
+        ///Lot
+          TextFieldWithInitalValue(TextInputType.text, StringLabels.lot, StringLabels.enterName,
+               _lotValue,
+                (value){_lot(value);}),                
         ],),
 
         ///Row 3
         Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: <Widget>[
           ///Alititude
-          Container(width: _textFieldWidth,
-                    child: TextField(
-                    textAlign: TextAlign.start,
-                    keyboardType: TextInputType.text,
-                    decoration: new InputDecoration(
-                    labelText: StringLabels.altitude,
-                    hintText: StringLabels.enterDescription,
-                              ),
-                              onChanged: _altitude,
-                            )),
+          TextFieldWithInitalValue(TextInputType.number, StringLabels.altitude, StringLabels.enterValue,
+               _altitudeValue,
+                (value){_altitude(value);}), 
           ///Country
-          Container(width: _textFieldWidth,
-                    child: TextField(
-                    textAlign: TextAlign.start,
-                    keyboardType: TextInputType.text,
-                    decoration: new InputDecoration(
-                    labelText: StringLabels.country,
-                    hintText: StringLabels.enterDescription,
-                              ),
-                              onChanged: _country,
-                            )),
-               
+          TextFieldWithInitalValue(TextInputType.text, StringLabels.country, StringLabels.enterDescription,
+               _countryValue,
+                (value){_country(value);}),
         ],)
     ],),)
     );
-}
+  }
 }
 
 /// Roasting details
@@ -204,7 +181,7 @@ class RoastingDetailsCard extends StatefulWidget {
   final String _roasterNameValue;
   final DateTime _roastDateValue;
  
-  final dateFormat = DateFormat.yMd().add_jm();
+  final dateFormat = DateFormat.yMd();
 
   RoastingDetailsCard( 
     /// Variables
@@ -248,28 +225,35 @@ class RoastingDetailsCardState extends State<RoastingDetailsCard> {
                     child: DateTimePickerFormField(
                       format: widget.dateFormat,
                       decoration: InputDecoration(labelText: StringLabels.date),
-                      initialDate: widget._roastDateValue,
-                      onChanged: (date) => 
-                      setState(widget._roastDate(date))),
+                      initialDate: _roastDateValue,
+                      onChanged: (date) {
+                      if (date != null){           
+                      setState(widget._roastDate(date));}}),
                     ),
 
-          ///Roast profile
-          TextFieldWithInitalValue(StringLabels.roastProfile, StringLabels.enterDescription,
+        ///Roast profile
+          TextFieldWithInitalValue(TextInputType.text,StringLabels.roastProfile, StringLabels.enterDescription,
                _roastProfileValue,
-                (value){setState(widget._roastProfile(value));}),                  
+                (value){
+                  _roastProfileValue = value;
+                  setState(widget._roastProfile(value));}),                  
         ],),
 
         ///Row 2
         Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: <Widget>[
           ///Roastery Name
-          TextFieldWithInitalValue(StringLabels.roasteryName, StringLabels.enterDescription,
-               _roasterNameValue,
-                (value){setState(widget._roasteryName(value));}),    
+          TextFieldWithInitalValue(TextInputType.text,StringLabels.roasteryName, StringLabels.enterDescription,
+               _roasteryNameValue,
+                (value){
+                  _roasteryNameValue = value;
+                  setState(widget._roasteryName(value));}),    
           
           /// Roaster name
-          TextFieldWithInitalValue(StringLabels.roasterName, StringLabels.enterName,
+          TextFieldWithInitalValue(TextInputType.text, StringLabels.roasterName, StringLabels.enterName,
                _roasterNameValue,
-                (value){setState(widget._roasteryName(value));}),                                  
+                (value){
+                  _roasterNameValue = value;
+                  setState(widget._roasterName(value));}),                                  
         ],)
     ],))
     );
@@ -290,8 +274,9 @@ final Function(dynamic) _giveValue;
 final dynamic _initalValue; 
 final String _titleLabel;
 final String _hintText;
+final TextInputType _inputType;
 
-TextFieldWithInitalValue(this._titleLabel, this._hintText, this._initalValue, this._giveValue){_controller = new TextEditingController(text: _initalValue.toString());}
+TextFieldWithInitalValue(this._inputType,this._titleLabel, this._hintText, this._initalValue, this._giveValue){_controller = new TextEditingController(text: _initalValue.toString());}
 
 @override
   Widget build(BuildContext context) {
@@ -300,7 +285,7 @@ Container(width: _textFieldWidth,
                     child: TextField(
                     controller: _controller ,
                     textAlign: TextAlign.start,
-                    keyboardType: TextInputType.text,
+                    keyboardType: _inputType,
                     decoration: new InputDecoration(
                     labelText: _titleLabel,
                     hintText: _hintText,
@@ -417,15 +402,20 @@ class GreenDetailsCard extends StatelessWidget {
   final Function(String) _moi;
   final Function(String) _harvest;
 
+  final String _beanTypeValue;
+  final String _beanSizeValue;
+  final String _processingMethodValue;
+  final String _densityValue;
+  final String _altitudeValue;
+  final String _awValue;
+  final String _moiValue;
+  final String _harvestValue;
+
   GreenDetailsCard(
-    this._beanType,
-    this._beanSize,
-    this._processingMethod,
-    this._density,
-    this._altitude,
-    this._aw,
-    this._moi,
-    this._harvest,
+    /// Functions
+    this._beanType,this._beanSize,this._processingMethod,this._density,this._altitude,this._aw,this._moi,this._harvest,
+    /// Values
+    this._beanTypeValue,this._beanSizeValue,this._processingMethodValue,this._densityValue,this._altitudeValue,this._awValue,this._moiValue,this._harvestValue,
   );
 
  @override
@@ -436,94 +426,46 @@ class GreenDetailsCard extends StatelessWidget {
         ///Row 1
         Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: <Widget>[
           ///BeanType
-          Container(width: _textFieldWidth,
-                    child: TextField(
-                    textAlign: TextAlign.start,
-                    keyboardType: TextInputType.text,
-                    decoration: new InputDecoration(
-                    labelText: StringLabels.beanType,
-                    hintText: StringLabels.enterDescription,
-                              ),
-                              onChanged: _beanType,
-                            )),
+          TextFieldWithInitalValue(TextInputType.text, StringLabels.beanType, StringLabels.enterDescription,
+               _beanTypeValue,
+                (value){_beanType(value);}),
+        
           ///BeanSize
-          Container(width: _textFieldWidth,
-                    child: TextField(
-                    textAlign: TextAlign.start,
-                    keyboardType: TextInputType.text,
-                    decoration: new InputDecoration(
-                    labelText: StringLabels.beanSize,
-                    hintText: StringLabels.enterDescription,
-                              ),
-                              onChanged: _beanSize,
-                            )),                  
+           TextFieldWithInitalValue(TextInputType.text, StringLabels.beanSize, StringLabels.enterDescription,
+               _beanSizeValue,
+                (value){_beanSize(value);})          
         ],),
 
         ///Row 2
         Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: <Widget>[
           ///Processing Methord
-          Container(width: _textFieldWidth,
-                    child: TextField(
-                    textAlign: TextAlign.start,
-                    keyboardType: TextInputType.text,
-                    decoration: new InputDecoration(
-                    labelText: StringLabels.processingMethod,
-                    hintText: StringLabels.enterDescription,
-                              ),
-                              onChanged: _processingMethod,
-                            )),
+          TextFieldWithInitalValue(TextInputType.text, StringLabels.processingMethod, StringLabels.enterDescription,
+               _processingMethodValue,
+                (value){_processingMethod(value);}),
           ///Density
-          Container(width: _textFieldWidth,
-                    child: TextField(
-                    textAlign: TextAlign.start,
-                    keyboardType: TextInputType.number,
-                    decoration: new InputDecoration(
-                    labelText: StringLabels.density,
-                    hintText: StringLabels.enterDescription,
-                              ),
-                              onChanged: _density,
-                            )),                  
+          TextFieldWithInitalValue(TextInputType.text, StringLabels.density, StringLabels.enterDescription,
+               _densityValue,
+                (value){_density(value);})                
         ],),
 
         ///Row 3
         Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: <Widget>[
           ///Water activity
-          Container(width: _textFieldWidth,
-                    child: TextField(
-                    textAlign: TextAlign.start,
-                    keyboardType: TextInputType.number,
-                    decoration: new InputDecoration(
-                    labelText: StringLabels.aW,
-                    hintText: StringLabels.enterDescription,
-                              ),
-                              onChanged: _aw,
-                            )),
+          TextFieldWithInitalValue(TextInputType.number, StringLabels.aW, StringLabels.enterDescription,
+               _awValue,
+                (value){_aw(value);}),
           ///moisture Content
-          Container(width: _textFieldWidth,
-                    child: TextField(
-                    textAlign: TextAlign.start,
-                    keyboardType: TextInputType.number,
-                    decoration: new InputDecoration(
-                    labelText: StringLabels.moisture,
-                    hintText: StringLabels.enterDescription,
-                              ),
-                              onChanged: _moi,
-                            )),                  
+          TextFieldWithInitalValue(TextInputType.text, StringLabels.moisture, StringLabels.enterDescription,
+               _moiValue,
+                (value){_moi(value);})                  
         ],),
 
         ///Row 4
         Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: <Widget>[
           ///Harvest
-          Container(width: _textFieldWidth,
-                    child: TextField(
-                    textAlign: TextAlign.start,
-                    keyboardType: TextInputType.text,
-                    decoration: new InputDecoration(
-                    labelText: StringLabels.harvest,
-                    hintText: StringLabels.enterDescription,
-                              ),
-                              onChanged: _harvest,
-                            )),
+          TextFieldWithInitalValue(TextInputType.text, StringLabels.harvest, StringLabels.enterDescription,
+               _harvestValue,
+                (value){_harvest(value);})
                      
         ],),
 

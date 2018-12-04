@@ -113,7 +113,7 @@ class DataPageState extends State<DataPage>
           Profile _profile = await Functions.createBlankProfile(_lists.ref[controller.index].type);
 
           Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
-          ProfilePage(isCopying: false, isEditing: false, isNew: true, type: _lists.ref[controller.index].type, referance: '',profile: _profile ,)));
+          ProfilePage(isOldProfile: false, isCopying: false, isEditing: true, isNew: true, type: _lists.ref[controller.index].type, referance: '',profile: _profile ,)));
         
         }));
   }
@@ -131,7 +131,6 @@ class DataList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return 
-    
     Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.stretch,children:[
           Material(color: Theme.of(context).primaryColorLight ,child: Container(padding: EdgeInsets.all(15.0),child: Text(Functions.getProfileTypeString(_profileType)+"'s", style: Theme.of(context).textTheme.subtitle,), alignment: Alignment.center,),),
           Expanded(child:ProfileList(Functions.getProfileTypeDatabaseId(_profileType),_giveProfile, _isOnOverviewScreen),)]);
