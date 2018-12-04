@@ -642,6 +642,35 @@ class _DateInputCardState extends State<DateInputCard> {
     );
   }
 }
+class TextFieldWithInitalValue extends StatelessWidget {
+
+    final double _textFieldWidth = 150.0;
+    TextEditingController _controller;
+    final Function(dynamic) _giveValue;
+    final dynamic _initalValue; 
+    final String _titleLabel;
+    final String _hintText;
+
+    TextFieldWithInitalValue(this._titleLabel, this._hintText, this._initalValue, this._giveValue)
+    {_controller = new TextEditingController(text: _initalValue);}
+
+    @override
+    Widget build(BuildContext context) {
+        return
+      Container(
+        width: _textFieldWidth,
+        child: TextField(
+        controller: _controller ,
+        textAlign: TextAlign.start,
+        keyboardType: TextInputType.text,
+        decoration: new InputDecoration(
+        labelText: _titleLabel,
+        hintText: _hintText,
+                  ),
+                  onChanged: _giveValue,
+                )); 
+    }
+  }            
 
 
 

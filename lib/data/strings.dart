@@ -3,6 +3,7 @@
 class  StringLabels {
 
       ///since flutter
+        static const String enterName = 'Enter name';
         static const String noData = 'No data';
         static const String loading = 'Loading...';
         static const String setTime = 'Set Time';

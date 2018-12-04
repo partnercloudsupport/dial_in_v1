@@ -43,17 +43,6 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
                _profile.getProfileItemValue( DatabaseIds.coffeeId),
                 (name){ widget._setProfileItemValue(DatabaseIds.coffeeId,name);}),
 
-              Container(padding: EdgeInsets.all(_padding), margin: EdgeInsets.all(_margin),
-                    child: TextField(
-                    textAlign: TextAlign.center,
-                    keyboardType: TextInputType.text,
-                    decoration: new InputDecoration(
-                    labelText: StringLabels.name,
-                    hintText: StringLabels.enterNickname,
-                              ),
-                              onChanged:(name){ widget._setProfileItemValue(DatabaseIds.coffeeId,name);},
-                            )),  
-
               RoastingDetailsCard(
               ///Values
                 _profile.getProfileItemValue( DatabaseIds.roastProfile),
@@ -72,7 +61,14 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
                 (producer){widget._setProfileItemValue( DatabaseIds.producer,  producer);},
                 (farm){widget._setProfileItemValue( DatabaseIds.farm,  farm);},
                 (region){widget._setProfileItemValue( DatabaseIds.region,  region);},
-                (country){widget._setProfileItemValue( DatabaseIds.country,  country);},),
+                (country){widget._setProfileItemValue( DatabaseIds.country,  country);},
+                _profile.getProfileItemValue(DatabaseIds.region) ,
+                _profile.getProfileItemValue(DatabaseIds.farm) ,
+                _profile.getProfileItemValue(DatabaseIds.producer) ,
+                _profile.getProfileItemValue(DatabaseIds.lot) ,
+                _profile.getProfileItemValue(DatabaseIds.altitude) ,
+                _profile.getProfileItemValue(DatabaseIds.country),
+                ),
 
                 GreenDetailsCard(
                 (beanType){widget._setProfileItemValue(DatabaseIds.beanType,  beanType );},
@@ -107,8 +103,19 @@ class OriginDetailsCard extends StatelessWidget {
   final Function(String) _lot;
   final Function(String) _altitude;
   final Function(String) _country;
+  final String _regionValue;
+  final String _farmValue;
+  final String _producerValue;
+  final String _lotValue;
+  final String _altitudeValue;
+  final String _countryValue;
 
-  OriginDetailsCard(this._altitude, this._lot, this._producer, this._farm, this._region, this._country);
+  OriginDetailsCard(
+    /// Functions
+    this._altitude, this._lot, this._producer, this._farm, this._region, this._country,
+    /// Values
+  this._regionValue,this._farmValue,this._producerValue,this._lotValue,this._altitudeValue,this._countryValue,
+  );
 
  @override
   Widget build(BuildContext context) {
@@ -118,27 +125,14 @@ class OriginDetailsCard extends StatelessWidget {
         ///Row 1
         Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: <Widget>[
           ///Region
-          Container(width: _textFieldWidth,
-                    child: TextField(
-                    textAlign: TextAlign.start,
-                    keyboardType: TextInputType.text,
-                    decoration: new InputDecoration(
-                    labelText: StringLabels.region,
-                    hintText: StringLabels.enterDescription,
-                              ),
-                              onChanged: _region,
-                            )),
+          TextFieldWithInitalValue(StringLabels.region, StringLabels.enterDescription,
+               _regionValue,
+                (value){_region(value);}),
+          
           ///Farm
-          Container(width: _textFieldWidth,
-                    child: TextField(
-                    textAlign: TextAlign.start,
-                    keyboardType: TextInputType.text,
-                    decoration: new InputDecoration(
-                    labelText: StringLabels.lot,
-                    hintText: StringLabels.enterDescription,
-                              ),
-                              onChanged: _farm,
-                            )),                  
+          TextFieldWithInitalValue(StringLabels.farm, StringLabels.enterDescription,
+               _farmValue,
+                (value){_farm(value);}),              
         ],),
 
         ///Row 2
@@ -225,16 +219,18 @@ class RoastingDetailsCard extends StatefulWidget {
 class RoastingDetailsCardState extends State<RoastingDetailsCard> {
   final double _padding = 20.0;
   final double _margin = 10.0;
-  final double _cornerRadius = 20.0;
   final double _textFieldWidth = 150.0;
-  TextEditingController _roastProfileController;
-  TextEditingController _roasteryNameController;
-  TextEditingController _roasterNameController;
-  TextEditingController _roastDateController;
+  String _roastProfileValue;
+  String _roasteryNameValue;
+  String _roasterNameValue;
+  DateTime _roastDateValue;
   
   @override
   void initState() {
-    // _date = widget._date;
+    _roastProfileValue = widget._roastProfileValue;
+    _roasteryNameValue = widget._roasteryNameValue;
+    _roasterNameValue = widget._roasterNameValue;
+    _roastDateValue = widget._roastDateValue;
     super.initState();
   }
 
@@ -242,7 +238,9 @@ class RoastingDetailsCardState extends State<RoastingDetailsCard> {
   Widget build(BuildContext context) {
     return Card(child: Container(padding: EdgeInsets.all(_padding), margin: EdgeInsets.all( _margin), child: Column(children: <Widget>[
 
+        /// Title
         Text(StringLabels.roastedCoffeeDetails, style: Theme.of(context).textTheme.title,),
+
         ///Row 1
         Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: <Widget>[
           ///Roast Date
@@ -254,45 +252,24 @@ class RoastingDetailsCardState extends State<RoastingDetailsCard> {
                       onChanged: (date) => 
                       setState(widget._roastDate(date))),
                     ),
+
           ///Roast profile
-          Container(width: _textFieldWidth,
-                    child: TextField(
-                    controller: _roastProfileController ,
-                    textAlign: TextAlign.start,
-                    keyboardType: TextInputType.text,
-                    decoration: new InputDecoration(
-                    labelText: StringLabels.roastProfile,
-                    hintText: StringLabels.enterDescription,
-                              ),
-                              onChanged: widget._roastProfile,
-                            )),                  
+          TextFieldWithInitalValue(StringLabels.roastProfile, StringLabels.enterDescription,
+               _roastProfileValue,
+                (value){setState(widget._roastProfile(value));}),                  
         ],),
 
         ///Row 2
         Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: <Widget>[
           ///Roastery Name
-          Container(width: _textFieldWidth,
-                    child: TextField(
-                    textAlign: TextAlign.start,
-                    keyboardType: TextInputType.text,
-                    decoration: new InputDecoration(
-                    labelText: StringLabels.roasteryName,
-                    hintText: StringLabels.enterDescription,
-                              ),
-                              onChanged: widget._roasteryName,
-                            )),
-          /// Roaster name                  
-          Container(width: _textFieldWidth,
-                    child: TextField(
-                    textAlign: TextAlign.start,
-                    keyboardType: TextInputType.text,
-                    decoration: new InputDecoration(
-                    labelText: StringLabels.roasterName,
-                    hintText: StringLabels.enterDescription,
-                              ),
-                              onChanged: widget._roasterName,
-                            )),
-               
+          TextFieldWithInitalValue(StringLabels.roasteryName, StringLabels.enterDescription,
+               _roasterNameValue,
+                (value){setState(widget._roasteryName(value));}),    
+          
+          /// Roaster name
+          TextFieldWithInitalValue(StringLabels.roasterName, StringLabels.enterName,
+               _roasterNameValue,
+                (value){setState(widget._roasteryName(value));}),                                  
         ],)
     ],))
     );
@@ -314,7 +291,7 @@ final dynamic _initalValue;
 final String _titleLabel;
 final String _hintText;
 
-TextFieldWithInitalValue(this._titleLabel, this._hintText, this._initalValue, this._giveValue){_controller = new TextEditingController(text: _initalValue);}
+TextFieldWithInitalValue(this._titleLabel, this._hintText, this._initalValue, this._giveValue){_controller = new TextEditingController(text: _initalValue.toString());}
 
 @override
   Widget build(BuildContext context) {
