@@ -1,142 +1,11 @@
-// import 'package:flutter/material.dart'
-//     show
-//         AppBar,
-//         BuildContext,
-//         FontWeight,
-//         Icon,
-//         Icons,
-//         Navigator,
-//         RawMaterialButton,
-//         Scaffold,
-//         State,
-//         StatefulWidget,
-//         Text,
-//         TextStyle,
-//         required;
-// import '../../data/profile.dart';
-// import '../../data/strings.dart';
-// import 'package:flutter/cupertino.dart';
-// import 'package:flutter/material.dart';
-// import '../../data/images.dart';
-// import '../../data/functions.dart';
-// import '../../database_functions.dart';
-// import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-// import 'package:intl/intl.dart';
-// import '../../widgets/custom_widgets.dart';
-
-// class CoffeeProfilePage extends StatefulWidget {
-//   @required final bool isCopying;
-//   @required final bool isEditing;
-//   @required final bool isNew;
-//   @required final ProfileType type;
-//   @required final String referance;
-//   String appBarTitle;
-//   Profile _profile;
-
-//   CoffeeProfilePage(
-//       {this.isCopying, this.isEditing, this.isNew, this.type, this.referance}) {
-//     if (isNew || isCopying) {
-//       this.appBarTitle = StringLabels.newe +
-//           ' ' +
-//           Functions.getProfileTypeString(type) +
-//           ' ' +
-//           StringLabels.profile;
-//     }
-
-//     _profile = Functions.createBlankProfile(type);
-//   }
-
-//   CoffeeProfilePageState createState() => new CoffeeProfilePageState();
-// }
-
-// class CoffeeProfilePageState extends State<CoffeeProfilePage> {
-//   double _padding = 20.0;
-//   double _margin = 10.0;
-//   double _textFieldWidth = 120.0;
-//   Profile _profile;
-//   @required bool _isCopying;
-//   @required bool _isEditing;
-//   @required bool _isNew;
-  
-
-//   void initState() {
-//     _isCopying = widget.isCopying;
-//     _isEditing = widget.isEditing;
-//     _isNew = widget.isNew;
-//     _profile = widget._profile;
-//     _profile = widget._profile;
-//     super.initState();
-//   }
-
-//   ///
-//   /// UI Build
-//   ///
-//   @override
-//   Widget build(BuildContext context) {
-//     return new Scaffold(
-//       appBar: AppBar(
-//         centerTitle: true,
-//         title: Text(
-//           widget.appBarTitle,
-//           style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15.0),
-//         ),
-//         automaticallyImplyLeading: false,
-//         leading: _isEditing
-//             ? RawMaterialButton(
-//                 child: Icon(Icons.cancel),
-//                 onPressed: () {
-//                   setState(() {
-//                     _isEditing = false;
-//                     print(_isEditing.toString());
-//                   });
-//                 })
-//             : RawMaterialButton(
-//                 child: Icon(Icons.arrow_back),
-//                 onPressed: () {
-//                   Navigator.pop(context);
-//                 },
-//               ),
-//         actions: <Widget>[
-//           _isEditing
-//               ? RawMaterialButton(
-//                   child: Icon(Icons.save_alt),
-//                   onPressed: () {
-//                     Navigator.pop(context);
-//                     DatabaseFunctions.saveProfile(_profile);
-//                   },
-//                 )
-//               : RawMaterialButton(
-//                   child: Icon(Icons.edit),
-//                   onPressed: () {
-//                     setState(() {
-//                       _isEditing = true;
-//                       print(_isEditing);
-//                     });
-//                   }),
-//         ],
-//       ),
-//       body: 
-
-//       ListView(
-//         children: <Widget>[
-
-
-
 import '../../data/strings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../data/images.dart';
-import '../../data/functions.dart';
 import '../../database_functions.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
-import '../overview_page/profile_list.dart';
-import 'package:flutter/foundation.dart';
-import 'package:meta/meta.dart';
-import '../../widgets/profile_page_widgets.dart';
 import '../../data/profile.dart';
-import '../../data/strings.dart';
-import '../../widgets/custom_widgets.dart';
+
 
 class CoffeeProfilePage extends StatefulWidget {
   final double _margin;
@@ -181,11 +50,17 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
                               onChanged:(name){ widget._setProfileItemValue(DatabaseIds.coffeeId,name);},
                             )),  
 
-              RoastingDetailsCard( 
-                 (roastprofile){widget._setProfileItemValue( DatabaseIds.roastProfile,  roastprofile);},
-                 (roastryName){widget._setProfileItemValue( DatabaseIds.roasteryName,  roastryName);},
-                  // _profile.getProfileItemValue( DatabaseIds.roastDate),
-                  ),
+              RoastingDetailsCard(
+              ///Values
+                _profile.getProfileItemValue(itemDatabaseId: DatabaseIds.roastProfile),
+                _profile.getProfileItemValue(itemDatabaseId: DatabaseIds.roasteryName),
+                _profile.getProfileItemValue(itemDatabaseId: DatabaseIds.roasterName),
+                _profile.getProfileItemValue(itemDatabaseId: DatabaseIds.roastDate), 
+              /// Functions
+                (roastProfile){widget._setProfileItemValue( DatabaseIds.roastProfile,  roastProfile);}, 
+                (roasteryName){widget._setProfileItemValue( DatabaseIds.roasteryName,  roasteryName);}, 
+                (roasterName){widget._setProfileItemValue( DatabaseIds.roasterName,  roasterName);}, 
+                (roastDate){widget._setProfileItemValue( DatabaseIds.roastDate,  roastDate);}),
 
               OriginDetailsCard(
                 (altitude){widget._setProfileItemValue( DatabaseIds.altitude,  altitude);},
@@ -322,15 +197,22 @@ class OriginDetailsCard extends StatelessWidget {
 /// Roasting details
 class RoastingDetailsCard extends StatefulWidget {
  
-  // final Function(String) _roastDate;
   final Function(String) _roastProfile;
-  final Function(String) _roasteryName;  
-  final dateFormat = DateFormat("EEEE, MMMM d, yyyy 'at' h:mma");
-  // final DateTime _date;
+  final Function(String) _roasteryName; 
+  final Function(String) _roasterName; 
+  final Function(DateTime) _roastDate;  
+  final String _roastProfileValue;
+  final String _roasteryNameValue;
+  final String _roasterNameValue;
+  final DateTime _roastDateValue;
+ 
+  final dateFormat = DateFormat.yMd().add_jm();
 
-  RoastingDetailsCard( this._roastProfile,this._roasteryName,
-  //  this._date
-   );
+  RoastingDetailsCard( 
+    /// Variables
+    this._roastProfileValue,this._roasteryNameValue,this._roasterNameValue,this._roastDateValue,
+    ///Functions
+    this._roastProfile,this._roasteryName, this._roasterName, this._roastDate);
   
 
   RoastingDetailsCardState createState() => new RoastingDetailsCardState();
@@ -341,7 +223,11 @@ class RoastingDetailsCardState extends State<RoastingDetailsCard> {
   final double _margin = 10.0;
   final double _cornerRadius = 20.0;
   final double _textFieldWidth = 150.0;
-  DateTime _date;
+  TextEditingController _roastProfileController;
+  TextEditingController _roasteryNameController;
+  TextEditingController _roasterNameController;
+  TextEditingController _roastDateController;
+  
 
   @override
   void initState() {
@@ -363,12 +249,14 @@ class RoastingDetailsCardState extends State<RoastingDetailsCard> {
                     child: DateTimePickerFormField(
                       format: widget.dateFormat,
                       decoration: InputDecoration(labelText: StringLabels.date),
-                      onChanged: (dt) => 
-                      setState(() => _date = dt)),
+                      initialDate: widget._roastDateValue,
+                      onChanged: (date) => 
+                      setState(widget._roastDate(date))),
                     ),
           ///Roast profile
           Container(width: _textFieldWidth,
                     child: TextField(
+                    controller: _roastProfileController ,
                     textAlign: TextAlign.start,
                     keyboardType: TextInputType.text,
                     decoration: new InputDecoration(
@@ -392,6 +280,17 @@ class RoastingDetailsCardState extends State<RoastingDetailsCard> {
                               ),
                               onChanged: widget._roasteryName,
                             )),
+          /// Roaster name                  
+          Container(width: _textFieldWidth,
+                    child: TextField(
+                    textAlign: TextAlign.start,
+                    keyboardType: TextInputType.text,
+                    decoration: new InputDecoration(
+                    labelText: StringLabels.roasterName,
+                    hintText: StringLabels.enterDescription,
+                              ),
+                              onChanged: widget._roasterName,
+                            )),
                
         ],)
     ],))
@@ -405,10 +304,37 @@ class RoastingDetailsCardState extends State<RoastingDetailsCard> {
 ////
 /// Widgets
 ///
+class TextFieldWithInitalValue extends StatelessWidget {
+
+final double _textFieldWidth = 150.0;
+TextEditingController _controller;
+final Function(dynamic) _giveValue;
+final dynamic _initalValue; 
+final String _titleLabel;
+final String _hintText;
+
+TextFieldWithInitalValue(this._titleLabel,this._hintText,this._initalValue, this._giveValue){_controller.text = _initalValue;}
+
+@override
+  Widget build(BuildContext context) {
+    return
+Container(width: _textFieldWidth,
+                    child: TextField(
+                    controller: _controller ,
+                    textAlign: TextAlign.start,
+                    keyboardType: TextInputType.text,
+                    decoration: new InputDecoration(
+                    labelText: _titleLabel,
+                    hintText: _hintText,
+                              ),
+                              onChanged: _giveValue,
+                            )); 
+  }
+  }                
+        
 class ProfileInputCard extends StatelessWidget {
   final double _padding = 20.0;
   final double _margin = 10.0;
-  final double _cornerRadius = 20.0;
   final double _textFieldWidth = 150.0;
 
   final String imageRefString;

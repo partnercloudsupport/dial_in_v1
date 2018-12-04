@@ -359,6 +359,7 @@ class DatabaseFunctions {
 
 class DatabaseIds{
 
+  static const String roasterName = 'roasterName';
   static const String harvest = 'harvest';
   static const String feed = 'feed';
   static const String strength ='strength';

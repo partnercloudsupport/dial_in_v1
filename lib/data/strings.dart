@@ -33,7 +33,7 @@ class  StringLabels {
         static const String setDate = 'Set date';
         static const String harvest = 'Harvest';
         static const String chooseBarista = 'Choose barista';
-
+        static const String roasterName = 'Roaster name';
 
 
 

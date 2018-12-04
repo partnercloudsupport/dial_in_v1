@@ -58,8 +58,7 @@ class _ProfileListState extends State<ProfileList>{
       builder: (context, snapshot) {
                   switch (snapshot.connectionState) {
                     case ConnectionState.waiting:
-                    case ConnectionState.none:
-                      return LinearProgressIndicator();
+                    case ConnectionState.none: return const Center(child: Text('No internet connection'));
                     case ConnectionState.active:
                     case ConnectionState.done:
                       if (!snapshot.hasData) {

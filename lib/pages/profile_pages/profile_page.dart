@@ -54,13 +54,9 @@ class ProfilePage extends StatefulWidget {
   Profile profile;
 
   ProfilePage({this.isCopying, this.isEditing, this.isNew, this.type, this.referance, this.profile, this.isFromProfile}) {
-    if (isNew || isCopying) {
-      this.appBarTitle = StringLabels.newe +
-          ' ' +
-          Functions.getProfileTypeString(type) +
-          ' ' +
-          StringLabels.profile;
-    }
+    if (isNew || isCopying) { this.appBarTitle = StringLabels.newe + ' ' +Functions.getProfileTypeString(type) + ' ' + StringLabels.profile;
+    }else if (isEditing){  this.appBarTitle =  StringLabels.editing + ' ' + Functions.getProfileTypeString(type) + ' ' + StringLabels.profile; }
+    else{ this.appBarTitle =  Functions.getProfileTypeString(type) + ' ' + StringLabels.profile; }
   }
 
   ProfilePageState createState() => new ProfilePageState();
@@ -87,7 +83,6 @@ void initState() {
     _isNew = widget.isNew;
     _profile = widget.profile;
     _isFromProfile = widget.isFromProfile;
-
     super.initState();
 }
 
@@ -221,12 +216,12 @@ void didUpdateWidget(Widget oldWidget) {
 
     File _image = currentImage;
     print(path.basename(_image.path));
-
-    CupertinoActionSheet cameraSelection = new CupertinoActionSheet(actions: <Widget>[
+  
+    Center cameraSelection = Center(child: CupertinoActionSheet(actions: <Widget>[
 
           new CupertinoDialogAction(
               child: const Text(StringLabels.camera),
-              isDestructiveAction: true,
+              isDestructiveAction: false,
               onPressed: ()async{ 
                 var image = await ImagePicker.pickImage(source: ImageSource.camera);
                 _image = image;
@@ -243,7 +238,7 @@ void didUpdateWidget(Widget oldWidget) {
                  Navigator.of(context, rootNavigator: true).pop(image);
               }
           ),
-    ],);
+    ],));
 
     await showDialog(context: context, builder: (BuildContext context){
       return cameraSelection ;
