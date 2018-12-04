@@ -39,6 +39,10 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
           Column(
             children: <Widget>[
 
+              TextFieldWithInitalValue(StringLabels.name, StringLabels.enterNickname,
+               _profile.getProfileItemValue( DatabaseIds.coffeeId),
+                (name){ widget._setProfileItemValue(DatabaseIds.coffeeId,name);}),
+
               Container(padding: EdgeInsets.all(_padding), margin: EdgeInsets.all(_margin),
                     child: TextField(
                     textAlign: TextAlign.center,
@@ -52,10 +56,10 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
 
               RoastingDetailsCard(
               ///Values
-                _profile.getProfileItemValue(itemDatabaseId: DatabaseIds.roastProfile),
-                _profile.getProfileItemValue(itemDatabaseId: DatabaseIds.roasteryName),
-                _profile.getProfileItemValue(itemDatabaseId: DatabaseIds.roasterName),
-                _profile.getProfileItemValue(itemDatabaseId: DatabaseIds.roastDate), 
+                _profile.getProfileItemValue( DatabaseIds.roastProfile),
+                _profile.getProfileItemValue( DatabaseIds.roasteryName),
+                _profile.getProfileItemValue( DatabaseIds.roasterName),
+                _profile.getProfileItemValue( DatabaseIds.roastDate), 
               /// Functions
                 (roastProfile){widget._setProfileItemValue( DatabaseIds.roastProfile,  roastProfile);}, 
                 (roasteryName){widget._setProfileItemValue( DatabaseIds.roasteryName,  roasteryName);}, 
@@ -228,14 +232,11 @@ class RoastingDetailsCardState extends State<RoastingDetailsCard> {
   TextEditingController _roasterNameController;
   TextEditingController _roastDateController;
   
-
   @override
   void initState() {
     // _date = widget._date;
     super.initState();
   }
-
-
 
  @override
   Widget build(BuildContext context) {
@@ -313,7 +314,7 @@ final dynamic _initalValue;
 final String _titleLabel;
 final String _hintText;
 
-TextFieldWithInitalValue(this._titleLabel,this._hintText,this._initalValue, this._giveValue){_controller.text = _initalValue;}
+TextFieldWithInitalValue(this._titleLabel, this._hintText, this._initalValue, this._giveValue){_controller = new TextEditingController(text: _initalValue);}
 
 @override
   Widget build(BuildContext context) {

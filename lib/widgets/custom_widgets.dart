@@ -283,44 +283,44 @@ class ProfileCard extends StatelessWidget {
       
       case ProfileType.recipe: 
       _topLeft = profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.coffee);
-      _topRight = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.date);
+      _topRight = profile.getProfileItemValue( DatabaseIds.date);
       _bottomRight = profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.brewingEquipment);
       _bottomleft = profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.score);
       break;
 
       case ProfileType.coffee:   
-      _topLeft = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.coffeeId);
-      _topRight = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.processingMethod);
-      _bottomRight = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.roastDate).toString();
-      _bottomleft = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.country);
+      _topLeft = profile.getProfileItemValue( DatabaseIds.coffeeId);
+      _topRight = profile.getProfileItemValue( DatabaseIds.processingMethod);
+      _bottomRight = profile.getProfileItemValue( DatabaseIds.roastDate).toString();
+      _bottomleft = profile.getProfileItemValue( DatabaseIds.country);
       break;
 
       case ProfileType.water:   
-      _topLeft = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.waterID);
-      _topRight = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.ppm);
-      _bottomRight = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.kh);
-      _bottomleft = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.gh);
+      _topLeft = profile.getProfileItemValue( DatabaseIds.waterID);
+      _topRight = profile.getProfileItemValue( DatabaseIds.ppm);
+      _bottomRight = profile.getProfileItemValue( DatabaseIds.kh);
+      _bottomleft = profile.getProfileItemValue( DatabaseIds.gh);
       break;
 
       case ProfileType.equipment:   
-      _topLeft = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.equipmentId);
-      _topRight = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.equipmentMake);
-      _bottomRight = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.method);
-      _bottomleft = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.equipmentModel); 
+      _topLeft = profile.getProfileItemValue( DatabaseIds.equipmentId);
+      _topRight = profile.getProfileItemValue( DatabaseIds.equipmentMake);
+      _bottomRight = profile.getProfileItemValue( DatabaseIds.method);
+      _bottomleft = profile.getProfileItemValue( DatabaseIds.equipmentModel); 
       break;
 
       case ProfileType.grinder:   
-      _topLeft = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.grinderId);
-      _topRight = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.burrs);
-      _bottomRight = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.grinderMake);
-      _bottomleft = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.grinderModel);      
+      _topLeft = profile.getProfileItemValue( DatabaseIds.grinderId);
+      _topRight = profile.getProfileItemValue( DatabaseIds.burrs);
+      _bottomRight = profile.getProfileItemValue( DatabaseIds.grinderMake);
+      _bottomleft = profile.getProfileItemValue( DatabaseIds.grinderModel);      
       break;
 
       case ProfileType.barista:   
-      _topLeft = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.name);
-      _topRight = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.level);
-      _bottomleft = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.notes);
-      _bottomRight = profile.getProfileItemValue(itemDatabaseId: DatabaseIds.age);       
+      _topLeft = profile.getProfileItemValue( DatabaseIds.name);
+      _topRight = profile.getProfileItemValue( DatabaseIds.level);
+      _bottomleft = profile.getProfileItemValue( DatabaseIds.notes);
+      _bottomRight = profile.getProfileItemValue( DatabaseIds.age);       
       break;
 
       case ProfileType.none:  

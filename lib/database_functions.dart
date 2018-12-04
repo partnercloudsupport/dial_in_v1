@@ -73,6 +73,16 @@ class DatabaseFunctions {
      }
 }
 
+/// Update document with referance
+  static Future<void> updateProfile(Profile profile)async{
+
+    Map <String, dynamic> _documentProperties = await prepareProfileForFirebaseUpload(profile);
+
+    Firestore.instance.collection(profile.databaseId).document(profile.objectId).updateData(_documentProperties)
+    .whenComplete((){print('Successfully updated ${profile.objectId}');}).catchError((error){print(error);});
+    
+  }
+   
 /// Upload file
   static Future<String> _upLoadFileReturnUrl(File file, String folder)async{
     
@@ -81,6 +91,32 @@ class DatabaseFunctions {
     return await (await uploadTask.onComplete).ref.getDownloadURL().catchError((error){print(error);});
 
   }
+
+/// Prepare Profile for FirebaseUpload or Update
+  static Future<Map <String, dynamic>> prepareProfileForFirebaseUpload(Profile profile)async{
+
+    String downloadUrl = await _upLoadFileReturnUrl(profile.image, profile.databaseId);
+
+    Map <String, dynamic> _properties = new Map <String, dynamic>();
+
+     for (var i = 0; i < profile.properties.length; i++) {_properties[profile.properties[i].databaseId] = profile.properties[i].value;}
+
+    String userId = await DatabaseFunctions.getCurrentUserId();
+
+        _properties[DatabaseIds.image] = downloadUrl;
+        _properties[DatabaseIds.orderNumber] = profile.orderNumber;
+        _properties[DatabaseIds.user] = userId;
+        _properties[DatabaseIds.public] = profile.isPublic;
+      
+      if (profile.type == ProfileType.recipe){
+        _properties[DatabaseIds.coffeeId] = profile.getProfileProfileRefernace(profileDatabaseId: DatabaseIds.coffee);
+        _properties[DatabaseIds.waterID] = profile.getProfileProfileRefernace(profileDatabaseId: DatabaseIds.water);
+        _properties[DatabaseIds.grinderId] = profile.getProfileProfileRefernace(profileDatabaseId: DatabaseIds.grinder);
+        _properties[DatabaseIds.barista] = profile.getProfileProfileRefernace(profileDatabaseId: DatabaseIds.Barista);
+        _properties[DatabaseIds.equipmentId] = profile.getProfileProfileRefernace(profileDatabaseId: DatabaseIds.brewingEquipment);}
+
+    return _properties;
+}
 
 /// Save profile 
   static Future<Profile> saveProfile(Profile profile)async{
@@ -108,7 +144,7 @@ class DatabaseFunctions {
         _properties[DatabaseIds.barista] = profile.getProfileProfileRefernace(profileDatabaseId: DatabaseIds.Barista);
         _properties[DatabaseIds.equipmentId] = profile.getProfileProfileRefernace(profileDatabaseId: DatabaseIds.brewingEquipment);}  
  
-      DocumentReference documentReference = await Firestore.instance.collection(profile.databaseId).add(_properties);
+      DocumentReference documentReference = await Firestore.instance.collection(profile.databaseId).add(_properties).catchError((error){print(error);});
 
       final String docId = documentReference.documentID; 
 

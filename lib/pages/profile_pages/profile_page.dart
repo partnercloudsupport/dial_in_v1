@@ -104,7 +104,7 @@ void didUpdateWidget(Widget oldWidget) {
           style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15.0),
         ),
         automaticallyImplyLeading: false,
-        leading: _isEditing
+        leading: _isEditing || _isNew || _isCopying
             ? RawMaterialButton(
                 child: Icon(Icons.cancel),
                 onPressed: () {
@@ -123,9 +123,11 @@ void didUpdateWidget(Widget oldWidget) {
           _isEditing
               ? RawMaterialButton(
                   child: Icon(Icons.save_alt),
-                  onPressed: ()async{
-                    var newProfile = await DatabaseFunctions.saveProfile(_profile);
-                    Navigator.pop(context, newProfile);    
+                  onPressed: ()async{ if(_isEditing) 
+                    {await DatabaseFunctions.updateProfile(_profile);
+                    Navigator.pop(context);}
+                    else{var newProfile = await DatabaseFunctions.saveProfile(_profile);
+                    Navigator.pop(context, newProfile);}  
                   },
                 )
               : RawMaterialButton(
@@ -175,33 +177,33 @@ void didUpdateWidget(Widget oldWidget) {
 
     switch(profile.type){
       case ProfileType.barista:
-      _structure = BaristaPage(_profile, _margin, (key, value){ _profile.setProfileItemValue(itemDatabaseId: key, value: value);});
+      _structure = BaristaPage(_profile, _margin, (key, value){ _profile.setProfileItemValue( key,  value);});
       break;
 
       case ProfileType.coffee:
-      _structure = CoffeeProfilePage(_profile, _margin, (key, value){ _profile.setProfileItemValue(itemDatabaseId: key, value: value);});
+      _structure = CoffeeProfilePage(_profile, _margin, (key, value){ _profile.setProfileItemValue( key,  value);});
       break;
 
       case ProfileType.equipment:
-      _structure = EquipmentPage(_profile, _margin, (key, value){ _profile.setProfileItemValue(itemDatabaseId: key, value: value);});
+      _structure = EquipmentPage(_profile, _margin, (key, value){ _profile.setProfileItemValue( key,  value);});
       break;
 
       case ProfileType.feed:
       break;
 
       case ProfileType.grinder:
-      _structure = GrinderPage(_profile, _margin, (key, value){ _profile.setProfileItemValue(itemDatabaseId: key, value: value);});
+      _structure = GrinderPage(_profile, _margin, (key, value){ _profile.setProfileItemValue( key,  value);});
       break;
 
       case ProfileType.none:
       break;
 
       case ProfileType.water:
-      _structure = WaterPage(_profile, _margin, (key, value){ _profile.setProfileItemValue(itemDatabaseId: key, value: value);});
+      _structure = WaterPage(_profile, _margin, (key, value){ _profile.setProfileItemValue( key,  value);});
       break;
 
       case ProfileType.recipe:
-      _structure = RecipePage(_profile, _margin, (key, value){_profile.setProfileItemValue(itemDatabaseId: key, value: value);},_showDialog);
+      _structure = RecipePage(_profile, _margin, (key, value){_profile.setProfileItemValue( key,  value);},_showDialog);
       break;
 
       default:

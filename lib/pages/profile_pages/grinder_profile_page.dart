@@ -54,9 +54,9 @@ class _GrinderPageState extends State<GrinderPage> {
 
       /// Notes
       NotesCard(StringLabels.notes,
-          _profile.getProfileItemValue(itemDatabaseId: DatabaseIds.notes),
+          _profile.getProfileItemValue( DatabaseIds.notes),
           (text) {
-        _profile.setProfileItemValue(itemDatabaseId: DatabaseIds.notes);
+        _profile.setProfileItemValue( DatabaseIds.notes, text);
       })
     ]);
   }

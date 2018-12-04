@@ -53,9 +53,9 @@ class _BaristaPageState extends State<BaristaPage> {
 
       /// Notes
       NotesCard(StringLabels.notes,
-          _profile.getProfileItemValue(itemDatabaseId: DatabaseIds.method),
+          _profile.getProfileItemValue( DatabaseIds.method),
           (text) {
-        _profile.setProfileItemValue(itemDatabaseId: DatabaseIds.method);
+        _profile.setProfileItemValue( DatabaseIds.method, text);
       })
     ]);
   }

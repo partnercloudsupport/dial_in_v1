@@ -113,7 +113,7 @@ class DataPageState extends State<DataPage>
           Profile _profile = await Functions.createBlankProfile(_lists.ref[controller.index].type);
 
           Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
-          ProfilePage(isCopying: false, isEditing: true, isNew: true, type: _lists.ref[controller.index].type, referance: '',profile: _profile ,)));
+          ProfilePage(isCopying: false, isEditing: false, isNew: true, type: _lists.ref[controller.index].type, referance: '',profile: _profile ,)));
         
         }));
   }

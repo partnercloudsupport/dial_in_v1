@@ -61,7 +61,7 @@ class _WaterPageState extends State<WaterPage> {
 
                   /// Date
                   DateInputCard(StringLabels.dateTested,
-                  widget._profile.getProfileItemValue(itemDatabaseId: DatabaseIds.date),
+                  widget._profile.getProfileItemValue( DatabaseIds.date),
                   (dateTime){widget._setProfileItemValue( DatabaseIds.date, dateTime);}),
 
                   /// Details
@@ -73,8 +73,8 @@ class _WaterPageState extends State<WaterPage> {
 
                   /// Notes
                    NotesCard(StringLabels.notes,
-                    _profile.getProfileItemValue(itemDatabaseId: DatabaseIds.notes),
-                    (text){_profile.setProfileItemValue(itemDatabaseId:  DatabaseIds.notes);}) 
+                    _profile.getProfileItemValue( DatabaseIds.notes),
+                    (text){_profile.setProfileItemValue( DatabaseIds.notes, text);}) 
     ]);
     }
 }
