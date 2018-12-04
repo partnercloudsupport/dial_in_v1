@@ -391,8 +391,9 @@ static Future<File> getFile(String filepath)async{
           viewContollerId: ViewControllerIds.barista,
           orderNumber: 0,
           properties: [
-            createBlankItem(DatabaseIds.type),
-            createBlankItem(DatabaseIds.level)
+            createBlankItem(DatabaseIds.name),
+            createBlankItem(DatabaseIds.level),
+            createBlankItem(DatabaseIds.notes)
           ],
         );
         break;
@@ -406,8 +407,6 @@ static Future<File> getFile(String filepath)async{
           orderNumber: 0,
           properties: [
             createBlankItem(DatabaseIds.name),
-            createBlankItem(DatabaseIds.level),
-            createBlankItem(DatabaseIds.notes)
           ],
         );
         break;

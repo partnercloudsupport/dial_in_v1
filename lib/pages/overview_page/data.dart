@@ -8,6 +8,7 @@ import '../../data/profile.dart';
 import '../profile_pages/profile_page.dart';
 import 'dart:io';
 import '../../data/functions.dart';
+import '../../data/strings.dart';
 
 
 
@@ -26,33 +27,33 @@ class DataPageState extends State<DataPage>
     super.initState();
     _lists = TabViewDataArray([
       TabViewData(
-        ProfileList(DatabaseIds.recipe,(profile){}, true),
+        DataList(ProfileType.recipe,(profile){}, true),
         Tab(icon: Icon(Icons.list),),
         ProfileType.recipe
       ),
         
       TabViewData(
-        ProfileList(DatabaseIds.coffee,(profile){}, true),
-        Tab(icon: Icon(Icons.rounded_corner)),
-        ProfileType.coffee
+          DataList(ProfileType.coffee,(profile){}, true),
+          Tab(icon: Icon(Icons.rounded_corner)),
+          ProfileType.coffee
       ),
       TabViewData(
-        ProfileList(DatabaseIds.grinder,(profile){}, true),
+        DataList(ProfileType.grinder,(profile){}, true),
         Tab(icon: Icon(Icons.cloud_off)),
         ProfileType.grinder
       ),
       TabViewData(
-        ProfileList(DatabaseIds.brewingEquipment,(profile){}, true),
+        DataList(ProfileType.equipment,(profile){}, true),
         Tab(icon: Icon(Icons.watch_later)),
         ProfileType.equipment
       ),
       TabViewData(
-        ProfileList(DatabaseIds.water,(profile){}, true),
+        DataList(ProfileType.water,(profile){}, true),
         Tab(icon: Icon(Icons.branding_watermark)),
         ProfileType.water
       ),
       TabViewData(
-        ProfileList(DatabaseIds.Barista,(profile){}, true),
+        DataList(ProfileType.barista,(profile){}, true),
         Tab(icon: Icon(Icons.people)),
         ProfileType.barista
       ),
@@ -116,4 +117,23 @@ class DataPageState extends State<DataPage>
         
         }));
   }
+}
+
+
+          
+class DataList extends StatelessWidget {
+  final ProfileType _profileType;
+  final Function(Profile) _giveProfile;
+  final bool _isOnOverviewScreen;
+
+  DataList(this._profileType, this._giveProfile, this._isOnOverviewScreen);
+
+  @override
+  Widget build(BuildContext context) {
+    return 
+    
+    Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.stretch,children:[
+          Material(color: Theme.of(context).primaryColorLight ,child: Container(padding: EdgeInsets.all(15.0),child: Text(Functions.getProfileTypeString(_profileType)+"'s", style: Theme.of(context).textTheme.subtitle,), alignment: Alignment.center,),),
+          Expanded(child:ProfileList(Functions.getProfileTypeDatabaseId(_profileType),_giveProfile, _isOnOverviewScreen),)]);
+          }
 }
