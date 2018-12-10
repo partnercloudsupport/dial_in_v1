@@ -34,7 +34,6 @@ import '../../pages/profile_pages/equipment_profile_page.dart';
 import '../../pages/profile_pages/grinder_profile_page.dart';
 import '../../pages/profile_pages/barista_profile_page.dart';
 import '../../pages/profile_pages/coffee_profile_page.dart';
-import 'package:flutter/cupertino.dart';
 
 
 class ProfilePage extends StatefulWidget {
@@ -80,20 +79,20 @@ class ProfilePageState extends State<ProfilePage> {
   @required
   bool _isFromProfile;
 
-void initState() {
-    _isCopying = widget.isCopying;
-    _isEditing = widget.isEditing;
-    _isNew = widget.isNew;
-    _profile = widget.profile;
-    _isFromProfile = widget.isFromProfile;
-    _isOldProfile = widget.isOldProfile;
-    super.initState();
-}
+  void initState() {
+      _isCopying = widget.isCopying;
+      _isEditing = widget.isEditing;
+      _isNew = widget.isNew;
+      _profile = widget.profile;
+      _isFromProfile = widget.isFromProfile;
+      _isOldProfile = widget.isOldProfile;
+      super.initState();
+  }
 
-@override
-void didUpdateWidget(Widget oldWidget) {
-    super.didUpdateWidget(oldWidget);
-}
+  @override
+  void didUpdateWidget(Widget oldWidget) {
+      super.didUpdateWidget(oldWidget);
+  }
 
   ///
   /// UI Build

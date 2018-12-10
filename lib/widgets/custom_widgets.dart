@@ -309,7 +309,7 @@ class ProfileCard extends StatelessWidget {
 
       case ProfileType.equipment:   
       _topLeft = profile.getProfileItemValue( DatabaseIds.equipmentId);
-      _topRight = profile.getProfileItemValue( DatabaseIds.equipmentMake);
+      _topRight = profile.getProfileItemValue( DatabaseIds.type);
       _bottomRight = profile.getProfileItemValue( DatabaseIds.method);
       _bottomleft = profile.getProfileItemValue( DatabaseIds.equipmentModel); 
       break;
@@ -501,7 +501,7 @@ class AddButton extends StatelessWidget {
 
 ////////////////////////////////// Custom Classes ///////////////////////////////////////
 
-///
+
 /// Tab View Data
 class TabViewData{
 

@@ -40,7 +40,8 @@ class Profile {
       this.databaseId,
       this.viewContollerId,
       this.orderNumber,
-      this.profiles}) {
+      this.profiles,
+      this.isPublic}) {
     switch (type) {
       case ProfileType.recipe:
         this.referanceNumber = 0;

@@ -212,10 +212,11 @@ class DatabaseFunctions {
 
   static Future<Profile> createProfileFromDocumentSnapshot(String databaseId, DocumentSnapshot document)async{
     
-      DateTime _updatedAt;
+      DateTime _updatedAt = document[DatabaseIds.updatedAt];
       String _objectId = document.documentID;
-      int _orderNumber;
+      int _orderNumber = document[DatabaseIds.orderNumber];
       File _image = await downloadFile(document.data[DatabaseIds.image]);
+      bool _ispublic = document[DatabaseIds.public];
 
       Profile _coffee;
       Profile _barista;
@@ -256,14 +257,17 @@ class DatabaseFunctions {
       if ( key != DatabaseIds.updatedAt){
 
       if ( key != DatabaseIds.orderNumber){
+
+      if ( key != DatabaseIds.image){
+
+      if ( key != DatabaseIds.public){
+
+      if ( key != DatabaseIds.user){
   
          Map<String, dynamic> item = {key: value};
         _properties.add(Functions.createItemWithData(item));
       
-      }else{_orderNumber = value;}
-          
-      }else{_updatedAt = value;}
-      }
+     }}}}}}
     );
 
     switch(databaseId){
@@ -290,6 +294,7 @@ class DatabaseFunctions {
 
       case DatabaseIds.coffee:   
       return  new Profile(
+              isPublic: _ispublic,
               updatedAt: _updatedAt,
               objectId: _objectId,
               type: ProfileType.coffee,
@@ -302,6 +307,7 @@ class DatabaseFunctions {
 
       case DatabaseIds.grinder:   
       return  new Profile(
+              isPublic: _ispublic,
               updatedAt: DateTime.now(),
               objectId: _objectId,
               type: ProfileType.grinder,
@@ -314,38 +320,41 @@ class DatabaseFunctions {
 
       case DatabaseIds.brewingEquipment:   
       return  new Profile(
-              updatedAt: DateTime.now(),
-              objectId: _objectId,
-              type: ProfileType.equipment,
-              image: _image,
-              databaseId: databaseId,
-              orderNumber: _orderNumber,
-              properties: _properties
+        isPublic: _ispublic,
+        updatedAt: DateTime.now(),
+        objectId: _objectId,
+        type: ProfileType.equipment,
+        image: _image,
+        databaseId: databaseId,
+        orderNumber: _orderNumber,
+        properties: _properties
               );
       break;
 
       case DatabaseIds.water:   
       return  new Profile(
-              updatedAt: DateTime.now(),
-              objectId: _objectId,
-              type: ProfileType.water,
-              image: _image,
-              databaseId: databaseId,
-              orderNumber: _orderNumber,
-              properties: _properties
-              );
+        isPublic: _ispublic,
+        updatedAt: DateTime.now(),
+        objectId: _objectId,
+        type: ProfileType.water,
+        image: _image,
+        databaseId: databaseId,
+        orderNumber: _orderNumber,
+        properties: _properties
+        );
       break;
 
       case DatabaseIds.barista:   
       return  new Profile(
-              updatedAt: DateTime.now(),
-              objectId: _objectId,
-              type: ProfileType.barista,
-              image: _image,
-              databaseId: databaseId,
-              orderNumber: _orderNumber,
-              properties: _properties
-              );
+        isPublic: _ispublic,
+        updatedAt: DateTime.now(),
+        objectId: _objectId,
+        type: ProfileType.barista,
+        image: _image,
+        databaseId: databaseId,
+        orderNumber: _orderNumber,
+        properties: _properties
+        );
       break;
 
       default: 

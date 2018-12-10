@@ -228,6 +228,7 @@ static Future<File> getFile(String filepath)async{
 
       case ProfileType.recipe:
         return new Profile(
+            isPublic: true,
             updatedAt: DateTime.now(),
             objectId: '',
             image: await getFile(Images.recipeSmaller),
@@ -265,6 +266,7 @@ static Future<File> getFile(String filepath)async{
 
       case ProfileType.water:
         return new Profile(
+            isPublic: true,
             updatedAt: DateTime.now(),
             objectId: '',
             image: await getFile(Images.water),
@@ -285,6 +287,7 @@ static Future<File> getFile(String filepath)async{
 
       case ProfileType.coffee:
         return new Profile(
+            isPublic: true,
             updatedAt: DateTime.now(),
             objectId: '',
             image: await getFile(Images.coffeeBeans),
@@ -316,6 +319,7 @@ static Future<File> getFile(String filepath)async{
 
       case ProfileType.equipment:
         return new Profile(
+          isPublic: true,
           updatedAt: DateTime.now(),
           objectId: '',
           image: await getFile(Images.aeropressSmaller512x512),
@@ -335,6 +339,7 @@ static Future<File> getFile(String filepath)async{
 
       case ProfileType.feed:
         return new Profile(
+          isPublic: true,
           updatedAt: DateTime.now(),
           objectId: '',
           image: await getFile(Images.user),
@@ -350,6 +355,7 @@ static Future<File> getFile(String filepath)async{
 
       case ProfileType.grinder:
         return new Profile(
+          isPublic: true,
           updatedAt: DateTime.now(),
           objectId: '',
           image: await getFile(Images.grinder),
@@ -369,6 +375,7 @@ static Future<File> getFile(String filepath)async{
 
       case ProfileType.none:
         return new Profile(
+          isPublic: true,
           updatedAt: DateTime.now(),
           objectId: '',
           // image: document[DatabaseIds.image].toString(),
@@ -385,6 +392,7 @@ static Future<File> getFile(String filepath)async{
 
       case ProfileType.barista:
         return new Profile(
+          isPublic: true,
           updatedAt: DateTime.now(),
           objectId: '',
           image: await getFile(Images.user),
@@ -402,6 +410,7 @@ static Future<File> getFile(String filepath)async{
 
       default:
         return new Profile(
+          isPublic: true,
           updatedAt: DateTime.now(),
           objectId: '',
           // image: document[DatabaseIds.image].toString(),
@@ -856,6 +865,7 @@ static Future<File> getFile(String filepath)async{
       ///
       /// Grinder
       ///
+      
       case DatabaseIds.grinderId:
         _item = new Item(
           title: StringLabels.name,
@@ -1484,19 +1494,9 @@ static Future<File> getFile(String filepath)async{
         
         case DatabaseIds.equipmentId:
           _item = new Item(
-            title: StringLabels.equipmentId,
+            title: StringLabels.name,
             value: value,
             databaseId: DatabaseIds.equipmentId,
-            placeHolderText: StringLabels.enterDescription,
-            keyboardType: TextInputType.text,
-          );
-          break;
-
-        case DatabaseIds.equipmentType:
-          _item = new Item(
-            title: StringLabels.equipmentType,
-            value: value,
-            databaseId: DatabaseIds.equipmentType,
             placeHolderText: StringLabels.enterDescription,
             keyboardType: TextInputType.text,
           );
@@ -1521,6 +1521,26 @@ static Future<File> getFile(String filepath)async{
             keyboardType: TextInputType.text,
           );
           break;
+
+        case DatabaseIds.type:
+           _item = new Item(
+          title: StringLabels.type,
+          value: value,
+          databaseId: DatabaseIds.type,
+          placeHolderText: StringLabels.enterDescription,
+          keyboardType: TextInputType.text,
+        );
+        break;
+
+      case DatabaseIds.equipmentMake:
+        _item = new Item(
+          title: StringLabels.make,
+          value: value,
+          databaseId: DatabaseIds.equipmentMake,
+          placeHolderText: StringLabels.enterDescription,
+          keyboardType: TextInputType.text,
+        );
+        break;
 
         ///
         /// Barista

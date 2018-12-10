@@ -84,6 +84,7 @@ class _ProfileListState extends State<ProfileList>{
                                       else{
                                       return 
                                       ListView.builder(
+                                          reverse: true,
                                           itemExtent: 80,
                                           itemCount: futureSnapshot.data.length,
                                           itemBuilder: (BuildContext context, int index) =>
