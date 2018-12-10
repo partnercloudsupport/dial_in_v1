@@ -150,7 +150,7 @@ static Future<File> getFile(String filepath)async{
         break;
 
       case ProfileType.barista:
-        return DatabaseIds.barista;
+        return DatabaseIds.Barista;
         break;
 
       default:

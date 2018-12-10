@@ -1,9 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../widgets/custom_widgets.dart';
 import '../../data/profile.dart';
-import '../../data/item.dart';
-import '../../database_functions.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../data/functions.dart';
 import '../../data/strings.dart';

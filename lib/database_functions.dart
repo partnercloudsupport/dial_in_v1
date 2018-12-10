@@ -216,7 +216,7 @@ class DatabaseFunctions {
       String _objectId = document.documentID;
       int _orderNumber = document[DatabaseIds.orderNumber];
       File _image = await downloadFile(document.data[DatabaseIds.image]);
-      bool _ispublic = document[DatabaseIds.public];
+      bool _ispublic = document.data[DatabaseIds.public];
 
       Profile _coffee;
       Profile _barista;
@@ -275,6 +275,7 @@ class DatabaseFunctions {
       case DatabaseIds.recipe: 
 
       return  new Profile(
+              isPublic: _ispublic,
               updatedAt: _updatedAt,
               objectId: _objectId,
               type: ProfileType.recipe,
@@ -344,7 +345,7 @@ class DatabaseFunctions {
         );
       break;
 
-      case DatabaseIds.barista:   
+      case DatabaseIds.Barista:   
       return  new Profile(
         isPublic: _ispublic,
         updatedAt: DateTime.now(),
@@ -360,6 +361,7 @@ class DatabaseFunctions {
       default: 
 
       return  new Profile(
+              isPublic: _ispublic,
               updatedAt: DateTime.now(),
               objectId: _objectId,
               type: ProfileType.barista,

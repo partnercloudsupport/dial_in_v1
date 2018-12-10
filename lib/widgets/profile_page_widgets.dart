@@ -514,7 +514,6 @@ class TwoTextfieldCard extends StatelessWidget {
   final double _margin = 10.0;
   final double _cornerRadius = 20.0;
   final double _textFieldWidth = 150.0;
-  final double _spacing = 15.0;
   final String titleLeft;
   final String titleRight;
   final String leftHintText;
@@ -590,7 +589,7 @@ class NotesCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-        child: Container(
+      child: Container(
       height: 200.0,
       margin: EdgeInsets.all(_margin),
       padding: EdgeInsets.all(_padding),
