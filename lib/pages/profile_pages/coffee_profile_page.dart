@@ -5,6 +5,8 @@ import '../../database_functions.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
 import '../../data/profile.dart';
+import '../../widgets/custom_widgets.dart';
+import '../../data/item.dart';
 
 
 class CoffeeProfilePage extends StatefulWidget {
@@ -67,7 +69,7 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
                 _profile.getProfileItemValue(DatabaseIds.producer) ,
                 _profile.getProfileItemValue(DatabaseIds.lot) ,
                 _profile.getProfileItemValue(DatabaseIds.altitude) ,
-                _profile.getProfileItemValue(DatabaseIds.country)),
+                _profile.getProfileItem(DatabaseIds.country)),
 
                 GreenDetailsCard(
                 (beanType){widget._setProfileItemValue(DatabaseIds.beanType,  beanType );},
@@ -85,7 +87,7 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
                 _profile.getProfileItemValue(DatabaseIds.altitude),
                 _profile.getProfileItemValue(DatabaseIds.aW),
                 _profile.getProfileItemValue(DatabaseIds.moisture),
-                _profile.getProfileItemValue(DatabaseIds.harvest),)
+                _profile.getProfileItem(DatabaseIds.harvest),)
               ],
           );
   }
@@ -114,13 +116,13 @@ class OriginDetailsCard extends StatelessWidget {
   final String _producerValue;
   final String _lotValue;
   final String _altitudeValue;
-  final String _countryValue;
+  final Item _countryItem;
 
   OriginDetailsCard(
     /// Functions
     this._altitude, this._lot, this._producer, this._farm, this._region, this._country,
     /// Values
-  this._regionValue,this._farmValue,this._producerValue,this._lotValue,this._altitudeValue,this._countryValue,
+  this._regionValue,this._farmValue,this._producerValue,this._lotValue,this._altitudeValue,this._countryItem,
   );
 
  @override
@@ -160,9 +162,7 @@ class OriginDetailsCard extends StatelessWidget {
                _altitudeValue,
                 (value){_altitude(value);}), 
           ///Country
-          TextFieldWithInitalValue(TextInputType.text, StringLabels.country, StringLabels.enterDescription,
-               _countryValue,
-                (value){_country(value);}),
+          TextFieldItemWithInitalValue(_countryItem,(value){_country(value);}),
         ],)
     ],),)
     );
@@ -410,13 +410,13 @@ class GreenDetailsCard extends StatelessWidget {
   final String _altitudeValue;
   final String _awValue;
   final String _moiValue;
-  final String _harvestValue;
+  final Item _harvestItem;
 
   GreenDetailsCard(
     /// Functions
     this._beanType,this._beanSize,this._processingMethod,this._density,this._altitude,this._aw,this._moi,this._harvest,
     /// Values
-    this._beanTypeValue,this._beanSizeValue,this._processingMethodValue,this._densityValue,this._altitudeValue,this._awValue,this._moiValue,this._harvestValue,
+    this._beanTypeValue,this._beanSizeValue,this._processingMethodValue,this._densityValue,this._altitudeValue,this._awValue,this._moiValue,this._harvestItem,
   );
 
  @override
@@ -464,9 +464,7 @@ class GreenDetailsCard extends StatelessWidget {
         ///Row 4
         Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: <Widget>[
           ///Harvest
-          TextFieldWithInitalValue(TextInputType.text, StringLabels.harvest, StringLabels.enterDescription,
-               _harvestValue,
-                (value){_harvest(value);})
+          TextFieldItemWithInitalValue(_harvestItem,(value){_harvest(value);})
                      
         ],),
 

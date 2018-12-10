@@ -310,6 +310,7 @@ static Future<File> getFile(String filepath)async{
               createBlankItem(DatabaseIds.aW),
               createBlankItem(DatabaseIds.moisture),
               createBlankItem(DatabaseIds.roasterName),
+              createBlankItem(DatabaseIds.harvest),
             ]);
         break;
 
@@ -360,8 +361,8 @@ static Future<File> getFile(String filepath)async{
             createBlankItem(DatabaseIds.grinderId),
             createBlankItem(DatabaseIds.grinderMake),
             createBlankItem(DatabaseIds.grinderModel),
-            createBlankItem(DatabaseIds.method),
-            createBlankItem(DatabaseIds.type),
+            createBlankItem(DatabaseIds.burrs),
+            createBlankItem(DatabaseIds.notes),
           ],
         );
         break;
@@ -432,7 +433,7 @@ static Future<File> getFile(String filepath)async{
         );
         break;
 
-      case DatabaseIds.equipmentId:
+      case DatabaseIds.brewingEquipment:
         _item = new Item(
           title: StringLabels.brewingEquipment,
           value: '',
@@ -442,7 +443,7 @@ static Future<File> getFile(String filepath)async{
         );
         break;
 
-      case DatabaseIds.grinderId:
+      case DatabaseIds.grinder:
         _item = new Item(
           title: StringLabels.grinder,
           value: '',
@@ -740,6 +741,16 @@ static Future<File> getFile(String filepath)async{
         );
         break;
 
+       case DatabaseIds.harvest:
+        _item = new Item(
+          title: StringLabels.harvest,
+          value: '',
+          databaseId: DatabaseIds.harvest,
+          placeHolderText: StringLabels.enterDescription,
+          keyboardType: TextInputType.text,
+        );
+        break;
+
       /// Roasting details
 
       case DatabaseIds.roastDate:
@@ -847,7 +858,7 @@ static Future<File> getFile(String filepath)async{
       ///
       case DatabaseIds.grinderId:
         _item = new Item(
-          title: StringLabels.grinderId,
+          title: StringLabels.name,
           value: '',
           databaseId: DatabaseIds.grinderId,
           placeHolderText: StringLabels.enterDescription,
@@ -867,7 +878,7 @@ static Future<File> getFile(String filepath)async{
 
       case DatabaseIds.grinderMake:
         _item = new Item(
-          title: StringLabels.grinderMake,
+          title: StringLabels.make,
           value: '',
           databaseId: DatabaseIds.grinderMake,
           placeHolderText: StringLabels.enterDescription,
@@ -877,7 +888,7 @@ static Future<File> getFile(String filepath)async{
 
       case DatabaseIds.grinderModel:
         _item = new Item(
-          title: StringLabels.grinderModel,
+          title: StringLabels.model,
           value: '',
           databaseId: DatabaseIds.grinderModel,
           placeHolderText: StringLabels.enterDescription,
@@ -890,19 +901,19 @@ static Future<File> getFile(String filepath)async{
       ///
       case DatabaseIds.equipmentId:
         _item = new Item(
-          title: StringLabels.equipmentId,
+          title: StringLabels.name,
           value: '',
           databaseId: DatabaseIds.equipmentId,
-          placeHolderText: StringLabels.enterDescription,
+          placeHolderText: StringLabels.enterName,
           keyboardType: TextInputType.text,
         );
         break;
 
-      case DatabaseIds.equipmentType:
+      case DatabaseIds.type:
         _item = new Item(
-          title: StringLabels.equipmentType,
+          title: StringLabels.type,
           value: '',
-          databaseId: DatabaseIds.equipmentType,
+          databaseId: DatabaseIds.type,
           placeHolderText: StringLabels.enterDescription,
           keyboardType: TextInputType.text,
         );
@@ -910,9 +921,19 @@ static Future<File> getFile(String filepath)async{
 
       case DatabaseIds.equipmentModel:
         _item = new Item(
-          title: StringLabels.equipmentModel,
+          title: StringLabels.model,
           value: '',
           databaseId: DatabaseIds.equipmentModel,
+          placeHolderText: StringLabels.enterDescription,
+          keyboardType: TextInputType.text,
+        );
+        break;
+
+      case DatabaseIds.equipmentMake:
+        _item = new Item(
+          title: StringLabels.make,
+          value: '',
+          databaseId: DatabaseIds.equipmentMake,
           placeHolderText: StringLabels.enterDescription,
           keyboardType: TextInputType.text,
         );
@@ -928,6 +949,31 @@ static Future<File> getFile(String filepath)async{
         );
         break;
 
+      ///
+      /// BaristarTop
+      ///
+      
+      case DatabaseIds.name:
+        _item = new Item(
+          title: StringLabels.name,
+          value: '',
+          databaseId: DatabaseIds.name,
+          placeHolderText: StringLabels.enterName,
+          keyboardType: TextInputType.text,
+        );
+        break;
+
+        case DatabaseIds.level:
+        _item = new Item(
+          title: StringLabels.level,
+          value: '',
+          databaseId: DatabaseIds.level,
+          placeHolderText: StringLabels.enterDescription,
+          keyboardType: TextInputType.text,
+        );
+        break;
+    
+      
       default:
         _item = new Item(
           title: StringLabels.method,
@@ -1080,9 +1126,9 @@ static Future<File> getFile(String filepath)async{
 
         case DatabaseIds.notes:
           _item = new Item(
-            title: StringLabels.brewingEquipment,
+            title: StringLabels.notes,
             value: value,
-            databaseId: DatabaseIds.date,
+            databaseId: DatabaseIds.notes,
             placeHolderText: StringLabels.enterDescription,
             keyboardType: TextInputType.text,
           );
@@ -1261,6 +1307,26 @@ static Future<File> getFile(String filepath)async{
             title: StringLabels.altitude,
             value: value,
             databaseId: DatabaseIds.altitude,
+            placeHolderText: StringLabels.enterDescription,
+            keyboardType: TextInputType.text,
+          );
+          break;
+
+        case DatabaseIds.country:
+          _item = new Item(
+            title: StringLabels.country,
+            value: value,
+            databaseId: DatabaseIds.country,
+            placeHolderText: StringLabels.enterDescription,
+            keyboardType: TextInputType.text,
+          );
+          break;
+
+         case DatabaseIds.harvest:
+          _item = new Item(
+            title: StringLabels.harvest,
+            value: value,
+            databaseId: DatabaseIds.harvest,
             placeHolderText: StringLabels.enterDescription,
             keyboardType: TextInputType.text,
           );

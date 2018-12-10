@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import '../../database_functions.dart';
 import '../../widgets/profile_page_widgets.dart';
 import '../../data/profile.dart';
-import '../../data/strings.dart';
 import '../../widgets/custom_widgets.dart';
+import '../../data/item.dart';
 
 class GrinderPage extends StatefulWidget {
   final double _margin;
@@ -44,10 +44,10 @@ class _GrinderPageState extends State<GrinderPage> {
         (burrs) {widget._setProfileItemValue(DatabaseIds.burrs, burrs);},
         (make) {widget._setProfileItemValue(DatabaseIds.grinderMake, make);},
         (model) {widget._setProfileItemValue(DatabaseIds.grinderModel, model);},
-        _profile.getProfileItemValue(DatabaseIds.name),
-        _profile.getProfileItemValue(DatabaseIds.burrs),        
-        _profile.getProfileItemValue(DatabaseIds.grinderMake),        
-        _profile.getProfileItemValue(DatabaseIds.grinderModel),        
+        _profile.getProfileItem(DatabaseIds.grinderId),
+        _profile.getProfileItem(DatabaseIds.burrs),        
+        _profile.getProfileItem(DatabaseIds.grinderMake),        
+        _profile.getProfileItem(DatabaseIds.grinderModel),        
       ),
 
       /// Notes
@@ -68,16 +68,16 @@ class GrinderDetailsCard extends StatelessWidget {
   final Function(String) _burrs;
   final Function(String) _make;
   final Function(String) _model;
-  final String _nameValue;
-  final String _typeValue;
-  final String _makeValue;
-  final String _modelValue;
+  final Item _nameValue;
+  final Item _burrsValue;
+  final Item _makeValue;
+  final Item _modelValue;
 
   GrinderDetailsCard(
     /// Functions
     this._name,this._burrs,this._make,this._model,
     /// Variables
-    this._nameValue, this._typeValue, this._makeValue, this._modelValue
+    this._nameValue, this._burrsValue, this._makeValue, this._modelValue
   );
 
   @override
@@ -95,12 +95,12 @@ class GrinderDetailsCard extends StatelessWidget {
             children: <Widget>[
               
               /// Name
-              TextFieldWithInitalValue(TextInputType.text, StringLabels.make, StringLabels.enterDescription,
-               _nameValue, (value){ _name(value);}),
+              TextFieldItemWithInitalValue(_nameValue,
+              (value){ _name(value);}),
 
               /// Burrs
-              TextFieldWithInitalValue(TextInputType.text, StringLabels.make, StringLabels.enterDescription,
-               _nameValue, (value){_burrs(value);}),
+              TextFieldItemWithInitalValue(_burrsValue,
+              (value){_burrs(value);}),
 
             ],
           ),
@@ -112,12 +112,12 @@ class GrinderDetailsCard extends StatelessWidget {
             children: <Widget>[
 
               /// Make
-              TextFieldWithInitalValue(TextInputType.text, StringLabels.make, StringLabels.enterDescription,
-               _nameValue, (value){ _make(value);}),
+              TextFieldItemWithInitalValue(
+               _makeValue, (value){ _make(value);}),
 
               /// Model
-              TextFieldWithInitalValue(TextInputType.text, StringLabels.make, StringLabels.enterDescription,
-               _nameValue, (value){ _make(value);}),
+              TextFieldItemWithInitalValue(
+               _modelValue, (value){ _model(value);}),
 
             ],
           ),

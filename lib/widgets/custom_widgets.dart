@@ -277,22 +277,26 @@ class ProfileCard extends StatelessWidget {
   String _topRight = 'error';
   String _bottomRight = 'error';
   String _bottomleft = 'error';
+  final _dateFormat = DateFormat.yMd();
+  DateTime _date;
 
   ProfileCard(this.profile, this._giveprofile){
 
     switch(profile.type){
       
       case ProfileType.recipe: 
+      _date = profile.getProfileItemValue(DatabaseIds.date);
       _topLeft = profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.coffee);
-      _topRight = profile.getProfileItemValue( DatabaseIds.date);
+      _topRight = _dateFormat.format(_date);
       _bottomRight = profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.brewingEquipment);
       _bottomleft = profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.score);
       break;
 
-      case ProfileType.coffee:   
+      case ProfileType.coffee:  
+      _date = profile.getProfileItemValue(DatabaseIds.roastDate);
       _topLeft = profile.getProfileItemValue( DatabaseIds.coffeeId);
       _topRight = profile.getProfileItemValue( DatabaseIds.processingMethod);
-      _bottomRight = profile.getProfileItemValue( DatabaseIds.roastDate).toString();
+      _bottomRight = _dateFormat.format(_date);
       _bottomleft = profile.getProfileItemValue( DatabaseIds.country);
       break;
 
@@ -615,7 +619,7 @@ class _DateInputCardState extends State<DateInputCard> {
        _dateTime = widget._dateTime;
       super.didUpdateWidget(oldWidget);
     }
-
+    
   @override
   Widget build(BuildContext context) {
     return Container(

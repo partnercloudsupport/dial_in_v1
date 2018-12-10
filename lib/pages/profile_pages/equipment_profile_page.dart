@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../database_functions.dart';
 import '../../widgets/profile_page_widgets.dart';
 import '../../data/profile.dart';
+import '../../data/item.dart';
 import '../../widgets/custom_widgets.dart';
 
 
@@ -43,10 +44,10 @@ class _EquipmentPageState extends State<EquipmentPage> {
         (type) {widget._setProfileItemValue(DatabaseIds.type, type);},
         (make) {widget._setProfileItemValue(DatabaseIds.equipmentMake, make);},
         (model) {widget._setProfileItemValue(DatabaseIds.equipmentModel, model);},
-        _profile.getProfileItemValue(DatabaseIds.name),
-        _profile.getProfileItemValue(DatabaseIds.type),
-        _profile.getProfileItemValue(DatabaseIds.equipmentMake),
-        _profile.getProfileItemValue(DatabaseIds.equipmentModel),
+        _profile.getProfileItem(DatabaseIds.equipmentId),
+        _profile.getProfileItem(DatabaseIds.type),
+        _profile.getProfileItem(DatabaseIds.equipmentMake),
+        _profile.getProfileItem(DatabaseIds.equipmentModel),
       ),
 
       /// Notes
@@ -62,15 +63,14 @@ class _EquipmentPageState extends State<EquipmentPage> {
 class EquipmentDetailsCard extends StatelessWidget {
   final double _padding = 20.0;
   final double _margin = 10.0;
-  final double _textFieldWidth = 150.0;
   final Function(String) _name;
   final Function(String) _type;
   final Function(String) _make;
   final Function(String) _model;
-  final String _nameValue;
-  final String _typeValue;
-  final String _makeValue;
-  final String _modelValue;
+  final Item _nameValue;
+  final Item _typeValue;
+  final Item _makeValue;
+  final Item _modelValue;
 
   EquipmentDetailsCard(
     /// Functions
@@ -94,12 +94,12 @@ class EquipmentDetailsCard extends StatelessWidget {
             children: <Widget>[
               
               /// Name
-              TextFieldWithInitalValue(TextInputType.text, StringLabels.name, StringLabels.enterNickname,
+              TextFieldItemWithInitalValue(
                _nameValue, (value){ _name(value);}), 
 
               /// Type
-              TextFieldWithInitalValue(TextInputType.text, StringLabels.type, StringLabels.enterName,
-               _nameValue, (value){ _type(value);}), 
+              TextFieldItemWithInitalValue(
+               _typeValue, (value){ _type(value);}), 
 
             ],
           ),
@@ -110,12 +110,12 @@ class EquipmentDetailsCard extends StatelessWidget {
             children: <Widget>[
 
               /// Make
-              TextFieldWithInitalValue(TextInputType.text, StringLabels.make, StringLabels.enterDescription,
-               _nameValue, (value){ _make(value);}),
+              TextFieldItemWithInitalValue(
+               _makeValue, (value){ _make(value);}),
 
               /// Model
-              TextFieldWithInitalValue(TextInputType.text, StringLabels.make, StringLabels.enterDescription,
-               _nameValue, (value){ _make(value);}),
+              TextFieldItemWithInitalValue(
+               _modelValue, (value){ _model(value);}),
             ],
           ),
         ],
