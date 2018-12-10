@@ -82,13 +82,14 @@ class _ProfileListState extends State<ProfileList>{
                                       if (futureSnapshot.hasError){return Text('Error: ${futureSnapshot.error}');}
                                       else if (futureSnapshot.data == null){ return Center(child: Text(StringLabels.noData));}
                                       else{
+                                      List<dynamic> list = futureSnapshot.data;
+                                      List<dynamic> reversedlist = list.reversed.toList();
                                       return 
                                       ListView.builder(
-                                          reverse: true,
                                           itemExtent: 80,
-                                          itemCount: futureSnapshot.data.length,
+                                          itemCount: reversedlist.length,
                                           itemBuilder: (BuildContext context, int index) =>
-                                              futureSnapshot.data[index]);}
+                                              reversedlist[index]);}
                                   }
                                   return null; // unreachable
                                 }));
