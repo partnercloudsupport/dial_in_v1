@@ -31,6 +31,7 @@ class DataPageState extends State<DataPage>
         Tab(icon: Icon(Icons.list),),
         ProfileType.recipe
       ),
+        
       TabViewData(
           DataList(ProfileType.coffee,(profile){}, true),
           Tab(icon: Icon(Icons.rounded_corner)),

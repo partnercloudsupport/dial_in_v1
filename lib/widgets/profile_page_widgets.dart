@@ -6,8 +6,6 @@ import 'package:intl/intl.dart';
 import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 import '../data/images.dart';
-import 'dart:async';
-import 'dart:io';
 
 class ScoreSlider extends StatefulWidget {
   final double _value;
@@ -198,6 +196,7 @@ class DoubleProfileInputCard extends StatefulWidget {
   final double _margin = 10.0;
   final double _cornerRadius = 20.0;
   final double _textFieldWidth = 150.0;
+  final double _spacing = 5.0; 
 
   final String leftImageRefString;
   final String leftTitle;
@@ -239,12 +238,12 @@ class _DoubleProfileInputCardState extends State<DoubleProfileInputCard> {
     
       @override
        void initState() {
+
             _leftFocus = new FocusNode();
             _leftFocus.addListener(handleLeftProfileTextfieldFocus);
             _rightFocus = new FocusNode();
             _rightFocus.addListener(handleRightProfileTextfieldFocus);
-            _leftController = new TextEditingController(text: widget.leftTextfieldText);
-            _rightController = new TextEditingController(text: widget.rightTextfieldText);
+
             super.initState();
       }
 
@@ -362,13 +361,12 @@ class ProfileImage extends StatelessWidget {
   final double _margin = 10.0;
   final double _textFieldWidth = 120.0;
   final double _cornerRadius = 20.0;
-  File _image;
+  Image _image;
 
   ProfileImage(this._image);
 
   @override
   Widget build(BuildContext context) {
-    
     return
         
         /// Profile Image
@@ -389,7 +387,7 @@ class ProfileImage extends StatelessWidget {
             ], borderRadius: BorderRadius.circular(_cornerRadius)),
             child: Card(child: ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(_cornerRadius)),
-                child: Image.file(_image, fit: BoxFit.cover),
+                child: _image,
                 ),) );
   }
 }

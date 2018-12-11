@@ -36,17 +36,9 @@ ThemeData buildThemeData(){
     ///Text
     textTheme: TextTheme( 
       body1: TextStyle( fontSize: 13.0), 
-      body2: TextStyle( fontSize: 15.0),
+      body2: TextStyle( fontSize: 13.0),
       button: TextStyle( fontSize: 15.0),
       title: TextStyle( fontSize: 30.0),
-      display1: TextStyle( fontSize: 18.0),
-      display2: TextStyle( fontSize: 25.0),
-      display3: TextStyle( fontSize: 30.0),
-      display4: TextStyle( fontSize: 40.0)
-      // subhead: ,
-      // caption: ,
-      // subtitle: ,
-      // overline: ,
     ),
 
      primaryTextTheme: TextTheme( 
