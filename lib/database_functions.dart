@@ -1,4 +1,3 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
@@ -73,7 +72,7 @@ class DatabaseFunctions {
      }
 }
 
-/// Update document with referance
+  /// Update document with referance
   static Future<void> updateProfile(Profile profile)async{
 
     Map <String, dynamic> _documentProperties = await prepareProfileForFirebaseUpload(profile);
@@ -83,7 +82,7 @@ class DatabaseFunctions {
     
   }
    
-/// Upload file
+  /// Upload file
   static Future<String> _upLoadFileReturnUrl(File file, String folder)async{
     
     final StorageReference ref = FirebaseStorage.instance.ref().child(path.basename(file.path));
@@ -92,7 +91,7 @@ class DatabaseFunctions {
 
   }
 
-/// Prepare Profile for FirebaseUpload or Update
+  /// Prepare Profile for FirebaseUpload or Update
   static Future<Map <String, dynamic>> prepareProfileForFirebaseUpload(Profile profile)async{
 
     String downloadUrl = await _upLoadFileReturnUrl(profile.image, profile.databaseId);
@@ -118,7 +117,15 @@ class DatabaseFunctions {
     return _properties;
 }
 
-/// Save profile 
+  /// Delete profile 
+  static Future<void> deleteProfile(Profile profile)async{
+    Firestore.instance.collection(profile.databaseId).document(profile.objectId)
+        .delete()
+        .whenComplete((){print('Successfully deleted ${profile.objectId}');})
+        .catchError((e){print(e);});
+  }
+
+  /// Save profile 
   static Future<Profile> saveProfile(Profile profile)async{
 
     String downloadUrl = await _upLoadFileReturnUrl(profile.image, profile.databaseId);
@@ -130,6 +137,7 @@ class DatabaseFunctions {
         _properties[profile.properties[i].databaseId] = profile.properties[i].value;
       
       }
+
     String userId = await DatabaseFunctions.getCurrentUserId();
 
         _properties[DatabaseIds.image] = downloadUrl;
@@ -175,6 +183,25 @@ class DatabaseFunctions {
     return _profile;
   }
 
+  /// Get value from collection with key
+  static Future<dynamic> getValueFromFireStoreWithDocRef(String collectionDataBaseId, String docRefernace, String key)async{
+    
+    dynamic _value;
+
+    if (docRefernace != ''){
+
+    DocumentSnapshot doc = await Firestore.instance.collection(collectionDataBaseId).document(docRefernace).get();
+    
+    if (doc.exists) {
+          _value = doc.data[key];
+      } else {
+          throw Error();
+      }
+    }else{ throw Error();}
+
+    return _value;
+  }
+
   static List<Item> convertDocumentDataToProperties(DocumentSnapshot document){
 
   List<Item> _properties = new List<Item>();
@@ -213,6 +240,7 @@ class DatabaseFunctions {
   static Future<Profile> createProfileFromDocumentSnapshot(String databaseId, DocumentSnapshot document)async{
     
       DateTime _updatedAt = document[DatabaseIds.updatedAt];
+      String _user = document[DatabaseIds.user];
       String _objectId = document.documentID;
       int _orderNumber = document[DatabaseIds.orderNumber];
       File _image = await downloadFile(document.data[DatabaseIds.image]);
@@ -275,6 +303,7 @@ class DatabaseFunctions {
       case DatabaseIds.recipe: 
 
       return  new Profile(
+              userId: _user,
               isPublic: _ispublic,
               updatedAt: _updatedAt,
               objectId: _objectId,
@@ -295,6 +324,7 @@ class DatabaseFunctions {
 
       case DatabaseIds.coffee:   
       return  new Profile(
+              userId: _user,
               isPublic: _ispublic,
               updatedAt: _updatedAt,
               objectId: _objectId,
@@ -308,6 +338,7 @@ class DatabaseFunctions {
 
       case DatabaseIds.grinder:   
       return  new Profile(
+              userId: _user,
               isPublic: _ispublic,
               updatedAt: DateTime.now(),
               objectId: _objectId,
@@ -321,6 +352,7 @@ class DatabaseFunctions {
 
       case DatabaseIds.brewingEquipment:   
       return  new Profile(
+        userId: _user,
         isPublic: _ispublic,
         updatedAt: DateTime.now(),
         objectId: _objectId,
@@ -334,6 +366,7 @@ class DatabaseFunctions {
 
       case DatabaseIds.water:   
       return  new Profile(
+        userId: _user,
         isPublic: _ispublic,
         updatedAt: DateTime.now(),
         objectId: _objectId,
@@ -347,6 +380,7 @@ class DatabaseFunctions {
 
       case DatabaseIds.Barista:   
       return  new Profile(
+        userId: _user,
         isPublic: _ispublic,
         updatedAt: DateTime.now(),
         objectId: _objectId,
@@ -361,6 +395,7 @@ class DatabaseFunctions {
       default: 
 
       return  new Profile(
+              userId: _user,
               isPublic: _ispublic,
               updatedAt: DateTime.now(),
               objectId: _objectId,
@@ -373,9 +408,27 @@ class DatabaseFunctions {
       break;
     }
   }
+  /// Give user profile name and photo
+  static Future<void> updateUserProfileWithNameAndPhoto(String displayName, String photoUrl,)async{
+
+     var user = await FirebaseAuth.instance.currentUser();
+
+     UserUpdateInfo info = new UserUpdateInfo();
+     info.displayName = displayName;
+     info.photoUrl = photoUrl;
+     user.updateProfile(info)
+     .then((a){
+      // Update successful.
+        print('Sucessfully updated ${user}');
+    }).catchError((error) {
+    // An error happened.
+      print(error);
+    });
+  }
 }
 
- class Storage {
+class Storage {
+
   Future<String> get localPath async {
     final dir = await getApplicationDocumentsDirectory();
     return dir.path;
@@ -417,7 +470,7 @@ class DatabaseIds{
   static const String databaseId = 'databaseId';
   static const String coreDataId = 'coreDataId';
   static const String updatedAt = 'updatedAt';
-  static const String userName = 'username';
+  static const String userName = 'userName';
   static const String email = 'email';
   static const String currentUser = 'currentUser';
   static const String password = 'password';
@@ -503,4 +556,4 @@ class DatabaseIds{
   static const String imagePath = 'imagePath';
   static const String image = 'image';
   static const String orderNumber = 'orderNumber';
-  }
+}

@@ -7,6 +7,9 @@ import '../data/images.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
 import '../data/item.dart';
+import 'package:flutter_rating/flutter_rating.dart';
+import 'dart:async';
+import 'dart:io';
 
 ///
 /// Background
@@ -280,7 +283,7 @@ class ProfileCard extends StatelessWidget {
   final _dateFormat = DateFormat.yMd();
   DateTime _date;
 
-  ProfileCard(this.profile, this._giveprofile){
+  ProfileCard(this.profile, this._giveprofile,){
 
     switch(profile.type){
       
@@ -354,6 +357,23 @@ class ProfileCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return 
+    Dismissible(
+    // Each Dismissible must contain a Key. Keys allow Flutter to
+    // uniquely identify Widgets.
+    background: Container(color: Colors.red),
+    key: Key(profile.objectId),
+    // We also need to provide a function that will tell our app
+    // what to do after an item has been swiped away.
+    onDismissed: (direction) {
+      // Remove the item from our data source.
+      DatabaseFunctions.deleteProfile(this.profile);
+
+    // Show a snackbar! This snackbar could also contain "Undo" actions.
+    Scaffold
+        .of(context)
+        .showSnackBar(SnackBar(content: Text("Profile deleted")));
+  },
+  child: 
     Card(child: 
       InkWell(onTap:() => _giveprofile(profile)
        
@@ -404,62 +424,79 @@ class ProfileCard extends StatelessWidget {
                     ])))
       ]))
     ]),
-    ));
-    // ,);
+    ))
+  );
   }
 }
 
-///Profile card
-class SocialProfile extends StatelessWidget {
+///Social card
+class SocialProfileCard extends StatelessWidget {
+
+  final Function(Profile) _giveprofile;
+  final Profile _profile;
+  final _dateFormat = DateFormat.yMd();
+  final String userId;
+  final File image;
+
+  SocialProfileCard(this._profile, this.userId, this.image, this._giveprofile,);
+
+  
   @override
   Widget build(BuildContext context) {
-    return Card(
-        child: Row(children: <Widget>[
+    return 
+    Card(child: 
+      InkWell(onTap:() => _giveprofile(_profile)
+       
+      ,child: 
+
+      Column(children: <Widget>[
+        
+        Row(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
+
+
       ///
-      /// Profile picture
+      /// User picture
       ///
+      Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
+      ///User name
       Container(
-          child: CircularPicture(Image.asset('assets/images/user.png'), 60.0)),
+          child: CircularPicture(Image.file(_profile.image), 60.0)),
+          ]),
+      
 
-      Expanded(
-          child: Row(children: <Widget>[
-        ///
-        /// Main name and secondnary details
-        ///
-        Expanded(
-            child: Container(
-                padding: EdgeInsets.all(0.0),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                          margin: EdgeInsets.all(10.0), child: Text('Main')),
-                      Container(
-                        margin: EdgeInsets.all(10.0),
-                        child: Text('Second'),
-                      )
-                    ]))),
+      Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+        ///User Name
+        Text(userId, style: Theme.of(context).textTheme.display1,),
 
-        ///
-        /// Third and fourth details
-        ///
-        Expanded(
-            child: Container(
-                padding: EdgeInsets.all(0.0),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      Container(
-                          margin: EdgeInsets.all(10.0), child: Text('Third')),
-                      Container(
-                        margin: EdgeInsets.all(10.0),
-                        child: Text('Fourth'),
-                      )
-                    ])))
-      ]))
-    ]));
+        /// Coffee Name
+        Text(_profile.getProfileProfileItemValue(ProfileType.coffee, DatabaseIds.coffeeId)),
+
+        /// Brew method
+        Text(_profile.getProfileProfileItemValue(ProfileType.equipment, DatabaseIds.equipmentId)), 
+
+        /// Notes
+        Text(_profile.getProfileProfileItemValue(ProfileType.equipment, DatabaseIds.descriptors)), 
+
+        ///Score
+        new StarRating(
+                size: 25.0,
+                rating: 2.5,
+                color: Colors.orange,
+                borderColor: Colors.grey,
+                starCount: 5,
+              ),      
+        ])
+      ],),      
+
+      /// Recipe picture
+      ProfileImage(Image.file(_profile.image)),
+
+      ]),
+      ),
+    );
   }
 }
+
 
 class CountLabel extends StatelessWidget {
   final String _text;

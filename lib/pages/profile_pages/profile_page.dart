@@ -34,7 +34,7 @@ import '../../pages/profile_pages/equipment_profile_page.dart';
 import '../../pages/profile_pages/grinder_profile_page.dart';
 import '../../pages/profile_pages/barista_profile_page.dart';
 import '../../pages/profile_pages/coffee_profile_page.dart';
-
+import '../../theme/appColors.dart';
 
 class ProfilePage extends StatefulWidget {
   @required
@@ -123,6 +123,7 @@ class ProfilePageState extends State<ProfilePage> {
                 },
               ),
         actions: <Widget>[
+          
           _isEditing?  
            RawMaterialButton(
                   child: Icon(Icons.save_alt),
@@ -163,14 +164,46 @@ class ProfilePageState extends State<ProfilePage> {
             
             /// All below changes depending on profile
 
-             _returnPageStructure(_profile)
+             _returnPageStructure(_profile),
 
             ],
           )
         ],
       ),
-    );
+      bottomNavigationBar: _returnBottomBar()
+      );
   }
+
+  Widget _returnBottomBar(){
+
+    Widget _bottomBar;
+
+    if (this._isCopying || this._isOldProfile){
+
+    _bottomBar = Material(child: 
+            Material( color: AppColors.getColor(ColorType.toolBar), child:
+            BottomAppBar(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween, 
+              crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
+
+                  RawMaterialButton(
+                      child: Icon(Icons.content_copy),
+                      onPressed: ()async{  
+                        Profile _newProfile = _profile;
+                        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
+                        ProfilePage(isOldProfile: false, isCopying: true, isEditing: true, isNew: true, type: _profile.type, referance: '',profile: _newProfile ,)));}),
+
+                  RawMaterialButton(
+                      child: Icon(Icons.delete),
+                      onPressed: ()async{ if(_isOldProfile ) 
+                        {await DatabaseFunctions.deleteProfile(_profile);
+                        Navigator.pop(context);}}),
+                ],),),
+              ));
+    }
+    return _bottomBar; 
+  }       
 
   Widget _returnPageStructure(Profile profile){
 
@@ -266,6 +299,8 @@ class ProfilePageState extends State<ProfilePage> {
                 Profile result = await Navigator.push(context,
                     MaterialPageRoute(
                         builder: (BuildContext context) => ProfilePage(
+                              isOldProfile: false,
+                              isFromProfile: true,
                               isCopying: false,
                               isEditing: true,
                               isNew: true,

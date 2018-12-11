@@ -8,6 +8,8 @@ import '../data/images.dart';
 
 class Profile {
   @required
+  String userId;
+  @required
   DateTime updatedAt;
   @required
   String objectId;
@@ -31,8 +33,9 @@ class Profile {
 
   // Is it water , coffee, grinder , machine etc?
 
-  Profile(
-      {this.updatedAt,
+  Profile({
+      this.userId,
+      this.updatedAt,
       this.objectId,
       this.type,
       this.properties,
@@ -41,7 +44,8 @@ class Profile {
       this.viewContollerId,
       this.orderNumber,
       this.profiles,
-      this.isPublic}) {
+      this.isPublic
+      }) {
     switch (type) {
       case ProfileType.recipe:
         this.referanceNumber = 0;
@@ -162,6 +166,64 @@ class Profile {
       }
     }
   }
+
+Future<File> getUserImage ()async{
+
+  File image = await Functions.getFile(Images.user);
+  
+  String imageUrl = await DatabaseFunctions.getValueFromFireStoreWithDocRef(DatabaseIds.User, this.userId, DatabaseIds.image);
+  image = await DatabaseFunctions.downloadFile(imageUrl);
+
+  return image;
+} 
+
+ dynamic getProfileProfileItemValue(ProfileType profiletype, String itemDatabaseId) {
+  dynamic value = 'Error';
+   if (this.profiles != null) {
+      for (var i = 0; i < this.profiles.length; i++) {
+        if (this.profiles[i].type == profiletype) {
+          for (var x = 0; x < this.profiles[i].properties.length; x++) {
+            if (this.profiles[i].properties[x].databaseId == itemDatabaseId){
+              value = this.profiles[i].properties[x].value;
+            }
+          }
+        }
+      }
+   }
+   return value;
+ }
+
+ Future<String> getProfileUserName()async{
+   
+  String userId = await DatabaseFunctions.getValueFromFireStoreWithDocRef(DatabaseIds.User, this.userId, DatabaseIds.userName);
+
+  return userId;
+ }
+
+ dynamic getProfileTotalScoreValue(){
+  dynamic value = 0;
+   if (this.type == ProfileType.recipe) {
+      for (var i = 0; i < this.profiles.length; i++) {
+        if (this.profiles[i].type == ProfileType.recipe) {
+          for (var x = 0; x < this.profiles[i].properties.length; x++) {
+            if (
+              this.profiles[i].properties[x].databaseId == DatabaseIds.balance ||
+              this.profiles[i].properties[x].databaseId == DatabaseIds.strength ||
+              this.profiles[i].properties[x].databaseId == DatabaseIds.flavour ||
+              this.profiles[i].properties[x].databaseId == DatabaseIds.afterTaste ||
+              this.profiles[i].properties[x].databaseId == DatabaseIds.acidic ||
+              this.profiles[i].properties[x].databaseId == DatabaseIds.body 
+              )
+              
+              {
+              value = value + this.profiles[i].properties[x].value;
+              }
+        }
+      }
+     }
+   }
+    return value;
+ }
 
   String getProfileProfileTitleValue({String profileDatabaseId}) {
     String value = 'Error';

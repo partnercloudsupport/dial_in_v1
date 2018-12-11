@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../widgets/custom_widgets.dart';
-import 'profile_list.dart';
+import 'feed_list.dart';
 import '../../theme/appColors.dart';
 import '../../data/profile.dart';
 import '../../database_functions.dart';
@@ -22,13 +22,11 @@ TabViewDataArray _lists;
 @override
 void initState() { 
   super.initState();
-
-
   _lists = TabViewDataArray([
 
-    TabViewData(ProfileList(DatabaseIds.public, (profile){}, true), Tab(icon: Icon(Icons.public)), ProfileType.feed),
+    TabViewData(FeedList(true,(profile){}, true), Tab(icon: Icon(Icons.public)), ProfileType.feed),
    
-    TabViewData(ProfileList(DatabaseIds.friends, (profile){}, true),Tab(icon: Icon(Icons.verified_user)),ProfileType.feed),
+    TabViewData(FeedList(false, (profile){}, true),Tab(icon: Icon(Icons.verified_user)),ProfileType.feed),
 
     ]);
   controller = new TabController( vsync: this, length: _lists.ref.length);

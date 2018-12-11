@@ -22,7 +22,7 @@ import 'dart:io' as Io;
 
 class Functions {
 
-static File fileToPng(File file){
+  static File fileToPng(File file){
   // decodeImage will identify the format of the image and use the appropriate
   // decoder.
   Image.Image image = Image.decodeImage(file.readAsBytesSync());
@@ -36,7 +36,7 @@ static File fileToPng(File file){
   return returnFile;      
 }
 
-static File fileToJpg(File file){
+  static File fileToJpg(File file){
   // decodeImage will identify the format of the image and use the appropriate
   // decoder.
   Image.Image image = Image.decodeImage(file.readAsBytesSync());
@@ -48,7 +48,7 @@ static File fileToJpg(File file){
   File returnFile =new Io.File(filename) ..writeAsBytesSync(Image.encodeJpg(thumbnail));
 
   return returnFile;      
-}
+ } 
 
   static Future<File> getPictureFile(String filePath) async {
     // get the path to the document directory.
@@ -57,7 +57,7 @@ static File fileToJpg(File file){
     return new File('/Users/earyzhe/Dropbox/dev/FlutterProjects/dial_in_v1/${filePath}');
   }
 
-static Future<File> getFile(String filepath)async{
+  static Future<File> getFile(String filepath)async{
     final ByteData bytes = await rootBundle.load(filepath);
     final Directory tempDir = Directory.systemTemp;
     final String filename = '${Random().nextInt(10000)}.png';
@@ -66,15 +66,13 @@ static Future<File> getFile(String filepath)async{
     return file;
   }
 
-
   static String getRandomNumber(){
     var rng = new Random();
     var code = rng.nextInt(900000) + 100000;
     return code.toString();
   }
 
-  static Profile setProfileItemValue(
-      {Profile profile, String keyDatabaseId, dynamic value}) {
+  static Profile setProfileItemValue({Profile profile, String keyDatabaseId, dynamic value}) {
     for (var i = 0; i < profile.properties.length; i++) {
       if (profile.properties[i].databaseId == keyDatabaseId) {
         profile.properties[i].value = value;
@@ -1600,6 +1598,28 @@ static Future<File> getFile(String filepath)async{
     return _item;
   }
 
+  static Future<List<Widget>> buildFeedCardArray( BuildContext context, AsyncSnapshot documents, Function(Profile) giveProfile) async {
+
+    List<Widget> _cardArray = new List<Widget>();
+
+     if (documents.data.documents != null || documents.data.documents.length != 0) {
+
+        for(var document in documents.data.documents){  /// <<<<==== changed line
+            Widget result = await buildFeedCardFromDocument(context, document,giveProfile);
+            _cardArray.add(result);
+        }
+     }
+      return _cardArray;
+  }
+
+  static Future<Widget> buildFeedCardFromDocument(BuildContext context, DocumentSnapshot document, Function(Profile) giveprofile) async {
+    
+    Profile profile = await DatabaseFunctions.createProfileFromDocumentSnapshot(DatabaseIds.recipe, document);
+    File image =  await profile.getUserImage();
+    String userId = await profile.getProfileUserName();
+    return SocialProfileCard(profile, userId , image ,giveprofile);
+  }
+  
   static Future<Widget> buildProfileCardFromDocument(BuildContext context, DocumentSnapshot document, String databaseId, Function(Profile) giveprofile) async {
     
     Profile profile = await DatabaseFunctions.createProfileFromDocumentSnapshot(databaseId, document);
@@ -1619,21 +1639,10 @@ static Future<File> getFile(String filepath)async{
             Widget result = await buildProfileCardFromDocument(context, document, databaseId ,giveProfile);
             _cardArray.add(result);
         }
-
-        // await Future.wait(documents.data.map((DocumentSnapshot document) async {
-        //   Widget result = await buildProfileCardFromDocument(context, document, databaseId ,giveProfile);
-        //   _cardArray.add(result);
-        // }));
      }
       print('End ${DateTime.now()}');
       return _cardArray;
     }
-    
-  
-
-
- 
- 
 
   static StreamBuilder createStreamProfileListView(BuildContext context, String profileTypeDatabaseId,  ProfilePageState parent ,Function(Profile) giveProfile){
     return StreamBuilder(
