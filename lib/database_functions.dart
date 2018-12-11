@@ -262,7 +262,7 @@ class DatabaseFunctions {
         else{_coffee = await Functions.createBlankProfile(ProfileType.coffee);}
 
       if (document.data.containsKey(DatabaseIds.barista) && document.data[DatabaseIds.barista] != ""){
-        _barista = await DatabaseFunctions.getProfileFromFireStoreWithDocRef(DatabaseIds.Barista, document.data[DatabaseIds.Barista]);}
+        _barista = await DatabaseFunctions.getProfileFromFireStoreWithDocRef(DatabaseIds.Barista, document.data[DatabaseIds.barista]);}
         else{_barista = await Functions.createBlankProfile(ProfileType.barista);}
 
       if (document.data.containsKey(DatabaseIds.equipmentId) && document.data[DatabaseIds.Barista] != ""){

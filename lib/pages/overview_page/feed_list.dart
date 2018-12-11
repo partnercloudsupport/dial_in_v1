@@ -73,7 +73,7 @@ class _FeedListState extends State<FeedList>{
                                 future: Functions.buildFeedCardArray(context, snapshot, _dealWithProfileSelection),
                                 builder: (BuildContext context, AsyncSnapshot futureSnapshot) {
                                   switch (futureSnapshot.connectionState) {
-                                    case ConnectionState.none: return Text('Press button to start.');  
+                                    case ConnectionState.none: return Text('No connection.');  
                                     case ConnectionState.active:
                                     case ConnectionState.waiting: return Center(child: Text(StringLabels.loading));                                     
                                     case ConnectionState.done:

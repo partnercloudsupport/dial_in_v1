@@ -83,7 +83,7 @@ class _ProfileListState extends State<ProfileList>{
                                       List<dynamic> reversedlist = list.reversed.toList();
                                       return 
                                       ListView.builder(
-                                          itemExtent: 80,
+                                          itemExtent: 100,
                                           itemCount: reversedlist.length,
                                           itemBuilder: (BuildContext context, int index) =>
                                               reversedlist[index]);}

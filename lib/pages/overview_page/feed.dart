@@ -4,7 +4,9 @@ import '../../widgets/custom_widgets.dart';
 import 'feed_list.dart';
 import '../../theme/appColors.dart';
 import '../../data/profile.dart';
-import '../../database_functions.dart';
+import '../../data/strings.dart';
+
+
 
 
 class FeedPage extends StatefulWidget {
@@ -15,28 +17,28 @@ class FeedPage extends StatefulWidget {
 class FeedPageState extends State<FeedPage> with SingleTickerProviderStateMixin{
 
 
-TabController controller;
-TabViewDataArray _lists;
+  TabController controller;
+  TabViewDataArray _lists;
 
 
-@override
-void initState() { 
+  @override
+  void initState() { 
   super.initState();
   _lists = TabViewDataArray([
 
-    TabViewData(FeedList(true,(profile){}, true), Tab(icon: Icon(Icons.public)), ProfileType.feed),
+    TabViewData(FeedList(true,(profile){}, true), Tab(text: StringLabels.community, icon: Icon(Icons.public)), ProfileType.feed),
    
-    TabViewData(FeedList(false, (profile){}, true),Tab(icon: Icon(Icons.verified_user)),ProfileType.feed),
+    TabViewData(FeedList(false, (profile){}, true),Tab(text: StringLabels.following, icon: Icon(Icons.verified_user)),ProfileType.feed),
 
     ]);
-  controller = new TabController( vsync: this, length: _lists.ref.length);
-}
+    controller = new TabController( vsync: this, length: _lists.ref.length);
+  }
 
-@override
-void dispose(){
-controller.dispose();
-super.dispose();
-}
+  @override
+  void dispose(){
+  controller.dispose();
+  super.dispose();
+  }
 
 
   ///

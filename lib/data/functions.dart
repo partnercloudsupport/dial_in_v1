@@ -1005,11 +1005,10 @@ class Functions {
       if (aValue != null) {
         value = aValue;
       } else {
-        value = '';
+        if (key == DatabaseIds.date || key == DatabaseIds.roastDate){value = DateTime.now();}else{value = '';}
       }
       switch (key) {
 
-        ///
         /// Recipe
         ///
         case DatabaseIds.date:
@@ -1598,6 +1597,7 @@ class Functions {
     return _item;
   }
 
+/// Feed cxards
   static Future<List<Widget>> buildFeedCardArray( BuildContext context, AsyncSnapshot documents, Function(Profile) giveProfile) async {
 
     List<Widget> _cardArray = new List<Widget>();
@@ -1620,6 +1620,7 @@ class Functions {
     return SocialProfileCard(profile, userId , image ,giveprofile);
   }
   
+/// Profile cards
   static Future<Widget> buildProfileCardFromDocument(BuildContext context, DocumentSnapshot document, String databaseId, Function(Profile) giveprofile) async {
     
     Profile profile = await DatabaseFunctions.createProfileFromDocumentSnapshot(databaseId, document);

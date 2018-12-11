@@ -155,7 +155,8 @@ class ProfilePageState extends State<ProfilePage> {
             ],),),
 
             /// Profile Image
-            ProfileImage(Image.file(_profile.image)),
+            SizedBox(width: double.infinity, height: 200.0, child:
+            Image.file(_profile.image, fit: BoxFit.cover,),),
 
             FlatButton(
               onPressed: (){ _getimage(_profile.image).then((image){ setState(() {_profile.image = image;});});},
