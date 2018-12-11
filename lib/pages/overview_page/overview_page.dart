@@ -18,33 +18,51 @@ class OverviewPage extends StatefulWidget{
 
 class OverviewPageState extends State<OverviewPage> with SingleTickerProviderStateMixin{
 
-TabController controller;
-TabViewDataArray _tabViews;
+  TabController controller;
+  TabViewDataArray _tabViews;
+  ListView _community;
+  ListView _followers;
+  ListView _recipe;
+  ListView _coffee;
+  ListView _grinder;
+  ListView _equipment;
+  ListView _water;
+  ListView _barista;
 
-@override
-void initState() { 
-  super.initState();
-  _tabViews = TabViewDataArray();
-  controller = new TabController(vsync: this, length: _tabViews.ref.length);
-
-}
-
-@override
-void dispose(){
-controller.dispose();
-super.dispose();
-}
-
-void logOut(){
-
-DatabaseFunctions.logOut((){});
-Navigator.pop(context);
-}
-
-//
-/// UI Build
-///
   @override
+  void initState() { 
+    super.initState();
+    _tabViews = TabViewDataArray();
+    controller = new TabController(vsync: this, length: _tabViews.ref.length);
+    setUpData();
+  }
+
+  @override
+  void dispose(){
+    controller.dispose();
+    super.dispose();
+  }
+
+  Future<void> setUpData()async{
+    _community = await DatabaseFunctions.getFeed(DatabaseIds.recipe, true, (profile){});
+    _followers = await DatabaseFunctions.getFeed(DatabaseIds.recipe, true, (profile){});
+    _recipe = await DatabaseFunctions.getFeed(DatabaseIds.recipe, true, (profile){});
+    _coffee = await DatabaseFunctions.getFeed(DatabaseIds.coffee, true, (profile){});
+    _grinder = await DatabaseFunctions.getFeed(DatabaseIds.grinder, true, (profile){});
+    _equipment = await DatabaseFunctions.getFeed(DatabaseIds.brewingEquipment, true, (profile){});
+    _water = await DatabaseFunctions.getFeed(DatabaseIds.water, true, (profile){});
+    _barista = await DatabaseFunctions.getFeed(DatabaseIds.barista, true, (profile){});
+  }
+
+  void logOut(){
+    DatabaseFunctions.logOut((){});
+    Navigator.pop(context);
+  }
+
+  //
+  /// UI Build
+  ///
+    @override
   Widget build(BuildContext context) {
     return new Scaffold(
        
