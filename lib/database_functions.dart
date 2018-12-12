@@ -263,7 +263,7 @@ class DatabaseFunctions {
         else{_coffee = await Functions.createBlankProfile(ProfileType.coffee);}
 
       if (document.data.containsKey(DatabaseIds.barista) && document.data[DatabaseIds.barista] != ""){
-        _barista = await DatabaseFunctions.getProfileFromFireStoreWithDocRef(DatabaseIds.Barista, document.data[DatabaseIds.Barista]);}
+        _barista = await DatabaseFunctions.getProfileFromFireStoreWithDocRef(DatabaseIds.Barista, document.data[DatabaseIds.barista]);}
         else{_barista = await Functions.createBlankProfile(ProfileType.barista);}
 
       if (document.data.containsKey(DatabaseIds.equipmentId) && document.data[DatabaseIds.Barista] != ""){
@@ -427,7 +427,7 @@ class DatabaseFunctions {
     });
   }
 
-  static Future<Widget> getFeed(String _listDatabaseId, bool isProfileFeed ,Function(Profile)  _dealWithProfileSelection){
+  static Future<Stream> getFeed(String _listDatabaseId, bool isProfileFeed ,Function(Profile)  _dealWithProfileSelection){
 
     StreamBuilder(
       stream: Firestore.instance.collection(_listDatabaseId).snapshots(),
@@ -449,7 +449,8 @@ class DatabaseFunctions {
                             height: 200.0,
                             width: 150.0,
                             child: new FutureBuilder(
-                                future: Functions.buildProfileCardArray(context, snapshot, _listDatabaseId, _dealWithProfileSelection),
+                                future: isProfileFeed ? Functions.buildProfileCardArray(context, snapshot, _listDatabaseId, _dealWithProfileSelection):
+                                Functions.buildFeedCardArray(context, snapshot, _dealWithProfileSelection),
                                 builder: (BuildContext context, AsyncSnapshot futureSnapshot) {
                                   switch (futureSnapshot.connectionState) {
                                     case ConnectionState.none: return Text('Press button to start.');  
@@ -468,7 +469,7 @@ class DatabaseFunctions {
                                           itemBuilder: (BuildContext context, int index) =>
                                               reversedlist[index]);}
                                   }
-                                  return null; // unreachable
+                                  return new Container(width: 0.0, height: 0.0,); // unreachable
                                 }));
                       }
                   }

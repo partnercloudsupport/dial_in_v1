@@ -13,25 +13,33 @@ import '../../data/strings.dart';
 
 
 class DataPage extends StatefulWidget {
+
+  DataPage();
+
   @override
   DataPageState createState() => new DataPageState();
 }
 
-class DataPageState extends State<DataPage>
-    with SingleTickerProviderStateMixin {
+class DataPageState extends State<DataPage>with SingleTickerProviderStateMixin {
   TabController controller;
   TabViewDataArray _lists;
+  List<Widget> _recipe;
+  List<Widget> _coffee;
+  List<Widget> _grinder;
+  List<Widget> _equipment;
+  List<Widget> _water;
+  List<Widget> _barista;
 
   @override
   void initState() {
-    super.initState();
+
+
     _lists = TabViewDataArray([
       TabViewData(
         DataList(ProfileType.recipe,(profile){}, true),
         Tab(icon: Icon(Icons.list),),
         ProfileType.recipe
       ),
-        
       TabViewData(
           DataList(ProfileType.coffee,(profile){}, true),
           Tab(icon: Icon(Icons.rounded_corner)),
@@ -43,22 +51,23 @@ class DataPageState extends State<DataPage>
         ProfileType.grinder
       ),
       TabViewData(
-        DataList(ProfileType.equipment,(profile){}, true),
+        DataList( ProfileType.equipment,(profile){}, true),
         Tab(icon: Icon(Icons.watch_later)),
         ProfileType.equipment
       ),
       TabViewData(
-        DataList(ProfileType.water,(profile){}, true),
+        DataList( ProfileType.water,(profile){}, true),
         Tab(icon: Icon(Icons.branding_watermark)),
         ProfileType.water
       ),
       TabViewData(
-        DataList(ProfileType.barista,(profile){}, true),
+        DataList( ProfileType.barista,(profile){}, true),
         Tab(icon: Icon(Icons.people)),
         ProfileType.barista
       ),
     ]);
     controller = new TabController(vsync: this, length: _lists.ref.length);
+    super.initState();
   }
 
   @override
@@ -136,3 +145,4 @@ class DataList extends StatelessWidget {
           Expanded(child:ProfileList(Functions.getProfileTypeDatabaseId(_profileType),_giveProfile, _isOnOverviewScreen),)]);
           }
 }
+ 

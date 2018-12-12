@@ -100,7 +100,7 @@ class _TextFieldEntryState extends State<TextFieldEntry> {
 }
 
 class CircularPicture extends StatelessWidget {
-  final Image _image;
+  final File _image;
   final double _size;
 
   CircularPicture(this._image, this._size);
@@ -109,9 +109,12 @@ class CircularPicture extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         margin: const EdgeInsets.all(15.0),
-        child: _image,
-        height: _size,
-        width: _size);
+        child: ClipRRect(
+          borderRadius: new BorderRadius.circular(_size),
+          child: Image.file(_image, fit: BoxFit.cover),),
+          height: _size,
+          width: _size,);
+          
   }
 }
 
@@ -215,8 +218,7 @@ class UserCard extends StatelessWidget {
           ///
           Container(
               child: Center(
-                  child: CircularPicture(
-                      Image.asset('assets/images/user.png'), 100.0))),
+                  child: CircularPicture(File('assets/images/user.png'), 100.0))),
 
           Column(
             children: <Widget>[
@@ -384,7 +386,7 @@ class ProfileCard extends StatelessWidget {
       /// Profile picture
       ///
       Container(
-          child: CircularPicture(Image.file(profile.image), 60.0)),
+          child: CircularPicture(profile.image, 60.0)),
           
 
       Expanded(
@@ -396,10 +398,10 @@ class ProfileCard extends StatelessWidget {
             child: Container(
                 padding: EdgeInsets.all(0.0),
                 child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Container(
-                          margin: EdgeInsets.all(10.0), child: Text(_topLeft)),
+                          margin: EdgeInsets.all(10.0), child: Text(_topLeft, style: Theme.of(context).textTheme.display1,)),
                       Container(
                         margin: EdgeInsets.all(10.0),
                         child: Text(_bottomleft),
@@ -413,7 +415,7 @@ class ProfileCard extends StatelessWidget {
             child: Container(
                 padding: EdgeInsets.all(0.0),
                 child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.end, mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Container(
                           margin: EdgeInsets.all(10.0), child: Text(_topRight)),
@@ -436,9 +438,9 @@ class SocialProfileCard extends StatelessWidget {
   final Profile _profile;
   final _dateFormat = DateFormat.yMd();
   final String userId;
-  final File image;
+  final File userImage;
 
-  SocialProfileCard(this._profile, this.userId, this.image, this._giveprofile,);
+  SocialProfileCard(this._profile, this.userId, this.userImage, this._giveprofile,);
 
   
   @override
@@ -451,25 +453,35 @@ class SocialProfileCard extends StatelessWidget {
 
       Column(children: <Widget>[
         
-        Row(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
+       Row(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
 
 
-      ///
-      /// User picture
-      ///
       Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
-      ///User name
-      Container(
-          child: CircularPicture(Image.file(_profile.image), 60.0)),
-          ]),
       
+          /// User picture
+          Container(
+              child: CircularPicture(userImage , 60.0)),
+              ]),
+      
+          Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+            ///User Name
+            Text(userId, style: Theme.of(context).textTheme.display1,),
 
-      Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-        ///User Name
-        Text(userId, style: Theme.of(context).textTheme.display1,),
+        ]),
+        Expanded(child: Column(mainAxisAlignment: MainAxisAlignment.end, crossAxisAlignment: CrossAxisAlignment.end, children: [ 
+      
+          Container(margin: const EdgeInsets.all(15.0) ,child:RaisedButton(child: Text('Follow'),onPressed: (){},),),
+          ]) ,)
+            
+  
+      ],),      
 
-        /// Coffee Name
-        Text(_profile.getProfileProfileItemValue(ProfileType.coffee, DatabaseIds.coffeeId)),
+      /// Recipe picture
+      new SizedBox(width: double.infinity, height: 200.0, child:
+        Image.file(_profile.image, fit: BoxFit.cover,),),
+
+       /// Coffee Name
+        Text(_profile.getProfileProfileItemValue(ProfileType.coffee, DatabaseIds.coffeeId), style: Theme.of(context).textTheme.display1,),
 
         /// Brew method
         Text(_profile.getProfileProfileItemValue(ProfileType.equipment, DatabaseIds.equipmentId)), 
@@ -484,13 +496,7 @@ class SocialProfileCard extends StatelessWidget {
                 color: Colors.orange,
                 borderColor: Colors.grey,
                 starCount: 5,
-              ),      
-        ])
-      ],),      
-
-      /// Recipe picture
-      ProfileImage(Image.file(_profile.image)),
-
+              ),        
       ]),
       ),
     );
@@ -542,8 +548,8 @@ class AddButton extends StatelessWidget {
 /// Tab View Data
 class TabViewData{
 
-  ProfileType type;
   Widget screen;
+  ProfileType type;
   Tab tab;
   
   TabViewData(this.screen, this.tab, this.type);

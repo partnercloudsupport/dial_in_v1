@@ -4,17 +4,19 @@ import '../../widgets/custom_widgets.dart';
 import 'feed_list.dart';
 import '../../theme/appColors.dart';
 import '../../data/profile.dart';
-import '../../database_functions.dart';
-
 
 class FeedPage extends StatefulWidget {
+
+  FeedPage();
+
   @override
   FeedPageState createState() => new FeedPageState();
 }
 
 class FeedPageState extends State<FeedPage> with SingleTickerProviderStateMixin{
 
-
+List<Widget> _communityFeed;
+List<Widget> _followersFeed;
 TabController controller;
 TabViewDataArray _lists;
 
@@ -22,11 +24,16 @@ TabViewDataArray _lists;
 @override
 void initState() { 
   super.initState();
+
   _lists = TabViewDataArray([
 
-    TabViewData(FeedList(true,(profile){}, true), Tab(icon: Icon(Icons.public)), ProfileType.feed),
+    TabViewData(
+      FeedList(true,(profile){}, true, _communityFeed), 
+      Tab(icon: Icon(Icons.public)), ProfileType.feed),
    
-    TabViewData(FeedList(false, (profile){}, true),Tab(icon: Icon(Icons.verified_user)),ProfileType.feed),
+    TabViewData(
+      FeedList(false, (profile){}, true,_followersFeed),
+      Tab(icon: Icon(Icons.verified_user)),ProfileType.feed),
 
     ]);
   controller = new TabController( vsync: this, length: _lists.ref.length);

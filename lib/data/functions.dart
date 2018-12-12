@@ -1620,7 +1620,7 @@ class Functions {
     return SocialProfileCard(profile, userId , image ,giveprofile);
   }
   
-  static Future<Widget> buildProfileCardFromDocument(BuildContext context, DocumentSnapshot document, String databaseId, Function(Profile) giveprofile) async {
+  static Future<Widget> buildProfileCardFromDocument(DocumentSnapshot document, String databaseId, Function(Profile) giveprofile) async {
     
     Profile profile = await DatabaseFunctions.createProfileFromDocumentSnapshot(databaseId, document);
 
@@ -1636,7 +1636,7 @@ class Functions {
      if (documents.data.documents != null || documents.data.documents.length != 0) {
 
         for(var document in documents.data.documents){  /// <<<<==== changed line
-            Widget result = await buildProfileCardFromDocument(context, document, databaseId ,giveProfile);
+            Widget result = await buildProfileCardFromDocument(document, databaseId ,giveProfile);
             _cardArray.add(result);
         }
      }

@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../data/strings.dart';
@@ -9,6 +8,9 @@ import 'feed.dart';
 import 'user_profile.dart';
 import '../../database_functions.dart';
 import '../../data/profile.dart';
+import 'dart:async';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:dial_in_v1/inherited_widgets.dart';
 
 
 class OverviewPage extends StatefulWidget{
@@ -20,21 +22,13 @@ class OverviewPageState extends State<OverviewPage> with SingleTickerProviderSta
 
   TabController controller;
   TabViewDataArray _tabViews;
-  ListView _community;
-  ListView _followers;
-  ListView _recipe;
-  ListView _coffee;
-  ListView _grinder;
-  ListView _equipment;
-  ListView _water;
-  ListView _barista;
+  
 
   @override
   void initState() { 
     super.initState();
     _tabViews = TabViewDataArray();
-    controller = new TabController(vsync: this, length: _tabViews.ref.length);
-    setUpData();
+    controller = new TabController(vsync: this, length: _tabViews.tabs.length);
   }
 
   @override
@@ -43,16 +37,6 @@ class OverviewPageState extends State<OverviewPage> with SingleTickerProviderSta
     super.dispose();
   }
 
-  Future<void> setUpData()async{
-    _community = await DatabaseFunctions.getFeed(DatabaseIds.recipe, true, (profile){});
-    _followers = await DatabaseFunctions.getFeed(DatabaseIds.recipe, true, (profile){});
-    _recipe = await DatabaseFunctions.getFeed(DatabaseIds.recipe, true, (profile){});
-    _coffee = await DatabaseFunctions.getFeed(DatabaseIds.coffee, true, (profile){});
-    _grinder = await DatabaseFunctions.getFeed(DatabaseIds.grinder, true, (profile){});
-    _equipment = await DatabaseFunctions.getFeed(DatabaseIds.brewingEquipment, true, (profile){});
-    _water = await DatabaseFunctions.getFeed(DatabaseIds.water, true, (profile){});
-    _barista = await DatabaseFunctions.getFeed(DatabaseIds.barista, true, (profile){});
-  }
 
   void logOut(){
     DatabaseFunctions.logOut((){});
@@ -64,7 +48,10 @@ class OverviewPageState extends State<OverviewPage> with SingleTickerProviderSta
   ///
     @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return 
+    new ScopedModel(
+      model: ProfilesModel(),
+      child: Scaffold(
        
       /// 
       /// App bar 
@@ -78,9 +65,9 @@ class OverviewPageState extends State<OverviewPage> with SingleTickerProviderSta
       body: TabBarView(
         controller: controller,
         children: <Widget>[
-          _tabViews.ref[0].screen,
-          _tabViews.ref[1].screen,
-          _tabViews.ref[2].screen, 
+          _tabViews.tabs[0].screen,
+          _tabViews.tabs[1].screen,
+          _tabViews.tabs[2].screen, 
                  ],
       ),
     
@@ -91,27 +78,33 @@ class OverviewPageState extends State<OverviewPage> with SingleTickerProviderSta
         indicatorPadding: EdgeInsets.all(0.0),
         controller: controller,
         tabs: <Widget>[    
-          _tabViews.ref[0].tab,
-          _tabViews.ref[1].tab,
-          _tabViews.ref[2].tab,
+          _tabViews.tabs[0].tab,
+          _tabViews.tabs[1].tab,
+          _tabViews.tabs[2].tab,
         ],),),
       )
-      );
+      ));
     }
 }
 
 
 class TabViewDataArray{
 
-  List<TabViewData> ref;
+  List<TabViewData> tabs;
 
  TabViewDataArray(){ 
    
-    this.ref = [
+    this.tabs = [
 
-    TabViewData(new FeedPage(), Tab(icon: Icon(Icons.public), text: "Feed"), ProfileType.feed),
+    TabViewData(
+    new FeedPage(), 
+    Tab(icon: Icon(Icons.public), text: "Feed"),
+    ProfileType.feed),
    
-    TabViewData(new DataPage(),Tab(icon: Icon(Icons.list), text: "Data"), ProfileType.feed),
+    TabViewData(new 
+    DataPage(),
+    Tab(icon: Icon(Icons.list), text: "Data"),
+    ProfileType.feed),
 
     TabViewData(new UserProfilePage(),Tab(icon: Icon(Icons.portrait), text: "User"), ProfileType.none),
     ];

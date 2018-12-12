@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../widgets/custom_widgets.dart';
 import '../data/strings.dart';
 import '../database_functions.dart';
+import 'dart:io';
+
 
 class SignUpPage extends StatefulWidget{
 
@@ -12,7 +14,7 @@ class SignUpPage extends StatefulWidget{
 
  class _SignUpPageState extends State<SignUpPage>{
 
-  Image _userImage = Image.asset('assets/images/user.png');
+  File _userImage = File('assets/images/user.png');
 
   String _userName;
   TextEditingController _userNameController = new TextEditingController();

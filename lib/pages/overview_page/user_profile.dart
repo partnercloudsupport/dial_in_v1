@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../widgets/custom_widgets.dart';
+import 'dart:io';
+
+
+
 
 
 class UserProfilePage extends StatefulWidget{
@@ -20,7 +24,7 @@ class UserProfileState extends State<UserProfilePage>{
       Container(
               child: Center(
                   child: CircularPicture(
-                      Image.asset('assets/images/user.png'), 100.0))),
+                      File('assets/images/user.png'), 100.0))),
       Text("Name"),
       Text("Username")
       ]

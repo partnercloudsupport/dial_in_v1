@@ -27,7 +27,6 @@ import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:async';
-import '../../widgets/profile_page_widgets.dart';
 import '../../pages/profile_pages/recipe_profile_page.dart';
 import '../../pages/profile_pages/water_profile_page.dart';
 import '../../pages/profile_pages/equipment_profile_page.dart';
@@ -155,7 +154,8 @@ class ProfilePageState extends State<ProfilePage> {
             ],),),
 
             /// Profile Image
-            ProfileImage(Image.file(_profile.image)),
+            SizedBox(width: double.infinity, height: 200.0, child:
+            Image.file(_profile.image, fit: BoxFit.cover,),),
 
             FlatButton(
               onPressed: (){ _getimage(_profile.image).then((image){ setState(() {_profile.image = image;});});},
@@ -314,9 +314,13 @@ class ProfilePageState extends State<ProfilePage> {
               },
               child: Text('Add new profile'),
             ),
-            ProfileList(databaseID,(sentProfile){ setState((){
+            ProfileList(
+              databaseID,
+              (sentProfile){ setState((){
                        _profile.setSubProfile(sentProfile);   
-                        }); }, false)
+                        }); },
+             false,
+            )
           ],
         );
       },
