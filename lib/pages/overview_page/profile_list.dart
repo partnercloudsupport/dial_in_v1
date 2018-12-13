@@ -21,28 +21,16 @@ class ProfileList extends StatefulWidget{
 
 class _ProfileListState extends State<ProfileList>{
 
-  Function(Profile) _giveProfile;
-  bool _isOnOverviewScreen;
-  Widget _feed;
-  List<Widget> _profileCards;
-
-    @override
-    initState(){
-    _giveProfile = widget._giveProfile; 
-    _isOnOverviewScreen = widget._isOnOverviewScreen;
-    super.initState();
-   }
-
    void _dealWithProfileSelection(Profile profile){
 
-     if (_isOnOverviewScreen){
+     if (widget._isOnOverviewScreen){
 
        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
         ProfilePage(isOldProfile: true, isCopying: false, isEditing: true, isNew: false, type: profile.type, referance: profile.objectId, profile: profile)));
 
      }else{
 
-       _giveProfile(profile);
+       widget._giveProfile(profile);
        Navigator.pop(context);
      }
    }
@@ -54,7 +42,7 @@ class _ProfileListState extends State<ProfileList>{
       (builder: (context, _ ,model) =>
 
         StreamBuilder<List<Profile>>(
-          stream:  model.profiles,
+          stream:  model.profiles(widget._profilesType),
           builder: (context, snapshot) {
 
                 if (!snapshot.hasData) { return const Center(child: Text('Loading'));

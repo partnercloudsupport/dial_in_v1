@@ -23,12 +23,6 @@ class DataPage extends StatefulWidget {
 class DataPageState extends State<DataPage>with SingleTickerProviderStateMixin {
   TabController controller;
   TabViewDataArray _lists;
-  List<Widget> _recipe;
-  List<Widget> _coffee;
-  List<Widget> _grinder;
-  List<Widget> _equipment;
-  List<Widget> _water;
-  List<Widget> _barista;
 
   @override
   void initState() {
@@ -142,7 +136,7 @@ class DataList extends StatelessWidget {
     return 
     Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.stretch,children:[
           Material(color: Theme.of(context).primaryColorLight ,child: Container(padding: EdgeInsets.all(15.0),child: Text(Functions.getProfileTypeString(_profileType)+"'s", style: Theme.of(context).textTheme.subtitle,), alignment: Alignment.center,),),
-          Expanded(child:ProfileList(_profileType,_giveProfile, _isOnOverviewScreen),)]);
+          Expanded(child:ProfileList(_profileType, _giveProfile, _isOnOverviewScreen),)]);
           }
 }
  

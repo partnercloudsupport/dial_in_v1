@@ -50,7 +50,52 @@ class ProfilesModel extends Model{
     FeedBloc _baristaFeed  = new FeedBloc(DatabaseIds.Barista);
     
 
-    Stream<List<Profile>> get profiles => _recipeFeed.profiles;
-    String get databaseId => DatabaseIds.recipe;
+    Stream<List<Profile>> get recipeProfiles => _recipeFeed.profiles;
+    Stream<List<Profile>> get coffeeProfiles => _coffeeFeed.profiles;
+    Stream<List<Profile>> get grinderProfiles => _grinderFeed.profiles;
+    Stream<List<Profile>> get equipmentProfiles => _equipmentFeed.profiles;
+    Stream<List<Profile>> get waterProfiles => _waterFeed.profiles;
+    Stream<List<Profile>> get baristaProfiles => _baristaFeed.profiles;
 
+    Stream<List<Profile>> profiles(ProfileType type){
+
+      switch(type){
+
+        case ProfileType.recipe:
+        return recipeProfiles;
+        break;
+
+        case ProfileType.coffee:
+        return coffeeProfiles;
+        break;
+
+        case ProfileType.grinder:
+        return grinderProfiles;
+        break;
+
+        case ProfileType.equipment:
+        return equipmentProfiles;
+        break;
+
+        case ProfileType.water:
+        return waterProfiles;
+        break;
+
+        case ProfileType.barista:
+        return baristaProfiles;
+        break;
+
+        case ProfileType.none:
+        return throw(type);
+        break;
+
+        case ProfileType.feed:
+        return throw(type);
+        break;
+
+        default:
+        return throw(type);
+        break;
+      }
+    }
 }

@@ -24,26 +24,14 @@ class FeedList extends StatefulWidget{
 
 class _FeedListState extends State<FeedList>{
 
-  Function(Profile) _giveProfile;
-  bool _public;
-  bool _isOnOverviewScreen;
-
-    @override
-    initState(){
-    _giveProfile = widget._giveProfile; 
-    _public = widget._public;
-    _isOnOverviewScreen = widget._isOnOverviewScreen;
-    super.initState();
-   }
-
    void _dealWithProfileSelection(Profile profile){
 
-     if (_isOnOverviewScreen){
+     if (widget._isOnOverviewScreen){
        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
         ProfilePage(isOldProfile: true, isCopying: false, isEditing: true, isNew: false, type: profile.type, referance: profile.objectId, profile: profile)));
 
      }else{
-       _giveProfile(profile);
+       widget._giveProfile(profile);
        Navigator.pop(context);
      }
    }
@@ -54,7 +42,7 @@ class _FeedListState extends State<FeedList>{
       (builder: (context, _ ,model) =>
 
         StreamBuilder<List<Profile>>(
-          stream:  model.profiles,
+          stream:  model.recipeProfiles,
           builder: (context, snapshot) {
 
             if (!snapshot.hasData) { return const Center(child: Text('Loading'));
