@@ -142,7 +142,7 @@ class DataList extends StatelessWidget {
     return 
     Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.stretch,children:[
           Material(color: Theme.of(context).primaryColorLight ,child: Container(padding: EdgeInsets.all(15.0),child: Text(Functions.getProfileTypeString(_profileType)+"'s", style: Theme.of(context).textTheme.subtitle,), alignment: Alignment.center,),),
-          Expanded(child:ProfileList(Functions.getProfileTypeDatabaseId(_profileType),_giveProfile, _isOnOverviewScreen),)]);
+          Expanded(child:ProfileList(_profileType,_giveProfile, _isOnOverviewScreen),)]);
           }
 }
  

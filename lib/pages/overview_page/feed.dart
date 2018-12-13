@@ -15,8 +15,6 @@ class FeedPage extends StatefulWidget {
 
 class FeedPageState extends State<FeedPage> with SingleTickerProviderStateMixin{
 
-List<Widget> _communityFeed;
-List<Widget> _followersFeed;
 TabController controller;
 TabViewDataArray _lists;
 
@@ -28,11 +26,11 @@ void initState() {
   _lists = TabViewDataArray([
 
     TabViewData(
-      FeedList(true,(profile){}, true, _communityFeed), 
+      FeedList(true,(profile){}, true), 
       Tab(icon: Icon(Icons.public)), ProfileType.feed),
    
     TabViewData(
-      FeedList(false, (profile){}, true,_followersFeed),
+      FeedList(false, (profile){}, true),
       Tab(icon: Icon(Icons.verified_user)),ProfileType.feed),
 
     ]);
@@ -44,7 +42,6 @@ void dispose(){
 controller.dispose();
 super.dispose();
 }
-
 
   ///
   /// UI Build

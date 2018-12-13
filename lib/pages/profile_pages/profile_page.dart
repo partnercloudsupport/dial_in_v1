@@ -237,7 +237,7 @@ class ProfilePageState extends State<ProfilePage> {
       break;
 
       case ProfileType.recipe:
-      _structure = RecipePage(_profile, _margin, (key, value){_profile.setProfileItemValue( key,  value);},_showDialog);
+      _structure = RecipePage(_profile, _margin, (key, value){_profile.setProfileItemValue( key,  value);}, _showDialog);
       break;
 
       default:
@@ -284,18 +284,18 @@ class ProfilePageState extends State<ProfilePage> {
   }
 
   //// user defined function
-  void _showDialog(String databaseID) {
+  void _showDialog(ProfileType profileType) {
     // flutter defined function
     showDialog(
       context: context,
       builder: (BuildContext context) {
         // return object of type Dialog
         return SimpleDialog(
-          title: Text(Functions.convertDatabaseIdToTitle(databaseID)),
+          title: Text(Functions.convertDatabaseIdToTitle(Functions.getProfileTypeDatabaseId(profileType))),
           children: <Widget>[
             RaisedButton(
               onPressed: ()async{
-                Profile _newProfile = await Functions.createBlankProfile(Functions.getProfileDatabaseIdType(databaseID));
+                Profile _newProfile = await Functions.createBlankProfile(profileType);
                 Profile result = await Navigator.push(context,
                     MaterialPageRoute(
                         builder: (BuildContext context) => ProfilePage(
@@ -304,8 +304,7 @@ class ProfilePageState extends State<ProfilePage> {
                               isCopying: false,
                               isEditing: true,
                               isNew: true,
-                              type: Functions.getProfileDatabaseIdType(
-                                  databaseID),
+                              type: profileType,
                               referance: '',
                               profile: _newProfile,
                             )));
@@ -315,7 +314,7 @@ class ProfilePageState extends State<ProfilePage> {
               child: Text('Add new profile'),
             ),
             ProfileList(
-              databaseID,
+              profileType,
               (sentProfile){ setState((){
                        _profile.setSubProfile(sentProfile);   
                         }); },

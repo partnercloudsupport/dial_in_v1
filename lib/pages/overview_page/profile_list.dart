@@ -9,11 +9,11 @@ import 'package:dial_in_v1/data/functions.dart';
 
 class ProfileList extends StatefulWidget{
 
- final String _listDatabaseId;
+ final ProfileType _profilesType;
  final Function(Profile) _giveProfile;
  final bool _isOnOverviewScreen;
 
- ProfileList(this._listDatabaseId, this._giveProfile, this._isOnOverviewScreen,);
+ ProfileList(this._profilesType, this._giveProfile, this._isOnOverviewScreen,);
 
  _ProfileListState createState() => new _ProfileListState();
 }
@@ -22,7 +22,6 @@ class ProfileList extends StatefulWidget{
 class _ProfileListState extends State<ProfileList>{
 
   Function(Profile) _giveProfile;
-  String _listDatabaseId;
   bool _isOnOverviewScreen;
   Widget _feed;
   List<Widget> _profileCards;
@@ -30,7 +29,6 @@ class _ProfileListState extends State<ProfileList>{
     @override
     initState(){
     _giveProfile = widget._giveProfile; 
-    _listDatabaseId = widget._listDatabaseId;
     _isOnOverviewScreen = widget._isOnOverviewScreen;
     super.initState();
    }
@@ -69,7 +67,7 @@ class _ProfileListState extends State<ProfileList>{
                         itemExtent: 100,
                         itemCount: snapshot.data.length,
                         itemBuilder: (BuildContext context, int index) =>
-                            ProfileCard(snapshot.data[index], (profile){})
+                            ProfileCard(snapshot.data[index], _dealWithProfileSelection)
                     );
                 }
           }

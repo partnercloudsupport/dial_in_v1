@@ -283,25 +283,22 @@ class ProfileCard extends StatelessWidget {
   String _bottomRight = 'error';
   String _bottomleft = 'error';
   final _dateFormat = DateFormat.yMd();
-  DateTime _date;
 
   ProfileCard(this.profile, this._giveprofile,){
 
     switch(profile.type){
       
       case ProfileType.recipe: 
-      _date = profile.getProfileItemValue(DatabaseIds.date);
-      _topLeft = profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.coffee);
-      _topRight = _dateFormat.format(_date);
+    _topLeft = profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.coffee);
+      _topRight = _dateFormat.format(profile.getProfileItemValue(DatabaseIds.date));
       _bottomRight = profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.brewingEquipment);
       _bottomleft = profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.score);
       break;
 
       case ProfileType.coffee:  
-      _date = profile.getProfileItemValue(DatabaseIds.roastDate);
       _topLeft = profile.getProfileItemValue( DatabaseIds.coffeeId);
       _topRight = profile.getProfileItemValue( DatabaseIds.processingMethod);
-      _bottomRight = _dateFormat.format(_date);
+      _bottomRight = _dateFormat.format(profile.getProfileItemValue(DatabaseIds.roastDate));
       _bottomleft = profile.getProfileItemValue( DatabaseIds.country);
       break;
 

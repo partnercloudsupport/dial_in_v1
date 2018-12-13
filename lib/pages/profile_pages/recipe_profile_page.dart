@@ -32,7 +32,7 @@ import '../../widgets/custom_widgets.dart';
 
 class RecipePage extends StatefulWidget{
 
-  final Function(String) _showOptions;
+  final Function(ProfileType) _showOptions;
   final double _margin; 
   final Profile _profile;
 
@@ -85,13 +85,13 @@ class _RecipePageState extends State<RecipePage> {
                 leftImageRefString: Images.coffeeBeans,
                 leftTextfieldText:  _profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.coffee),
                 leftTitle: StringLabels.coffee,
-                onLeftProfileTextPressed: (){widget._showOptions(DatabaseIds.coffee);},
+                onLeftProfileTextPressed: (){widget._showOptions(ProfileType.coffee);},
                 
                 rightHintText: StringLabels.chooseBarista,
                 rightImageRefString: Images.user,
                 rightTextfieldText: _profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.Barista),
                 rightTitle: StringLabels.barista ,
-                onRightProfileTextPressed: (){widget._showOptions(DatabaseIds.Barista);} ), 
+                onRightProfileTextPressed: (){widget._showOptions(ProfileType.barista);} ), 
         
               ///Water Section
               ProfileInputCard(
@@ -102,7 +102,7 @@ class _RecipePageState extends State<RecipePage> {
                     widget._setProfileItemValue( DatabaseIds.temparature,text);
                   },
                   onProfileTextPressed: () {
-                    widget._showOptions(DatabaseIds.water);
+                    widget._showOptions(ProfileType.water);
                   },
                   attributeTextfieldText: _profile.getProfileItemValue(
                        DatabaseIds.temparature),
@@ -118,7 +118,7 @@ class _RecipePageState extends State<RecipePage> {
                     widget._setProfileItemValue(DatabaseIds.grindSetting, text);
                   },
                   onProfileTextPressed: () {
-                    widget._showOptions(DatabaseIds.grinder);
+                    widget._showOptions(ProfileType.grinder);
                   },
                   attributeTextfieldText: _profile.getProfileItemValue(
                        DatabaseIds.grindSetting),
@@ -135,7 +135,7 @@ class _RecipePageState extends State<RecipePage> {
                     widget._setProfileItemValue(DatabaseIds.preinfusion, text);
                   },
                   onProfileTextPressed: () {
-                    widget._showOptions(DatabaseIds.brewingEquipment);
+                    widget._showOptions(ProfileType.equipment);
                   },
                   attributeTextfieldText: _profile.getProfileItemValue(
                        DatabaseIds.preinfusion),
