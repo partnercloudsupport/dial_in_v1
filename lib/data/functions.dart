@@ -472,7 +472,7 @@ class Functions {
 
       case DatabaseIds.waterID:
         _item = new Item(
-          title: StringLabels.water,
+          title: StringLabels.name,
           value: '',
           databaseId: DatabaseIds.waterID,
           placeHolderText: StringLabels.enterDescription,

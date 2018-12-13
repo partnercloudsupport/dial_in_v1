@@ -42,6 +42,10 @@ class _WaterPageState extends State<WaterPage> {
     return new Column(children: <Widget>[
 
                   /// Name
+                  TextFieldItemWithInitalValue
+                  (_profile.getProfileItem(DatabaseIds.waterID),
+                  (name){widget._setProfileItemValue( DatabaseIds.waterID, name);}), 
+                  
                   Container(margin: EdgeInsets.all(_margin),padding: EdgeInsets.all(_padding),
                   child: TextField(
                     textAlign: TextAlign.start,
