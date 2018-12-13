@@ -1627,7 +1627,7 @@ class Functions {
     return ProfileCard(profile, giveprofile);
   }
 
-  static Future<List<Widget>> buildProfileCardArray( BuildContext context, AsyncSnapshot documents, String databaseId, Function(Profile) giveProfile) async {
+  static Future<List<Widget>> buildProfileCardArrayFromAsyncSnapshot( BuildContext context, AsyncSnapshot documents, String databaseId, Function(Profile) giveProfile) async {
       
     print('Start ${DateTime.now()}');
 
@@ -1641,6 +1641,20 @@ class Functions {
         }
      }
       print('End ${DateTime.now()}');
+      return _cardArray;
+  }
+
+  static Future<List<Widget>> buildProfileCardArrayFromProfileList(List<Profile> profileList, String databaseId, Function(Profile) giveProfile) async {
+
+    List<Widget> _cardArray = new List<Widget>();
+
+     if (profileList != null || profileList.length != 0) {
+
+        for(var profile in profileList){  /// <<<<==== changed line
+            Widget result = await ProfileCard(profile, giveProfile);
+            _cardArray.add(result);
+        }
+     }
       return _cardArray;
     }
 
@@ -1671,7 +1685,7 @@ class Functions {
                     height: 100.0,
                     width: 100.0,
                     child: new FutureBuilder(
-                        future: Functions.buildProfileCardArray(context, snapshot.data, profileTypeDatabaseId, giveProfile),
+                        future: Functions.buildProfileCardArrayFromAsyncSnapshot(context, snapshot.data, profileTypeDatabaseId, giveProfile),
                         builder: (BuildContext context, AsyncSnapshot futureSnapshot) {
 
                           switch (futureSnapshot.connectionState) {

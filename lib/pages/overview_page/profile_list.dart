@@ -55,14 +55,13 @@ class _ProfileListState extends State<ProfileList>{
       return ScopedModelDescendant<ProfilesModel>
       (builder: (context, _ ,model) =>
 
-        StreamBuilder(
-          stream: model.profiles,
-          initialData: model.profiles,
+        StreamBuilder<List<Profile>>(
+          stream:  model.profiles,
           builder: (context, snapshot) {
 
                 if (!snapshot.hasData) { return const Center(child: Text('Loading'));
                 } else if (snapshot.hasError) { return const Center(child: Text('Error'));  
-                } else if (snapshot.data.documents.length < 1) {return const Center(child: Text('No data'));
+                } else if (snapshot.data.length < 1) {return const Center(child: Text('No data'));
                 } else {
 
                   return new 

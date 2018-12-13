@@ -51,5 +51,6 @@ class ProfilesModel extends Model{
     
 
     Stream<List<Profile>> get profiles => _recipeFeed.profiles;
+    String get databaseId => DatabaseIds.recipe;
 
 }
