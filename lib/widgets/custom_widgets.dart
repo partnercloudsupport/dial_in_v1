@@ -10,6 +10,7 @@ import '../data/item.dart';
 import 'package:flutter_rating/flutter_rating.dart';
 import 'dart:async';
 import 'dart:io';
+import 'package:dial_in_v1/data/mini_classes.dart';
 
 ///
 /// Background
@@ -289,7 +290,7 @@ class ProfileCard extends StatelessWidget {
     switch(profile.type){
       
       case ProfileType.recipe: 
-    _topLeft = profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.coffee);
+      _topLeft = profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.coffee);
       _topRight = _dateFormat.format(profile.getProfileItemValue(DatabaseIds.date));
       _bottomRight = profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.brewingEquipment);
       _bottomleft = profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.score);
@@ -398,7 +399,7 @@ class ProfileCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Container(
-                          margin: EdgeInsets.all(10.0), child: Text(_topLeft, style: Theme.of(context).textTheme.display1,)),
+                          margin: EdgeInsets.all(10.0), child: Text(_topLeft, overflow: TextOverflow.clip, style: Theme.of(context).textTheme.display1,)),
                       Container(
                         margin: EdgeInsets.all(10.0),
                         child: Text(_bottomleft),
@@ -432,19 +433,17 @@ class ProfileCard extends StatelessWidget {
 class SocialProfileCard extends StatelessWidget {
 
   final Function(Profile) _giveprofile;
-  final Profile _profile;
+  final FeedProfileData _profile;
   final _dateFormat = DateFormat.yMd();
-  final String userId;
-  final File userImage;
 
-  SocialProfileCard(this._profile, this.userId, this.userImage, this._giveprofile,);
+  SocialProfileCard(this._profile, this._giveprofile,);
 
   
   @override
   Widget build(BuildContext context) {
     return 
     Card(child: 
-      InkWell(onTap:() => _giveprofile(_profile)
+      InkWell(onTap:() => _giveprofile(_profile.profile)
        
       ,child: 
 
@@ -457,12 +456,12 @@ class SocialProfileCard extends StatelessWidget {
       
           /// User picture
           Container(
-              child: CircularPicture(userImage , 60.0)),
+              child: CircularPicture(_profile.userImage , 60.0)),
               ]),
       
           Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
             ///User Name
-            Text(userId, style: Theme.of(context).textTheme.display1,),
+            Text(_profile.userId, style: Theme.of(context).textTheme.display1,),
 
         ]),
         Expanded(child: Column(mainAxisAlignment: MainAxisAlignment.end, crossAxisAlignment: CrossAxisAlignment.end, children: [ 
@@ -475,16 +474,16 @@ class SocialProfileCard extends StatelessWidget {
 
       /// Recipe picture
       new SizedBox(width: double.infinity, height: 200.0, child:
-        Image.file(_profile.image, fit: BoxFit.cover,),),
+        Image.file(_profile.profile.image, fit: BoxFit.cover,),),
 
        /// Coffee Name
-        Text(_profile.getProfileProfileItemValue(ProfileType.coffee, DatabaseIds.coffeeId), style: Theme.of(context).textTheme.display1,),
+        Text(_profile.profile.getProfileProfileItemValue(ProfileType.coffee, DatabaseIds.coffeeId), style: Theme.of(context).textTheme.display1,),
 
         /// Brew method
-        Text(_profile.getProfileProfileItemValue(ProfileType.equipment, DatabaseIds.equipmentId)), 
+        Text(_profile.profile.getProfileProfileItemValue(ProfileType.equipment, DatabaseIds.equipmentId)), 
 
         /// Notes
-        Text(_profile.getProfileProfileItemValue(ProfileType.equipment, DatabaseIds.descriptors)), 
+        Text(_profile.profile.getProfileProfileItemValue(ProfileType.equipment, DatabaseIds.descriptors)), 
 
         ///Score
         new StarRating(
@@ -700,22 +699,25 @@ final String _titleLabel;
 final String _hintText;
 final TextInputType _inputType;
 
-TextFieldWithInitalValue(this._inputType,this._titleLabel, this._hintText, this._initalValue, this._giveValue){_controller = new TextEditingController(text: _initalValue.toString());}
+TextFieldWithInitalValue
+(this._inputType,this._titleLabel, this._hintText, this._initalValue, this._giveValue)
+{_controller = new TextEditingController(text: _initalValue.toString());}
 
 @override
   Widget build(BuildContext context) {
     return
-Container(width: _textFieldWidth,
-                    child: TextField(
-                    controller: _controller ,
-                    textAlign: TextAlign.start,
-                    keyboardType: _inputType,
-                    decoration: new InputDecoration(
-                    labelText: _titleLabel,
-                    hintText: _hintText,
-                              ),
-                              onChanged: _giveValue,
-                            )); 
+    Container(
+      width: _textFieldWidth,
+        child: TextField(
+        controller: _controller ,
+        textAlign: TextAlign.start,
+        keyboardType: _inputType,
+        decoration: new InputDecoration(
+        labelText: _titleLabel,
+        hintText: _hintText,),
+          onChanged: _giveValue,
+        )
+    ); 
   }
 }       
 
@@ -726,22 +728,26 @@ TextEditingController _controller;
 final Function(dynamic) _giveValue;
 final Item item;
 
-TextFieldItemWithInitalValue(this.item, this._giveValue){_controller = new TextEditingController(text: item.value);}
+TextFieldItemWithInitalValue
+(this.item, this._giveValue)
+{_controller = new TextEditingController(text: item.value);}
 
 @override
   Widget build(BuildContext context) {
     return
-Container(width: _textFieldWidth,
-                    child: TextField(
-                    controller: _controller ,
-                    textAlign: TextAlign.start,
-                    keyboardType: item.keyboardType,
-                    decoration: new InputDecoration(
-                    labelText: item.title,
-                    hintText: item.placeHolderText,
-                              ),
-                              onChanged: _giveValue,
-                            )); 
+Container(
+  width: _textFieldWidth,
+   child: TextField(
+   controller: _controller ,
+   textAlign: TextAlign.start,
+   keyboardType: item.keyboardType,
+   decoration: new InputDecoration(
+   labelText: item.title,
+   hintText: item.placeHolderText,
+             ),
+             onChanged: _giveValue,
+           )
+           ); 
   }
 }       
 

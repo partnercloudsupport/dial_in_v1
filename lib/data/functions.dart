@@ -15,6 +15,8 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:typed_data';
 import 'package:image/image.dart' as Image;
 import 'dart:io' as Io;
+import 'package:dial_in_v1/data/mini_classes.dart';
+
 
 
 
@@ -1611,13 +1613,27 @@ class Functions {
      }
       return _cardArray;
   }
+  
+  static Future<FeedProfileData> createFeedProfileFromProfile(Profile profile)async{
+
+    File image =  await profile.getUserImage();
+    String userId = await profile.getProfileUserName();
+    return FeedProfileData(profile, userId, image);
+
+  }
+
+  static Future<Widget> buildFeedCardFromProfile(Profile profile, Function(Profile) giveprofile) async {
+    
+    FeedProfileData feedProfile = await Functions.createFeedProfileFromProfile(profile);
+
+    return SocialProfileCard(feedProfile, giveprofile);
+  }
 
   static Future<Widget> buildFeedCardFromDocument(BuildContext context, DocumentSnapshot document, Function(Profile) giveprofile) async {
     
     Profile profile = await DatabaseFunctions.createProfileFromDocumentSnapshot(DatabaseIds.recipe, document);
-    File image =  await profile.getUserImage();
-    String userId = await profile.getProfileUserName();
-    return SocialProfileCard(profile, userId , image ,giveprofile);
+    FeedProfileData feedProfile = await Functions.createFeedProfileFromProfile(profile);
+    return SocialProfileCard(feedProfile, giveprofile);
   }
   
   static Future<Widget> buildProfileCardFromDocument(DocumentSnapshot document, String databaseId, Function(Profile) giveprofile) async {

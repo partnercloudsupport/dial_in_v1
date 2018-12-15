@@ -12,6 +12,7 @@ import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'data/strings.dart';
 
+
 class DatabaseFunctions {
 
   static Future<void> logIn(String emailUser, String password,Function(bool, String) completion) async {
@@ -42,7 +43,7 @@ class DatabaseFunctions {
 
   static Future<String> getCurrentUserId()async{
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    print(user.uid);
+    print('Current user ${user.uid}');
     return user.uid.toString();
   }
 
@@ -238,6 +239,9 @@ class DatabaseFunctions {
     return documents;
   }
 
+
+
+  
   static Future<Profile> createProfileFromDocumentSnapshot(String databaseId, DocumentSnapshot document)async{
     
       DateTime _updatedAt = document[DatabaseIds.updatedAt];
@@ -509,6 +513,8 @@ class Storage {
 
 class DatabaseIds{
 
+  static const String community = 'communtiy';
+  static const String following = 'following';
   static const String roasterName = 'roasterName';
   static const String harvest = 'harvest';
   static const String feed = 'feed';

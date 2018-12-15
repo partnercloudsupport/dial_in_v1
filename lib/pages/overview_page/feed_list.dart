@@ -7,6 +7,8 @@ import 'package:dial_in_v1/inherited_widgets.dart';
 import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'package:dial_in_v1/data/functions.dart';
 import 'package:dial_in_v1/data/strings.dart';
+import 'package:dial_in_v1/data/mini_classes.dart';
+
 
 
 class FeedList extends StatefulWidget{
@@ -41,8 +43,8 @@ class _FeedListState extends State<FeedList>{
     return ScopedModelDescendant<ProfilesModel>
       (builder: (context, _ ,model) =>
 
-        StreamBuilder<List<Profile>>(
-          stream:  model.recipeProfiles,
+        StreamBuilder<List<FeedProfileData>>(
+          stream:  model.communnityFeed,
           builder: (context, snapshot) {
 
             if (!snapshot.hasData) { return const Center(child: Text('Loading'));
@@ -51,10 +53,10 @@ class _FeedListState extends State<FeedList>{
             } else 
               return new 
                 ListView.builder(
-                    itemExtent: 100,
+                    itemExtent: 400,
                     itemCount: snapshot.data.length,
                     itemBuilder: (BuildContext context, int index) =>
-                        ProfileCard(snapshot.data[index], _dealWithProfileSelection)
+                        SocialProfileCard(snapshot.data[index], _dealWithProfileSelection)
                 );
             }
         )

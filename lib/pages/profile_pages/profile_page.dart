@@ -154,7 +154,7 @@ class ProfilePageState extends State<ProfilePage> {
             ],),),
 
             /// Profile Image
-            SizedBox(width: double.infinity, height: 200.0, child:
+            SizedBox(width: double.infinity, height: 420.0, child:
             Image.file(_profile.image, fit: BoxFit.cover,),),
 
             FlatButton(
@@ -326,6 +326,8 @@ class ProfilePageState extends State<ProfilePage> {
     );
   }
 }
+
+
 
 /// End of Page
 ///
