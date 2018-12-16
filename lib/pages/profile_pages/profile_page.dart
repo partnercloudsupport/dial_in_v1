@@ -14,26 +14,25 @@ import 'package:flutter/material.dart'
         TextStyle,
         required;
         
-import '../../data/profile.dart';
-import '../../data/strings.dart';
+import 'package:dial_in_v1/data/profile.dart';
+import 'package:dial_in_v1/data/strings.dart';
 import 'package:path/path.dart' as path;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../data/functions.dart';
-import '../../database_functions.dart';
-import 'dart:io';
-import '../overview_page/profile_list.dart';
+import 'package:dial_in_v1/data/functions.dart';
+import 'package:dial_in_v1/pages/overview_page/profile_list.dart';
 import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:dial_in_v1/pages/profile_pages/recipe_profile_page.dart';
+import 'package:dial_in_v1/pages/profile_pages/water_profile_page.dart';
+import 'package:dial_in_v1/pages/profile_pages/equipment_profile_page.dart';
+import 'package:dial_in_v1/pages/profile_pages/grinder_profile_page.dart';
+import 'package:dial_in_v1/pages/profile_pages/barista_profile_page.dart';
+import 'package:dial_in_v1/pages/profile_pages/coffee_profile_page.dart';
+import 'package:dial_in_v1/theme/appColors.dart';
+import 'dart:io';
 import 'dart:async';
-import '../../pages/profile_pages/recipe_profile_page.dart';
-import '../../pages/profile_pages/water_profile_page.dart';
-import '../../pages/profile_pages/equipment_profile_page.dart';
-import '../../pages/profile_pages/grinder_profile_page.dart';
-import '../../pages/profile_pages/barista_profile_page.dart';
-import '../../pages/profile_pages/coffee_profile_page.dart';
-import '../../theme/appColors.dart';
 
 class ProfilePage extends StatefulWidget {
   @required

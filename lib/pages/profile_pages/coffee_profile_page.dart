@@ -1,12 +1,12 @@
-import '../../data/strings.dart';
+import 'package:dial_in_v1/data/strings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../database_functions.dart';
+import 'package:dial_in_v1/database_functions.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
-import '../../data/profile.dart';
-import '../../widgets/custom_widgets.dart';
-import '../../data/item.dart';
+import 'package:dial_in_v1/data/profile.dart';
+import 'package:dial_in_v1/widgets/custom_widgets.dart';
+import 'package:dial_in_v1/data/item.dart';
 
 
 class CoffeeProfilePage extends StatefulWidget {
@@ -93,9 +93,6 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
   }
 }
 
-
-/// End of Page
-///
 
 //Widgets
 
@@ -261,9 +258,6 @@ class RoastingDetailsCardState extends State<RoastingDetailsCard> {
 }
 }
 
-
-
-
 ////
 /// Widgets
 ///
@@ -386,7 +380,6 @@ class ProfileInputCard extends StatelessWidget {
                 ])));
   }
 }
-
 
 ///Green details
 class GreenDetailsCard extends StatelessWidget {

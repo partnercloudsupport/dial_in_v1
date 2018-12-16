@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../widgets/custom_widgets.dart';
-import '../../theme/appColors.dart';
+import 'package:dial_in_v1/widgets/custom_widgets.dart';
+import 'package:dial_in_v1/theme/appColors.dart';
 import 'profile_list.dart';
-import '../../database_functions.dart';
-import '../../data/profile.dart';
+import 'package:dial_in_v1/database_functions.dart';
+import 'package:dial_in_v1/data/profile.dart';
 import '../profile_pages/profile_page.dart';
 import 'dart:io';
-import '../../data/functions.dart';
-import '../../data/strings.dart';
+import 'package:dial_in_v1/data/functions.dart';
+import 'package:dial_in_v1/data/strings.dart';
 
 
 

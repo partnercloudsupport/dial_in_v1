@@ -1,19 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../data/profile.dart';
-import '../profile_pages/profile_page.dart';
+import 'package:dial_in_v1/data/profile.dart';
+import 'package:dial_in_v1/pages/profile_pages/profile_page.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:dial_in_v1/inherited_widgets.dart';
 import 'package:dial_in_v1/widgets/custom_widgets.dart';
-import 'package:dial_in_v1/data/functions.dart';
 
 class ProfileList extends StatefulWidget{
 
  final ProfileType _profilesType;
  final Function(Profile) _giveProfile;
  final bool _isOnOverviewScreen;
+ final BuildContext coxtext;
 
- ProfileList(this._profilesType, this._giveProfile, this._isOnOverviewScreen,);
+ ProfileList(this._profilesType, this._giveProfile, this._isOnOverviewScreen, this.coxtext);
 
  _ProfileListState createState() => new _ProfileListState();
 }
@@ -33,7 +33,7 @@ class _ProfileListState extends State<ProfileList>{
        widget._giveProfile(profile);
        Navigator.pop(context);
      }
-   }
+  }
 
 @override
     Widget build(BuildContext context) {  
@@ -55,7 +55,7 @@ class _ProfileListState extends State<ProfileList>{
                         itemExtent: 100,
                         itemCount: snapshot.data.length,
                         itemBuilder: (BuildContext context, int index) =>
-                            ProfileCard(snapshot.data[index], _dealWithProfileSelection)
+                          ProfileCard(snapshot.data[index], _dealWithProfileSelection,)
                     );
                 }
           }

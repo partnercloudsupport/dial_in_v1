@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../widgets/custom_widgets.dart';
+import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'dart:io';
 
 

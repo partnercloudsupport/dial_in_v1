@@ -1,16 +1,7 @@
   import 'package:flutter/material.dart';
-  import 'appColors.dart';
-  import 'fonts.dart';
-  
-//   Theme(
-//   // Find and Extend the parent theme using "copyWith". Please see the next 
-//   // section for more info on `Theme.of`.
-//   data: Theme.of(context).copyWith(accentColor: Colors.yellow),
-//   child: FloatingActionButton(
-//     onPressed: null,
-//     child: Icon(Icons.add),
-//   ),
-// );
+  import 'package:dial_in_v1/theme/appColors.dart';
+  import 'package:dial_in_v1/theme/fonts.dart';
+
 
 ThemeData buildThemeData(){
 

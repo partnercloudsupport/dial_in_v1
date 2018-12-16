@@ -2,15 +2,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'data/profile.dart';
-import 'data/functions.dart';
-import 'data/item.dart';
-import 'data/images.dart';
+import 'package:dial_in_v1/data/profile.dart';
+import 'package:dial_in_v1/data/functions.dart';
+import 'package:dial_in_v1/data/item.dart';
+import 'package:dial_in_v1/data/images.dart';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
-import 'data/strings.dart';
+import 'package:dial_in_v1/data/strings.dart';
 
 
 class DatabaseFunctions {

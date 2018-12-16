@@ -1,12 +1,12 @@
-import 'item.dart';
-import '../database_functions.dart';
-import 'strings.dart';
+import 'package:dial_in_v1/data/item.dart';
+import 'package:dial_in_v1/database_functions.dart';
+import 'package:dial_in_v1/data/strings.dart';
 import 'package:flutter/material.dart';
-import 'profile.dart';
-import 'images.dart';
+import 'package:dial_in_v1/data/profile.dart';
+import 'package:dial_in_v1/data/images.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../widgets/custom_widgets.dart';
-import '../pages/profile_pages/profile_page.dart';
+import 'package:dial_in_v1/widgets/custom_widgets.dart';
+import 'package:dial_in_v1/pages/profile_pages/profile_page.dart';
 import 'dart:math';
 import 'dart:io';
 import 'dart:async';
@@ -16,11 +16,6 @@ import 'dart:typed_data';
 import 'package:image/image.dart' as Image;
 import 'dart:io' as Io;
 import 'package:dial_in_v1/data/mini_classes.dart';
-
-
-
-
-
 
 class Functions {
 

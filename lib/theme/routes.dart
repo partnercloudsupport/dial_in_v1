@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import '../pages/sign_up.dart';
+import 'package:dial_in_v1/pages/sign_up.dart';
 
 class SecondPageRoute extends CupertinoPageRoute {
   SecondPageRoute()

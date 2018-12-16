@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import '../data/strings.dart';
+import 'package:dial_in_v1/data/strings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
-import '../data/images.dart';
+import 'package:dial_in_v1/data/images.dart';
 
 class ScoreSlider extends StatefulWidget {
   final double _value;
@@ -351,7 +351,6 @@ class _DoubleProfileInputCardState extends State<DoubleProfileInputCard> {
                 ])));
   }
 }
-
 
 /// User profile
 

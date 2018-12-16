@@ -14,20 +14,14 @@ import 'package:flutter/material.dart'
         Text,
         TextStyle,
         required;
-import '../../data/profile.dart';
-import '../../data/strings.dart';
+import 'package:dial_in_v1/data/profile.dart';
+import 'package:dial_in_v1/data/strings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../data/images.dart';
-import '../../data/functions.dart';
-import '../../database_functions.dart';
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-import 'package:intl/intl.dart';
-import '../overview_page/profile_list.dart';
-import 'package:flutter/foundation.dart';
-import 'package:meta/meta.dart';
-import '../../widgets/profile_page_widgets.dart';
-import '../../widgets/custom_widgets.dart';
+import 'package:dial_in_v1/data/images.dart';
+import 'package:dial_in_v1/database_functions.dart';
+import 'package:dial_in_v1/widgets/profile_page_widgets.dart';
+import 'package:dial_in_v1/widgets/custom_widgets.dart';
 
 
 class RecipePage extends StatefulWidget{

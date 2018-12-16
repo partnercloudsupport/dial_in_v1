@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../widgets/custom_widgets.dart';
-import 'feed_list.dart';
-import '../../theme/appColors.dart';
-import '../../data/profile.dart';
+import 'package:dial_in_v1/widgets/custom_widgets.dart';
+import 'package:dial_in_v1/pages/overview_page/feed_list.dart';
+import 'package:dial_in_v1/theme/appColors.dart';
+import 'package:dial_in_v1/data/profile.dart';
 
 class FeedPage extends StatefulWidget {
 

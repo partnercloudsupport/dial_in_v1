@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
-import '../data/profile.dart';
-import '../data/functions.dart';
+import 'package:dial_in_v1/data/profile.dart';
+import 'package:dial_in_v1/data/functions.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:dial_in_v1/database_functions.dart';
 import 'package:dial_in_v1/data/mini_classes.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../widgets/custom_widgets.dart';
-import '../data/strings.dart';
-import '../database_functions.dart';
+import 'package:dial_in_v1/widgets/custom_widgets.dart';
+import 'package:dial_in_v1/data/strings.dart';
+import 'package:dial_in_v1/database_functions.dart';
 import 'dart:io';
 
 

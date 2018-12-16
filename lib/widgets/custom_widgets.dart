@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import '../data/strings.dart';
-import '../theme/appColors.dart';
-import '../data/profile.dart';
-import '../database_functions.dart';
-import '../data/images.dart';
+import 'package:dial_in_v1/data/strings.dart';
+import 'package:dial_in_v1/theme/appColors.dart';
+import 'package:dial_in_v1/data/profile.dart';
+import 'package:dial_in_v1/database_functions.dart';
+import 'package:dial_in_v1/data/images.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
-import '../data/item.dart';
+import 'package:dial_in_v1/data/item.dart';
 import 'package:flutter_rating/flutter_rating.dart';
 import 'dart:async';
 import 'dart:io';
@@ -559,8 +559,6 @@ class TabViewDataArray{
  TabViewDataArray(this.ref);
 }
 
-
-
 class PopUps{
 ///
 /// Show alert
@@ -686,7 +684,7 @@ class _DateInputCardState extends State<DateInputCard> {
     );
   }
 }
-////
+
 /// Widgets
 ///
 class TextFieldWithInitalValue extends StatelessWidget {

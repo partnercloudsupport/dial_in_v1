@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../data/strings.dart';
-import '../widgets/custom_widgets.dart';
-import 'sign_up.dart';
-import 'overview_page/overview_page.dart';
+import 'package:dial_in_v1/data/strings.dart';
+import 'package:dial_in_v1/widgets/custom_widgets.dart';
+import 'package:dial_in_v1/pages/sign_up.dart';
+import 'package:dial_in_v1/pages/overview_page/overview_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 
