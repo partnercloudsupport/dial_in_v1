@@ -16,6 +16,8 @@ import 'dart:typed_data';
 import 'package:image/image.dart' as Image;
 import 'dart:io' as Io;
 import 'package:dial_in_v1/data/mini_classes.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 class Functions {
 
@@ -1707,7 +1709,7 @@ class Functions {
                             case ConnectionState.active:
 
                             case ConnectionState.waiting:
-                              return Center(child:Text('Awaiting result...'));
+                              return Center(child:Text('Loading...'));
 
                             case ConnectionState.done:
                               if (futureSnapshot.hasError)

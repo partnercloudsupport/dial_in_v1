@@ -23,7 +23,6 @@ import 'package:dial_in_v1/database_functions.dart';
 import 'package:dial_in_v1/widgets/profile_page_widgets.dart';
 import 'package:dial_in_v1/widgets/custom_widgets.dart';
 
-
 class RecipePage extends StatefulWidget{
 
   final Function(ProfileType) _showOptions;
@@ -37,7 +36,6 @@ class RecipePage extends StatefulWidget{
 
   _RecipePageState createState() => new _RecipePageState();
 }
-
 
 class _RecipePageState extends State<RecipePage> {
   

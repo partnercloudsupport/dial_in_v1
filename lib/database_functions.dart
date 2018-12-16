@@ -239,9 +239,6 @@ class DatabaseFunctions {
     return documents;
   }
 
-
-
-  
   static Future<Profile> createProfileFromDocumentSnapshot(String databaseId, DocumentSnapshot document)async{
     
       DateTime _updatedAt = document[DatabaseIds.updatedAt];

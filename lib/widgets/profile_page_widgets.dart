@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:dial_in_v1/data/strings.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
-import 'package:dial_in_v1/data/images.dart';
 
 class ScoreSlider extends StatefulWidget {
   final double _value;
@@ -162,28 +159,26 @@ class _ProfileInputCardState extends State<ProfileInputCard> {
                             )),
 
                         Container(
+                          margin: EdgeInsets.fromLTRB(0.0, 0.0, widget._margin, 0.0),
                           width: widget._textFieldWidth,
                           child: TextFormField(
-                              textAlign: TextAlign.end,
-                              keyboardType: widget.keyboardType,
-                              decoration: new InputDecoration(
-                                labelText: widget.title,
-                                hintText: StringLabels.selectProfile,
-                              ),
-                              focusNode: _textFocus,
-                              controller: _profileTextController,)
+                            textAlign: TextAlign.end,
+                            keyboardType: widget.keyboardType,
+                            decoration: new InputDecoration(
+                              labelText: widget.title,
+                              hintText: StringLabels.selectProfile,),
+                            focusNode: _textFocus,
+                            controller: _profileTextController,)
                       ),
 
-                        Container(
-                            width: 120.0,
+                        Expanded(
                             child: TextFormField(
-                              textAlign: TextAlign.end,
-                              keyboardType: widget.keyboardType,
-                              decoration: new InputDecoration(
-                                labelText: widget.attributeTitle,
-                                hintText: widget.attributeHintText,
-                              ),
-                              controller: _attributeController,
+                            textAlign: TextAlign.end,
+                            keyboardType: widget.keyboardType,
+                            decoration: new InputDecoration(
+                              labelText: widget.attributeTitle,
+                              hintText: widget.attributeHintText,),
+                            controller: _attributeController,
                             ))
                       ]
             )));

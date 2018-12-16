@@ -35,7 +35,6 @@ class FeedBloc{
     await convertStreamToListOfProfiles(Firestore.instance.collection(_databaseId)
     .where(DatabaseIds.user, isEqualTo: userID).snapshots());
     
-    /// TODO .where(DatabaseIds.user, isEqualTo: DßatabaseFunctions.getCurrentUserId())
     return;
   }
 

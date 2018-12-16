@@ -73,6 +73,10 @@ class ProfilesModel extends Model{
         _followers = new SocialFeedBloc(DatabaseIds.following);
     }
 
+    static ProfilesModel of(BuildContext context) =>
+      ScopedModel.of<ProfilesModel>(context);
+
+
     /// Get social feeds with type
     Stream<List<FeedProfileData>> socialFeed(ProfileType type){
 

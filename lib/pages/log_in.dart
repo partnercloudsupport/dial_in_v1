@@ -5,9 +5,6 @@ import 'package:dial_in_v1/pages/sign_up.dart';
 import 'package:dial_in_v1/pages/overview_page/overview_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-
-
-
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
 
@@ -162,10 +159,7 @@ void initState() {
   }
 }
 
-
-///
 /// Login button
-///
 class LoginButton extends StatelessWidget {
 
   final Function loginAction ;
@@ -186,10 +180,7 @@ class LoginButton extends StatelessWidget {
   }
 }
 
-///
 ///Sign up Button
-///
-
 class SignUpButton extends StatelessWidget {
 
 @override

@@ -7,8 +7,6 @@ import 'package:dial_in_v1/data/profile.dart';
 import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'package:dial_in_v1/data/item.dart';
 
-
-
 class WaterPage extends StatefulWidget{
 
 final double _margin; 
@@ -21,7 +19,6 @@ final Function(String , dynamic) _setProfileItemValue;
 
 _WaterPageState createState() => new _WaterPageState();
 }
-
 
 class _WaterPageState extends State<WaterPage> {
   final double _padding = 20.0;
@@ -46,17 +43,6 @@ class _WaterPageState extends State<WaterPage> {
                   (_profile.getProfileItem(DatabaseIds.waterID),
                   (name){widget._setProfileItemValue( DatabaseIds.waterID, name);}), 
                   
-                  Container(margin: EdgeInsets.all(_margin),padding: EdgeInsets.all(_padding),
-                  child: TextField(
-                    textAlign: TextAlign.start,
-                    keyboardType: TextInputType.text,
-                    decoration: new InputDecoration(
-                      labelText: StringLabels.name,
-                      hintText: StringLabels.enterNickname,
-                    ),
-                    onChanged: (name){{widget._setProfileItemValue( DatabaseIds.waterID, name);}}),
-                  ),
-
                   /// Date
                   DateInputCard(StringLabels.dateTested,
                   widget._profile.getProfileItemValue( DatabaseIds.date),

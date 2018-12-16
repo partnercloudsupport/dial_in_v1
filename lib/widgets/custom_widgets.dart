@@ -12,9 +12,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:dial_in_v1/data/mini_classes.dart';
 
-///
 /// Background
-///
 class Pagebackground extends StatelessWidget {
   final AssetImage _image;
 
@@ -36,9 +34,7 @@ class Pagebackground extends StatelessWidget {
   }
 }
 
-///
 /// Dial in logo
-///
 class DialInLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -50,10 +46,7 @@ class DialInLogo extends StatelessWidget {
   }
 }
 
-///
 ///Text Field entry
-///
-
 class TextFieldEntry extends StatefulWidget {
   final String _placeholder;
   final TextEditingController _controller;
@@ -120,9 +113,7 @@ class CircularPicture extends StatelessWidget {
 }
 
 
-///
 /// Action button
-///
 class ActionButton extends StatelessWidget {
   final String _buttonTitle;
   final Function _buttonAction;
@@ -142,9 +133,7 @@ class ActionButton extends StatelessWidget {
   }
 }
 
-///
 /// Custom page transitions
-///
 class MyCustomRoute<T> extends MaterialPageRoute<T> {
   MyCustomRoute({WidgetBuilder builder, RouteSettings settings})
       : super(builder: builder, settings: settings);
@@ -686,7 +675,6 @@ class _DateInputCardState extends State<DateInputCard> {
 }
 
 /// Widgets
-///
 class TextFieldWithInitalValue extends StatelessWidget {
 
 final double _textFieldWidth = 150.0;

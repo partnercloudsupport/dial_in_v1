@@ -2,13 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'package:dial_in_v1/theme/appColors.dart';
-import 'profile_list.dart';
-import 'package:dial_in_v1/database_functions.dart';
 import 'package:dial_in_v1/data/profile.dart';
-import '../profile_pages/profile_page.dart';
-import 'dart:io';
+import 'package:dial_in_v1/pages/profile_pages/profile_page.dart';
 import 'package:dial_in_v1/data/functions.dart';
-import 'package:dial_in_v1/data/strings.dart';
+import 'package:dial_in_v1/pages/overview_page/profile_list.dart';
+import 'package:dial_in_v1/inherited_widgets.dart';
 
 
 
@@ -26,8 +24,6 @@ class DataPageState extends State<DataPage>with SingleTickerProviderStateMixin {
 
   @override
   void initState() {
-
-
     _lists = TabViewDataArray([
       TabViewData(
         DataList(ProfileType.recipe,(profile){}, true),
@@ -115,9 +111,19 @@ class DataPageState extends State<DataPage>with SingleTickerProviderStateMixin {
 
           Profile _profile = await Functions.createBlankProfile(_lists.ref[controller.index].type);
 
+          ProfilesModel model = ProfilesModel.of(context);
+
           Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
-          ProfilePage(isOldProfile: false, isCopying: false, isEditing: true, isNew: true, type: _lists.ref[controller.index].type, referance: '',profile: _profile ,)));
-        
+
+          ProfilePage    
+          (isOldProfile: false,
+          isCopying: false,
+          isEditing: true,
+          isNew: true,
+          type: _lists.ref[controller.index].type,
+          referance: '',
+          profile: _profile ,
+          )));
         }));
   }
 }

@@ -1,24 +1,8 @@
-import 'package:flutter/material.dart'
-    show
-        AppBar,
-        BuildContext,
-        FontWeight,
-        Icon,
-        Icons,
-        Navigator,
-        RawMaterialButton,
-        Scaffold,
-        State,
-        StatefulWidget,
-        Text,
-        TextStyle,
-        required;
-        
+import 'package:flutter/material.dart';        
 import 'package:dial_in_v1/data/profile.dart';
 import 'package:dial_in_v1/data/strings.dart';
 import 'package:path/path.dart' as path;
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:dial_in_v1/data/functions.dart';
 import 'package:dial_in_v1/pages/overview_page/profile_list.dart';
 import 'package:flutter/foundation.dart';
@@ -31,8 +15,10 @@ import 'package:dial_in_v1/pages/profile_pages/grinder_profile_page.dart';
 import 'package:dial_in_v1/pages/profile_pages/barista_profile_page.dart';
 import 'package:dial_in_v1/pages/profile_pages/coffee_profile_page.dart';
 import 'package:dial_in_v1/theme/appColors.dart';
+import 'package:dial_in_v1/database_functions.dart';
 import 'dart:io';
 import 'dart:async';
+
 
 class ProfilePage extends StatefulWidget {
   @required
@@ -50,9 +36,11 @@ class ProfilePage extends StatefulWidget {
   @required
   final String referance;
   String appBarTitle;
-  Profile profile;
+  Profile profile; 
 
-  ProfilePage({this.isOldProfile, this.isCopying, this.isEditing, this.isNew, this.type, this.referance, this.profile, this.isFromProfile}) {
+  ProfilePage
+  ({this.isOldProfile, this.isCopying, this.isEditing, 
+  this.isNew, this.type, this.referance, this.profile, this.isFromProfile,}) {
     if (isNew || isCopying) { this.appBarTitle = StringLabels.newe + ' ' +Functions.getProfileTypeString(type) + ' ' + StringLabels.profile;
     }else if (isEditing){  this.appBarTitle =  StringLabels.editing + ' ' + Functions.getProfileTypeString(type) + ' ' + StringLabels.profile; }
     else{ this.appBarTitle =  Functions.getProfileTypeString(type) + ' ' + StringLabels.profile; }
@@ -64,26 +52,16 @@ class ProfilePage extends StatefulWidget {
 class ProfilePageState extends State<ProfilePage> {
   double _padding = 20.0;
   double _margin = 10.0;
-  double _textFieldWidth = 120.0;
-  double _cornerRadius = 20.0;
-  @required
   bool _isCopying;
-  @required
   bool _isEditing;
-  @required
-  bool _isNew;
   bool _isOldProfile;
   Profile _profile;
-  @required
-  bool _isFromProfile;
 
   void initState() {
       _isCopying = widget.isCopying;
       _isEditing = widget.isEditing;
-      _isNew = widget.isNew;
       _profile = widget.profile;
-      _isFromProfile = widget.isFromProfile;
-      _isOldProfile = widget.isOldProfile;
+      _isOldProfile = widget.isOldProfile;             
       super.initState();
   }
 
@@ -97,8 +75,9 @@ class ProfilePageState extends State<ProfilePage> {
   ///
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: AppBar(
+
+    return  new Scaffold(
+       appBar: AppBar(
         centerTitle: true,
         title: Text(
           widget.appBarTitle,
@@ -155,7 +134,8 @@ class ProfilePageState extends State<ProfilePage> {
             /// Profile Image
             SizedBox(width: double.infinity, height: 420.0, child:
             Image.file(_profile.image, fit: BoxFit.cover,),),
-
+            
+            ///Change image button
             FlatButton(
               onPressed: (){ _getimage(_profile.image).then((image){ setState(() {_profile.image = image;});});},
               child: Text(StringLabels.changeImage),
@@ -289,39 +269,49 @@ class ProfilePageState extends State<ProfilePage> {
       context: context,
       builder: (BuildContext context) {
         // return object of type Dialog
-        return SimpleDialog(
+        return 
+        Center(
+        child: Container(height: 400.0, child:
+                
+         SimpleDialog(
+          
           title: Text(Functions.convertDatabaseIdToTitle(Functions.getProfileTypeDatabaseId(profileType))),
           children: <Widget>[
             RaisedButton(
               onPressed: ()async{
                 Profile _newProfile = await Functions.createBlankProfile(profileType);
                 Profile result = await Navigator.push(context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) => ProfilePage(
-                              isOldProfile: false,
-                              isFromProfile: true,
-                              isCopying: false,
-                              isEditing: true,
-                              isNew: true,
-                              type: profileType,
-                              referance: '',
-                              profile: _newProfile,
-                            )));
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => ProfilePage(
+                      isOldProfile: false,
+                      isFromProfile: true,
+                      isCopying: false,
+                      isEditing: true,
+                      isNew: true,
+                      type: profileType,
+                      referance: '',
+                      profile: _newProfile,
+                    )
+                  )
+                );
                Navigator.pop(context, result);             
                setState(() {  _profile.setSubProfile(result); });         
               },
               child: Text('Add new profile'),
             ),
-            ProfileList(
-              profileType,
-              (sentProfile){ setState((){
-                       _profile.setSubProfile(sentProfile);   
-                        }); },
-             false,
+           
+              ProfileListDialog(
+                profileType,
+                (sentProfile){ setState((){
+                  _profile.setSubProfile(sentProfile);   
+                }); },
+              false,
             )
           ],
-        );
-      },
+        )
+        )
+      );
+      }
     );
   }
 }

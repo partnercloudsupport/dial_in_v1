@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'item.dart';
+import 'package:dial_in_v1/data/item.dart';
 import '../database_functions.dart';
 import 'dart:io';
-import 'functions.dart';
-import '../data/images.dart';
+import 'package:dial_in_v1/data/functions.dart';
+import 'package:dial_in_v1/data/images.dart';
 
 
 class Profile {
