@@ -111,8 +111,6 @@ class DataPageState extends State<DataPage>with SingleTickerProviderStateMixin {
 
           Profile _profile = await Functions.createBlankProfile(_lists.ref[controller.index].type);
 
-          ProfilesModel model = ProfilesModel.of(context);
-
           Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
 
           ProfilePage    

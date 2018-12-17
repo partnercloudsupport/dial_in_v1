@@ -1633,14 +1633,14 @@ class Functions {
     return SocialProfileCard(feedProfile, giveprofile);
   }
   
-  static Future<Widget> buildProfileCardFromDocument(DocumentSnapshot document, String databaseId, Function(Profile) giveprofile) async {
+  static Future<Widget> buildProfileCardFromDocument(DocumentSnapshot document, String databaseId, Function(Profile) giveprofile, Function(Profile) deleteProfile) async {
     
     Profile profile = await DatabaseFunctions.createProfileFromDocumentSnapshot(databaseId, document);
 
-    return ProfileCard(profile, giveprofile);
+    return ProfileCard(profile, giveprofile, deleteProfile);
   }
 
-  static Future<List<Widget>> buildProfileCardArrayFromAsyncSnapshot( BuildContext context, AsyncSnapshot documents, String databaseId, Function(Profile) giveProfile) async {
+  static Future<List<Widget>> buildProfileCardArrayFromAsyncSnapshot( BuildContext context, AsyncSnapshot documents, String databaseId, Function(Profile) giveProfile, Function(Profile) deleteProfile) async {
       
     print('Start ${DateTime.now()}');
 
@@ -1649,7 +1649,7 @@ class Functions {
      if (documents.data.documents != null || documents.data.documents.length != 0) {
 
         for(var document in documents.data.documents){  /// <<<<==== changed line
-            Widget result = await buildProfileCardFromDocument(document, databaseId ,giveProfile);
+            Widget result = await buildProfileCardFromDocument(document, databaseId ,giveProfile, deleteProfile);
             _cardArray.add(result);
         }
      }
@@ -1657,21 +1657,21 @@ class Functions {
       return _cardArray;
   }
 
-  static Future<List<Widget>> buildProfileCardArrayFromProfileList(List<Profile> profileList, String databaseId, Function(Profile) giveProfile) async {
+  static Future<List<Widget>> buildProfileCardArrayFromProfileList(List<Profile> profileList, String databaseId, Function(Profile) giveProfile, Function(Profile) deleteProfile) async {
 
     List<Widget> _cardArray = new List<Widget>();
 
      if (profileList != null || profileList.length != 0) {
 
         for(var profile in profileList){  /// <<<<==== changed line
-            Widget result = await ProfileCard(profile, giveProfile);
+            Widget result = await ProfileCard(profile, giveProfile, deleteProfile);
             _cardArray.add(result);
         }
      }
       return _cardArray;
     }
 
-  static StreamBuilder createStreamProfileListView(BuildContext context, String profileTypeDatabaseId,  ProfilePageState parent ,Function(Profile) giveProfile){
+  static StreamBuilder createStreamProfileListView(BuildContext context, String profileTypeDatabaseId,  ProfilePageState parent ,Function(Profile) giveProfile, Function(Profile) deleteProfile){
     return StreamBuilder(
         stream:
         Firestore.instance.collection(profileTypeDatabaseId).snapshots(),
@@ -1698,7 +1698,7 @@ class Functions {
                     height: 100.0,
                     width: 100.0,
                     child: new FutureBuilder(
-                        future: Functions.buildProfileCardArrayFromAsyncSnapshot(context, snapshot.data, profileTypeDatabaseId, giveProfile),
+                        future: Functions.buildProfileCardArrayFromAsyncSnapshot(context, snapshot.data, profileTypeDatabaseId, giveProfile, deleteProfile),
                         builder: (BuildContext context, AsyncSnapshot futureSnapshot) {
 
                           switch (futureSnapshot.connectionState) {

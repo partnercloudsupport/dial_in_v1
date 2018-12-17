@@ -7,6 +7,7 @@ import 'package:dial_in_v1/inherited_widgets.dart';
 import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'package:dial_in_v1/data/functions.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dial_in_v1/database_functions.dart';
 
 
 class ProfileList extends StatefulWidget{
@@ -36,6 +37,11 @@ class _ProfileListState extends State<ProfileList>{
      }
   }
 
+  void _deleteProfile(Profile profile){
+    
+    setState((){DatabaseFunctions.deleteProfile(profile);});
+  }
+
 @override
     Widget build(BuildContext context) {  
 
@@ -56,7 +62,7 @@ class _ProfileListState extends State<ProfileList>{
                         itemExtent: 100,
                         itemCount: snapshot.data.length,
                         itemBuilder: (BuildContext context, int index) =>
-                          ProfileCard(snapshot.data[index], _dealWithProfileSelection,)
+                          ProfileCard(snapshot.data[index], _dealWithProfileSelection, _deleteProfile)
                     );
                 }
           }
@@ -97,6 +103,10 @@ class _ProfileListDialogState extends State<ProfileListDialog>{
      }
   }
 
+   void _deleteProfile(Profile profile){DatabaseFunctions.deleteProfile(profile)
+   .then(setState);}
+  
+
     @override
     Widget build(BuildContext context) {  
 
@@ -125,7 +135,7 @@ class _ProfileListDialogState extends State<ProfileListDialog>{
                     height: 400.0,
                     width: 200.0,
                     child: new FutureBuilder(
-                        future: Functions.buildProfileCardArrayFromAsyncSnapshot(context, snapshot, Functions.getProfileTypeDatabaseId(widget._profilesType), _dealWithProfileSelection),
+                        future: Functions.buildProfileCardArrayFromAsyncSnapshot(context, snapshot, Functions.getProfileTypeDatabaseId(widget._profilesType), _dealWithProfileSelection, _deleteProfile),
                         builder: (BuildContext context, AsyncSnapshot futureSnapshot) {
 
                           switch (futureSnapshot.connectionState) {

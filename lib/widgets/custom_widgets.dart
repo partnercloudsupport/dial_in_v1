@@ -266,57 +266,58 @@ class UserCard extends StatelessWidget {
 class ProfileCard extends StatelessWidget {
   
   final Function(Profile) _giveprofile;
-  final Profile profile;
+  final Function(Profile) _deleteProfile;
+  final Profile _profile;
   String _topLeft = 'error';
   String _topRight = 'error';
   String _bottomRight = 'error';
   String _bottomleft = 'error';
   final _dateFormat = DateFormat.yMd();
 
-  ProfileCard(this.profile, this._giveprofile,){
+  ProfileCard(this._profile, this._giveprofile, this._deleteProfile){
 
-    switch(profile.type){
+    switch(_profile.type){
       
       case ProfileType.recipe: 
-      _topLeft = profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.coffee);
-      _topRight = _dateFormat.format(profile.getProfileItemValue(DatabaseIds.date));
-      _bottomRight = profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.brewingEquipment);
-      _bottomleft = profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.score);
+      _topLeft = _profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.coffee);
+      _topRight = _dateFormat.format(_profile.getProfileItemValue(DatabaseIds.date));
+      _bottomRight = _profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.brewingEquipment);
+      _bottomleft = _profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.score);
       break;
 
       case ProfileType.coffee:  
-      _topLeft = profile.getProfileItemValue( DatabaseIds.coffeeId);
-      _topRight = profile.getProfileItemValue( DatabaseIds.processingMethod);
-      _bottomRight = _dateFormat.format(profile.getProfileItemValue(DatabaseIds.roastDate));
-      _bottomleft = profile.getProfileItemValue( DatabaseIds.country);
+      _topLeft = _profile.getProfileItemValue( DatabaseIds.coffeeId);
+      _topRight = _profile.getProfileItemValue( DatabaseIds.processingMethod);
+      _bottomRight = _dateFormat.format(_profile.getProfileItemValue(DatabaseIds.roastDate));
+      _bottomleft = _profile.getProfileItemValue( DatabaseIds.country);
       break;
 
       case ProfileType.water:   
-      _topLeft = profile.getProfileItemValue( DatabaseIds.waterID);
-      _topRight = profile.getProfileItemValue( DatabaseIds.ppm);
-      _bottomRight = profile.getProfileItemValue( DatabaseIds.kh);
-      _bottomleft = profile.getProfileItemValue( DatabaseIds.gh);
+      _topLeft = _profile.getProfileItemValue( DatabaseIds.waterID);
+      _topRight = _profile.getProfileItemValue( DatabaseIds.ppm);
+      _bottomRight = _profile.getProfileItemValue( DatabaseIds.kh);
+      _bottomleft = _profile.getProfileItemValue( DatabaseIds.gh);
       break;
 
       case ProfileType.equipment:   
-      _topLeft = profile.getProfileItemValue( DatabaseIds.equipmentId);
-      _topRight = profile.getProfileItemValue( DatabaseIds.type);
-      _bottomRight = profile.getProfileItemValue( DatabaseIds.method);
-      _bottomleft = profile.getProfileItemValue( DatabaseIds.equipmentModel); 
+      _topLeft = _profile.getProfileItemValue( DatabaseIds.equipmentId);
+      _topRight = _profile.getProfileItemValue( DatabaseIds.type);
+      _bottomRight = _profile.getProfileItemValue( DatabaseIds.method);
+      _bottomleft = _profile.getProfileItemValue( DatabaseIds.equipmentModel); 
       break;
 
       case ProfileType.grinder:   
-      _topLeft = profile.getProfileItemValue( DatabaseIds.grinderId);
-      _topRight = profile.getProfileItemValue( DatabaseIds.burrs);
-      _bottomRight = profile.getProfileItemValue( DatabaseIds.grinderMake);
-      _bottomleft = profile.getProfileItemValue( DatabaseIds.grinderModel);      
+      _topLeft = _profile.getProfileItemValue( DatabaseIds.grinderId);
+      _topRight = _profile.getProfileItemValue( DatabaseIds.burrs);
+      _bottomRight = _profile.getProfileItemValue( DatabaseIds.grinderMake);
+      _bottomleft = _profile.getProfileItemValue( DatabaseIds.grinderModel);      
       break;
 
       case ProfileType.barista:   
-      _topLeft = profile.getProfileItemValue( DatabaseIds.name);
-      _topRight = profile.getProfileItemValue( DatabaseIds.level);
-      _bottomleft = profile.getProfileItemValue( DatabaseIds.notes);
-      _bottomRight = profile.getProfileItemValue( DatabaseIds.age);       
+      _topLeft = _profile.getProfileItemValue( DatabaseIds.name);
+      _topRight = _profile.getProfileItemValue( DatabaseIds.level);
+      _bottomleft = _profile.getProfileItemValue( DatabaseIds.notes);
+      _bottomRight = _profile.getProfileItemValue( DatabaseIds.age);       
       break;
 
       case ProfileType.none:  
@@ -349,12 +350,12 @@ class ProfileCard extends StatelessWidget {
     // Each Dismissible must contain a Key. Keys allow Flutter to
     // uniquely identify Widgets.
     background: Container(color: Colors.red),
-    key: Key(profile.objectId),
+    key: Key(_profile.objectId),
     // We also need to provide a function that will tell our app
     // what to do after an item has been swiped away.
     onDismissed: (direction) {
       // Remove the item from our data source.
-      DatabaseFunctions.deleteProfile(this.profile);
+      _deleteProfile(this._profile);
 
     // Show a snackbar! This snackbar could also contain "Undo" actions.
     Scaffold
@@ -363,7 +364,7 @@ class ProfileCard extends StatelessWidget {
   },
   child: 
     Card(child: 
-      InkWell(onTap:() => _giveprofile(profile)
+      InkWell(onTap:() => _giveprofile(_profile)
        
       ,child: 
         
@@ -371,8 +372,8 @@ class ProfileCard extends StatelessWidget {
       ///
       /// Profile picture
       ///
-      Hero(tag: profile.objectId , child: Container(
-          child: CircularPicture(profile.image, 60.0)),),
+      Hero(tag: _profile.objectId , child: Container(
+          child: CircularPicture(_profile.image, 60.0)),),
           
 
       Expanded(
