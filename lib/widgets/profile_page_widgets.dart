@@ -362,7 +362,8 @@ class ProfileInputWithDetailsCard extends StatefulWidget {
   final String _detailValue;
   final Function _onProfileTextPressed;
 
-  ProfileInputWithDetailsCard(this._profile, this._detailTitle, this._detailValue, this._onProfileTextPressed,);
+
+  ProfileInputWithDetailsCard(this._profile, this._detailTitle, this._detailValue, this._onProfileTextPressed);
 
   ProfileInputWithDetailsCardState createState() => ProfileInputWithDetailsCardState();
 }
@@ -370,8 +371,6 @@ class ProfileInputWithDetailsCard extends StatefulWidget {
 class ProfileInputWithDetailsCardState extends State<ProfileInputWithDetailsCard> {
 
   TextEditingController _controller;
-  TextEditingController _detailController;
-
   FocusNode _focus;
 
       @override
@@ -379,22 +378,19 @@ class ProfileInputWithDetailsCardState extends State<ProfileInputWithDetailsCard
             _focus = new FocusNode();
             _focus.addListener(handleLeftProfileTextfieldFocus);
             _controller = new TextEditingController(text: widget._profile.getProfileTitleValue());
-            _detailController = new TextEditingController(text: widget._detailValue);
             super.initState();
       }
 
       @override
-        void didUpdateWidget(Widget oldWidget) {
-          _controller = new TextEditingController(text: widget._profile.getProfileTitleValue());
-          _detailController = new TextEditingController(text: widget._detailValue);
-         super.didUpdateWidget(oldWidget);
-        }
+          void didUpdateWidget(Widget oldWidget) {
+            _controller = new TextEditingController(text: widget._profile.getProfileTitleValue());
+           super.didUpdateWidget(oldWidget);
+          }
 
       @override
       void dispose() {
         // Clean up the controller when the Widget is removed from the Widget tree
         _controller.dispose();
-        _detailController.dispose();
         super.dispose();
       }
 
@@ -406,8 +402,6 @@ class ProfileInputWithDetailsCardState extends State<ProfileInputWithDetailsCard
                 });
         }
       }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -435,7 +429,7 @@ class ProfileInputWithDetailsCardState extends State<ProfileInputWithDetailsCard
                               controller: _controller,
                           )),
 
-                  TextfieldWithFixedValue(widget._detailTitle, _detailController.text)
+                  TextFieldWithFixedValue(widget._detailTitle, widget._detailValue)
 
                 ]
             )

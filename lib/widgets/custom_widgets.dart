@@ -639,7 +639,10 @@ class _DateInputCardState extends State<DateInputCard> {
   FocusNode _focus = new FocusNode();
 
   void textfieldFocus(){
-    widget.onDateChanged();
+        // if (_focus.hasFocus){
+        // _focus.notifyListeners
+        // _focus.unfocus();  
+        // }
   }
 
   @override
@@ -668,7 +671,7 @@ class _DateInputCardState extends State<DateInputCard> {
                       format: widget._dateFormat,
                       initialDate: widget._dateTime,
                       decoration: InputDecoration(labelText: widget._title),
-                      onChanged: (date) => setState(() => widget.onDateChanged(date)),
+                      onChanged: widget.onDateChanged,
                       controller: _controller),
                     ),
                 ],
@@ -742,45 +745,26 @@ Container(
   }
 }       
 
-
-class TextfieldWithFixedValue extends StatefulWidget {
+class TextFieldWithFixedValue extends StatelessWidget {
 
 final dynamic _initalValue; 
 final String _titleLabel;
 
-TextfieldWithFixedValue(this._titleLabel, this._initalValue,);
+TextFieldWithFixedValue(this._titleLabel, this._initalValue,);
 
- _TextfieldWithFixedValueState createState() => _TextfieldWithFixedValueState();
-}
-
-class _TextfieldWithFixedValueState extends State<TextfieldWithFixedValue> {
-  
-  TextEditingController _controller = new TextEditingController();
-
-  @override
-    void initState() {
-      _controller.text = widget._initalValue;
-      super.initState();
-    }
-
-  @override
-  void didUpdateWidget(TextfieldWithFixedValue oldWidget) {
-      _controller.text = widget._initalValue;
-      super.didUpdateWidget(oldWidget);
-    }
-
-  @override
+@override
   Widget build(BuildContext context) {
     return
     Expanded(
         child: TextFormField(
-        controller: _controller ,
+        initialValue: _initalValue,
         enabled: false,
         textAlign: TextAlign.start,
         decoration: new InputDecoration(
-        labelText: widget._titleLabel,
+        labelText: _titleLabel,
+        
         ),
-      )
+        )
     ); 
   }
 }   
