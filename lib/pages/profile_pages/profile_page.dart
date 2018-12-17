@@ -132,6 +132,8 @@ class ProfilePageState extends State<ProfilePage> {
             ],),),
 
             /// Profile Image
+            Hero(tag: _profile.objectId ,child: SizedBox(width: double.infinity, height: 420.0,
+            child: Image.file(_profile.image, fit: BoxFit.cover,),),),
 
             
             ///Change image button
