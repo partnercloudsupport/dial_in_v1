@@ -39,9 +39,21 @@ Future<void> logIn(String emailUser, String password,
 void loginButtonPressed(){ 
   print(" Login button pressed");
 
-  logIn(_email, _password, (success,error){   
+  showDialog(context: context ,
+    builder: (context) => Center(child:CircularProgressIndicator()
+     )); 
+
+  logIn(_email, _password, (success,error){  
+
+      Navigator.pop(context);
     
-    if (success){    
+    if (success){   
+       setState(() {
+              _email = '';
+              _password = ''; 
+              _emailController.text = '';
+              _passwordController.text = '';
+            }); 
        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => OverviewPage()));
       }else{
       PopUps.showAlert( 
@@ -163,7 +175,6 @@ void initState() {
 class LoginButton extends StatelessWidget {
 
   final Function loginAction ;
-
 
   LoginButton(this.loginAction); 
 

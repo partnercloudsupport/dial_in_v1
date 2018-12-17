@@ -80,11 +80,13 @@ class Profile {
    Future<void> setDefaultPic()async{if (this.image == null){ this.image = await Functions.getFile(Images.recipeSmaller);}}
 
   void setProfileItemValue(String itemDatabaseId, dynamic value) {
-    for (var i = 0; i < this.properties.length; i++) {
-      if (this.properties[i].databaseId == itemDatabaseId) {
-        this.properties[i].value = value;
+    if (value != null){
+      for (var i = 0; i < this.properties.length; i++) {
+        if (this.properties[i].databaseId == itemDatabaseId) {
+          this.properties[i].value = value;
+        }
       }
-    }
+    }  
   }
 
   dynamic getProfileItemValue(String itemDatabaseId) {
@@ -96,8 +98,11 @@ class Profile {
       }
     }
 
+    
     if (value == null) {
-      return '';
+      if(itemDatabaseId == DatabaseIds.date || itemDatabaseId == DatabaseIds.roastDate)
+      { return DateTime.now();}
+      else{return '';}
     } else {
       return value;
     }
@@ -373,6 +378,15 @@ Future<File> getUserImage ()async{
         }
       }
     }
+  }
+
+  int getDaysRested(){
+    DateTime coffeeRoastDate = getProfileProfileItemValue(ProfileType.coffee, DatabaseIds.roastDate);
+    DateTime recipeMadeTime = getProfileItemValue(DatabaseIds.date);
+    int result = recipeMadeTime.difference(coffeeRoastDate).inDays;
+    print(coffeeRoastDate);
+    print(recipeMadeTime);
+    return result;
   }
 }
 

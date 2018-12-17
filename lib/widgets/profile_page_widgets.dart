@@ -397,7 +397,9 @@ class ProfileInputWithDetailsCardState extends State<ProfileInputWithDetailsCard
       void handleLeftProfileTextfieldFocus(){
         if (_focus.hasFocus){
         widget._onProfileTextPressed();
-        _focus.unfocus();  
+        setState(() {
+                  _focus.unfocus(); 
+                });
         }
       }
 
@@ -481,8 +483,8 @@ class ProfileInputCardState extends State<ProfileInputCard> {
 
       void handleLeftProfileTextfieldFocus(){
         if (_focus.hasFocus){
-        widget._onProfileTextPressed();
-        _focus.unfocus();  
+          widget._onProfileTextPressed();
+          _focus.unfocus();  
         }
       }
 
@@ -521,7 +523,7 @@ class ProfileInputCardState extends State<ProfileInputCard> {
   }
 }
 
-
+/// Profile image
 class ProfileImage extends StatelessWidget {
   
   final double _padding = 20.0;
@@ -559,6 +561,7 @@ class ProfileImage extends StatelessWidget {
   }
 }
 
+/// Coffee Card
 class CoffeeCard extends StatelessWidget {
   final double _padding = 20.0;
   final double _margin = 10.0;
@@ -593,6 +596,7 @@ class CoffeeCard extends StatelessWidget {
   }
 }
 
+/// Ratio Card
 class RatioCard extends StatelessWidget {
   final double _padding = 20.0;
   final double _margin = 10.0;
@@ -676,6 +680,7 @@ class RatioCard extends StatelessWidget {
   }
 }
 
+///Two textFieldcard
 class TwoTextfieldCard extends StatelessWidget {
   final double _padding = 20.0;
   final double _margin = 10.0;
@@ -739,6 +744,7 @@ class TwoTextfieldCard extends StatelessWidget {
   }
 }
 
+/// Notes card
 class NotesCard extends StatelessWidget {
   final double _padding = 20.0;
   final double _margin = 10.0;

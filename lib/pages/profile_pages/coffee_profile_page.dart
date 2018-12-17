@@ -261,9 +261,7 @@ class RoastingDetailsCardState extends State<RoastingDetailsCard> {
 }
 }
 
-////
 /// Widgets
-///
 class TextFieldWithInitalValue extends StatelessWidget {
 
 final double _textFieldWidth = 150.0;

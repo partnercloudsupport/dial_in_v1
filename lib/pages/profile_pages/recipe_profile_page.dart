@@ -57,7 +57,7 @@ class _RecipePageState extends State<RecipePage> {
               ProfileInputWithDetailsCard(
                 widget._profile.getProfileProfile(ProfileType.coffee),
                 StringLabels.daysRested,
-                '10',
+                widget._profile.getDaysRested().toStringAsPrecision(1),
                 (){widget._showOptions(ProfileType.coffee);},),
 
               ///Barista

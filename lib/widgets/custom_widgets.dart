@@ -49,21 +49,17 @@ class DialInLogo extends StatelessWidget {
 ///Text Field entry
 class TextFieldEntry extends StatefulWidget {
   final String _placeholder;
-  final TextEditingController _controller;
   final bool _obscureText;
+  TextEditingController _controller;
 
 
   TextFieldEntry(this._placeholder, this._controller, this._obscureText);
 
   @override
-  State<StatefulWidget> createState() {
-
-    return _TextFieldEntryState();
-  }
+  _TextFieldEntryState createState() => new _TextFieldEntryState();
 }
-
-/// Textfield Entry
 class _TextFieldEntryState extends State<TextFieldEntry> {
+  
 
   @override
   void initState() {
@@ -388,10 +384,10 @@ class ProfileCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Container(
-                          margin: EdgeInsets.all(10.0), child: Text(_topLeft, overflow: TextOverflow.clip, style: Theme.of(context).textTheme.display1,)),
+                          margin: EdgeInsets.all(10.0), child: Text(_topLeft, maxLines: 1, overflow: TextOverflow.clip, style: Theme.of(context).textTheme.display1,)),
                       Container(
                         margin: EdgeInsets.all(10.0),
-                        child: Text(_bottomleft),
+                        child: Text(_bottomleft, maxLines: 1),
                       )
                     ]))),
 
@@ -405,10 +401,10 @@ class ProfileCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.end, mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Container(
-                          margin: EdgeInsets.all(10.0), child: Text(_topRight)),
+                          margin: EdgeInsets.all(10.0), child: Text(_topRight, maxLines: 1)),
                       Container(
                         margin: EdgeInsets.all(10.0),
-                        child: Text(_bottomRight),
+                        child: Text(_bottomRight, maxLines: 1),
                       )
                     ])))
       ]))
@@ -450,7 +446,7 @@ class SocialProfileCard extends StatelessWidget {
       
           Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
             ///User Name
-            Text(_profile.userId, style: Theme.of(context).textTheme.display1,),
+            Text(_profile.userId,  maxLines: 1, style: Theme.of(context).textTheme.display1,),
 
         ]),
         Expanded(child: Column(mainAxisAlignment: MainAxisAlignment.end, crossAxisAlignment: CrossAxisAlignment.end, children: [ 
@@ -466,13 +462,13 @@ class SocialProfileCard extends StatelessWidget {
         Image.file(_profile.profile.image, fit: BoxFit.cover,),),),
 
        /// Coffee Name
-        Text(_profile.profile.getProfileProfileItemValue(ProfileType.coffee, DatabaseIds.coffeeId), style: Theme.of(context).textTheme.display1,),
+        Text(_profile.profile.getProfileProfileItemValue(ProfileType.coffee, DatabaseIds.coffeeId),  maxLines: 1, style: Theme.of(context).textTheme.display1,),
 
         /// Brew method
-        Text(_profile.profile.getProfileProfileItemValue(ProfileType.equipment, DatabaseIds.equipmentId)), 
+        Text(_profile.profile.getProfileProfileItemValue(ProfileType.equipment, DatabaseIds.equipmentId),  maxLines: 1), 
 
         /// Notes
-        Text(_profile.profile.getProfileProfileItemValue(ProfileType.equipment, DatabaseIds.descriptors)), 
+        Text(_profile.profile.getProfileProfileItemValue(ProfileType.equipment, DatabaseIds.descriptors),  maxLines: 1), 
 
         ///Score
         new StarRating(
@@ -640,10 +636,19 @@ class DateInputCard extends StatefulWidget {
 class _DateInputCardState extends State<DateInputCard> {
   
   TextEditingController _controller = new TextEditingController();
+  FocusNode _focus = new FocusNode();
+
+  void textfieldFocus(){
+        // if (_focus.hasFocus){
+        // _focus.notifyListeners
+        // _focus.unfocus();  
+        // }
+  }
 
   @override
     void initState() {
       _controller.text = widget._dateFormat.format(widget._dateTime);
+      _focus.addListener(textfieldFocus);
       super.initState();
     }
     
@@ -662,6 +667,7 @@ class _DateInputCardState extends State<DateInputCard> {
                 children: <Widget>[
                   Expanded(
                     child: DateTimePickerFormField(
+                      focusNode: _focus,
                       format: widget._dateFormat,
                       initialDate: widget._dateTime,
                       decoration: InputDecoration(labelText: widget._title),
