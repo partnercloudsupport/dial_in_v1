@@ -217,7 +217,7 @@ class ProfilePageState extends State<ProfilePage> {
       break;
 
       case ProfileType.recipe:
-      _structure = RecipePage(_profile, _margin, (key, value){_profile.setProfileItemValue( key,  value);}, _showDialog);
+      _structure = RecipePage(_profile, _margin, (key, value){setState((){_profile.setProfileItemValue( key,  value);});}, _showDialog);
       break;
 
       default:

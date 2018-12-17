@@ -23,6 +23,8 @@ import 'package:dial_in_v1/database_functions.dart';
 import 'package:dial_in_v1/widgets/profile_page_widgets.dart';
 import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'package:dial_in_v1/data/functions.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:dial_in_v1/inherited_widgets.dart';
 import 'dart:io';
 
 class RecipePage extends StatefulWidget{
@@ -46,7 +48,9 @@ class _RecipePageState extends State<RecipePage> {
   ///
   @override
   Widget build(BuildContext context) {
-    return new Column(children: <Widget>[ 
+    return new 
+    
+    Column(children: <Widget>[ 
 
               /// Date
               DateInputCard(StringLabels.date,
@@ -57,7 +61,7 @@ class _RecipePageState extends State<RecipePage> {
               ProfileInputWithDetailsCard(
                 widget._profile.getProfileProfile(ProfileType.coffee),
                 StringLabels.daysRested,
-                widget._profile.getDaysRested().toStringAsPrecision(1),
+                widget._profile.getDaysRested().toString(),
                 (){widget._showOptions(ProfileType.coffee);},),
 
               ///Barista
@@ -176,6 +180,7 @@ class _RecipePageState extends State<RecipePage> {
                   ],
                 ),
               ),
-          ],);
+          ],
+            );
       }
 }

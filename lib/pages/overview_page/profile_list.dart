@@ -121,7 +121,10 @@ class _ProfileListDialogState extends State<ProfileListDialog>{
             case ConnectionState.active:
             case ConnectionState.done:
               if (!snapshot.hasData) {
-                return const Center(child: Text('Loading'));
+                return  Center(child:
+              Column
+              (mainAxisAlignment: MainAxisAlignment.center ,children: <Widget>[CircularProgressIndicator(),
+              Container(margin: EdgeInsets.all(20.0),child: Text('Loading...'),) ,],));
 
               } else if (snapshot.hasError) {
                 print(snapshot.error.toString());

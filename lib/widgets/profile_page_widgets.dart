@@ -362,8 +362,7 @@ class ProfileInputWithDetailsCard extends StatefulWidget {
   final String _detailValue;
   final Function _onProfileTextPressed;
 
-
-  ProfileInputWithDetailsCard(this._profile, this._detailTitle, this._detailValue, this._onProfileTextPressed);
+  ProfileInputWithDetailsCard(this._profile, this._detailTitle, this._detailValue, this._onProfileTextPressed,);
 
   ProfileInputWithDetailsCardState createState() => ProfileInputWithDetailsCardState();
 }
@@ -371,6 +370,8 @@ class ProfileInputWithDetailsCard extends StatefulWidget {
 class ProfileInputWithDetailsCardState extends State<ProfileInputWithDetailsCard> {
 
   TextEditingController _controller;
+  TextEditingController _detailController;
+
   FocusNode _focus;
 
       @override
@@ -378,19 +379,22 @@ class ProfileInputWithDetailsCardState extends State<ProfileInputWithDetailsCard
             _focus = new FocusNode();
             _focus.addListener(handleLeftProfileTextfieldFocus);
             _controller = new TextEditingController(text: widget._profile.getProfileTitleValue());
+            _detailController = new TextEditingController(text: widget._detailValue);
             super.initState();
       }
 
       @override
-          void didUpdateWidget(Widget oldWidget) {
-            _controller = new TextEditingController(text: widget._profile.getProfileTitleValue());
-           super.didUpdateWidget(oldWidget);
-          }
+        void didUpdateWidget(Widget oldWidget) {
+          _controller = new TextEditingController(text: widget._profile.getProfileTitleValue());
+          _detailController = new TextEditingController(text: widget._detailValue);
+         super.didUpdateWidget(oldWidget);
+        }
 
       @override
       void dispose() {
         // Clean up the controller when the Widget is removed from the Widget tree
         _controller.dispose();
+        _detailController.dispose();
         super.dispose();
       }
 
@@ -402,6 +406,8 @@ class ProfileInputWithDetailsCardState extends State<ProfileInputWithDetailsCard
                 });
         }
       }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -429,7 +435,7 @@ class ProfileInputWithDetailsCardState extends State<ProfileInputWithDetailsCard
                               controller: _controller,
                           )),
 
-                  TextFieldWithFixedValue(widget._detailTitle, widget._detailValue)
+                  TextfieldWithFixedValue(widget._detailTitle, _detailController.text)
 
                 ]
             )
@@ -440,7 +446,6 @@ class ProfileInputWithDetailsCardState extends State<ProfileInputWithDetailsCard
 }
 
 //Single profile card
-
 class ProfileInputCard extends StatefulWidget {
   final double _padding = 20.0;
   final double _margin = 10.0;
@@ -454,7 +459,6 @@ class ProfileInputCard extends StatefulWidget {
 
   ProfileInputCardState createState() => ProfileInputCardState();
 }
-
 class ProfileInputCardState extends State<ProfileInputCard> {
 
   TextEditingController _controller;
@@ -601,7 +605,7 @@ class RatioCard extends StatelessWidget {
   final double _padding = 20.0;
   final double _margin = 10.0;
   final double _cornerRadius = 20.0;
-  final double _textFieldWidth = 150.0;
+  final double _textFieldWidth = 80.0;
   final double _spacing = 15.0;
   final Function(String) doseChanged;
   final Function(String) yieldChanged;
@@ -636,7 +640,7 @@ class RatioCard extends StatelessWidget {
             children: <Widget>[
               /// Dose
               Container(
-                  width: 100.0,
+                  width: _textFieldWidth,
                   child: TextField(
                     textAlign: TextAlign.start,
                     keyboardType: TextInputType.number,
@@ -649,7 +653,7 @@ class RatioCard extends StatelessWidget {
 
               /// Yield
               Container(
-                  width: 100.0,
+                  width: _textFieldWidth,
                   child: TextField(
                     textAlign: TextAlign.start,
                     keyboardType: TextInputType.number,
@@ -662,7 +666,7 @@ class RatioCard extends StatelessWidget {
 
               /// Brew wieght
               Container(
-                  width: 100.0,
+                  width: _textFieldWidth,
                   child: TextField(
                     textAlign: TextAlign.start,
                     keyboardType: TextInputType.number,

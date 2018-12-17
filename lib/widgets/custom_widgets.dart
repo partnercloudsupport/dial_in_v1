@@ -636,21 +636,20 @@ class DateInputCard extends StatefulWidget {
 class _DateInputCardState extends State<DateInputCard> {
   
   TextEditingController _controller = new TextEditingController();
-  FocusNode _focus = new FocusNode();
+  // FocusNode _focus = new FocusNode();
 
-  void textfieldFocus(){
-        // if (_focus.hasFocus){
-        // _focus.notifyListeners
-        // _focus.unfocus();  
-        // }
-  }
 
   @override
     void initState() {
-      _controller.text = widget._dateFormat.format(widget._dateTime);
-      _focus.addListener(textfieldFocus);
+      // _controller.text = widget._dateFormat.format(widget._dateTime);
       super.initState();
     }
+
+  @override
+    void didUpdateWidget(DateInputCard oldWidget) {
+      // _controller.text = widget._dateFormat.format(widget._dateTime);
+      super.didUpdateWidget(oldWidget);
+    }  
     
   @override
   Widget build(BuildContext context) {
@@ -667,11 +666,10 @@ class _DateInputCardState extends State<DateInputCard> {
                 children: <Widget>[
                   Expanded(
                     child: DateTimePickerFormField(
-                      focusNode: _focus,
+                      // focusNode: _focus,
                       format: widget._dateFormat,
-                      initialDate: widget._dateTime,
                       decoration: InputDecoration(labelText: widget._title),
-                      onChanged: widget.onDateChanged,
+                      onChanged: (date) => setState( () => widget.onDateChanged(date) ),
                       controller: _controller),
                     ),
                 ],
@@ -745,26 +743,45 @@ Container(
   }
 }       
 
-class TextFieldWithFixedValue extends StatelessWidget {
+
+class TextfieldWithFixedValue extends StatefulWidget {
 
 final dynamic _initalValue; 
 final String _titleLabel;
 
-TextFieldWithFixedValue(this._titleLabel, this._initalValue,);
+TextfieldWithFixedValue(this._titleLabel, this._initalValue,);
 
-@override
+ _TextfieldWithFixedValueState createState() => _TextfieldWithFixedValueState();
+}
+
+class _TextfieldWithFixedValueState extends State<TextfieldWithFixedValue> {
+  
+  TextEditingController _controller = new TextEditingController();
+
+  @override
+    void initState() {
+      _controller.text = widget._initalValue;
+      super.initState();
+    }
+
+  @override
+  void didUpdateWidget(TextfieldWithFixedValue oldWidget) {
+      _controller.text = widget._initalValue;
+      super.didUpdateWidget(oldWidget);
+    }
+
+  @override
   Widget build(BuildContext context) {
     return
     Expanded(
         child: TextFormField(
-        initialValue: _initalValue,
+        controller: _controller ,
         enabled: false,
         textAlign: TextAlign.start,
         decoration: new InputDecoration(
-        labelText: _titleLabel,
-        
+        labelText: widget._titleLabel,
         ),
-        )
+      )
     ); 
   }
 }   
