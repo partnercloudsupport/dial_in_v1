@@ -372,8 +372,8 @@ class ProfileCard extends StatelessWidget {
       ///
       /// Profile picture
       ///
-      Container(
-          child: CircularPicture(profile.image, 60.0)),
+      Hero(tag: profile.objectId , child: Container(
+          child: CircularPicture(profile.image, 60.0)),),
           
 
       Expanded(
@@ -462,8 +462,8 @@ class SocialProfileCard extends StatelessWidget {
       ],),      
 
       /// Recipe picture
-      new SizedBox(width: double.infinity, height: 200.0, child:
-        Image.file(_profile.profile.image, fit: BoxFit.cover,),),
+      Hero(tag: _profile.profile.objectId, child: SizedBox(width: double.infinity, height: 200.0, child:
+        Image.file(_profile.profile.image, fit: BoxFit.cover,),),),
 
        /// Coffee Name
         Text(_profile.profile.getProfileProfileItemValue(ProfileType.coffee, DatabaseIds.coffeeId), style: Theme.of(context).textTheme.display1,),
@@ -737,6 +737,27 @@ Container(
   }
 }       
 
+class TextFieldWithFixedValue extends StatelessWidget {
 
+final dynamic _initalValue; 
+final String _titleLabel;
+
+TextFieldWithFixedValue(this._titleLabel, this._initalValue,);
+
+@override
+  Widget build(BuildContext context) {
+    return
+    Expanded(
+        child: TextFormField(
+        initialValue: _initalValue,
+        enabled: false,
+        textAlign: TextAlign.start,
+        decoration: new InputDecoration(
+        labelText: _titleLabel,
+        ),
+        )
+    ); 
+  }
+}   
 
 

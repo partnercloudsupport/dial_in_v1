@@ -193,6 +193,22 @@ Future<File> getUserImage ()async{
    return value;
  }
 
+ Item getProfileProfileItem(ProfileType profiletype, String itemDatabaseId) {
+  Item value;
+   if (this.profiles != null) {
+      for (var i = 0; i < this.profiles.length; i++) {
+        if (this.profiles[i].type == profiletype) {
+          for (var x = 0; x < this.profiles[i].properties.length; x++) {
+            if (this.profiles[i].properties[x].databaseId == itemDatabaseId){
+              value = this.profiles[i].properties[x];
+            }
+          }
+        }
+      }
+   }
+   return value;
+ }
+
  Future<String> getProfileUserName()async{
    
   String userId = await DatabaseFunctions.getValueFromFireStoreWithDocRef(DatabaseIds.User, this.userId, DatabaseIds.userName);
@@ -200,7 +216,7 @@ Future<File> getUserImage ()async{
   return userId;
  }
 
- dynamic getProfileTotalScoreValue(){
+  dynamic getProfileTotalScoreValue(){
   dynamic value = 0;
    if (this.type == ProfileType.recipe) {
       for (var i = 0; i < this.profiles.length; i++) {
@@ -265,7 +281,7 @@ Future<File> getUserImage ()async{
               break;  
 
             default:
-              return 'Error';
+              value = 'Error';
               break;
           }
         }
@@ -274,7 +290,7 @@ Future<File> getUserImage ()async{
     return value;
   }
 
-    String getProfileProfileRefernace({String profileDatabaseId}) {
+  String getProfileProfileRefernace({String profileDatabaseId}) {
     String value = '';
 
     if (this.profiles != null) {

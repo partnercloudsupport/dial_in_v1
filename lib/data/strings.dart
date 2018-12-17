@@ -3,6 +3,9 @@
 class  StringLabels {
 
 ///since flutter
+
+    static const String daysRested = 'Days rested';
+
   static const String enterLevel = 'EnterLevel';
   static const String enterName = 'Enter name';
   static const String noData = 'No data';

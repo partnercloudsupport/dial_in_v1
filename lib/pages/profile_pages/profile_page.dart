@@ -132,8 +132,7 @@ class ProfilePageState extends State<ProfilePage> {
             ],),),
 
             /// Profile Image
-            SizedBox(width: double.infinity, height: 420.0, child:
-            Image.file(_profile.image, fit: BoxFit.cover,),),
+
             
             ///Change image button
             FlatButton(
@@ -238,7 +237,8 @@ class ProfilePageState extends State<ProfilePage> {
               child: const Text(StringLabels.camera),
               isDestructiveAction: false,
               onPressed: ()async{ 
-                var image = await ImagePicker.pickImage(source: ImageSource.camera);
+                var image = await ImagePicker.pickImage
+                                  (maxWidth: 640.0, maxHeight: 480.0, source: ImageSource.camera);
                 _image = image;
                 Navigator.of(context, rootNavigator: true).pop(image);
               }
@@ -248,7 +248,8 @@ class ProfilePageState extends State<ProfilePage> {
               child: const Text(StringLabels.photoLibrary),
               isDefaultAction: true,
               onPressed: ()async{ 
-                var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+                var image = await ImagePicker.pickImage
+                                  (maxWidth: 640.0, maxHeight: 480.0, source: ImageSource.camera);
                 _image = image;
                  Navigator.of(context, rootNavigator: true).pop(image);
               }

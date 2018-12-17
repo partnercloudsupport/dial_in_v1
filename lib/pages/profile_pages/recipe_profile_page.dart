@@ -22,6 +22,7 @@ import 'package:dial_in_v1/data/images.dart';
 import 'package:dial_in_v1/database_functions.dart';
 import 'package:dial_in_v1/widgets/profile_page_widgets.dart';
 import 'package:dial_in_v1/widgets/custom_widgets.dart';
+import 'dart:io';
 
 class RecipePage extends StatefulWidget{
 
@@ -38,26 +39,6 @@ class RecipePage extends StatefulWidget{
 }
 
 class _RecipePageState extends State<RecipePage> {
-  
- Profile _profile;
-
-
-  void initState() {
-    _profile = widget._profile; 
-    super.initState();
-  }
-
-  @override
-  void didUpdateWidget(Widget oldWidget) {
-    super.didUpdateWidget(oldWidget);
-  }
-
-  @override
-  void didChangeDependencies(){
-    setState(() {
-        });
-    super.didChangeDependencies();
-  }
 
   ///
   /// UI Build
@@ -68,25 +49,42 @@ class _RecipePageState extends State<RecipePage> {
 
               /// Date
               DateInputCard(StringLabels.date,
-                  _profile.getProfileItemValue( DatabaseIds.date),
+                  widget._profile.getProfileItemValue( DatabaseIds.date),
                   (dateTime){widget._setProfileItemValue( DatabaseIds.date, dateTime);}),
 
+              ///Coffee
+              ProfileWithDetailsCard(
+                widget._profile.getProfileProfileItem(ProfileType.coffee, DatabaseIds.coffeeId),
+                File(Images.coffeeBeans),
+                StringLabels.daysRested,
+                '10',
+                (){widget._showOptions(ProfileType.coffee);},),
+
+              ///Barista
+              ProfileWithDetailsCard(
+                widget._profile.getProfileProfileItem(ProfileType.barista, DatabaseIds.name),
+                File(Images.user),
+                StringLabels.userBig,
+                '10',
+                (){widget._showOptions(ProfileType.barista);},),
+
               /// Coffee and Barista Card
-              DoubleProfileInputCard(
-                leftHintText: StringLabels.selectCoffee,        
-                leftImageRefString: Images.coffeeBeans,
-                leftTextfieldText:  _profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.coffee),
-                leftTitle: StringLabels.coffee,
-                onLeftProfileTextPressed: (){widget._showOptions(ProfileType.coffee);},
+              /// 
+              // DoubleProfileInputCard(
+              //   leftHintText: StringLabels.selectCoffee,        
+              //   leftImageRefString: Images.coffeeBeans,
+              //   leftTextfieldText:  widget._profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.coffee),
+              //   leftTitle: StringLabels.coffee,
+              //   onLeftProfileTextPressed: (){widget._showOptions(ProfileType.coffee);},
                 
-                rightHintText: StringLabels.chooseBarista,
-                rightImageRefString: Images.user,
-                rightTextfieldText: _profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.Barista),
-                rightTitle: StringLabels.barista ,
-                onRightProfileTextPressed: (){widget._showOptions(ProfileType.barista);} ), 
+              //   rightHintText: StringLabels.chooseBarista,
+              //   rightImageRefString: Images.user,
+              //   rightTextfieldText: widget._profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.Barista),
+              //   rightTitle: StringLabels.barista ,
+              //   onRightProfileTextPressed: (){widget._showOptions(ProfileType.barista);} ), 
         
               ///Water Section
-              ProfileInputCard(
+              ProfileInputCardWithAttribute(
                   imageRefString: Images.drop,
                   title: StringLabels.water,
                   keyboardType: TextInputType.number,
@@ -96,14 +94,14 @@ class _RecipePageState extends State<RecipePage> {
                   onProfileTextPressed: () {
                     widget._showOptions(ProfileType.water);
                   },
-                  attributeTextfieldText: _profile.getProfileItemValue(
+                  attributeTextfieldText: widget._profile.getProfileItemValue(
                        DatabaseIds.temparature),
                   attributeHintText: StringLabels.enterValue,
                   attributeTitle: StringLabels.temparature,
                   profileName: widget._profile.getProfileProfileTitleValue( profileDatabaseId: DatabaseIds.water)),
 
               /// Grinder
-              ProfileInputCard(
+              ProfileInputCardWithAttribute(
                   imageRefString: Images.grinder,
                   title: StringLabels.grinder,
                   onAttributeTextChange: (text) {
@@ -112,15 +110,15 @@ class _RecipePageState extends State<RecipePage> {
                   onProfileTextPressed: () {
                     widget._showOptions(ProfileType.grinder);
                   },
-                  attributeTextfieldText: _profile.getProfileItemValue(
+                  attributeTextfieldText: widget._profile.getProfileItemValue(
                        DatabaseIds.grindSetting),
                   attributeHintText: StringLabels.enterValue,
                   attributeTitle: StringLabels.setting,
                   keyboardType: TextInputType.number,
-                  profileName: _profile.getProfileProfileTitleValue( profileDatabaseId: DatabaseIds.grinder)),
+                  profileName: widget._profile.getProfileProfileTitleValue( profileDatabaseId: DatabaseIds.grinder)),
 
               /// Equipment
-              ProfileInputCard(
+              ProfileInputCardWithAttribute(
                   imageRefString: Images.aeropressSmaller512x512,
                   title: StringLabels.brewingEquipment,
                   onAttributeTextChange: (text) {
@@ -129,7 +127,7 @@ class _RecipePageState extends State<RecipePage> {
                   onProfileTextPressed: () {
                     widget._showOptions(ProfileType.equipment);
                   },
-                  attributeTextfieldText: _profile.getProfileItemValue(
+                  attributeTextfieldText: widget._profile.getProfileItemValue(
                        DatabaseIds.preinfusion),
                   attributeHintText: StringLabels.enterValue,
                   attributeTitle: StringLabels.preinfusion,
@@ -156,7 +154,7 @@ class _RecipePageState extends State<RecipePage> {
 
               NotesCard(
                   StringLabels.notes,
-                  _profile.getProfileItemValue(
+                  widget._profile.getProfileItemValue(
                        DatabaseIds.notes),
                   (notes) {widget._setProfileItemValue( DatabaseIds.notes, notes);}),
 
@@ -188,7 +186,7 @@ class _RecipePageState extends State<RecipePage> {
                         
                         NotesCard(
                         StringLabels.descriptors,
-                        _profile.getProfileItemValue(
+                        widget._profile.getProfileItemValue(
                              DatabaseIds.descriptors),
                         (text) {widget._setProfileItemValue( DatabaseIds.descriptors, text);}), 
                       ],

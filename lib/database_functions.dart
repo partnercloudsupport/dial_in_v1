@@ -410,6 +410,7 @@ class DatabaseFunctions {
       break;
     }
   }
+  
   /// Give user profile name and photo
   static Future<void> updateUserProfileWithNameAndPhoto(String displayName, String photoUrl,)async{
 
