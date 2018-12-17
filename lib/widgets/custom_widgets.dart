@@ -639,10 +639,7 @@ class _DateInputCardState extends State<DateInputCard> {
   FocusNode _focus = new FocusNode();
 
   void textfieldFocus(){
-        // if (_focus.hasFocus){
-        // _focus.notifyListeners
-        // _focus.unfocus();  
-        // }
+    widget.onDateChanged();
   }
 
   @override
@@ -671,7 +668,7 @@ class _DateInputCardState extends State<DateInputCard> {
                       format: widget._dateFormat,
                       initialDate: widget._dateTime,
                       decoration: InputDecoration(labelText: widget._title),
-                      onChanged: widget.onDateChanged,
+                      onChanged: (date) => setState(() => widget.onDateChanged(date)),
                       controller: _controller),
                     ),
                 ],
@@ -745,26 +742,45 @@ Container(
   }
 }       
 
-class TextFieldWithFixedValue extends StatelessWidget {
+
+class TextfieldWithFixedValue extends StatefulWidget {
 
 final dynamic _initalValue; 
 final String _titleLabel;
 
-TextFieldWithFixedValue(this._titleLabel, this._initalValue,);
+TextfieldWithFixedValue(this._titleLabel, this._initalValue,);
 
-@override
+ _TextfieldWithFixedValueState createState() => _TextfieldWithFixedValueState();
+}
+
+class _TextfieldWithFixedValueState extends State<TextfieldWithFixedValue> {
+  
+  TextEditingController _controller = new TextEditingController();
+
+  @override
+    void initState() {
+      _controller.text = widget._initalValue;
+      super.initState();
+    }
+
+  @override
+  void didUpdateWidget(TextfieldWithFixedValue oldWidget) {
+      _controller.text = widget._initalValue;
+      super.didUpdateWidget(oldWidget);
+    }
+
+  @override
   Widget build(BuildContext context) {
     return
     Expanded(
         child: TextFormField(
-        initialValue: _initalValue,
+        controller: _controller ,
         enabled: false,
         textAlign: TextAlign.start,
         decoration: new InputDecoration(
-        labelText: _titleLabel,
-        
+        labelText: widget._titleLabel,
         ),
-        )
+      )
     ); 
   }
 }   
