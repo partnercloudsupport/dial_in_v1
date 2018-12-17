@@ -641,7 +641,7 @@ class _DateInputCardState extends State<DateInputCard> {
 
   @override
     void initState() {
-      // _controller.text = widget._dateFormat.format(widget._dateTime);
+      _controller.text = widget._dateFormat.format(widget._dateTime);
       super.initState();
     }
 
