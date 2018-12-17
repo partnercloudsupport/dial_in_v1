@@ -112,7 +112,6 @@ class CircularPicture extends StatelessWidget {
   }
 }
 
-
 /// Action button
 class ActionButton extends StatelessWidget {
   final String _buttonTitle;
@@ -754,6 +753,7 @@ TextFieldWithFixedValue(this._titleLabel, this._initalValue,);
         textAlign: TextAlign.start,
         decoration: new InputDecoration(
         labelText: _titleLabel,
+        
         ),
         )
     ); 

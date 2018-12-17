@@ -22,6 +22,7 @@ import 'package:dial_in_v1/data/images.dart';
 import 'package:dial_in_v1/database_functions.dart';
 import 'package:dial_in_v1/widgets/profile_page_widgets.dart';
 import 'package:dial_in_v1/widgets/custom_widgets.dart';
+import 'package:dial_in_v1/data/functions.dart';
 import 'dart:io';
 
 class RecipePage extends StatefulWidget{
@@ -53,37 +54,18 @@ class _RecipePageState extends State<RecipePage> {
                   (dateTime){widget._setProfileItemValue( DatabaseIds.date, dateTime);}),
 
               ///Coffee
-              ProfileWithDetailsCard(
-                widget._profile.getProfileProfileItem(ProfileType.coffee, DatabaseIds.coffeeId),
-                File(Images.coffeeBeans),
+              ProfileInputWithDetailsCard(
+                widget._profile.getProfileProfile(ProfileType.coffee),
                 StringLabels.daysRested,
                 '10',
                 (){widget._showOptions(ProfileType.coffee);},),
 
               ///Barista
-              ProfileWithDetailsCard(
-                widget._profile.getProfileProfileItem(ProfileType.barista, DatabaseIds.name),
-                File(Images.user),
-                StringLabels.userBig,
-                '10',
+              ProfileInputCard(
+                widget._profile.getProfileProfile(ProfileType.barista),
                 (){widget._showOptions(ProfileType.barista);},),
 
-              /// Coffee and Barista Card
-              /// 
-              // DoubleProfileInputCard(
-              //   leftHintText: StringLabels.selectCoffee,        
-              //   leftImageRefString: Images.coffeeBeans,
-              //   leftTextfieldText:  widget._profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.coffee),
-              //   leftTitle: StringLabels.coffee,
-              //   onLeftProfileTextPressed: (){widget._showOptions(ProfileType.coffee);},
-                
-              //   rightHintText: StringLabels.chooseBarista,
-              //   rightImageRefString: Images.user,
-              //   rightTextfieldText: widget._profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.Barista),
-              //   rightTitle: StringLabels.barista ,
-              //   onRightProfileTextPressed: (){widget._showOptions(ProfileType.barista);} ), 
-        
-              ///Water Section
+
               ProfileInputCardWithAttribute(
                   imageRefString: Images.drop,
                   title: StringLabels.water,

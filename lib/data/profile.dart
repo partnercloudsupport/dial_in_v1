@@ -209,6 +209,30 @@ Future<File> getUserImage ()async{
    return value;
  }
 
+ dynamic getProfileProfileImage(ProfileType profiletype) {
+  dynamic value;
+   if (this.profiles != null) {
+      for (var i = 0; i < this.profiles.length; i++) {
+        if (this.profiles[i].type == profiletype) {
+              value = this.profiles[i].image;
+        }
+      }
+   }
+   return value;
+ }
+
+ Profile getProfileProfile(ProfileType profiletype) {
+  Profile value;
+   if (this.profiles != null) {
+      for (var i = 0; i < this.profiles.length; i++) {
+        if (this.profiles[i].type == profiletype) {
+              value = this.profiles[i];
+        }
+      }
+   }
+   return value;
+ }
+
  Future<String> getProfileUserName()async{
    
   String userId = await DatabaseFunctions.getValueFromFireStoreWithDocRef(DatabaseIds.User, this.userId, DatabaseIds.userName);
@@ -289,6 +313,44 @@ Future<File> getUserImage ()async{
     }
     return value;
   }
+  
+ String getProfileTitleValue() {
+  String value = 'Error';
+   switch (this.databaseId) {
+            case DatabaseIds.recipe:
+              value = this.getProfileItemValue( DatabaseIds.recipeId);
+              break;
+
+            case DatabaseIds.coffee:
+              value = this.getProfileItemValue( DatabaseIds.coffeeId);
+              break;
+
+            case DatabaseIds.water:
+              value = this.getProfileItemValue( DatabaseIds.waterID);
+              break;
+
+            case DatabaseIds.brewingEquipment:
+              value = this.getProfileItemValue( DatabaseIds.equipmentId);
+              break;
+
+            case DatabaseIds.grinder:
+              value = this.getProfileItemValue( DatabaseIds.grinderId);
+              break;
+
+            case DatabaseIds.Barista:
+              value = this.getProfileItemValue( DatabaseIds.name);
+              break;
+
+            case DatabaseIds.score:
+            value = (this.getProfileItemValue( DatabaseIds.strength) +
+                      this.getProfileItemValue( DatabaseIds.balance) +
+                      this.getProfileItemValue( DatabaseIds.flavour) +
+                      this.getProfileItemValue( DatabaseIds.body) +
+                      this.getProfileItemValue( DatabaseIds.afterTaste)).toString();
+              break;  
+   }
+   return value;
+ }
 
   String getProfileProfileRefernace({String profileDatabaseId}) {
     String value = '';

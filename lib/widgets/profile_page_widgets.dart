@@ -6,6 +6,7 @@ import 'package:meta/meta.dart';
 import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'package:dial_in_v1/data/item.dart';
 import 'dart:io';
+import 'package:dial_in_v1/data/profile.dart';
 
 class ScoreSlider extends StatefulWidget {
   final double _value;
@@ -351,24 +352,23 @@ class _DoubleProfileInputCardState extends State<DoubleProfileInputCard> {
 }
 
 ///Profile details card
-class ProfileWithDetailsCard extends StatefulWidget {
+class ProfileInputWithDetailsCard extends StatefulWidget {
   final double _padding = 20.0;
   final double _margin = 10.0;
   final double _cornerRadius = 20.0;
   final double _textFieldWidth = 150.0;
-  final Item _item;
-  final File _image;
+  final Profile _profile;
   final String _detailTitle;
   final String _detailValue;
   final Function _onProfileTextPressed;
 
 
-  ProfileWithDetailsCard(this._item, this._image, this._detailTitle, this._detailValue, this._onProfileTextPressed);
+  ProfileInputWithDetailsCard(this._profile, this._detailTitle, this._detailValue, this._onProfileTextPressed);
 
-  _ProfileWithDetailsCardState createState() => _ProfileWithDetailsCardState();
+  ProfileInputWithDetailsCardState createState() => ProfileInputWithDetailsCardState();
 }
 
-class _ProfileWithDetailsCardState extends State<ProfileWithDetailsCard> {
+class ProfileInputWithDetailsCardState extends State<ProfileInputWithDetailsCard> {
 
   TextEditingController _controller;
   FocusNode _focus;
@@ -377,13 +377,13 @@ class _ProfileWithDetailsCardState extends State<ProfileWithDetailsCard> {
        void initState() {
             _focus = new FocusNode();
             _focus.addListener(handleLeftProfileTextfieldFocus);
-            _controller = new TextEditingController(text: widget._item.value);
+            _controller = new TextEditingController(text: widget._profile.getProfileTitleValue());
             super.initState();
       }
 
       @override
           void didUpdateWidget(Widget oldWidget) {
-            _controller = new TextEditingController(text: widget._item.value);
+            _controller = new TextEditingController(text: widget._profile.getProfileTitleValue());
            super.didUpdateWidget(oldWidget);
           }
 
@@ -393,7 +393,6 @@ class _ProfileWithDetailsCardState extends State<ProfileWithDetailsCard> {
         _controller.dispose();
         super.dispose();
       }
-
 
       void handleLeftProfileTextfieldFocus(){
         if (_focus.hasFocus){
@@ -414,15 +413,15 @@ class _ProfileWithDetailsCardState extends State<ProfileWithDetailsCard> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
 
-                  CircularPicture(widget._image, 60.0),
+                  CircularPicture(widget._profile.image, 40.0),
 
                   Container(
                           width: widget._textFieldWidth,
-                          margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, widget._margin),
+                          margin: EdgeInsets.fromLTRB(0.0, 0.0, widget._margin, 0.0),
                           child: TextFormField(
-                              textAlign: TextAlign.end,
+                              textAlign: TextAlign.start,
                               decoration: new InputDecoration(
-                                labelText: widget._item.title,
+                                labelText: StringLabels.name,
                               ),
                               focusNode: _focus,
                               controller: _controller,
@@ -438,10 +437,89 @@ class _ProfileWithDetailsCardState extends State<ProfileWithDetailsCard> {
   }
 }
 
+//Single profile card
+
+class ProfileInputCard extends StatefulWidget {
+  final double _padding = 20.0;
+  final double _margin = 10.0;
+  final double _cornerRadius = 20.0;
+  final double _textFieldWidth = 150.0;
+  final Profile _profile;
+  final Function _onProfileTextPressed;
 
 
+  ProfileInputCard(this._profile, this._onProfileTextPressed);
 
-//////
+  ProfileInputCardState createState() => ProfileInputCardState();
+}
+
+class ProfileInputCardState extends State<ProfileInputCard> {
+
+  TextEditingController _controller;
+  FocusNode _focus;
+
+      @override
+       void initState() {
+            _focus = new FocusNode();
+            _focus.addListener(handleLeftProfileTextfieldFocus);
+            _controller = new TextEditingController(text: widget._profile.getProfileTitleValue());
+            super.initState();
+      }
+
+      @override
+          void didUpdateWidget(Widget oldWidget) {
+            _controller = new TextEditingController(text: widget._profile.getProfileTitleValue());
+           super.didUpdateWidget(oldWidget);
+          }
+
+      @override
+      void dispose() {
+        // Clean up the controller when the Widget is removed from the Widget tree
+        _controller.dispose();
+        super.dispose();
+      }
+
+      void handleLeftProfileTextfieldFocus(){
+        if (_focus.hasFocus){
+        widget._onProfileTextPressed();
+        _focus.unfocus();  
+        }
+      }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+       child: Card(
+        margin: EdgeInsets.all(widget._margin),
+          child: Container(
+            padding: EdgeInsets.all(widget._padding),
+            child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+
+                  CircularPicture(widget._profile.image, 40.0),
+
+                  Container(
+                          width: widget._textFieldWidth,
+                          margin: EdgeInsets.all(widget._margin,),
+                          child: TextFormField(
+                              textAlign: TextAlign.start,
+                              decoration: new InputDecoration(
+                                labelText: StringLabels.name,
+                              ),
+                              focusNode: _focus,
+                              controller: _controller,
+                          )),
+
+
+                ]
+            )
+          )
+       )
+    );
+  }
+}
 
 
 class ProfileImage extends StatelessWidget {
