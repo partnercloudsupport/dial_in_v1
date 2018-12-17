@@ -429,7 +429,7 @@ class DatabaseFunctions {
     });
   }
 
-  static Future<Stream> getFeed(String _listDatabaseId, bool isProfileFeed ,Function(Profile)  _dealWithProfileSelection){
+  static Future<Stream> getFeed(String _listDatabaseId, bool isProfileFeed ,Function(Profile)  _dealWithProfileSelection, Function(Profile) _deleteProfile){
 
     StreamBuilder(
       stream: Firestore.instance.collection(_listDatabaseId).snapshots(),
@@ -451,7 +451,7 @@ class DatabaseFunctions {
                             height: 200.0,
                             width: 150.0,
                             child: new FutureBuilder(
-                                future: isProfileFeed ? Functions.buildProfileCardArrayFromAsyncSnapshot(context, snapshot, _listDatabaseId, _dealWithProfileSelection):
+                                future: isProfileFeed ? Functions.buildProfileCardArrayFromAsyncSnapshot(context, snapshot, _listDatabaseId, _dealWithProfileSelection, _deleteProfile):
                                 Functions.buildFeedCardArray(context, snapshot, _dealWithProfileSelection),
                                 builder: (BuildContext context, AsyncSnapshot futureSnapshot) {
                                   switch (futureSnapshot.connectionState) {

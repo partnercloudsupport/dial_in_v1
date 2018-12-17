@@ -6,13 +6,10 @@ import 'package:dial_in_v1/data/profile.dart';
 import 'package:dial_in_v1/pages/profile_pages/profile_page.dart';
 import 'package:dial_in_v1/data/functions.dart';
 import 'package:dial_in_v1/pages/overview_page/profile_list.dart';
-import 'package:dial_in_v1/inherited_widgets.dart';
 
 
-
+/// Data page
 class DataPage extends StatefulWidget {
-
-  DataPage();
 
   @override
   DataPageState createState() => new DataPageState();
@@ -126,8 +123,7 @@ class DataPageState extends State<DataPage>with SingleTickerProviderStateMixin {
   }
 }
 
-
-          
+///Data list         
 class DataList extends StatelessWidget {
   final ProfileType _profileType;
   final Function(Profile) _giveProfile;

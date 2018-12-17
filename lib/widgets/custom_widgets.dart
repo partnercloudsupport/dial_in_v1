@@ -621,15 +621,16 @@ class ProfileImage extends StatelessWidget {
   }
 }
 
+/// Date input card
 class DateInputCard extends StatefulWidget {
   final double _padding = 20.0;
   final double _margin = 10.0;
   final double _cornerRadius = 20.0;
   final double _textFieldWidth = 150.0;
-  final _dateFormat = DateFormat("EEEE, MMMM d, yyyy 'at' h:mma");
+  final _dateFormat = DateFormat("MMMM d, yyyy 'at' h:mma");
   final DateTime _dateTime;
-  Function(DateTime) onDateChanged; 
-  String _title;
+  final Function(DateTime) onDateChanged; 
+  final String _title;
 
   DateInputCard(this._title, this._dateTime, this.onDateChanged);
 
@@ -637,13 +638,13 @@ class DateInputCard extends StatefulWidget {
 }
 
 class _DateInputCardState extends State<DateInputCard> {
-  DateTime _dateTime;
+  
+  TextEditingController _controller = new TextEditingController();
 
   @override
-    void didUpdateWidget(Widget oldWidget) {
-      
-       _dateTime = widget._dateTime;
-      super.didUpdateWidget(oldWidget);
+    void initState() {
+      _controller.text = widget._dateFormat.format(widget._dateTime);
+      super.initState();
     }
     
   @override
@@ -664,7 +665,8 @@ class _DateInputCardState extends State<DateInputCard> {
                       format: widget._dateFormat,
                       initialDate: widget._dateTime,
                       decoration: InputDecoration(labelText: widget._title),
-                      onChanged: widget.onDateChanged),
+                      onChanged: widget.onDateChanged,
+                      controller: _controller),
                     ),
                 ],
               ),

@@ -8,7 +8,7 @@ import 'package:dial_in_v1/data/profile.dart';
 import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'package:dial_in_v1/data/item.dart';
 
-
+/// Page
 class CoffeeProfilePage extends StatefulWidget {
   final double _margin;
   final Profile _profile;
@@ -198,6 +198,7 @@ class RoastingDetailsCardState extends State<RoastingDetailsCard> {
   String _roasteryNameValue;
   String _roasterNameValue;
   DateTime _roastDateValue;
+  TextEditingController _controller = new TextEditingController();
   
   @override
   void initState() {
@@ -205,6 +206,7 @@ class RoastingDetailsCardState extends State<RoastingDetailsCard> {
     _roasteryNameValue = widget._roasteryNameValue;
     _roasterNameValue = widget._roasterNameValue;
     _roastDateValue = widget._roastDateValue;
+    _controller.text = widget.dateFormat.format(widget._roastDateValue);
     super.initState();
   }
 
@@ -223,6 +225,7 @@ class RoastingDetailsCardState extends State<RoastingDetailsCard> {
                       format: widget.dateFormat,
                       decoration: InputDecoration(labelText: StringLabels.date),
                       initialDate: _roastDateValue,
+                      controller: _controller,
                       dateOnly: true,
                       onChanged: (date) {
                       if (date != null){           
