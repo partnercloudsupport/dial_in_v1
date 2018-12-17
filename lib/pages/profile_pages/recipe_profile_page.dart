@@ -55,7 +55,8 @@ class _RecipePageState extends State<RecipePage> {
               /// Date
               DateInputCard(StringLabels.date,
                   widget._profile.getProfileItemValue( DatabaseIds.date),
-                  (dateTime){widget._setProfileItemValue( DatabaseIds.date, dateTime);}),
+                  (dateTime)
+                  {if (dateTime != null){ widget._setProfileItemValue( DatabaseIds.date, dateTime);}}),
 
               ///Coffee
               ProfileInputWithDetailsCard(

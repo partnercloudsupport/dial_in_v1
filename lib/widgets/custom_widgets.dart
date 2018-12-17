@@ -647,7 +647,7 @@ class _DateInputCardState extends State<DateInputCard> {
 
   @override
     void didUpdateWidget(DateInputCard oldWidget) {
-      // _controller.text = widget._dateFormat.format(widget._dateTime);
+      _controller.text = widget._dateFormat.format(widget._dateTime);
       super.didUpdateWidget(oldWidget);
     }  
     
@@ -666,7 +666,6 @@ class _DateInputCardState extends State<DateInputCard> {
                 children: <Widget>[
                   Expanded(
                     child: DateTimePickerFormField(
-                      // focusNode: _focus,
                       format: widget._dateFormat,
                       decoration: InputDecoration(labelText: widget._title),
                       onChanged: (date) => setState( () => widget.onDateChanged(date) ),
@@ -679,6 +678,8 @@ class _DateInputCardState extends State<DateInputCard> {
     );
   }
 }
+
+
 
 /// Widgets
 class TextFieldWithInitalValue extends StatelessWidget {
@@ -777,9 +778,9 @@ class _TextfieldWithFixedValueState extends State<TextfieldWithFixedValue> {
         child: TextFormField(
         controller: _controller ,
         enabled: false,
-        textAlign: TextAlign.start,
+        textAlign: TextAlign.center,
         decoration: new InputDecoration(
-        labelText: widget._titleLabel,
+        labelText: widget._titleLabel, 
         ),
       )
     ); 

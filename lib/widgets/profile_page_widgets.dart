@@ -356,7 +356,7 @@ class ProfileInputWithDetailsCard extends StatefulWidget {
   final double _padding = 20.0;
   final double _margin = 10.0;
   final double _cornerRadius = 20.0;
-  final double _textFieldWidth = 150.0;
+  final double _textFieldWidth = 130.0;
   final Profile _profile;
   final String _detailTitle;
   final String _detailValue;
@@ -415,7 +415,7 @@ class ProfileInputWithDetailsCardState extends State<ProfileInputWithDetailsCard
        child: Card(
         margin: EdgeInsets.all(widget._margin),
           child: Container(
-            padding: EdgeInsets.all(widget._padding),
+            padding: EdgeInsets.fromLTRB(5.0,widget._padding,widget._padding,widget._padding),
             child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
