@@ -32,11 +32,6 @@ class OverviewPageState extends State<OverviewPage> with SingleTickerProviderSta
   }
 
   @override
-  void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
-    }
-  @override
   void dispose(){
     controller.dispose();
     super.dispose();
@@ -51,10 +46,7 @@ class OverviewPageState extends State<OverviewPage> with SingleTickerProviderSta
   /// UI Build  
     @override
   Widget build(BuildContext context) {
-    return 
-    new ScopedModel(
-      model: ProfilesModel(),
-      child: Scaffold(
+    return  Scaffold(
        
       /// 
       /// App bar 
@@ -86,7 +78,7 @@ class OverviewPageState extends State<OverviewPage> with SingleTickerProviderSta
           _tabViews.tabs[2].tab,
         ],),),
       )
-      ));
+      );
     }
 }
 

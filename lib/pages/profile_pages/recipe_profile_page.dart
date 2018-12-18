@@ -1,19 +1,4 @@
 
-import 'package:flutter/material.dart'
-    show
-        AppBar,
-        BuildContext,
-        FontWeight,
-        Icon,
-        Icons,
-        Navigator,
-        RawMaterialButton,
-        Scaffold,
-        State,
-        StatefulWidget,
-        Text,
-        TextStyle,
-        required;
 import 'package:dial_in_v1/data/profile.dart';
 import 'package:dial_in_v1/data/strings.dart';
 import 'package:flutter/cupertino.dart';
@@ -25,48 +10,42 @@ import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'package:dial_in_v1/data/functions.dart';
 import 'dart:io';
 
-class RecipePage extends StatefulWidget{
+class RecipePage extends StatelessWidget{
 
   final Function(ProfileType) _showOptions;
   final double _margin; 
   final Profile _profile;
 
   // Sets a String and Value in the Parent profie
-  Function(String , dynamic) _setProfileItemValue;
+  final Function(String , dynamic) _setProfileItemValue;
 
   RecipePage(this._profile, this._margin, this._setProfileItemValue, this._showOptions);
-
-  _RecipePageState createState() => new _RecipePageState();
-}
-
-class _RecipePageState extends State<RecipePage> {
 
   ///
   /// UI Build
   ///
   @override
   Widget build(BuildContext context) {
-    return new 
-    
+    return  
     Column(children: <Widget>[ 
 
               /// Date
               DateInputCard(StringLabels.date,
-                  widget._profile.getProfileItemValue( DatabaseIds.date),
+                  _profile.getProfileItemValue( DatabaseIds.date),
                   (dateTime)
-                  {if (dateTime != null){ widget._setProfileItemValue( DatabaseIds.date, dateTime);}}),
+                  {if (dateTime != null){ _setProfileItemValue( DatabaseIds.date, dateTime);}}),
 
               ///Coffee
               ProfileInputWithDetailsCard(
-                widget._profile.getProfileProfile(ProfileType.coffee),
+                _profile.getProfileProfile(ProfileType.coffee),
                 StringLabels.daysRested,
-                widget._profile.getDaysRested().toString(),
-                (){widget._showOptions(ProfileType.coffee);},),
+                _profile.getDaysRested().toString(),
+                (){_showOptions(ProfileType.coffee);},),
 
               ///Barista
               ProfileInputCard(
-                widget._profile.getProfileProfile(ProfileType.barista),
-                (){widget._showOptions(ProfileType.barista);},),
+                _profile.getProfileProfile(ProfileType.barista),
+                (){_showOptions(ProfileType.barista);},),
 
 
               ProfileInputCardWithAttribute(
@@ -74,69 +53,69 @@ class _RecipePageState extends State<RecipePage> {
                   title: StringLabels.water,
                   keyboardType: TextInputType.number,
                   onAttributeTextChange: (text) {
-                    widget._setProfileItemValue( DatabaseIds.temparature,text);
+                    _setProfileItemValue( DatabaseIds.temparature,text);
                   },
                   onProfileTextPressed: () {
-                    widget._showOptions(ProfileType.water);
+                    _showOptions(ProfileType.water);
                   },
-                  attributeTextfieldText: widget._profile.getProfileItemValue(
+                  attributeTextfieldText: _profile.getProfileItemValue(
                        DatabaseIds.temparature),
                   attributeHintText: StringLabels.enterValue,
                   attributeTitle: StringLabels.temparature,
-                  profileName: widget._profile.getProfileProfileTitleValue( profileDatabaseId: DatabaseIds.water)),
+                  profileName: _profile.getProfileProfileTitleValue( profileDatabaseId: DatabaseIds.water)),
 
               /// Grinder
               ProfileInputCardWithAttribute(
                   imageRefString: Images.grinder,
                   title: StringLabels.grinder,
                   onAttributeTextChange: (text) {
-                    widget._setProfileItemValue(DatabaseIds.grindSetting, text);
+                    _setProfileItemValue(DatabaseIds.grindSetting, text);
                   },
                   onProfileTextPressed: () {
-                    widget._showOptions(ProfileType.grinder);
+                    _showOptions(ProfileType.grinder);
                   },
-                  attributeTextfieldText: widget._profile.getProfileItemValue(
+                  attributeTextfieldText: _profile.getProfileItemValue(
                        DatabaseIds.grindSetting),
                   attributeHintText: StringLabels.enterValue,
                   attributeTitle: StringLabels.setting,
                   keyboardType: TextInputType.number,
-                  profileName: widget._profile.getProfileProfileTitleValue( profileDatabaseId: DatabaseIds.grinder)),
+                  profileName: _profile.getProfileProfileTitleValue( profileDatabaseId: DatabaseIds.grinder)),
 
               /// Equipment
               ProfileInputCardWithAttribute(
                   imageRefString: Images.aeropressSmaller512x512,
                   title: StringLabels.brewingEquipment,
                   onAttributeTextChange: (text) {
-                    widget._setProfileItemValue(DatabaseIds.preinfusion, text);
+                    _setProfileItemValue(DatabaseIds.preinfusion, text);
                   },
                   onProfileTextPressed: () {
-                    widget._showOptions(ProfileType.equipment);
+                    _showOptions(ProfileType.equipment);
                   },
-                  attributeTextfieldText: widget._profile.getProfileItemValue(
+                  attributeTextfieldText: _profile.getProfileItemValue(
                        DatabaseIds.preinfusion),
                   attributeHintText: StringLabels.enterValue,
                   attributeTitle: StringLabels.preinfusion,
-                  profileName: widget._profile.getProfileProfileTitleValue( profileDatabaseId: DatabaseIds.brewingEquipment)),
+                  profileName: _profile.getProfileProfileTitleValue( profileDatabaseId: DatabaseIds.brewingEquipment)),
 
             /// Ratio card
                RatioCard(
-               widget._profile,
-              (dose) {widget._setProfileItemValue( DatabaseIds.brewingDose, dose);},  
-              ((yielde) {widget._setProfileItemValue( DatabaseIds.yielde, yielde);}),
-              (brewWeight) { widget._setProfileItemValue( DatabaseIds.brewWeight, brewWeight);}),
+               _profile,
+              (dose) {_setProfileItemValue( DatabaseIds.brewingDose, dose);},  
+              ((yielde) {_setProfileItemValue( DatabaseIds.yielde, yielde);}),
+              (brewWeight) { _setProfileItemValue( DatabaseIds.brewWeight, brewWeight);}),
 
               TwoTextfieldCard(
-                (time) { widget._setProfileItemValue( DatabaseIds.time, time);},
-                (tds) { widget._setProfileItemValue( DatabaseIds.tds, tds);},
-                widget._profile.getProfileItem(DatabaseIds.time),
-                widget._profile.getProfileItem(DatabaseIds.tds),
+                (time) { _setProfileItemValue( DatabaseIds.time, time);},
+                (tds) { _setProfileItemValue( DatabaseIds.tds, tds);},
+                _profile.getProfileItem(DatabaseIds.time),
+                _profile.getProfileItem(DatabaseIds.tds),
               ),
 
               NotesCard(
                   StringLabels.notes,
-                  widget._profile.getProfileItemValue(
+                  _profile.getProfileItemValue(
                        DatabaseIds.notes),
-                  (notes) {widget._setProfileItemValue( DatabaseIds.notes, notes);}),
+                  (notes) {_setProfileItemValue( DatabaseIds.notes, notes);}),
 
               ///Score Section
               Card(
@@ -144,7 +123,7 @@ class _RecipePageState extends State<RecipePage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Container(
-                      margin: EdgeInsets.all(widget._margin),
+                      margin: EdgeInsets.all(_margin),
                       child: Text(
                         StringLabels.score,
                         style: Theme.of(context).textTheme.title,
@@ -152,23 +131,23 @@ class _RecipePageState extends State<RecipePage> {
                     ),
                     Column(
                       children: <Widget>[
-                        ScoreSlider(StringLabels.strength, 0.0, (value) { widget._setProfileItemValue( DatabaseIds.strength, value);}),
+                        ScoreSlider(StringLabels.strength, 0.0, (value) { _setProfileItemValue( DatabaseIds.strength, value);}),
 
-                        ScoreSlider(StringLabels.balance, 0.0, (value) { widget._setProfileItemValue( DatabaseIds.balance, value);}),
+                        ScoreSlider(StringLabels.balance, 0.0, (value) { _setProfileItemValue( DatabaseIds.balance, value);}),
 
-                        ScoreSlider(StringLabels.flavour, 0.0, (value) { widget._setProfileItemValue( DatabaseIds.flavour, value);}),
+                        ScoreSlider(StringLabels.flavour, 0.0, (value) { _setProfileItemValue( DatabaseIds.flavour, value);}),
 
-                        ScoreSlider(StringLabels.body, 0.0, (value) {widget._setProfileItemValue( DatabaseIds.body, value);}),
+                        ScoreSlider(StringLabels.body, 0.0, (value) {_setProfileItemValue( DatabaseIds.body, value);}),
 
-                        ScoreSlider(StringLabels.afterTaste, 0.0, (value) {widget._setProfileItemValue( DatabaseIds.afterTaste, value);}),
+                        ScoreSlider(StringLabels.afterTaste, 0.0, (value) {_setProfileItemValue( DatabaseIds.afterTaste, value);}),
 
                         /// End of score
                         
                         NotesCard(
                         StringLabels.descriptors,
-                        widget._profile.getProfileItemValue(
+                        _profile.getProfileItemValue(
                              DatabaseIds.descriptors),
-                        (text) {widget._setProfileItemValue( DatabaseIds.descriptors, text);}), 
+                        (text) {_setProfileItemValue( DatabaseIds.descriptors, text);}), 
                       ],
                     )
                   ],

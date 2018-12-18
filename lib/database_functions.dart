@@ -49,7 +49,6 @@ class DatabaseFunctions {
 
   static Future<File> downloadFile(String httpPath)async{
 
-
     final RegExp regExpPng = RegExp('([^?/]*\.(png))');    
     final RegExp regExpjpg = RegExp('([^?/]*\.(jpg))');
     String fileName;
@@ -65,11 +64,10 @@ class DatabaseFunctions {
     final StorageReference firebaseStorageReferance = FirebaseStorage.instance.ref().child(fileName);
     final StorageFileDownloadTask downloadTask = firebaseStorageReferance.writeToFile(file);
     
-    await downloadTask.future.then((totalByteCount){print ('Downloaded ${totalByteCount.totalByteCount.toInt()}');});
+    await downloadTask.future.then((totalByteCount){;});
     return file;
 
      } catch (e){
-       print('Error line 65 DB.func/DowloadFile${e}');
        return Functions.getFile(Images.recipeSmaller);
      }
 }

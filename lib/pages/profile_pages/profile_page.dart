@@ -65,11 +65,6 @@ class ProfilePageState extends State<ProfilePage> {
       super.initState();
   }
 
-  @override
-  void didUpdateWidget(Widget oldWidget) {
-      super.didUpdateWidget(oldWidget);
-  }
-
   /// UI Build
   @override
   Widget build(BuildContext context) {

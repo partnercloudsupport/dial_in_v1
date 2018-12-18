@@ -7,33 +7,19 @@ import 'package:dial_in_v1/data/profile.dart';
 import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'package:dial_in_v1/data/item.dart';
 
-class WaterPage extends StatefulWidget{
+class WaterPage extends StatelessWidget{
 
 final double _margin; 
 final Profile _profile;
+final double _padding = 20.0;
+
 
 // Sets a String and Value in the Parent profie
 final Function(String , dynamic) _setProfileItemValue;
 
   WaterPage(this._profile, this._margin, this._setProfileItemValue);
 
-_WaterPageState createState() => new _WaterPageState();
-}
-
-class _WaterPageState extends State<WaterPage> {
-  final double _padding = 20.0;
-  final double _margin = 10.0;
-  Profile _profile;
-
-  @override 
-  void initState() {
-    _profile = widget._profile;
-      super.initState();
-    }
-
- ///
   /// UI Build
-  ///
   @override
   Widget build(BuildContext context) {
     return new Column(children: <Widget>[
@@ -41,19 +27,19 @@ class _WaterPageState extends State<WaterPage> {
                   /// Name
                   TextFieldItemWithInitalValue
                   (_profile.getProfileItem(DatabaseIds.waterID),
-                  (name){widget._setProfileItemValue( DatabaseIds.waterID, name);}), 
+                  (name){_setProfileItemValue( DatabaseIds.waterID, name);}), 
                   
                   /// Date
                   DateInputCard(StringLabels.dateTested,
-                  widget._profile.getProfileItemValue( DatabaseIds.date),
-                  (dateTime){widget._setProfileItemValue( DatabaseIds.date, dateTime);}),
+                  _profile.getProfileItemValue( DatabaseIds.date),
+                  (dateTime){_setProfileItemValue( DatabaseIds.date, dateTime);}),
 
                   /// Details
                   WaterDetailsCard(
-                    (totalPpm){widget._setProfileItemValue( DatabaseIds.ppm, totalPpm);},
-                    (ghPpm){widget._setProfileItemValue( DatabaseIds.gh, ghPpm);},
-                    (khPpm){widget._setProfileItemValue( DatabaseIds.kh, khPpm);},
-                    (pH){widget._setProfileItemValue( DatabaseIds.ph, pH);},
+                    (totalPpm){_setProfileItemValue( DatabaseIds.ppm, totalPpm);},
+                    (ghPpm){_setProfileItemValue( DatabaseIds.gh, ghPpm);},
+                    (khPpm){_setProfileItemValue( DatabaseIds.kh, khPpm);},
+                    (pH){_setProfileItemValue( DatabaseIds.ph, pH);},
                     _profile.getProfileItem( DatabaseIds.ppm),
                     _profile.getProfileItem( DatabaseIds.gh),
                     _profile.getProfileItem( DatabaseIds.kh),

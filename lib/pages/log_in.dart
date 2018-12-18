@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:dial_in_v1/data/strings.dart';
 import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'package:dial_in_v1/pages/sign_up.dart';
-import 'package:dial_in_v1/pages/overview_page/overview_page.dart';
+import 'package:dial_in_v1/pages/overview_page/overview_page_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -54,7 +54,7 @@ void loginButtonPressed(){
               _emailController.text = '';
               _passwordController.text = '';
             }); 
-       Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => OverviewPage()));
+       Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => OverviewPageBloc()));
       }else{
       PopUps.showAlert( 
         buttonFunction:() {Navigator.of(context).pop();},

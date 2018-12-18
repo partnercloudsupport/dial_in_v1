@@ -3,7 +3,6 @@ import 'package:dial_in_v1/pages/log_in.dart';
 import 'package:dial_in_v1/theme/app_theme.dart';
 import 'package:dial_in_v1/pages/sign_up.dart';
 import 'widgets/custom_widgets.dart';
-import 'package:dial_in_v1/inherited_widgets.dart';
 
 void main() {
   runApp(new MyApp());
