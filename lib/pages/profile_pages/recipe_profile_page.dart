@@ -23,8 +23,6 @@ import 'package:dial_in_v1/database_functions.dart';
 import 'package:dial_in_v1/widgets/profile_page_widgets.dart';
 import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'package:dial_in_v1/data/functions.dart';
-import 'package:scoped_model/scoped_model.dart';
-import 'package:dial_in_v1/inherited_widgets.dart';
 import 'dart:io';
 
 class RecipePage extends StatefulWidget{
@@ -121,22 +119,17 @@ class _RecipePageState extends State<RecipePage> {
                   profileName: widget._profile.getProfileProfileTitleValue( profileDatabaseId: DatabaseIds.brewingEquipment)),
 
             /// Ratio card
-            RatioCard(
-              doseChanged: (dose) {
-                widget._setProfileItemValue( DatabaseIds.brewingDose, dose);
-              }, yieldChanged: ((yielde) {
-                widget._setProfileItemValue( DatabaseIds.yielde, yielde);
-              }), brewWeightChanged: (brewWeight) {
-                widget._setProfileItemValue( DatabaseIds.brewWeight, brewWeight);
-              }),
+               RatioCard(
+               widget._profile,
+              (dose) {widget._setProfileItemValue( DatabaseIds.brewingDose, dose);},  
+              ((yielde) {widget._setProfileItemValue( DatabaseIds.yielde, yielde);}),
+              (brewWeight) { widget._setProfileItemValue( DatabaseIds.brewWeight, brewWeight);}),
 
               TwoTextfieldCard(
-                titleLeft: StringLabels.time,
-                leftHintText: StringLabels.setTime,
-                titleRight: StringLabels.tds,
-                rightHintText: StringLabels.enterValue,
-                onLeftTextChanged: (time) { widget._setProfileItemValue( DatabaseIds.time, time);},
-                onRightTextChanged: (tds) { widget._setProfileItemValue( DatabaseIds.tds, tds);},
+                (time) { widget._setProfileItemValue( DatabaseIds.time, time);},
+                (tds) { widget._setProfileItemValue( DatabaseIds.tds, tds);},
+                widget._profile.getProfileItem(DatabaseIds.time),
+                widget._profile.getProfileItem(DatabaseIds.tds),
               ),
 
               NotesCard(

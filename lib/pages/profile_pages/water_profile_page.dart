@@ -71,7 +71,6 @@ class _WaterPageState extends State<WaterPage> {
 class WaterDetailsCard extends StatelessWidget {
   final double _padding = 20.0;
   final double _margin = 10.0;
-  final double _textFieldWidth = 150.0;
   final Function(String) _totalPpm;
   final Function(String) _ghPpm;
   final Function(String) _khPpm;

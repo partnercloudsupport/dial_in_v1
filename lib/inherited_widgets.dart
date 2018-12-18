@@ -39,7 +39,7 @@ class ProfilesInheritedWidget extends InheritedWidget {
     context.inheritFromWidgetOfExactType(DateWidget) as DateWidget;
 }
 
-
+/// Profiles scoped model
 class ProfilesModel extends Model{
   
     Stream<List<Profile>> communityFeed;

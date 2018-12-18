@@ -806,7 +806,8 @@ class _TextfieldWithFixedValueState extends State<TextfieldWithFixedValue> {
   @override
   Widget build(BuildContext context) {
     return
-    Expanded(
+    Container(
+        width: 100.0,
         child: TextFormField(
         controller: _controller ,
         enabled: false,

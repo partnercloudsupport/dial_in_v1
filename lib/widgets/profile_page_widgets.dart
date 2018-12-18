@@ -7,6 +7,7 @@ import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'package:dial_in_v1/data/item.dart';
 import 'dart:io';
 import 'package:dial_in_v1/data/profile.dart';
+import 'package:dial_in_v1/database_functions.dart';
 
 class ScoreSlider extends StatefulWidget {
   final double _value;
@@ -166,7 +167,7 @@ class _ProfileInputCardWithAttributeState extends State<ProfileInputCardWithAttr
                           margin: EdgeInsets.fromLTRB(0.0, 0.0, widget._margin, 0.0),
                           width: widget._textFieldWidth,
                           child: TextFormField(
-                            textAlign: TextAlign.end,
+                            textAlign: TextAlign.start,
                             keyboardType: widget.keyboardType,
                             decoration: new InputDecoration(
                               labelText: widget.title,
@@ -177,7 +178,7 @@ class _ProfileInputCardWithAttributeState extends State<ProfileInputCardWithAttr
 
                         Expanded(
                             child: TextFormField(
-                            textAlign: TextAlign.end,
+                            textAlign: TextAlign.start,
                             keyboardType: widget.keyboardType,
                             decoration: new InputDecoration(
                               labelText: widget.attributeTitle,
@@ -356,7 +357,7 @@ class ProfileInputWithDetailsCard extends StatefulWidget {
   final double _padding = 20.0;
   final double _margin = 10.0;
   final double _cornerRadius = 20.0;
-  final double _textFieldWidth = 130.0;
+  final double _textFieldWidth = 150.0;
   final Profile _profile;
   final String _detailTitle;
   final String _detailValue;
@@ -450,7 +451,7 @@ class ProfileInputCard extends StatefulWidget {
   final double _padding = 20.0;
   final double _margin = 10.0;
   final double _cornerRadius = 20.0;
-  final double _textFieldWidth = 150.0;
+  final double _textFieldWidth = 180.0;
   final Profile _profile;
   final Function _onProfileTextPressed;
 
@@ -607,15 +608,30 @@ class RatioCard extends StatelessWidget {
   final double _cornerRadius = 20.0;
   final double _textFieldWidth = 80.0;
   final double _spacing = 15.0;
-  final Function(String) doseChanged;
-  final Function(String) yieldChanged;
-  final Function(String) brewWeightChanged;
 
-  RatioCard({
-    this.doseChanged,
-    this.yieldChanged,
-    this.brewWeightChanged,
-  });
+  Profile _profile;
+
+  final Function(String) _doseChanged;
+  TextEditingController _doseController = new TextEditingController();
+
+  final Function(String) _yieldChanged;
+  TextEditingController _yieldController = new TextEditingController();
+
+  final Function(String) _brewWeightChanged;
+  TextEditingController _weightController = new TextEditingController();
+
+
+  RatioCard(
+    this._profile,
+
+    this._doseChanged,
+    this._yieldChanged,
+    this._brewWeightChanged,
+  ){
+    _doseController.text = _profile.getProfileItemValue(DatabaseIds.brewingDose);
+    _yieldController.text = _profile.getProfileItemValue(DatabaseIds.yielde);
+    _weightController.text = _profile.getProfileItemValue(DatabaseIds.brewWeight);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -642,42 +658,47 @@ class RatioCard extends StatelessWidget {
               Container(
                   width: _textFieldWidth,
                   child: TextField(
+                    controller: _doseController,
                     textAlign: TextAlign.start,
                     keyboardType: TextInputType.number,
                     decoration: new InputDecoration(
                       labelText: StringLabels.brewingDose,
                       hintText: StringLabels.enterValue,
                     ),
-                    onChanged: doseChanged,
+                    onChanged: _doseChanged,
                   )),
 
               /// Yield
               Container(
-                  width: _textFieldWidth,
-                  child: TextField(
-                    textAlign: TextAlign.start,
-                    keyboardType: TextInputType.number,
-                    decoration: new InputDecoration(
-                      labelText: StringLabels.yielde,
-                      hintText: StringLabels.enterValue,
-                    ),
-                    onChanged: yieldChanged,
-                  )),
+                width: _textFieldWidth,
+                child: TextField(
+                  controller: _yieldController,
+                  textAlign: TextAlign.start,
+                  keyboardType: TextInputType.number,
+                  decoration: new InputDecoration(
+                    labelText: StringLabels.yielde,
+                    hintText: StringLabels.enterValue,
+                  ),
+                  onChanged: _yieldChanged,
+                )),
 
               /// Brew wieght
               Container(
-                  width: _textFieldWidth,
-                  child: TextField(
-                    textAlign: TextAlign.start,
-                    keyboardType: TextInputType.number,
-                    decoration: new InputDecoration(
-                      labelText: StringLabels.brewWeight,
-                      hintText: StringLabels.enterValue,
-                    ),
-                    onChanged: brewWeightChanged,
-                  )),
+                width: _textFieldWidth,
+                child: TextField(
+                  controller: _weightController,
+                  textAlign: TextAlign.start,
+                  keyboardType: TextInputType.number,
+                  decoration: new InputDecoration(
+                    labelText: StringLabels.brewWeight,
+                    hintText: StringLabels.enterValue,
+                  ),
+                  onChanged: _brewWeightChanged,
+                )),
             ],
           ),
+
+          Container(margin: EdgeInsets.all(20),child: Text('Ratio'),)
         ],
       ),
     ));
@@ -690,21 +711,25 @@ class TwoTextfieldCard extends StatelessWidget {
   final double _margin = 10.0;
   final double _cornerRadius = 20.0;
   final double _textFieldWidth = 150.0;
-  final String titleLeft;
-  final String titleRight;
-  final String leftHintText;
-  final String rightHintText;
+  final Item _itemLeft;
+  final Item _itemRight;
+  
+  TextEditingController _leftController = new TextEditingController(); 
+  TextEditingController _rightController = new TextEditingController(); 
 
-  final Function(String) onLeftTextChanged;
-  final Function(String) onRightTextChanged;
+
+  final Function(String) _onLeftTextChanged;
+  final Function(String) _onRightTextChanged;
 
   TwoTextfieldCard(
-      {@required this.onLeftTextChanged,
-      @required this.onRightTextChanged,
-      @required this.titleLeft,
-      @required this.leftHintText,
-      @required this.titleRight,
-      @required this.rightHintText});
+      this._onLeftTextChanged,
+      this._onRightTextChanged,
+      this._itemLeft,
+      this._itemRight,
+     ){
+        _leftController.text = _itemLeft.value;
+        _rightController.text = _itemRight.value;
+     }
 
   @override
   Widget build(BuildContext context) {
@@ -723,22 +748,26 @@ class TwoTextfieldCard extends StatelessWidget {
                   Container(
                       width: 100.0,
                       child: TextField(
+                        controller: _leftController,
                         textAlign: TextAlign.start,
                         keyboardType: TextInputType.number,
                         decoration: new InputDecoration(
-                            labelText: titleLeft, hintText: leftHintText),
-                        onChanged: onLeftTextChanged,
+                            labelText: _itemLeft.title, 
+                            hintText: _itemLeft.placeHolderText),
+                        onChanged: _onLeftTextChanged,
                       )),
 
                   // Right
                   Container(
                       width: 100.0,
                       child: TextField(
+                        controller: _rightController,
                         textAlign: TextAlign.start,
                         keyboardType: TextInputType.number,
                         decoration: new InputDecoration(
-                            labelText: titleRight, hintText: rightHintText),
-                        onChanged: onRightTextChanged,
+                            labelText: _itemRight.title,
+                             hintText: _itemRight.placeHolderText),
+                        onChanged: _onRightTextChanged,
                       )),
                 ],
               ),

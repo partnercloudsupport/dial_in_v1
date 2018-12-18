@@ -125,8 +125,7 @@ class Profile {
   } 
 
 
-  void setProfileProfileTitleValue(
-      {String profileDatabaseId, String profileDatabaseIdref}) {
+  void setProfileProfileTitleValue({String profileDatabaseId, String profileDatabaseIdref}) {
     for (var i = 0; i < this.profiles.length; i++) {
       if (this.profiles[i].databaseId == profileDatabaseId) {
         switch (profileDatabaseId) {

@@ -70,9 +70,7 @@ class ProfilePageState extends State<ProfilePage> {
       super.didUpdateWidget(oldWidget);
   }
 
-  ///
   /// UI Build
-  ///
   @override
   Widget build(BuildContext context) {
 
@@ -143,7 +141,6 @@ class ProfilePageState extends State<ProfilePage> {
             ),
             
             /// All below changes depending on profile
-
              _returnPageStructure(_profile),
 
             ],
@@ -154,6 +151,7 @@ class ProfilePageState extends State<ProfilePage> {
       );
   }
 
+/// Bottom bar
   Widget _returnBottomBar(){
 
     Widget _bottomBar;
@@ -185,6 +183,7 @@ class ProfilePageState extends State<ProfilePage> {
     return _bottomBar; 
   }       
 
+/// page structure
   Widget _returnPageStructure(Profile profile){
 
     Widget _structure;
@@ -318,11 +317,4 @@ class ProfilePageState extends State<ProfilePage> {
     );
   }
 }
-
-
-
-/// End of Page
-///
-
-/// Widgets
 

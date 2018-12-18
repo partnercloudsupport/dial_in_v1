@@ -4,12 +4,12 @@ class  StringLabels {
 
 ///since flutter
 
-    static const String daysRested = 'Days rested';
-
-  static const String enterLevel = 'EnterLevel';
-  static const String enterName = 'Enter name';
+  static const String daysRested = 'Days rested';
   static const String noData = 'No data';
   static const String loading = 'Loading...';
+  static const String noInternetConnection = 'No internet connection';
+  static const String enterLevel = 'EnterLevel';
+  static const String enterName = 'Enter name';
   static const String setTime = 'Set Time';
   static const String public = 'Public';
   static const String forgottonPassword = 'Forgotton your password?.';

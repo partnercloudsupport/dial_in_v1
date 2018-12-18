@@ -9,7 +9,7 @@ import 'package:dial_in_v1/data/functions.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dial_in_v1/database_functions.dart';
 
-
+/// Profile list
 class ProfileList extends StatefulWidget{
 
  final ProfileType _profilesType;
@@ -20,7 +20,6 @@ class ProfileList extends StatefulWidget{
 
  _ProfileListState createState() => new _ProfileListState();
 }
-
 class _ProfileListState extends State<ProfileList>{
 
    void _dealWithProfileSelection(Profile profile){
@@ -85,8 +84,6 @@ class ProfileListDialog extends StatefulWidget{
 
  _ProfileListDialogState createState() => new _ProfileListDialogState();
 }
-
-
 class _ProfileListDialogState extends State<ProfileListDialog>{
 
    void _dealWithProfileSelection(Profile profile){
