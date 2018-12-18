@@ -8,7 +8,7 @@ import 'package:dial_in_v1/data/item.dart';
 import 'package:dial_in_v1/widgets/custom_widgets.dart';
 
 
-class EquipmentPage extends StatefulWidget {
+class EquipmentPage extends StatelessWidget {
   final double _margin;
   final Profile _profile;
 
@@ -16,20 +16,6 @@ class EquipmentPage extends StatefulWidget {
   final Function(String, dynamic) _setProfileItemValue;
 
   EquipmentPage(this._profile, this._margin, this._setProfileItemValue);
-
-  _EquipmentPageState createState() => new _EquipmentPageState();
-}
-
-class _EquipmentPageState extends State<EquipmentPage> {
-  final double _padding = 20.0;
-  final double _margin = 10.0;
-  Profile _profile;
-
-  @override
-  void initState() {
-    _profile = widget._profile;
-    super.initState();
-  }
 
   ///
   /// UI Build
@@ -40,10 +26,10 @@ class _EquipmentPageState extends State<EquipmentPage> {
 
       /// Details
       EquipmentDetailsCard(
-        (name) {widget._setProfileItemValue(DatabaseIds.equipmentId, name);},
-        (type) {widget._setProfileItemValue(DatabaseIds.type, type);},
-        (make) {widget._setProfileItemValue(DatabaseIds.equipmentMake, make);},
-        (model) {widget._setProfileItemValue(DatabaseIds.equipmentModel, model);},
+        (name) {_setProfileItemValue(DatabaseIds.equipmentId, name);},
+        (type) {_setProfileItemValue(DatabaseIds.type, type);},
+        (make) {_setProfileItemValue(DatabaseIds.equipmentMake, make);},
+        (model) {_setProfileItemValue(DatabaseIds.equipmentModel, model);},
         _profile.getProfileItem(DatabaseIds.equipmentId),
         _profile.getProfileItem(DatabaseIds.type),
         _profile.getProfileItem(DatabaseIds.equipmentMake),

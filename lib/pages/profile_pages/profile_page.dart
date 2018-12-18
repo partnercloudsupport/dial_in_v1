@@ -16,6 +16,8 @@ import 'package:dial_in_v1/pages/profile_pages/barista_profile_page.dart';
 import 'package:dial_in_v1/pages/profile_pages/coffee_profile_page.dart';
 import 'package:dial_in_v1/theme/appColors.dart';
 import 'package:dial_in_v1/database_functions.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:dial_in_v1/inherited_widgets.dart';
 import 'dart:io';
 import 'dart:async';
 
@@ -56,18 +58,21 @@ class ProfilePageState extends State<ProfilePage> {
   bool _isEditing;
   bool _isOldProfile;
   Profile _profile;
+  ProfilesModel _model;
 
   void initState() {
       _isCopying = widget.isCopying;
       _isEditing = widget.isEditing;
       _profile = widget.profile;
-      _isOldProfile = widget.isOldProfile;             
+      _isOldProfile = widget.isOldProfile; 
+      _model = ProfilesModel.of(context);           
       super.initState();
   }
 
   /// UI Build
   @override
   Widget build(BuildContext context) {
+    
 
     return  new Scaffold(
        appBar: AppBar(
@@ -100,8 +105,10 @@ class ProfilePageState extends State<ProfilePage> {
                   onPressed: ()async{ if(_isOldProfile ) 
                     {await DatabaseFunctions.updateProfile(_profile);
                     Navigator.pop(context);}
-                    else{var newProfile = await DatabaseFunctions.saveProfile(_profile);
-                    Navigator.pop(context, newProfile);}  },)
+                    else{
+                    var newProfile = await DatabaseFunctions.saveProfile(_profile);
+                    Navigator.pop(context, newProfile);
+                    _model.add(_profile);}},)
               : RawMaterialButton(
                   child: Icon(Icons.edit),
                   onPressed: () {

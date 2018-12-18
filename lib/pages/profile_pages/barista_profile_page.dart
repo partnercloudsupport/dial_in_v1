@@ -7,28 +7,16 @@ import 'package:dial_in_v1/data/profile.dart';
 import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'package:dial_in_v1/data/item.dart';
 
-class BaristaPage extends StatefulWidget {
+class BaristaPage extends StatelessWidget {
   final double _margin;
   final Profile _profile;
+  final double _padding = 20.0;
 
-// Sets a String and Value in the Parent profie
+
+  // Sets a String and Value in the Parent profie
   final Function(String, dynamic) _setProfileItemValue;
 
   BaristaPage(this._profile, this._margin, this._setProfileItemValue);
-
-  _BaristaPageState createState() => new _BaristaPageState();
-}
-
-class _BaristaPageState extends State<BaristaPage> {
-  final double _padding = 20.0;
-  final double _margin = 10.0;
-  Profile _profile;
-
-  @override
-  void initState() {
-    _profile = widget._profile;
-    super.initState();
-  }
 
   ///
   /// UI Build
@@ -39,8 +27,8 @@ class _BaristaPageState extends State<BaristaPage> {
 
       /// Details
       BaristaDetailsCard(
-        (name) {widget._setProfileItemValue(DatabaseIds.name, name);},
-        (level) {widget._setProfileItemValue(DatabaseIds.level, level);},
+        (name) {_setProfileItemValue(DatabaseIds.name, name);},
+        (level) {_setProfileItemValue(DatabaseIds.level, level);},
         _profile.getProfileItem(DatabaseIds.name),
         _profile.getProfileItem(DatabaseIds.level),
       ),

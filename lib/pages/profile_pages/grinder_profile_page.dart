@@ -7,7 +7,7 @@ import 'package:dial_in_v1/data/profile.dart';
 import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'package:dial_in_v1/data/item.dart';
 
-class GrinderPage extends StatefulWidget {
+class GrinderPage extends StatelessWidget {
   final double _margin;
   final Profile _profile;
 
@@ -15,21 +15,6 @@ class GrinderPage extends StatefulWidget {
   final Function(String, dynamic) _setProfileItemValue;
 
   GrinderPage(this._profile, this._margin, this._setProfileItemValue);
-
-  _GrinderPageState createState() => new _GrinderPageState();
-}
-
-
-class _GrinderPageState extends State<GrinderPage> {
-  final double _padding = 20.0;
-  final double _margin = 10.0;
-  Profile _profile;
-
-  @override
-  void initState() {
-    _profile = widget._profile;
-    super.initState();
-  }
 
   ///
   /// UI Build
@@ -40,10 +25,10 @@ class _GrinderPageState extends State<GrinderPage> {
 
       /// Details
       GrinderDetailsCard(
-        (name) {widget._setProfileItemValue(DatabaseIds.grinderId, name);},
-        (burrs) {widget._setProfileItemValue(DatabaseIds.burrs, burrs);},
-        (make) {widget._setProfileItemValue(DatabaseIds.grinderMake, make);},
-        (model) {widget._setProfileItemValue(DatabaseIds.grinderModel, model);},
+        (name) {_setProfileItemValue(DatabaseIds.grinderId, name);},
+        (burrs) {_setProfileItemValue(DatabaseIds.burrs, burrs);},
+        (make) {_setProfileItemValue(DatabaseIds.grinderMake, make);},
+        (model) {_setProfileItemValue(DatabaseIds.grinderModel, model);},
         _profile.getProfileItem(DatabaseIds.grinderId),
         _profile.getProfileItem(DatabaseIds.burrs),        
         _profile.getProfileItem(DatabaseIds.grinderMake),        

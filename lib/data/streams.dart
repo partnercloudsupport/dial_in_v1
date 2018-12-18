@@ -18,11 +18,18 @@ class FeedBloc{
   
   Stream<List<Profile>> get profiles => _outgoingController.stream;
   
-  var _profiles = <Profile>[];
+  List<Profile> _profiles;
+
+  void add(Profile profile){
+    _getProfiles().then((_){
+      _outgoingController.add(_profiles);
+    });
+  }
 
   /// Init of the class
   FeedBloc(this._databaseId){
-    
+    _profiles = new List();
+
     _getProfiles().then((_){
       _outgoingController.add(_profiles);
     });
@@ -52,7 +59,6 @@ class FeedBloc{
     }
   }
 }
-
 
 /// Social card
 class SocialFeedBloc{

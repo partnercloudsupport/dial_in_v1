@@ -67,6 +67,7 @@ class ProfilesModel extends Model{
     Stream<List<FeedProfileData>> get followingFeed => _followers.profiles;
 
     ProfilesModel(){
+      print('model built');
         communityFeed = recipeProfiles;
         followersFeed = recipeProfiles;
         _comminuty = new SocialFeedBloc(DatabaseIds.community);
@@ -76,7 +77,131 @@ class ProfilesModel extends Model{
     static ProfilesModel of(BuildContext context) =>
       ScopedModel.of<ProfilesModel>(context);
 
+    void add(Profile profile){
 
+      switch (profile.type){
+
+        case ProfileType.recipe:
+         _recipeFeed.add(profile);
+        break;
+
+        case ProfileType.coffee:
+         _coffeeFeed.add(profile);
+        break;
+
+        case ProfileType.grinder:
+         _grinderFeed.add(profile);
+        break;
+
+        case ProfileType.equipment:
+         _equipmentFeed.add(profile);
+        break;
+
+        case ProfileType.water:
+         _waterFeed.add(profile);
+        break;
+
+        case ProfileType.barista:
+         _baristaFeed.add(profile);
+        break;
+
+        case ProfileType.none:
+         throw(profile.type);
+        break;
+
+        case ProfileType.feed:
+         throw(profile.type);
+        break;
+
+        default:
+         throw(profile.type);
+        break;
+      }
+    }
+
+    void update(Profile profile){
+      DatabaseFunctions.updateProfile(profile);
+      // switch (profile.type){
+
+      //   case ProfileType.recipe:
+      //    _recipeFeed.add(profile);
+      //   break;
+
+      //   case ProfileType.coffee:
+      //    _coffeeFeed.add(profile);
+      //   break;
+
+      //   case ProfileType.grinder:
+      //    _grinderFeed.add(profile);
+      //   break;
+
+      //   case ProfileType.equipment:
+      //    _equipmentFeed.add(profile);
+      //   break;
+
+      //   case ProfileType.water:
+      //    _waterFeed.add(profile);
+      //   break;
+
+      //   case ProfileType.barista:
+      //    _baristaFeed.add(profile);
+      //   break;
+
+      //   case ProfileType.none:
+      //    throw(profile.type);
+      //   break;
+
+      //   case ProfileType.feed:
+      //    throw(profile.type);
+      //   break;
+
+      //   default:
+      //    throw(profile.type);
+      //   break;
+      // }
+    }
+    
+    void delete(Profile profile){
+      // switch (profile.type){
+
+      //   case ProfileType.recipe:
+      //    _recipeFeed.add(profile);
+      //   break;
+
+      //   case ProfileType.coffee:
+      //    _coffeeFeed.add(profile);
+      //   break;
+
+      //   case ProfileType.grinder:
+      //    _grinderFeed.add(profile);
+      //   break;
+
+      //   case ProfileType.equipment:
+      //    _equipmentFeed.add(profile);
+      //   break;
+
+      //   case ProfileType.water:
+      //    _waterFeed.add(profile);
+      //   break;
+
+      //   case ProfileType.barista:
+      //    _baristaFeed.add(profile);
+      //   break;
+
+      //   case ProfileType.none:
+      //    throw(profile.type);
+      //   break;
+
+      //   case ProfileType.feed:
+      //    throw(profile.type);
+      //   break;
+
+      //   default:
+      //    throw(profile.type);
+      //   break;
+      // }
+    }
+   
     /// Get social feeds with type
     Stream<List<FeedProfileData>> socialFeed(ProfileType type){
 

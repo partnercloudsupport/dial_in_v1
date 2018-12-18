@@ -6,15 +6,12 @@ import 'package:dial_in_v1/pages/overview_page/overview_page.dart';
 
 
 
-class OverviewPageBloc extends StatelessWidget {
-  
-  final ProfilesModel model = ProfilesModel();
-
+class BufferWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print('rebuilding bloc');
+    print('rebuilding buffer');
     return ScopedModel(
-      model: model,
+      model: ProfilesModel(),
       child: OverviewPage(),
     );
   }

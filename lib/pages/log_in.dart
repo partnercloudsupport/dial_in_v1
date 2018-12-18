@@ -4,17 +4,19 @@ import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'package:dial_in_v1/pages/sign_up.dart';
 import 'package:dial_in_v1/pages/overview_page/overview_page_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:dial_in_v1/pages/overview_page/overview_page.dart';
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+
+class LoginPage extends StatefulWidget {
+  LoginPage({Key key, this.title}) : super(key: key);
 
   final String title;  
   @override
-  _MyHomePageState createState() => new _MyHomePageState();
+  _LoginPageState createState() => new _LoginPageState();
 }
 
 /// UI View
-class _MyHomePageState extends State<MyHomePage> {
+class _LoginPageState extends State<LoginPage> {
 
   String _email = "";
   TextEditingController _emailController = new TextEditingController();
@@ -54,7 +56,7 @@ void loginButtonPressed(){
               _emailController.text = '';
               _passwordController.text = '';
             }); 
-       Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => OverviewPageBloc()));
+       Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => OverviewPage()));
       }else{
       PopUps.showAlert( 
         buttonFunction:() {Navigator.of(context).pop();},
