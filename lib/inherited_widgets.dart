@@ -74,6 +74,21 @@ class ProfilesModel extends Model{
         _followers = new SocialFeedBloc(DatabaseIds.following);
     }
 
+    void init(){
+      _recipeFeed.getProfiles();
+      _coffeeFeed.getProfiles();
+      _grinderFeed.getProfiles();
+      _equipmentFeed.getProfiles();
+      _waterFeed.getProfiles();
+      _baristaFeed.getProfiles();
+    }
+
+    void deInit(){
+
+
+      
+    }
+
     static ProfilesModel of(BuildContext context) =>
       ScopedModel.of<ProfilesModel>(context);
 

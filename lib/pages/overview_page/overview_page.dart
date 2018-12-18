@@ -44,8 +44,11 @@ class OverviewPageState extends State<OverviewPage> with SingleTickerProviderSta
   }
 
   /// UI Build  
-    @override
+  @override
   Widget build(BuildContext context) {
+
+    ProfilesModel.of(context).init();
+
     return  Scaffold(
        
       /// 
