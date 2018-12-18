@@ -53,7 +53,6 @@ class FeedBloc{
     }
   }
 
-
   Future<List<Profile>> convertStreamToListOfProfiles(QuerySnapshot stream) async {
 
     final futureProfiles = stream.documents.map((doc) => 
@@ -75,53 +74,59 @@ class SocialFeedBloc{
   ///Other Variables
   final String _databaseId;
   String get databaseId => _databaseId;
+  bool initilised = false;
+
 
 
   final _outgoingController = BehaviorSubject<List<FeedProfileData>>();
   Stream<List<FeedProfileData>> get profiles => _outgoingController.stream;
 
-  var _profiles = <FeedProfileData>[];
+  final _incomingController = StreamController<QuerySnapshot>.broadcast();
+
 
   /// Init of the class
-  SocialFeedBloc(this._databaseId){
-    _getProfiles().then((_){
-      _outgoingController.add(_profiles);
-    });
-  }
+  SocialFeedBloc(this._databaseId);
 
-  Future _getProfiles()async{
+  Future getProfiles()async{
   
     if(_databaseId == DatabaseIds.community)
-    {await convertStreamToListOfProfiles(Firestore.instance.collection(DatabaseIds.recipe)
+    {_incomingController.addStream(Firestore.instance.collection(DatabaseIds.recipe)
     .where(DatabaseIds.public, isEqualTo: true).snapshots());}
 
     else
-    {await convertStreamToListOfProfiles(Firestore.instance.collection(DatabaseIds.recipe)
+    {_incomingController.addStream(Firestore.instance.collection(DatabaseIds.recipe)
     .where(DatabaseIds.public, isEqualTo: true).snapshots());}
 
-    return;
-  }
+    _incomingController.stream.listen((p){
+      convertStreamToListOfProfiles(p)
+      .then((profiles){ 
 
-  Future convertStreamToListOfProfiles(Stream<QuerySnapshot> stream) async {
-    List<Profile> profiles;
-    await for (var value in stream) {
+        convertProfilesToListOfFeedProfiles(profiles).then(
 
-      final futureProfiles = value.documents.map((doc) => 
-          DatabaseFunctions.createProfileFromDocumentSnapshot(_databaseId, doc));
-
-      profiles = await Future.wait(futureProfiles);
-      await convertProfilesToListOfFeedProfiles(profiles);
-      return;
+        (feedProfiles){_outgoingController.add(feedProfiles);}
+        );
+      }
+      );
     }
+    );
   }
 
-    Future convertProfilesToListOfFeedProfiles(List<Profile> stream) async {
-      
+  Future<List<Profile>> convertStreamToListOfProfiles(QuerySnapshot stream) async {
+
+    final futureProfiles = stream.documents.map((doc) => 
+        DatabaseFunctions.createProfileFromDocumentSnapshot(_databaseId, doc));
+           
+    return await Future.wait(futureProfiles);
+  }
+
+    Future<List<FeedProfileData>>convertProfilesToListOfFeedProfiles(List<Profile> stream) async {
+      List<FeedProfileData> profiles = new List<FeedProfileData>();
+
       for(var doc in stream){  /// <<<<==== changed line
               FeedProfileData result = await Functions.createFeedProfileFromProfile(doc);
-              _profiles.add(result);
+              profiles.add(result);
       }
-      return;
+      return profiles;
     }
 
 }

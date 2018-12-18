@@ -80,8 +80,6 @@ class ProfileListDialog extends StatefulWidget{
  final Function(Profile) _giveProfile;
  final bool _isOnOverviewScreen;
 
-
-
  ProfileListDialog(this._profilesType, this._giveProfile, this._isOnOverviewScreen,);
 
  _ProfileListDialogState createState() => new _ProfileListDialogState();

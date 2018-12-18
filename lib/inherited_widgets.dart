@@ -81,6 +81,8 @@ class ProfilesModel extends Model{
       _equipmentFeed.getProfiles();
       _waterFeed.getProfiles();
       _baristaFeed.getProfiles();
+      _comminuty.getProfiles();
+      _followers.getProfiles();
     }
 
     void deInit(){

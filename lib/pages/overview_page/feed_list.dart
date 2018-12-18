@@ -52,16 +52,20 @@ class _FeedListState extends State<FeedList>{
 
             } else if (snapshot.hasError) { return const Center(child: Text('Error'));  
             } else if (snapshot.data.length < 1) {return const Center(child: Text('No data'));
-            } else 
-              return new 
-                ListView.builder(
+            } else {
+                  Iterable<FeedProfileData> _reversedList = snapshot.data.reversed;
+                  List<FeedProfileData> _list = new List<FeedProfileData>();
+                   _reversedList.forEach((x){_list.add(x);});
+                  return new 
+                    ListView.builder(
                     itemExtent: 400,
                     itemCount: snapshot.data.length,
                     itemBuilder: (BuildContext context, int index) =>
                         SocialProfileCard(snapshot.data[index], _dealWithProfileSelection)
                 );
-            }
-        )
-      );
-    }
+              }
+          }
+      )
+    );
+  }
 }
