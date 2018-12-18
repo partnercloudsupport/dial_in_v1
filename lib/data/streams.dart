@@ -13,6 +13,8 @@ class FeedBloc{
   ///Other Variables
   final String _databaseId;
   String get databaseId => _databaseId;
+  bool initilised = false;
+
 
   final _outgoingController = BehaviorSubject<List<Profile>>();
   final _incomingController = StreamController<QuerySnapshot>.broadcast();
@@ -26,11 +28,12 @@ class FeedBloc{
    
    _getProfiles();
     
-    
   }
 
   Future _getProfiles({Profile profile})async{
 
+    if(!initilised){
+    initilised = true;
     String userID = await DatabaseFunctions.getCurrentUserId();
 
     _incomingController.addStream(Firestore.instance.collection(_databaseId)
@@ -44,6 +47,7 @@ class FeedBloc{
         _outgoingController.add(profiles);});
       }
     );
+    }
   }
 
 
