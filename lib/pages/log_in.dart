@@ -161,7 +161,10 @@ void initState() {
                                       color: Colors.white70, fontSize: 10.0))),
 
                           // Sign up button
-                          SignUpButton()
+                          SignUpButton(() => Navigator.push
+                              (context, MaterialPageRoute(builder: (BuildContext context)   
+                               => SignUpPage()))
+                               .then((success){if (success){loginButtonPressed();}}))
 
                         ])))
               ],
@@ -196,6 +199,10 @@ class LoginButton extends StatelessWidget {
 ///Sign up Button
 class SignUpButton extends StatelessWidget {
 
+Function _onPressed;
+
+SignUpButton(this._onPressed);
+
 @override
   Widget build(BuildContext context) {
     return new Container(
@@ -207,8 +214,8 @@ class SignUpButton extends StatelessWidget {
                     color: Colors.orange,
                     fontSize: 20.0,
                     fontWeight: FontWeight.w300)),
-                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => SignUpPage())),
-            )
+                    onPressed:_onPressed ),
             );
   }
 }
+

@@ -119,7 +119,7 @@ class SocialFeedBloc{
     return await Future.wait(futureProfiles);
   }
 
-    Future<List<FeedProfileData>>convertProfilesToListOfFeedProfiles(List<Profile> stream) async {
+  Future<List<FeedProfileData>>convertProfilesToListOfFeedProfiles(List<Profile> stream) async {
       List<FeedProfileData> profiles = new List<FeedProfileData>();
 
       for(var doc in stream){  /// <<<<==== changed line

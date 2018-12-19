@@ -3,6 +3,10 @@ import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'package:dial_in_v1/data/strings.dart';
 import 'package:dial_in_v1/database_functions.dart';
 import 'dart:io';
+import 'package:dial_in_v1/data/images.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:image_picker/image_picker.dart';
+
 
 
 class SignUpPage extends StatefulWidget{
@@ -14,37 +18,32 @@ class SignUpPage extends StatefulWidget{
 
  class _SignUpPageState extends State<SignUpPage>{
 
-  String _userImage = 'assets/images/user.png';
+  String _userImage = Images.userFirebase;
 
-  String _userName;
   TextEditingController _userNameController = new TextEditingController();
 
-  String _email;
   TextEditingController _emailController = new TextEditingController();
 
-  String _password;
   TextEditingController _passwordController = new TextEditingController();
-
-  void onUsernameChange(){ _userName = _userNameController.text; }
-
-  void onEmailChange(){ _email =_emailController.text; }
-
-  void onPasswordChange(){ _password = _passwordController.text;}  
+ 
 
   void signUpButton(){  
-    DatabaseFunctions.signUp(_email, _password, (success, error){ 
 
-      if (success){   print('signed up');   }else{  print('fail');  }
-      });
+    DatabaseFunctions.signUp
+    (_userNameController.text, _emailController.text, _passwordController.text,
+    (success, message) {
+      if(success){
+        Navigator.pop(context, true);
+      
+        PopUps.showAlert( 
+          buttonFunction:() {Navigator.of(context).pop();},
+          buttonText: StringLabels.ok ,
+          title: StringLabels.warning,
+          message: message,
+          context: context);
+      }
+    });              
   }
-
-                                  @override
-  void initState() {
-    _userNameController.addListener(onEmailChange); 
-    _emailController.addListener(onEmailChange); 
-    _passwordController.addListener(onPasswordChange);    
-      super.initState();
-    }        
 
 
 ///
@@ -64,7 +63,7 @@ class SignUpPage extends StatefulWidget{
           ///
           /// Back icon
           /// 
-          Container(  height: 30.0, width: 30.0, margin: EdgeInsets.all(20.0), padding: EdgeInsets.all(0.0),
+          Container(  height: 30.0, width: 30.0, margin: EdgeInsets.fromLTRB(20.0, 40.0, 20.0, 20.0), padding: EdgeInsets.all(0.0),
             child: RawMaterialButton( onPressed: () => Navigator.pop(context), 
             child: Container(   decoration: BoxDecoration( image: DecorationImage( image: AssetImage('assets/images/back_icon.png'), fit: BoxFit.cover)),),),),
          
@@ -76,7 +75,34 @@ class SignUpPage extends StatefulWidget{
                 Text(StringLabels.newUser,  style: TextStyle(color: Colors.black87, fontSize: 30.0),),
 
                 ///User Picture
-                Container( margin: EdgeInsets.fromLTRB(25.0, 0.0, 25.0, 25.0) , child: CircularPicture(_userImage, 100.0)),
+                 InkWell(
+                   child: Container( decoration: BoxDecoration(shape: BoxShape.circle),margin: EdgeInsets.fromLTRB(25.0, 0.0, 25.0, 25.0) , 
+                    child: Card(child:CircularPicture(_userImage, 100.0))
+                    ),
+                   onTap: ()async{
+                await showDialog(context: context, builder: (BuildContext context){
+                  return 
+                  Center(child: CupertinoActionSheet(actions: <Widget>[
+
+                      new CupertinoDialogAction(
+                          child: const Text(StringLabels.camera),
+                          isDestructiveAction: false,
+                          onPressed: ()async{ 
+                            File image = await ImagePicker.pickImage
+                                              (maxWidth: 640.0, maxHeight: 480.0, source: ImageSource.camera);
+                            _userImage = await DatabaseFunctions.upLoadFileReturnUrl(image, folder: DatabaseIds.image);
+                            // Navigator.of(context, rootNavigator: true).pop();
+                            Navigator.of(context, rootNavigator: true).pop();
+                          }
+                        ),
+                      ]
+                    ),
+                  );
+                },);
+              // .then((image){ setState(() {_profile.image = image;});});
+                   }
+                 ),
+                
 
                 /// Sign up details
                 /// Username
@@ -90,9 +116,13 @@ class SignUpPage extends StatefulWidget{
                 TextFieldEntry(StringLabels.password, _passwordController, true),
 
                 /// Signup button
-                Container(  margin: EdgeInsets.all(20.0), child: ActionButton(StringLabels.signUp,() => Navigator.pop(context, (){}))),
+                Container(  margin: EdgeInsets.all(20.0), 
+                child: 
+                ActionButton(StringLabels.signUp,
+                signUpButton
+                ),)
 
-              ],
+              ]
             ),
           )
         ]

@@ -41,6 +41,12 @@ class ProfilesInheritedWidget extends InheritedWidget {
 
 /// Profiles scoped model
 class ProfilesModel extends Model{
+
+    String _userId;
+    String get userId =>_userId;
+
+    String _userImage;
+    String get userImage => _userImage;
   
     Stream<List<Profile>> communityFeed;
     Stream<List<Profile>> followersFeed;
@@ -67,7 +73,6 @@ class ProfilesModel extends Model{
     Stream<List<FeedProfileData>> get followingFeed => _followers.profiles;
 
     ProfilesModel(){
-      print('model built');
         communityFeed = recipeProfiles;
         followersFeed = recipeProfiles;
         _comminuty = new SocialFeedBloc(DatabaseIds.community);
@@ -83,6 +88,8 @@ class ProfilesModel extends Model{
       _baristaFeed.getProfiles();
       _comminuty.getProfiles();
       _followers.getProfiles();
+      DatabaseFunctions.getCurrentUserId().then((user){_userId = user;});
+      DatabaseFunctions.getUserImage().then((userImage){_userImage = userImage;});
     }
 
     void deInit(){

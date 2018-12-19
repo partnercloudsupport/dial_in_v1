@@ -103,8 +103,7 @@ class CircularPicture extends StatelessWidget {
           borderRadius: new BorderRadius.circular(_size),
           child: Image.network(_image, fit: BoxFit.cover),),
           height: _size,
-          width: _size,);
-          
+          width: _size,);   
   }
 }
 
@@ -123,8 +122,7 @@ class ActionButton extends StatelessWidget {
       color: Colors.orange.shade600.withOpacity(0.6),
       child: Text(_buttonTitle,
           style: TextStyle(fontWeight: FontWeight.w500, fontSize: 25.0)),
-      onPressed: () {_buttonAction;},
-    );
+      onPressed: _buttonAction);
   }
 }
 
@@ -544,6 +542,7 @@ class TabViewDataArray{
  TabViewDataArray(this.ref);
 }
 
+/// Popups
 class PopUps{
 ///
 /// Show alert

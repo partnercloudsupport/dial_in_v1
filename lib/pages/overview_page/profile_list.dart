@@ -51,7 +51,12 @@ class _ProfileListState extends State<ProfileList>{
           stream:  model.profiles(widget._profilesType),
           builder: (context, snapshot) {
 
-                if (!snapshot.hasData) { return const Center(child: Text('Loading'));
+                if (!snapshot.hasData) { return  
+                  Center(child:
+                    Column
+                    (mainAxisAlignment: MainAxisAlignment.center ,children: <Widget>[CircularProgressIndicator(),
+                    Container(margin: EdgeInsets.all(20.0),child: Text('Loading...'),) ,],));
+
                 } else if (snapshot.hasError) { return const Center(child: Text('Error'));  
                 } else if (snapshot.data.length < 1) {return const Center(child: Text('No data'));
                 } else {

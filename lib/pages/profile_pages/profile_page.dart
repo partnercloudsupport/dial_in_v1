@@ -96,6 +96,7 @@ class ProfilePageState extends State<ProfilePage> {
             : RawMaterialButton(
                 child: Icon(Icons.arrow_back),
                 onPressed: () {
+                  DatabaseFunctions.deleteFireBaseStroageItem(_profile.image);
                   Navigator.pop(context);
                 },
               ),
@@ -140,7 +141,10 @@ class ProfilePageState extends State<ProfilePage> {
             
             ///Change image button
             FlatButton(
-              onPressed: (){ _getimage(_profile.image).then((image){ setState(() {_profile.image = image;});});},
+              onPressed: ()
+              {_getimage(
+                (image){ setState(() {_profile.image = image;});});
+              },
               child: Text(StringLabels.changeImage),
             ),
             
@@ -155,7 +159,7 @@ class ProfilePageState extends State<ProfilePage> {
       );
   }
 
-/// Bottom bar
+  /// Bottom bar
   Widget _returnBottomBar(){
 
     Widget _bottomBar;
@@ -187,7 +191,7 @@ class ProfilePageState extends State<ProfilePage> {
     return _bottomBar; 
   }       
 
-/// page structure
+  /// page structure
   Widget _returnPageStructure(Profile profile){
 
     Widget _structure;
@@ -230,41 +234,39 @@ class ProfilePageState extends State<ProfilePage> {
     return _structure;
   }
 
-/// Get image for profile photo
-  Future <String> _getimage(String image)async{
-  
-    String url;
-
-    Center cameraSelection = Center(child: CupertinoActionSheet(actions: <Widget>[
-
-          new CupertinoDialogAction(
-              child: const Text(StringLabels.camera),
-              isDestructiveAction: false,
-              onPressed: ()async{ 
-                File image = await ImagePicker.pickImage
-                                  (maxWidth: 640.0, maxHeight: 480.0, source: ImageSource.camera);
-                url = await DatabaseFunctions.upLoadFileReturnUrl(image, DatabaseIds.image);
-                Navigator.of(context, rootNavigator: true).pop(image);
-              }
-          ),
-
-          new CupertinoDialogAction(
-              child: const Text(StringLabels.photoLibrary),
-              isDefaultAction: true,
-              onPressed: ()async{ 
-                var image = await ImagePicker.pickImage
-                                  (maxWidth: 640.0, maxHeight: 480.0, source: ImageSource.camera);
-                url = await DatabaseFunctions.upLoadFileReturnUrl(image, DatabaseIds.image);
-                 Navigator.of(context, rootNavigator: true).pop(image);
-              }
-          ),
-    ],));
+  /// Get image for profile photo
+  Future <String> _getimage(Function(String) then)async{
+    String url = '';
 
     await showDialog(context: context, builder: (BuildContext context){
-      return cameraSelection ;
-    });
-    return url; 
+      return Center(child: CupertinoActionSheet(actions: <Widget>[
+
+      new CupertinoDialogAction(
+          child: const Text(StringLabels.camera),
+          isDestructiveAction: false,
+          onPressed: ()async{ 
+            File image = await ImagePicker.pickImage
+                              (maxWidth: 640.0, maxHeight: 480.0, source: ImageSource.camera);
+            url = await DatabaseFunctions.upLoadFileReturnUrl(image, folder: DatabaseIds.image);
+            Navigator.of(context).pop(then(url));
+          }
+      ),
+    
+      new  CupertinoDialogAction(
+          child: const Text(StringLabels.photoLibrary),
+          isDestructiveAction: false,
+          onPressed: ()async{ 
+            File image = await ImagePicker.pickImage
+                              (maxWidth: 640.0, maxHeight: 480.0, source: ImageSource.gallery);
+            url = await DatabaseFunctions.upLoadFileReturnUrl(image, folder: DatabaseIds.image);
+            Navigator.of(context).pop(then(url));
+          }
+      ),
+    ],));
+    }
+    );
   }
+
 
   //// user defined function
   void _showDialog(ProfileType profileType) {

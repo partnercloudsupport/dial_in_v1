@@ -15,6 +15,7 @@ import 'package:dial_in_v1/data/strings.dart';
 
 class DatabaseFunctions {
 
+  ///Login
   static Future<void> logIn(String emailUser, String password,Function(bool, String) completion) async {
           // try {
           //   FirebaseUser user = await FirebaseAuth.instance
@@ -25,28 +26,49 @@ class DatabaseFunctions {
           // }
   }
 
-  static Future<void> signUp(String emailUser, String password, Function(bool, String) completion) async {
-    // try {
-    //   FirebaseUser user = await FirebaseAuth.instance
-    //       .createUserWithEmailAndPassword(email: emailUser, password: password);
-    //   completion(true, StringLabels.signedYouUp);
-    // } catch (e) {
-    //   print(e.message);
-    // }
+  /// SignUp
+  static Future<void> signUp(String userName, String emailUser, String password, Function(bool, String) completion) async {
+    try {
+      FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: emailUser, password: password);
+      completion(true, StringLabels.signedYouUp);
+    } catch (e) {
+      completion(true, e.message);
+    }
   }
 
+  /// Logout
   static Future <void> logOut(Function signOutView)  async{
     signOutView();
     // await FirebaseAuth.instance.signOut();
     print('Logged out');
   }
 
+  ///
+  static Future <String> getUserImage()async{
+
+    String result = '';
+    String userId = await getCurrentUserId();
+
+    DocumentSnapshot doc = await Firestore.instance.collection(DatabaseIds.User).document(userId).get();
+
+    for(var doc in doc.data.entries){  /// <<<<==== changed line
+                  
+                  if(doc.key == DatabaseIds.objectId){
+                    result = doc.value;
+                  } 
+      }
+   return result;
+  }
+
+  // Get current User from firebase
   static Future<String> getCurrentUserId()async{
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
     print('Current user ${user.uid}');
     return user.uid.toString();
   }
 
+  /// Dowload file from Firebase
   static Future<File> downloadFile(String httpPath)async{
 
     final RegExp regExpPng = RegExp('([^?/]*\.(png))');    
@@ -82,13 +104,38 @@ class DatabaseFunctions {
     
   }
    
-  /// Upload file
-  static Future<String> upLoadFileReturnUrl(File file, String folder)async{
+  /// Upload file to Firebase
+  static Future<String> upLoadFileReturnUrl(File file, {String folder, String subFolder, String subSubFolder})async{
     
-    final StorageReference ref = FirebaseStorage.instance.ref().child(path.basename(file.path));
+   StorageReference ref;
+    if(subFolder == null || folder == null || subSubFolder == null){
+       ref = FirebaseStorage.instance.ref().child(path.basename(file.path));
+    }else
+    if(subFolder == null || folder == null){
+       ref = FirebaseStorage.instance.ref().child(path.basename(file.path));
+    }else if(folder ==  null){
+       ref = FirebaseStorage.instance.ref().child(subFolder).child(path.basename(file.path));
+    }else if(subFolder ==  null){
+       ref = FirebaseStorage.instance.ref().child(folder).child(path.basename(file.path));
+    }else if(subFolder != null || folder != null){
+        ref = FirebaseStorage.instance.ref().child(folder).child(subFolder).child(path.basename(file.path));
+    }else{   
+       ref = FirebaseStorage.instance.ref().child(path.basename(file.path));
+    }
+
     final StorageUploadTask uploadTask = ref.putFile(file);
     return await (await uploadTask.onComplete).ref.getDownloadURL().catchError((error){print(error);});
+  }
 
+  /// Delete Firebase Storage Item
+  static void deleteFireBaseStroageItem(String fileUrl){
+        // Create a reference to the file to delete
+      StorageReference desertRef = FirebaseStorage.instance.ref().child(fileUrl);
+
+      // Delete the file
+      desertRef.delete()
+      .then((_) {})
+      .catchError((e){print(e);});
   }
 
   /// Prepare Profile for FirebaseUpload or Update
@@ -118,6 +165,7 @@ class DatabaseFunctions {
 
   /// Delete profile 
   static Future<void> deleteProfile(Profile profile)async{
+    DatabaseFunctions.deleteFireBaseStroageItem(profile.image);
     Firestore.instance.collection(profile.databaseId).document(profile.objectId)
         .delete()
         .whenComplete((){print('Successfully deleted ${profile.objectId}');})
@@ -158,11 +206,13 @@ class DatabaseFunctions {
       return profile;
   }
 
-  static void getImage(String id, Function completion(Image image)){
+  /// Get Image from assets
+  static void getImageFromAssets(String id, Function completion(Image image)){
     Image pic = Image.asset(id);
     completion(pic);
   } 
 
+  /// Get profiles from fore store with doc referance
   static Future<Profile> getProfileFromFireStoreWithDocRef(String collectionDataBaseId, String docRefernace)async{
     
     Profile _profile;
@@ -199,6 +249,7 @@ class DatabaseFunctions {
     return _value;
   }
 
+  /// Convert
   static List<Item> convertDocumentDataToProperties(DocumentSnapshot document){
 
   List<Item> _properties = new List<Item>();
@@ -223,6 +274,7 @@ class DatabaseFunctions {
   return _properties;
 }
 
+  /// Convert profiles from data snapshot
   static Future<List<Profile>> createProfilesFromDataSnapshot(String databaseId, List<DocumentSnapshot> data)async{
 
       List<Profile> documents = new List<Profile>();
@@ -234,6 +286,7 @@ class DatabaseFunctions {
     return documents;
   }
 
+  /// Convert profile from document snapshot
   static Future<Profile> createProfileFromDocumentSnapshot(String databaseId, DocumentSnapshot document)async{
     
       DateTime _updatedAt = document[DatabaseIds.updatedAt];
@@ -424,6 +477,7 @@ class DatabaseFunctions {
     });
   }
 
+  /// Get feed
   static Future<Stream> getFeed(String _listDatabaseId, bool isProfileFeed ,Function(Profile)  _dealWithProfileSelection, Function(Profile) _deleteProfile){
 
     StreamBuilder(
