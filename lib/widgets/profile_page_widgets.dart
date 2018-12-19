@@ -5,7 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'package:dial_in_v1/data/item.dart';
-import 'dart:io';
 import 'package:dial_in_v1/data/profile.dart';
 import 'package:dial_in_v1/database_functions.dart';
 
@@ -80,7 +79,6 @@ class ProfileInputCardWithAttribute extends StatefulWidget {
   final String attributeHintText;
   final String profileHintText = StringLabels.chooseProfile;
   final String attributeTitle;
-  final double _spacing = 5.0;
   final TextInputType keyboardType;
   final String profileName;
   
@@ -535,7 +533,7 @@ class ProfileImage extends StatelessWidget {
   final double _margin = 10.0;
   final double _textFieldWidth = 120.0;
   final double _cornerRadius = 20.0;
-  Image _image;
+  final Image _image;
 
   ProfileImage(this._image);
 
@@ -609,7 +607,7 @@ class RatioCard extends StatelessWidget {
   final double _textFieldWidth = 80.0;
   final double _spacing = 15.0;
 
-  Profile _profile;
+  final Profile _profile;
 
   final Function(String) _doseChanged;
   TextEditingController _doseController = new TextEditingController();
@@ -786,7 +784,7 @@ class NotesCard extends StatelessWidget {
   final Function(String) _onTextChanged;
   final String _title;
   TextEditingController controller;
-  String _notes;
+  final String _notes;
 
   NotesCard(this._title, this._notes, this._onTextChanged){
     controller = new TextEditingController(text: this._notes);

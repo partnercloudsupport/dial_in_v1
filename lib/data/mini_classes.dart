@@ -1,5 +1,4 @@
 import 'package:dial_in_v1/data/profile.dart';
-import 'dart:io';
 
 class FeedProfileData{
 

@@ -2,20 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'package:dial_in_v1/data/strings.dart';
 import 'package:dial_in_v1/database_functions.dart';
-import 'dart:io';
 import 'package:dial_in_v1/data/images.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:dial_in_v1/data/functions.dart';
-
-
 
 class SignUpPage extends StatefulWidget{
 
 @override
   _SignUpPageState createState() => new _SignUpPageState();
 }
-
 
  class _SignUpPageState extends State<SignUpPage>{
 
@@ -27,7 +22,6 @@ class SignUpPage extends StatefulWidget{
 
   TextEditingController _passwordController = new TextEditingController();
  
-
   void signUpButton(){  
 
     DatabaseFunctions.signUp

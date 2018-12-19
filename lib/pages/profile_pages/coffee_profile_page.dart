@@ -100,7 +100,6 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
 class OriginDetailsCard extends StatelessWidget {
   final double _padding = 20.0;
   final double _margin = 10.0;
-  final double _cornerRadius = 20.0;
   final double _textFieldWidth = 150.0;
   final Function(String) _region;
   final Function(String) _farm;
@@ -386,7 +385,6 @@ class ProfileInputCard extends StatelessWidget {
 class GreenDetailsCard extends StatelessWidget {
   final double _padding = 20.0;
   final double _margin = 10.0;
-  final double _cornerRadius = 20.0;
   final double _textFieldWidth = 150.0;
   final Function(String) _beanType;
   final Function(String) _beanSize;

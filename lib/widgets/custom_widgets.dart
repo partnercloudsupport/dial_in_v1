@@ -9,7 +9,6 @@ import 'package:intl/intl.dart';
 import 'package:dial_in_v1/data/item.dart';
 import 'package:flutter_rating/flutter_rating.dart';
 import 'dart:async';
-import 'dart:io';
 import 'package:dial_in_v1/data/mini_classes.dart';
 
 /// Background

@@ -4,6 +4,7 @@ class  StringLabels {
 
 ///since flutter
 
+  static const String followers = 'Followers';
   static const String daysRested = 'Days rested';
   static const String noData = 'No data';
   static const String loading = 'Loading...';

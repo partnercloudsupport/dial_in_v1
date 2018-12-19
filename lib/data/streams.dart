@@ -5,7 +5,6 @@ import 'package:dial_in_v1/data/functions.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:dial_in_v1/database_functions.dart';
 import 'package:dial_in_v1/data/mini_classes.dart';
-import 'dart:io';
 
 /// Making Profiles in Bloc in the Way of technical debt :)
 class FeedBloc{

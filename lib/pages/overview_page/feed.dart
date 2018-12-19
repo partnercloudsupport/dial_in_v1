@@ -26,11 +26,11 @@ void initState() {
   _lists = TabViewDataArray([
 
     TabViewData(
-      FeedList(true,(profile){}, true), 
+      FeedList((profile){}, true), 
       Tab(icon: Icon(Icons.public)), ProfileType.feed),
    
     TabViewData(
-      FeedList(false, (profile){}, true),
+      FeedList((profile){}, true),
       Tab(icon: Icon(Icons.verified_user)),ProfileType.feed),
 
     ]);

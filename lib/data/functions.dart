@@ -18,7 +18,6 @@ import 'dart:typed_data';
 import 'package:image/image.dart' as Image;
 import 'dart:io' as Io;
 import 'package:dial_in_v1/data/mini_classes.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Functions {
 
@@ -85,8 +84,8 @@ class Functions {
   static Future<File> getPictureFile(String filePath) async {
     // get the path to the document directory.
     Directory appDocDir = await getApplicationDocumentsDirectory();
-    String appDocPath = appDocDir.path;
-    return new File('/Users/earyzhe/Dropbox/dev/FlutterProjects/dial_in_v1/${filePath}');
+    String filePath = appDocDir.path;
+    return new File('/Users/earyzhe/Dropbox/dev/FlutterProjects/dial_in_v1/$filePath');
   }
 
   static Future<File> getFile(String filepath)async{
@@ -1705,7 +1704,7 @@ class Functions {
      if (profileList != null || profileList.length != 0) {
 
         for(var profile in profileList){  /// <<<<==== changed line
-            Widget result = await ProfileCard(profile, giveProfile, deleteProfile);
+            Widget result = ProfileCard(profile, giveProfile, deleteProfile);
             _cardArray.add(result);
         }
      }

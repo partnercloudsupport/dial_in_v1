@@ -10,12 +10,10 @@ import 'package:dial_in_v1/data/mini_classes.dart';
 
 class FeedList extends StatefulWidget{
 
- final bool _public;
  final Function(Profile) _giveProfile;
  final bool _isOnOverviewScreen;
- List <Widget> _profileCards;
 
- FeedList(this._public, this._giveProfile, this._isOnOverviewScreen,);
+ FeedList(this._giveProfile, this._isOnOverviewScreen,);
 
  _FeedListState createState() => new _FeedListState();
 }

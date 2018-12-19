@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dial_in_v1/data/item.dart';
 import '../database_functions.dart';
-import 'dart:io';
-import 'package:dial_in_v1/data/functions.dart';
-import 'package:dial_in_v1/data/images.dart';
-
 
 class Profile {
   @required
@@ -171,12 +167,9 @@ class Profile {
     }
   }
 
-  Future<String> getUserImage ()async{
-
-  File image = await Functions.getFile(Images.user);
+Future<String> getUserImage ()async{
   
   String imageUrl = await DatabaseFunctions.getValueFromFireStoreWithDocRef(DatabaseIds.User, this.userId, DatabaseIds.image);
-  image = await DatabaseFunctions.downloadFile(imageUrl);
 
   return imageUrl;
 } 

@@ -50,14 +50,16 @@ class DatabaseFunctions {
     String result = '';
     String userId = await getCurrentUserId();
 
-    DocumentSnapshot doc = await Firestore.instance.collection(DatabaseIds.User).document(userId).get();
+    DocumentSnapshot document = await Firestore.instance.collection(DatabaseIds.User).document(userId).get();
 
-    for(var doc in doc.data.entries){  /// <<<<==== changed line
+    if(document != null){
+    for(var doc in document.data.entries){  /// <<<<==== changed line
                   
                   if(doc.key == DatabaseIds.objectId){
                     result = doc.value;
                   } 
       }
+    }
    return result;
   }
 
@@ -67,15 +69,17 @@ class DatabaseFunctions {
     String result = '';
     String userId = await getCurrentUserId();
 
-    DocumentSnapshot doc = await Firestore.instance.collection(DatabaseIds.User).document(userId).get();
-
-    for(var doc in doc.data.entries){  /// <<<<==== changed line
-                  
-                  if(doc.key == DatabaseIds.name){
-                    result = doc.value;
-                  } 
+    DocumentSnapshot document = await Firestore.instance.collection(DatabaseIds.User).document(userId).get();
+      if(document != null){
+        for(var doc in document.data.entries){  /// <<<<==== changed line
+                      
+                      if(doc.key == DatabaseIds.name){
+                        result = doc.value;
+                      } 
+          }
       }
-   return result;
+      return result;
+        
   }
   
   // Get current User from firebase
@@ -103,7 +107,7 @@ class DatabaseFunctions {
     final StorageReference firebaseStorageReferance = FirebaseStorage.instance.ref().child(fileName);
     final StorageFileDownloadTask downloadTask = firebaseStorageReferance.writeToFile(file);
     
-    await downloadTask.future.then((totalByteCount){;});
+    await downloadTask.future;
     return file;
 
      } catch (e){
@@ -145,7 +149,7 @@ class DatabaseFunctions {
   }
 
   /// Delete Firebase Storage Item
-  static void deleteFireBaseStroageItem(String fileUrl){
+  static void deleteFireBaseStorageItem(String fileUrl){
         // Create a reference to the file to delete
       StorageReference desertRef = FirebaseStorage.instance.ref().child(fileUrl);
 
@@ -182,7 +186,7 @@ class DatabaseFunctions {
 
   /// Delete profile 
   static Future<void> deleteProfile(Profile profile)async{
-    DatabaseFunctions.deleteFireBaseStroageItem(profile.image);
+    DatabaseFunctions.deleteFireBaseStorageItem(profile.image);
     Firestore.instance.collection(profile.databaseId).document(profile.objectId)
         .delete()
         .whenComplete((){print('Successfully deleted ${profile.objectId}');})
@@ -487,7 +491,7 @@ class DatabaseFunctions {
      user.updateProfile(info)
      .then((a){
       // Update successful.
-        print('Sucessfully updated ${user}');
+        print('Sucessfully updated $user');
     }).catchError((error) {
     // An error happened.
       print(error);
@@ -495,9 +499,9 @@ class DatabaseFunctions {
   }
 
   /// Get feed
-  static Future<Stream> getFeed(String _listDatabaseId, bool isProfileFeed ,Function(Profile)  _dealWithProfileSelection, Function(Profile) _deleteProfile){
+  static StreamBuilder getFeed(String _listDatabaseId, bool isProfileFeed ,Function(Profile)  _dealWithProfileSelection, Function(Profile) _deleteProfile){
 
-    StreamBuilder(
+    return StreamBuilder(
       stream: Firestore.instance.collection(_listDatabaseId).snapshots(),
       initialData: 10,
       builder: (context, snapshot) {

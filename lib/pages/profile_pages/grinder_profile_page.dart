@@ -48,7 +48,6 @@ class GrinderPage extends StatelessWidget {
 class GrinderDetailsCard extends StatelessWidget {
   final double _padding = 20.0;
   final double _margin = 10.0;
-  final double _textFieldWidth = 150.0;
   final Function(String) _name;
   final Function(String) _burrs;
   final Function(String) _make;

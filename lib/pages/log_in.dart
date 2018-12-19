@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:dial_in_v1/data/strings.dart';
 import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'package:dial_in_v1/pages/sign_up.dart';
-import 'package:dial_in_v1/pages/overview_page/overview_page_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:dial_in_v1/pages/overview_page/overview_page.dart';
 
@@ -199,7 +198,7 @@ class LoginButton extends StatelessWidget {
 ///Sign up Button
 class SignUpButton extends StatelessWidget {
 
-Function _onPressed;
+final Function _onPressed;
 
 SignUpButton(this._onPressed);
 

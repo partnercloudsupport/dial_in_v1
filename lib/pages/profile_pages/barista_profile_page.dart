@@ -48,8 +48,8 @@ class BaristaDetailsCard extends StatelessWidget {
   final double _margin = 10.0;
   final Function(String) _name;
   final Function(String) _level;
-  Item _nameValue;
-  Item _levelValue;
+  final Item _nameValue;
+  final Item _levelValue;
 
   BaristaDetailsCard(
     this._name,

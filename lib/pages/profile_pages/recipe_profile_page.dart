@@ -7,8 +7,6 @@ import 'package:dial_in_v1/data/images.dart';
 import 'package:dial_in_v1/database_functions.dart';
 import 'package:dial_in_v1/widgets/profile_page_widgets.dart';
 import 'package:dial_in_v1/widgets/custom_widgets.dart';
-import 'package:dial_in_v1/data/functions.dart';
-import 'dart:io';
 
 class RecipePage extends StatelessWidget{
 

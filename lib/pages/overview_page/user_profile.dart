@@ -1,11 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dial_in_v1/widgets/custom_widgets.dart';
-import 'package:scoped_model/scoped_model.dart';
 import 'package:dial_in_v1/inherited_widgets.dart';
-import 'dart:io';
-
-
+import 'package:dial_in_v1/data/strings.dart';
 
 class UserProfilePage extends StatefulWidget{
  @override
@@ -13,7 +10,6 @@ class UserProfilePage extends StatefulWidget{
 }
 
 class UserProfileState extends State<UserProfilePage>{
-
 
 /// UI Build
   @override
@@ -29,9 +25,20 @@ class UserProfileState extends State<UserProfilePage>{
 
       Row(children: <Widget>[
 
-        Column(),
-        Column(),
-        Column(),
+        Column(children: <Widget>[
+            Text('Followers num'),
+            Text(StringLabels.followers),
+        ],),
+
+        Column(children: <Widget>[
+
+
+        ],),
+
+        Column(children: <Widget>[
+
+
+        ],),
       ],
       )
 

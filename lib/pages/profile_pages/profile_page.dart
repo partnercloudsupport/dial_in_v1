@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';        
 import 'package:dial_in_v1/data/profile.dart';
 import 'package:dial_in_v1/data/strings.dart';
-import 'package:path/path.dart' as path;
 import 'package:flutter/cupertino.dart';
 import 'package:dial_in_v1/data/functions.dart';
 import 'package:dial_in_v1/pages/overview_page/profile_list.dart';
@@ -16,13 +15,9 @@ import 'package:dial_in_v1/pages/profile_pages/barista_profile_page.dart';
 import 'package:dial_in_v1/pages/profile_pages/coffee_profile_page.dart';
 import 'package:dial_in_v1/theme/appColors.dart';
 import 'package:dial_in_v1/database_functions.dart';
-import 'package:scoped_model/scoped_model.dart';
 import 'package:dial_in_v1/inherited_widgets.dart';
 import 'dart:io';
 import 'dart:async';
-// import 'package:transparent_image/transparent_image.dart' as transparant;
-
-
 
 class ProfilePage extends StatefulWidget {
   @required
@@ -75,7 +70,6 @@ class ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     
-
     return  new Scaffold(
        appBar: AppBar(
         centerTitle: true,
@@ -96,7 +90,6 @@ class ProfilePageState extends State<ProfilePage> {
             : RawMaterialButton(
                 child: Icon(Icons.arrow_back),
                 onPressed: () {
-                  DatabaseFunctions.deleteFireBaseStroageItem(_profile.image);
                   Navigator.pop(context);
                 },
               ),
