@@ -24,7 +24,7 @@ class UserProfileState extends State<UserProfilePage>{
       Container(
               child: Center(
                   child: CircularPicture(
-                      File('assets/images/user.png'), 100.0))),
+                      'assets/images/user.png', 100.0))),
       Text("Name"),
       Text("Username")
       ]

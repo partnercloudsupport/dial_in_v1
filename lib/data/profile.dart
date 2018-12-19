@@ -18,7 +18,7 @@ class Profile {
   @required
   List<Item> properties;
   @required
-  File image;
+  String image;
   @required
   ProfileType type;
   @required
@@ -77,7 +77,7 @@ class Profile {
     // setDefaultPic();
   }
 
-   Future<void> setDefaultPic()async{if (this.image == null){ this.image = await Functions.getFile(Images.recipeSmaller);}}
+  //  Future<void> setDefaultPic()async{if (this.image == null){ this.image = await Functions.getFile(Images.recipeSmaller);}}
 
   void setProfileItemValue(String itemDatabaseId, dynamic value) {
     if (value != null){
@@ -171,14 +171,14 @@ class Profile {
     }
   }
 
-Future<File> getUserImage ()async{
+Future<String> getUserImage ()async{
 
   File image = await Functions.getFile(Images.user);
   
   String imageUrl = await DatabaseFunctions.getValueFromFireStoreWithDocRef(DatabaseIds.User, this.userId, DatabaseIds.image);
   image = await DatabaseFunctions.downloadFile(imageUrl);
 
-  return image;
+  return imageUrl;
 } 
 
  dynamic getProfileProfileItemValue(ProfileType profiletype, String itemDatabaseId) {

@@ -90,7 +90,7 @@ class _TextFieldEntryState extends State<TextFieldEntry> {
 }
 
 class CircularPicture extends StatelessWidget {
-  final File _image;
+  final String _image;
   final double _size;
 
   CircularPicture(this._image, this._size);
@@ -101,7 +101,7 @@ class CircularPicture extends StatelessWidget {
         margin: const EdgeInsets.all(15.0),
         child: ClipRRect(
           borderRadius: new BorderRadius.circular(_size),
-          child: Image.file(_image, fit: BoxFit.cover),),
+          child: Image.network(_image, fit: BoxFit.cover),),
           height: _size,
           width: _size,);
           
@@ -203,7 +203,7 @@ class UserCard extends StatelessWidget {
           ///
           Container(
               child: Center(
-                  child: CircularPicture(File('assets/images/user.png'), 100.0))),
+                  child: CircularPicture('assets/images/user.png', 100.0))),
 
           Column(
             children: <Widget>[
@@ -459,7 +459,7 @@ class SocialProfileCard extends StatelessWidget {
 
       /// Recipe picture
       Hero(tag: _profile.profile.objectId, child: SizedBox(width: double.infinity, height: 200.0, child:
-        Image.file(_profile.profile.image, fit: BoxFit.cover,),),),
+        Image.network(_profile.profile.image, fit: BoxFit.cover,),),),
 
        /// Coffee Name
         Text(_profile.profile.getProfileProfileItemValue(ProfileType.coffee, DatabaseIds.coffeeId),  maxLines: 1, style: Theme.of(context).textTheme.display1,),

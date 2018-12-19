@@ -228,7 +228,7 @@ class Functions {
             isPublic: true,
             updatedAt: DateTime.now(),
             objectId: '',
-            image: await getFile(Images.recipeSmaller),
+            image: Images.recipeSmallerFirebase,
             databaseId: DatabaseIds.recipe,
             type: ProfileType.recipe,
             viewContollerId: ViewControllerIds.recipe,
@@ -266,7 +266,7 @@ class Functions {
             isPublic: true,
             updatedAt: DateTime.now(),
             objectId: '',
-            image: await getFile(Images.water),
+            image: Images.dropFirebase,
             databaseId: DatabaseIds.water,
             type: ProfileType.water,
             viewContollerId: ViewControllerIds.water,
@@ -287,7 +287,7 @@ class Functions {
             isPublic: true,
             updatedAt: DateTime.now(),
             objectId: '',
-            image: await getFile(Images.coffeeBeans),
+            image: Images.coffeeBeansFirebase,
             databaseId: DatabaseIds.coffee,
             type: ProfileType.coffee,
             viewContollerId: ViewControllerIds.coffee,
@@ -319,7 +319,7 @@ class Functions {
           isPublic: true,
           updatedAt: DateTime.now(),
           objectId: '',
-          image: await getFile(Images.aeropressSmaller512x512),
+          image: Images.aeropressSmaller512x512Firebase,
           databaseId: DatabaseIds.brewingEquipment,
           type: ProfileType.equipment,
           viewContollerId: ViewControllerIds.brewingEquipment,
@@ -339,7 +339,7 @@ class Functions {
           isPublic: true,
           updatedAt: DateTime.now(),
           objectId: '',
-          image: await getFile(Images.user),
+          image: Images.userFirebase,
           databaseId: DatabaseIds.feed,
           type: ProfileType.feed,
           viewContollerId: ViewControllerIds.feed,
@@ -355,7 +355,7 @@ class Functions {
           isPublic: true,
           updatedAt: DateTime.now(),
           objectId: '',
-          image: await getFile(Images.grinder),
+          image: Images.grinderFirebase,
           databaseId: DatabaseIds.grinder,
           type: ProfileType.grinder,
           viewContollerId: ViewControllerIds.grinder,
@@ -392,7 +392,7 @@ class Functions {
           isPublic: true,
           updatedAt: DateTime.now(),
           objectId: '',
-          image: await getFile(Images.user),
+          image: Images.userFirebase,
           databaseId: DatabaseIds.Barista,
           type: ProfileType.barista,
           viewContollerId: ViewControllerIds.barista,
@@ -1613,7 +1613,7 @@ class Functions {
   
   static Future<FeedProfileData> createFeedProfileFromProfile(Profile profile)async{
 
-    File image =  await profile.getUserImage();
+    String image =  await profile.getUserImage();
     String userId = await profile.getProfileUserName();
     return FeedProfileData(profile, userId, image);
 
@@ -1642,8 +1642,6 @@ class Functions {
 
   static Future<List<Widget>> buildProfileCardArrayFromAsyncSnapshot( BuildContext context, AsyncSnapshot documents, String databaseId, Function(Profile) giveProfile, Function(Profile) deleteProfile) async {
       
-    print('Start ${DateTime.now()}');
-
     List<Widget> _cardArray = new List<Widget>();
 
      if (documents.data.documents != null || documents.data.documents.length != 0) {
@@ -1653,7 +1651,6 @@ class Functions {
             _cardArray.add(result);
         }
      }
-      print('End ${DateTime.now()}');
       return _cardArray;
   }
 

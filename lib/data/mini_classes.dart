@@ -5,11 +5,11 @@ class FeedProfileData{
 
   Profile _profile;
   String _userId;
-  File _userImage;
+  String _userImage;
 
   FeedProfileData(this._profile, this._userId, this._userImage);
 
   Profile get profile => _profile;
   String get userId => _userId;
-  File get userImage => _userImage;
+  String get userImage => _userImage;
 }

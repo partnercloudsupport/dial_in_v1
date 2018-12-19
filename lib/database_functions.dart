@@ -83,7 +83,7 @@ class DatabaseFunctions {
   }
    
   /// Upload file
-  static Future<String> _upLoadFileReturnUrl(File file, String folder)async{
+  static Future<String> upLoadFileReturnUrl(File file, String folder)async{
     
     final StorageReference ref = FirebaseStorage.instance.ref().child(path.basename(file.path));
     final StorageUploadTask uploadTask = ref.putFile(file);
@@ -94,7 +94,6 @@ class DatabaseFunctions {
   /// Prepare Profile for FirebaseUpload or Update
   static Future<Map <String, dynamic>> prepareProfileForFirebaseUpload(Profile profile)async{
 
-    String downloadUrl = await _upLoadFileReturnUrl(profile.image, profile.databaseId);
 
     Map <String, dynamic> _properties = new Map <String, dynamic>();
 
@@ -102,7 +101,7 @@ class DatabaseFunctions {
 
     String userId = await DatabaseFunctions.getCurrentUserId();
 
-        _properties[DatabaseIds.image] = downloadUrl;
+        _properties[DatabaseIds.image] = profile.image;
         _properties[DatabaseIds.orderNumber] = profile.orderNumber;
         _properties[DatabaseIds.user] = userId;
         _properties[DatabaseIds.public] = profile.isPublic;
@@ -128,8 +127,6 @@ class DatabaseFunctions {
   /// Save profile 
   static Future<Profile> saveProfile(Profile profile)async{
 
-    String downloadUrl = await _upLoadFileReturnUrl(profile.image, profile.databaseId);
-
     Map <String, dynamic> _properties = new Map <String, dynamic>();
 
      for (var i = 0; i < profile.properties.length; i++) {
@@ -140,7 +137,7 @@ class DatabaseFunctions {
 
     String userId = await DatabaseFunctions.getCurrentUserId();
 
-        _properties[DatabaseIds.image] = downloadUrl;
+        _properties[DatabaseIds.image] = profile.image;
         _properties[DatabaseIds.orderNumber] = profile.orderNumber;
         _properties[DatabaseIds.user] = userId;
         _properties[DatabaseIds.public] = profile.isPublic;
@@ -243,7 +240,7 @@ class DatabaseFunctions {
       String _user = document[DatabaseIds.user];
       String _objectId = document.documentID;
       int _orderNumber = document[DatabaseIds.orderNumber];
-      File _image = await downloadFile(document.data[DatabaseIds.image]);
+      String _image = document[DatabaseIds.image];
       bool _ispublic = document.data[DatabaseIds.public];
 
       Profile _coffee;

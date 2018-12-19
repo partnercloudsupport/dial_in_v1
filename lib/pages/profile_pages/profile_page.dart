@@ -20,6 +20,8 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:dial_in_v1/inherited_widgets.dart';
 import 'dart:io';
 import 'dart:async';
+// import 'package:transparent_image/transparent_image.dart' as transparant;
+
 
 
 class ProfilePage extends StatefulWidget {
@@ -133,7 +135,7 @@ class ProfilePageState extends State<ProfilePage> {
 
             /// Profile Image
             Hero(tag: _profile.objectId ,child: SizedBox(width: double.infinity, height: 420.0,
-            child: Image.file(_profile.image, fit: BoxFit.cover,),),),
+            child: Image.network(_profile.image, fit: BoxFit.cover,),),),
 
             
             ///Change image button
@@ -229,20 +231,19 @@ class ProfilePageState extends State<ProfilePage> {
   }
 
 /// Get image for profile photo
-  Future <File> _getimage(File currentImage)async{
-
-    File _image = currentImage;
-    print(path.basename(_image.path));
+  Future <String> _getimage(String image)async{
   
+    String url;
+
     Center cameraSelection = Center(child: CupertinoActionSheet(actions: <Widget>[
 
           new CupertinoDialogAction(
               child: const Text(StringLabels.camera),
               isDestructiveAction: false,
               onPressed: ()async{ 
-                var image = await ImagePicker.pickImage
+                File image = await ImagePicker.pickImage
                                   (maxWidth: 640.0, maxHeight: 480.0, source: ImageSource.camera);
-                _image = image;
+                url = await DatabaseFunctions.upLoadFileReturnUrl(image, DatabaseIds.image);
                 Navigator.of(context, rootNavigator: true).pop(image);
               }
           ),
@@ -253,7 +254,7 @@ class ProfilePageState extends State<ProfilePage> {
               onPressed: ()async{ 
                 var image = await ImagePicker.pickImage
                                   (maxWidth: 640.0, maxHeight: 480.0, source: ImageSource.camera);
-                _image = image;
+                url = await DatabaseFunctions.upLoadFileReturnUrl(image, DatabaseIds.image);
                  Navigator.of(context, rootNavigator: true).pop(image);
               }
           ),
@@ -262,8 +263,7 @@ class ProfilePageState extends State<ProfilePage> {
     await showDialog(context: context, builder: (BuildContext context){
       return cameraSelection ;
     });
-    print(path.basename(_image.path));
-    return _image; 
+    return url; 
   }
 
   //// user defined function

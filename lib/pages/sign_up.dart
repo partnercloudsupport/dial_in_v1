@@ -14,7 +14,7 @@ class SignUpPage extends StatefulWidget{
 
  class _SignUpPageState extends State<SignUpPage>{
 
-  File _userImage = File('assets/images/user.png');
+  String _userImage = 'assets/images/user.png';
 
   String _userName;
   TextEditingController _userNameController = new TextEditingController();
