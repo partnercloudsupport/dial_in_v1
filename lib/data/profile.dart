@@ -171,7 +171,7 @@ class Profile {
     }
   }
 
-Future<String> getUserImage ()async{
+  Future<String> getUserImage ()async{
 
   File image = await Functions.getFile(Images.user);
   
@@ -378,6 +378,24 @@ Future<String> getUserImage ()async{
       }
     }
   }
+
+/// Profile Spercific Functions
+
+  int getTotalScore(){
+
+    List<int> scores = [
+      this.getProfileItemValue(DatabaseIds.strength),
+      this.getProfileItemValue(DatabaseIds.balance),
+      this.getProfileItemValue(DatabaseIds.flavour),
+      this.getProfileItemValue(DatabaseIds.body),
+      this.getProfileItemValue(DatabaseIds.afterTaste),
+    ];
+    return scores.reduce((value, element) => value + element);
+  }
+  
+
+
+  
 
   int getDaysRested(){
     DateTime coffeeRoastDate = getProfileProfileItemValue(ProfileType.coffee, DatabaseIds.roastDate);

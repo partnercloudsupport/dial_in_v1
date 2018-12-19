@@ -595,7 +595,7 @@ class Functions {
       case DatabaseIds.flavour:
         _item = new Item(
           title: StringLabels.flavour,
-          value: '',
+          value: 0,
           databaseId: DatabaseIds.flavour,
           placeHolderText: StringLabels.flavour,
           keyboardType: TextInputType.number,
@@ -605,7 +605,7 @@ class Functions {
       case DatabaseIds.body:
         _item = new Item(
           title: StringLabels.body,
-          value: '',
+          value: 0,
           databaseId: DatabaseIds.body,
           placeHolderText: StringLabels.enterValue,
           keyboardType: TextInputType.number,
@@ -615,7 +615,7 @@ class Functions {
       case DatabaseIds.balance:
         _item = new Item(
           title: StringLabels.balance,
-          value: '',
+          value: 0,
           databaseId: DatabaseIds.balance,
           placeHolderText: StringLabels.enterValue,
           keyboardType: TextInputType.number,
@@ -625,8 +625,18 @@ class Functions {
       case DatabaseIds.afterTaste:
         _item = new Item(
           title: StringLabels.afterTaste,
-          value: '',
+          value: 0,
           databaseId: DatabaseIds.afterTaste,
+          placeHolderText: StringLabels.enterDescription,
+          keyboardType: TextInputType.text,
+        );
+        break;
+
+      case DatabaseIds.strength:
+        _item = new Item(
+          title: StringLabels.strength,
+          value: 0,
+          databaseId: DatabaseIds.strength,
           placeHolderText: StringLabels.enterDescription,
           keyboardType: TextInputType.text,
         );
@@ -669,7 +679,7 @@ class Functions {
       case DatabaseIds.date:
         _item = new Item(
           title: StringLabels.date,
-          value: '',
+          value: DateTime.now(),
           databaseId: DatabaseIds.date,
           placeHolderText: StringLabels.enterDescription,
           keyboardType: TextInputType.number,
@@ -1644,6 +1654,7 @@ class Functions {
       return _cardArray;
   }
   
+  /// Creat feed Profile from
   static Future<FeedProfileData> createFeedProfileFromProfile(Profile profile)async{
 
     String image =  await profile.getUserImage();

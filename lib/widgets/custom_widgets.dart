@@ -444,7 +444,7 @@ class SocialProfileCard extends StatelessWidget {
       
           Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
             ///User Name
-            Text(_profile.userId,  maxLines: 1, style: Theme.of(context).textTheme.display1,),
+            Text(_profile.userName,  maxLines: 1, style: Theme.of(context).textTheme.display1,),
 
         ]),
         Expanded(child: Column(mainAxisAlignment: MainAxisAlignment.end, crossAxisAlignment: CrossAxisAlignment.end, children: [ 
