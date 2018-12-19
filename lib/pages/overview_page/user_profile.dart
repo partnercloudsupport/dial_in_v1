@@ -7,8 +7,6 @@ import 'dart:io';
 
 
 
-
-
 class UserProfilePage extends StatefulWidget{
  @override
   UserProfileState createState() => new UserProfileState();
@@ -26,8 +24,17 @@ class UserProfileState extends State<UserProfilePage>{
               child: Center(
                   child: CircularPicture(
                       ProfilesModel.of(context).userImage, 100.0))),
-      Text("Name"),
-      Text("Username")
+      Text(ProfilesModel.of(context).userName),
+      Text("Username"),
+
+      Row(children: <Widget>[
+
+        Column(),
+        Column(),
+        Column(),
+      ],
+      )
+
       ]
     );
     

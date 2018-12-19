@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:dial_in_v1/data/images.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:dial_in_v1/data/functions.dart';
 
 
 
@@ -35,6 +36,8 @@ class SignUpPage extends StatefulWidget{
       if(success){
         Navigator.pop(context, true);
       
+        
+      }else{
         PopUps.showAlert( 
           buttonFunction:() {Navigator.of(context).pop();},
           buttonText: StringLabels.ok ,
@@ -77,30 +80,10 @@ class SignUpPage extends StatefulWidget{
                 ///User Picture
                  InkWell(
                    child: Container( decoration: BoxDecoration(shape: BoxShape.circle),margin: EdgeInsets.fromLTRB(25.0, 0.0, 25.0, 25.0) , 
-                    child: Card(child:CircularPicture(_userImage, 100.0))
+                    child:CircularPicture(_userImage, 100.0)
                     ),
-                   onTap: ()async{
-                await showDialog(context: context, builder: (BuildContext context){
-                  return 
-                  Center(child: CupertinoActionSheet(actions: <Widget>[
-
-                      new CupertinoDialogAction(
-                          child: const Text(StringLabels.camera),
-                          isDestructiveAction: false,
-                          onPressed: ()async{ 
-                            File image = await ImagePicker.pickImage
-                                              (maxWidth: 640.0, maxHeight: 480.0, source: ImageSource.camera);
-                            _userImage = await DatabaseFunctions.upLoadFileReturnUrl(image, folder: DatabaseIds.image);
-                            // Navigator.of(context, rootNavigator: true).pop();
-                            Navigator.of(context, rootNavigator: true).pop();
-                          }
-                        ),
-                      ]
-                    ),
-                  );
-                },);
-              // .then((image){ setState(() {_profile.image = image;});});
-                   }
+                   onTap:(){ Functions.getimageFromCameraOrGallery(context,
+                    (image){ setState(() {_userImage = image;});});}
                  ),
                 
 

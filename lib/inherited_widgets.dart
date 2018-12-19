@@ -43,7 +43,10 @@ class ProfilesInheritedWidget extends InheritedWidget {
 class ProfilesModel extends Model{
 
     String _userId;
-    String get userId =>_userId;
+    String get userId => _userId;
+
+    String _userName;
+    String get userName => _userName;
 
     String _userImage;
     String get userImage => _userImage;
@@ -89,7 +92,8 @@ class ProfilesModel extends Model{
       _comminuty.getProfiles();
       _followers.getProfiles();
       DatabaseFunctions.getCurrentUserId().then((user){_userId = user;});
-      DatabaseFunctions.getUserImage().then((userImage){_userImage = userImage;});
+      DatabaseFunctions.getUserImage().then((image){_userImage = image;});
+      DatabaseFunctions.getUserName().then((name){_userName = name;});
     }
 
     void deInit(){

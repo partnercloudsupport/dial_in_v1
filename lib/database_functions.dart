@@ -44,7 +44,7 @@ class DatabaseFunctions {
     print('Logged out');
   }
 
-  ///
+  /// Get User Image
   static Future <String> getUserImage()async{
 
     String result = '';
@@ -61,6 +61,23 @@ class DatabaseFunctions {
    return result;
   }
 
+  /// Get User Name
+  static Future <String> getUserName()async{
+
+    String result = '';
+    String userId = await getCurrentUserId();
+
+    DocumentSnapshot doc = await Firestore.instance.collection(DatabaseIds.User).document(userId).get();
+
+    for(var doc in doc.data.entries){  /// <<<<==== changed line
+                  
+                  if(doc.key == DatabaseIds.name){
+                    result = doc.value;
+                  } 
+      }
+   return result;
+  }
+  
   // Get current User from firebase
   static Future<String> getCurrentUserId()async{
     FirebaseUser user = await FirebaseAuth.instance.currentUser();

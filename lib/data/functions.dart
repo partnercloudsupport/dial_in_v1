@@ -1,3 +1,5 @@
+import 'package:image_picker/image_picker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:dial_in_v1/data/item.dart';
 import 'package:dial_in_v1/database_functions.dart';
 import 'package:dial_in_v1/data/strings.dart';
@@ -17,7 +19,6 @@ import 'package:image/image.dart' as Image;
 import 'dart:io' as Io;
 import 'package:dial_in_v1/data/mini_classes.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 
 class Functions {
 
@@ -49,6 +50,38 @@ class Functions {
   return returnFile;      
  } 
 
+  static Future getimageFromCameraOrGallery(BuildContext context, Function(String) then)async{
+    String url = '';
+
+    await showDialog(context: context, builder: (BuildContext context){
+      return Center(child: CupertinoActionSheet(actions: <Widget>[
+
+      new CupertinoDialogAction(
+          child: const Text(StringLabels.camera),
+          isDestructiveAction: false,
+          onPressed: ()async{ 
+            File image = await ImagePicker.pickImage
+                              (maxWidth: 640.0, maxHeight: 480.0, source: ImageSource.camera);
+            url = await DatabaseFunctions.upLoadFileReturnUrl(image, folder: DatabaseIds.image);
+            Navigator.of(context).pop(then(url));
+          }
+      ),
+    
+      new  CupertinoDialogAction(
+          child: const Text(StringLabels.photoLibrary),
+          isDestructiveAction: false,
+          onPressed: ()async{ 
+            File image = await ImagePicker.pickImage
+                              (maxWidth: 640.0, maxHeight: 480.0, source: ImageSource.gallery);
+            url = await DatabaseFunctions.upLoadFileReturnUrl(image, folder: DatabaseIds.image);
+            Navigator.of(context).pop(then(url));
+          }
+      ),
+    ],));
+    }
+    );
+  }
+  
   static Future<File> getPictureFile(String filePath) async {
     // get the path to the document directory.
     Directory appDocDir = await getApplicationDocumentsDirectory();
