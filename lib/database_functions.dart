@@ -363,7 +363,7 @@ class DatabaseFunctions {
   
         newProfile.properties.forEach((item){
 
-          if (item.title == key){
+          if (item.databaseId == key){
             item.value = value;
           }
         });

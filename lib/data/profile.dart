@@ -716,7 +716,7 @@ Future<String> getUserImage ()async{
       case DatabaseIds.flavour:
         _item = new Item(
           title: StringLabels.flavour,
-          value: 0,
+          value: '0',
           databaseId: DatabaseIds.flavour,
           placeHolderText: StringLabels.flavour,
           keyboardType: TextInputType.number,
@@ -726,7 +726,7 @@ Future<String> getUserImage ()async{
       case DatabaseIds.body:
         _item = new Item(
           title: StringLabels.body,
-          value: 0,
+          value: '0',
           databaseId: DatabaseIds.body,
           placeHolderText: StringLabels.enterValue,
           keyboardType: TextInputType.number,
@@ -736,7 +736,7 @@ Future<String> getUserImage ()async{
       case DatabaseIds.balance:
         _item = new Item(
           title: StringLabels.balance,
-          value: 0,
+          value: '0',
           databaseId: DatabaseIds.balance,
           placeHolderText: StringLabels.enterValue,
           keyboardType: TextInputType.number,
@@ -746,7 +746,7 @@ Future<String> getUserImage ()async{
       case DatabaseIds.afterTaste:
         _item = new Item(
           title: StringLabels.afterTaste,
-          value: 0,
+          value: '0',
           databaseId: DatabaseIds.afterTaste,
           placeHolderText: StringLabels.enterDescription,
           keyboardType: TextInputType.text,
@@ -756,7 +756,7 @@ Future<String> getUserImage ()async{
       case DatabaseIds.strength:
         _item = new Item(
           title: StringLabels.strength,
-          value: 0,
+          value: '0',
           databaseId: DatabaseIds.strength,
           placeHolderText: StringLabels.enterDescription,
           keyboardType: TextInputType.text,
@@ -1763,18 +1763,20 @@ Future<String> getUserImage ()async{
 
 /// Profile Spercific Functions
 
-  int getTotalScore(){
+  double getTotalScore(){
 
-    List<int> scores = [
-      this.getProfileItemValue(DatabaseIds.strength),
-      this.getProfileItemValue(DatabaseIds.balance),
-      this.getProfileItemValue(DatabaseIds.flavour),
-      this.getProfileItemValue(DatabaseIds.body),
-      this.getProfileItemValue(DatabaseIds.afterTaste),
+    List<double> scores = [
+      double.parse(this.getProfileItemValue(DatabaseIds.strength),),
+      double.parse(this.getProfileItemValue(DatabaseIds.balance)),
+      double.parse(this.getProfileItemValue(DatabaseIds.flavour)),
+      double.parse(this.getProfileItemValue(DatabaseIds.body)),
+      double.parse(this.getProfileItemValue(DatabaseIds.afterTaste)),
     ];
-    return scores.reduce((value, element) => value + element);
-  }
-  
+    
+    double finalscore = scores.reduce((value, element) => value + element);
+
+    return finalscore;
+  }  
 
   int getDaysRested(){
     DateTime coffeeRoastDate = getProfileProfileItemValue(ProfileType.coffee, DatabaseIds.roastDate);

@@ -19,10 +19,8 @@ class Pagebackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return
-
         /// Background
-        new Container(
+      return  new Container(
       decoration: new BoxDecoration(
         image: new DecorationImage(
           image: _image,
@@ -281,6 +279,7 @@ class _ProfileCardState extends State<ProfileCard> {
   String _topRight = 'error';
   String _bottomRight = 'error';
   String _bottomleft = 'error';
+  String _score;
 
 @override
   void initState() {
@@ -288,10 +287,12 @@ class _ProfileCardState extends State<ProfileCard> {
     switch(widget._profile.type){
       
       case ProfileType.recipe: 
+      
       _topLeft = widget._profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.coffee);
       _topRight = widget._dateFormat.format(widget._profile.getProfileItemValue(DatabaseIds.date));
       _bottomRight = widget._profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.brewingEquipment);
-      _bottomleft = widget._profile.getTotalScore().toString();
+      _bottomleft = 'widget._profile.getTotalScore()';
+      // _score = widget._profile.getTotalScore().toInt().toString();
       break;
 
       case ProfileType.coffee:  
@@ -401,9 +402,14 @@ class _ProfileCardState extends State<ProfileCard> {
                           margin: EdgeInsets.all(10.0), child: Text(_topLeft, maxLines: 1, overflow: TextOverflow.clip, style: Theme.of(context).textTheme.display1,)),
                       Container(
                         margin: EdgeInsets.all(10.0),
-                        child: Text(_bottomleft, maxLines: 1),
+                        child:  Text(_bottomleft, maxLines: 1),
                       )
-                    ]))),
+                    ]
+                )
+            )
+        ),
+ // child: widget._profile.type == ProfileType.recipe ? Text(_bottomleft, maxLines: 1) : FiveStarRating(widget._profile.getTotalScore()),
+
 
         ///
         /// Third and fourth details
@@ -485,20 +491,36 @@ class SocialProfileCard extends StatelessWidget {
         Text(_profile.profile.getProfileProfileItemValue(ProfileType.equipment, DatabaseIds.descriptors),  maxLines: 1), 
 
         ///Score
-        new StarRating(
-                size: 25.0,
-                rating: 2.5,
-                color: Colors.orange,
-                borderColor: Colors.grey,
-                starCount: 5,
-              ),        
+        FiveStarRating(_profile.profile.getProfileTotalScoreValue())      
       ]),
       ),
     );
   }
 }
 
+/// Five star rating
+class FiveStarRating extends StatelessWidget {
 
+  final int _score;
+  final int _starCount = 5;
+
+  FiveStarRating(this._score);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: new StarRating(
+        size: 25.0,
+        rating: _score/5,
+        color: Colors.orange,
+        borderColor: Colors.grey,
+        starCount: _starCount
+      ),
+    );
+  }
+}
+
+/// Cout label
 class CountLabel extends StatelessWidget {
   final String _text;
 
@@ -517,7 +539,6 @@ class CountLabel extends StatelessWidget {
   }
 }
 
-///
 /// Add floating action button
 class AddButton extends StatelessWidget {
 
@@ -534,9 +555,7 @@ class AddButton extends StatelessWidget {
   }
 }
 
-
 ////////////////////////////////// Custom Classes ///////////////////////////////////////
-
 
 /// Tab View Data
 class TabViewData{
@@ -548,6 +567,7 @@ class TabViewData{
   TabViewData(this.screen, this.tab, this.type);
 
 }
+
 /// TabViewDataArray
 class TabViewDataArray{
 

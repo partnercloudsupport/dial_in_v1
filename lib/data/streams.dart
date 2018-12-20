@@ -115,7 +115,7 @@ class SocialFeedBloc{
   Future<List<Profile>> convertStreamToListOfProfiles(QuerySnapshot stream) async {
 
     final futureProfiles = stream.documents.map((doc) => 
-        DatabaseFunctions.createProfileFromDocumentSnapshot(_databaseId, doc));
+        DatabaseFunctions.createProfileFromDocumentSnapshot(DatabaseIds.recipe, doc));
            
     return await Future.wait(futureProfiles);
   }
