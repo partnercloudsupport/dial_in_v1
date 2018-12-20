@@ -126,20 +126,17 @@ class DatabaseFunctions {
   }
    
   /// Upload file to Firebase
-  static Future<String> upLoadFileReturnUrl(File file, {String folder, String subFolder, String subSubFolder})async{
+  static Future<String> upLoadFileReturnUrl(File file, List<String> folders)async{
     
    StorageReference ref;
-    if(subFolder == null || folder == null || subSubFolder == null){
+    if(folders.length == 0){
        ref = FirebaseStorage.instance.ref().child(path.basename(file.path));
-    }else
-    if(subFolder == null || folder == null){
-       ref = FirebaseStorage.instance.ref().child(path.basename(file.path));
-    }else if(folder ==  null){
-       ref = FirebaseStorage.instance.ref().child(subFolder).child(path.basename(file.path));
-    }else if(subFolder ==  null){
-       ref = FirebaseStorage.instance.ref().child(folder).child(path.basename(file.path));
-    }else if(subFolder != null || folder != null){
-        ref = FirebaseStorage.instance.ref().child(folder).child(subFolder).child(path.basename(file.path));
+    }else if(folders.length == 1){
+       ref = FirebaseStorage.instance.ref().child(folders[0]).child(path.basename(file.path));
+    }else if(folders.length == 2){
+       ref = FirebaseStorage.instance.ref().child(folders[0]).child(folders[1]).child(path.basename(file.path));
+    }else if(folders.length == 3){
+        ref = FirebaseStorage.instance.ref().child(folders[0]).child(folders[1]).child(folders[2]).child(path.basename(file.path));
     }else{   
        ref = FirebaseStorage.instance.ref().child(path.basename(file.path));
     }
@@ -311,6 +308,8 @@ class DatabaseFunctions {
   /// Convert profile from document snapshot
   static Future<Profile> createProfileFromDocumentSnapshot(String databaseId, DocumentSnapshot document)async{
     
+      Profile newProfile =  await Profile.createBlankProfile(Functions.getProfileDatabaseIdType(databaseId));
+
       DateTime _updatedAt = document[DatabaseIds.updatedAt];
       String _user = document[DatabaseIds.user];
       String _objectId = document.documentID;
@@ -350,8 +349,6 @@ class DatabaseFunctions {
         else{_water = await Functions.createBlankProfile(ProfileType.water);}
       }
 
-      List<Item> _properties = new List<Item>();
-
         document.data.forEach((key, value) {
 
       if ( key != DatabaseIds.updatedAt){
@@ -364,9 +361,12 @@ class DatabaseFunctions {
 
       if ( key != DatabaseIds.user){
   
-         Map<String, dynamic> item = {key: value};
-        _properties.add(Functions.createItemWithData(item));
-      
+        newProfile.properties.forEach((item){
+
+          if (item.title == key){
+            item.value = value;
+          }
+        });
      }}}}}}
     );
 
@@ -383,7 +383,7 @@ class DatabaseFunctions {
               image: _image,
               databaseId: databaseId,
               orderNumber: _orderNumber,
-              properties: _properties,
+              properties: newProfile.properties,
               profiles:  [
                 _coffee,
                 _barista,
@@ -404,7 +404,7 @@ class DatabaseFunctions {
               image: _image,
               databaseId: databaseId,
               orderNumber: _orderNumber,
-              properties: _properties
+              properties: newProfile.properties
               );
       break;
 
@@ -418,7 +418,7 @@ class DatabaseFunctions {
               image: _image,
               databaseId: databaseId,
               orderNumber: _orderNumber,
-              properties: _properties
+              properties: newProfile.properties
               );
       break;
 
@@ -432,7 +432,7 @@ class DatabaseFunctions {
         image: _image,
         databaseId: databaseId,
         orderNumber: _orderNumber,
-        properties: _properties
+        properties: newProfile.properties
               );
       break;
 
@@ -446,7 +446,7 @@ class DatabaseFunctions {
         image: _image,
         databaseId: databaseId,
         orderNumber: _orderNumber,
-        properties: _properties
+        properties: newProfile.properties
         );
       break;
 
@@ -460,7 +460,7 @@ class DatabaseFunctions {
         image: _image,
         databaseId: databaseId,
         orderNumber: _orderNumber,
-        properties: _properties
+        properties: newProfile.properties
         );
       break;
 
@@ -475,7 +475,7 @@ class DatabaseFunctions {
               image: _image,
               databaseId: databaseId,
               orderNumber: 0,
-              properties: _properties
+              properties: newProfile.properties
               );
       break;
     }

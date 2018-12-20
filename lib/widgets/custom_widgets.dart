@@ -86,6 +86,7 @@ class _TextFieldEntryState extends State<TextFieldEntry> {
   }
 }
 
+/// Circular picture
 class CircularPicture extends StatelessWidget {
   final String _image;
   final double _size;
@@ -192,6 +193,7 @@ class SegmentControlButton extends StatelessWidget {
   }
 }
 
+/// Usercard
 class UserCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -260,11 +262,6 @@ class UserCard extends StatelessWidget {
   }
 }
 
-
-
-
-
-
 ///Profile card
 class ProfileCard extends StatefulWidget {
   
@@ -294,7 +291,7 @@ class _ProfileCardState extends State<ProfileCard> {
       _topLeft = widget._profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.coffee);
       _topRight = widget._dateFormat.format(widget._profile.getProfileItemValue(DatabaseIds.date));
       _bottomRight = widget._profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.brewingEquipment);
-      _bottomleft = widget._profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.score);
+      _bottomleft = widget._profile.getTotalScore().toString();
       break;
 
       case ProfileType.coffee:  
@@ -501,6 +498,7 @@ class SocialProfileCard extends StatelessWidget {
   }
 }
 
+
 class CountLabel extends StatelessWidget {
   final String _text;
 
@@ -521,8 +519,6 @@ class CountLabel extends StatelessWidget {
 
 ///
 /// Add floating action button
-///
-
 class AddButton extends StatelessWidget {
 
   final Function _onPressed;
@@ -552,7 +548,7 @@ class TabViewData{
   TabViewData(this.screen, this.tab, this.type);
 
 }
-
+/// TabViewDataArray
 class TabViewDataArray{
 
   List<TabViewData> ref;
@@ -728,8 +724,6 @@ class _DateInputCardState extends State<DateInputCard> {
   }
 }
 
-
-
 ///TextField Value input
 class TextFieldWithInitalValue extends StatefulWidget {
 
@@ -813,7 +807,7 @@ Container(
   }
 }       
 
-
+///TextfieldWithFixedValue
 class TextfieldWithFixedValue extends StatefulWidget {
 
 final dynamic _initalValue; 

@@ -20,7 +20,9 @@ class FeedBloc{
   
   Stream<List<Profile>> get profiles => _outgoingController.stream;
     
-  
+  List<Profile> _profiles;
+  int get profilesCount => _profiles.length;
+
   /// Init of the class
   FeedBloc(this._databaseId);
 
@@ -44,7 +46,7 @@ class FeedBloc{
     _incomingController.stream.listen((p){
       convertStreamToListOfProfiles(p)
       .then((profiles){ 
-
+        _profiles = profiles;
         if (profile != null){profiles.add(profile);}
         _outgoingController.add(profiles);});
       }

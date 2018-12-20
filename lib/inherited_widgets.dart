@@ -50,6 +50,12 @@ class ProfilesModel extends Model{
 
     String _userImage;
     String get userImage => _userImage;
+
+    int get recipeProfilesCount => _recipeFeed.profilesCount;
+    // cofflleProfilesCount
+    // followersCount
+    // followingCount
+
   
     Stream<List<Profile>> communityFeed;
     Stream<List<Profile>> followersFeed;

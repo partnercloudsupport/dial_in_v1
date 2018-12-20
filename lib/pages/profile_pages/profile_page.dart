@@ -243,7 +243,7 @@ class ProfilePageState extends State<ProfilePage> {
           onPressed: ()async{ 
             File image = await ImagePicker.pickImage
                               (maxWidth: 640.0, maxHeight: 480.0, source: ImageSource.camera);
-            url = await DatabaseFunctions.upLoadFileReturnUrl(image, folder: ProfilesModel.of(context).userId  ,subFolder: DatabaseIds.image);
+            url = await DatabaseFunctions.upLoadFileReturnUrl(image,[ProfilesModel.of(context).userId  , DatabaseIds.image]);
             Navigator.of(context).pop(then(url));
           }
       ),
@@ -254,7 +254,7 @@ class ProfilePageState extends State<ProfilePage> {
           onPressed: ()async{ 
             File image = await ImagePicker.pickImage
                               (maxWidth: 640.0, maxHeight: 480.0, source: ImageSource.gallery);
-            url = await DatabaseFunctions.upLoadFileReturnUrl(image, folder: DatabaseIds.image);
+            url = await DatabaseFunctions.upLoadFileReturnUrl(image,[ProfilesModel.of(context).userId  , DatabaseIds.image]);
             Navigator.of(context).pop(then(url));
           }
       ),
@@ -296,7 +296,7 @@ class ProfilePageState extends State<ProfilePage> {
                     )
                   )
                 );
-               if (result !=false){ 
+               if (result as bool != false){ 
                Navigator.pop(context, result);             
                setState(() 
                {  _profile.setSubProfile(result); });}         

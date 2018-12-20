@@ -8,6 +8,7 @@ import 'package:dial_in_v1/data/functions.dart';
 import 'package:dial_in_v1/pages/overview_page/profile_list.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:dial_in_v1/inherited_widgets.dart';
+import 'package:dial_in_v1/routes.dart';
 
 
 /// Data page
@@ -111,7 +112,7 @@ class DataPageState extends State<DataPage>with SingleTickerProviderStateMixin {
 
           Profile _profile = await Functions.createBlankProfile(_lists.ref[controller.index].type);
 
-          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
+          Navigator.push(context, SlowerRoute((BuildContext context) =>
 
           ProfilePage    
           (isOldProfile: false,
