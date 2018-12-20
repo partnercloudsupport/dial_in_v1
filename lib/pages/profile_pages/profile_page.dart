@@ -16,6 +16,7 @@ import 'package:dial_in_v1/pages/profile_pages/coffee_profile_page.dart';
 import 'package:dial_in_v1/theme/appColors.dart';
 import 'package:dial_in_v1/database_functions.dart';
 import 'package:dial_in_v1/inherited_widgets.dart';
+import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'dart:io';
 import 'dart:async';
 
@@ -29,21 +30,17 @@ class ProfilePage extends StatefulWidget {
   @required
   final bool isOldProfile;
   @required
-  bool isFromProfile;
+  final bool isFromProfile;
   @required
   final ProfileType type;
   @required
   final String referance;
-  String appBarTitle;
-  Profile profile; 
+  final String appBarTitle;
+  final Profile profile; 
 
   ProfilePage
   ({this.isOldProfile, this.isCopying, this.isEditing, 
-  this.isNew, this.type, this.referance, this.profile, this.isFromProfile,}) {
-    if (isNew || isCopying) { this.appBarTitle = StringLabels.newe + ' ' +Functions.getProfileTypeString(type) + ' ' + StringLabels.profile;
-    }else if (isEditing){  this.appBarTitle =  StringLabels.editing + ' ' + Functions.getProfileTypeString(type) + ' ' + StringLabels.profile; }
-    else{ this.appBarTitle =  Functions.getProfileTypeString(type) + ' ' + StringLabels.profile; }
-  }
+  this.isNew, this.type, this.referance, this.profile, this.isFromProfile, this.appBarTitle}); 
 
   ProfilePageState createState() => new ProfilePageState();
 }
@@ -56,13 +53,20 @@ class ProfilePageState extends State<ProfilePage> {
   bool _isOldProfile;
   Profile _profile;
   ProfilesModel _model;
+  String _appBarTitle;
+
 
   void initState() {
       _isCopying = widget.isCopying;
       _isEditing = widget.isEditing;
       _profile = widget.profile;
       _isOldProfile = widget.isOldProfile; 
-      _model = ProfilesModel.of(context);           
+      _model = ProfilesModel.of(context);
+      
+    if (widget.isNew || widget.isCopying) { this._appBarTitle = StringLabels.newe + ' ' +Functions.getProfileTypeString(_profile.type) + ' ' + StringLabels.profile;
+    }else if (widget.isEditing){  this._appBarTitle =  StringLabels.editing + ' ' + Functions.getProfileTypeString(_profile.type) + ' ' + StringLabels.profile; }
+    else{ this._appBarTitle =  Functions.getProfileTypeString(_profile.type) + ' ' + StringLabels.profile; }
+  
       super.initState();
   }
 
@@ -74,7 +78,7 @@ class ProfilePageState extends State<ProfilePage> {
        appBar: AppBar(
         centerTitle: true,
         title: Text(
-          widget.appBarTitle,
+          _appBarTitle,
           style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15.0),
         ),
         automaticallyImplyLeading: false,
@@ -90,7 +94,7 @@ class ProfilePageState extends State<ProfilePage> {
             : RawMaterialButton(
                 child: Icon(Icons.arrow_back),
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.pop(context, false);
                 },
               ),
         actions: <Widget>[
@@ -128,9 +132,8 @@ class ProfilePageState extends State<ProfilePage> {
             ],),),
 
             /// Profile Image
-            Hero(tag: _profile.objectId ,child: SizedBox(width: double.infinity, height: 420.0,
-            child: Image.network(_profile.image, fit: BoxFit.cover,),),),
-
+            Hero(tag: _profile.objectId ,child: SizedBox(width: 300.0, height: 300.0,
+            child: CircularPicture(_profile.image, 300.0),),),
             
             ///Change image button
             FlatButton(
@@ -217,7 +220,7 @@ class ProfilePageState extends State<ProfilePage> {
       break;
 
       case ProfileType.recipe:
-      _structure = RecipePage(_profile, _margin, (key, value){setState((){_profile.setProfileItemValue( key,  value);});}, _showDialog);
+      _structure = RecipePage(_profile, _margin, (key, value){setState((){_profile.setProfileItemValue( key,  value);});}, _showProfileList);
       break;
 
       default:
@@ -240,7 +243,7 @@ class ProfilePageState extends State<ProfilePage> {
           onPressed: ()async{ 
             File image = await ImagePicker.pickImage
                               (maxWidth: 640.0, maxHeight: 480.0, source: ImageSource.camera);
-            url = await DatabaseFunctions.upLoadFileReturnUrl(image, folder: DatabaseIds.image);
+            url = await DatabaseFunctions.upLoadFileReturnUrl(image, folder: ProfilesModel.of(context).userId  ,subFolder: DatabaseIds.image);
             Navigator.of(context).pop(then(url));
           }
       ),
@@ -262,7 +265,7 @@ class ProfilePageState extends State<ProfilePage> {
 
 
   //// user defined function
-  void _showDialog(ProfileType profileType) {
+  void _showProfileList(ProfileType profileType) {
     // flutter defined function
     showDialog(
       context: context,
@@ -293,12 +296,13 @@ class ProfilePageState extends State<ProfilePage> {
                     )
                   )
                 );
+               if (result !=false){ 
                Navigator.pop(context, result);             
-               setState(() {  _profile.setSubProfile(result); });         
+               setState(() 
+               {  _profile.setSubProfile(result); });}         
               },
               child: Text('Add new profile'),
             ),
-           
               ProfileListDialog(
                 profileType,
                 (sentProfile){ setState((){

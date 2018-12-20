@@ -17,7 +17,6 @@ class ScoreSlider extends StatefulWidget {
 
   ScoreSliderState createState() => new ScoreSliderState();
 }
-
 class ScoreSliderState extends State<ScoreSlider> {
   double _value;
   String _label;
@@ -41,14 +40,13 @@ class ScoreSliderState extends State<ScoreSlider> {
           ),
           Slider(
             value: _value,
-            onChanged: (value) {
+            onChanged: (value){},
+            onChangeEnd:  (value) {
               setState(() {
                 _value = value;
               });
               widget._sliderValue(value);
             },
-            onChangeEnd: (value) {},
-            onChangeStart: (value) {},
             min: 0,
             max: 10,
             divisions: 10,
@@ -61,9 +59,8 @@ class ScoreSliderState extends State<ScoreSlider> {
   }
 }
 
-////
 /// Widgets
-///
+
 class ProfileInputCardWithAttribute extends StatefulWidget {
 
   final double _padding = 20.0;
@@ -97,7 +94,6 @@ class ProfileInputCardWithAttribute extends StatefulWidget {
 
       _ProfileInputCardWithAttributeState createState() => new _ProfileInputCardWithAttributeState();
 }
-
 class _ProfileInputCardWithAttributeState extends State<ProfileInputCardWithAttribute> {
 
       TextEditingController _attributeController;
@@ -225,7 +221,6 @@ class DoubleProfileInputCard extends StatefulWidget {
 
       _DoubleProfileInputCardState createState() => new _DoubleProfileInputCardState();
 }
-
 class _DoubleProfileInputCardState extends State<DoubleProfileInputCard> {
 
       TextEditingController _leftController;
@@ -365,7 +360,6 @@ class ProfileInputWithDetailsCard extends StatefulWidget {
 
   ProfileInputWithDetailsCardState createState() => ProfileInputWithDetailsCardState();
 }
-
 class ProfileInputWithDetailsCardState extends State<ProfileInputWithDetailsCard> {
 
   TextEditingController _controller;
@@ -405,9 +399,6 @@ class ProfileInputWithDetailsCardState extends State<ProfileInputWithDetailsCard
                 });
         }
       }
-
-
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -600,49 +591,52 @@ class CoffeeCard extends StatelessWidget {
 }
 
 /// Ratio Card
-class RatioCard extends StatelessWidget {
+class RatioCard extends StatefulWidget {
   final double _padding = 20.0;
   final double _margin = 10.0;
   final double _cornerRadius = 20.0;
   final double _textFieldWidth = 80.0;
-  final double _spacing = 15.0;
 
   final Profile _profile;
 
   final Function(String) _doseChanged;
-  TextEditingController _doseController = new TextEditingController();
-
   final Function(String) _yieldChanged;
-  TextEditingController _yieldController = new TextEditingController();
-
   final Function(String) _brewWeightChanged;
-  TextEditingController _weightController = new TextEditingController();
-
 
   RatioCard(
     this._profile,
-
     this._doseChanged,
     this._yieldChanged,
     this._brewWeightChanged,
-  ){
-    _doseController.text = _profile.getProfileItemValue(DatabaseIds.brewingDose);
-    _yieldController.text = _profile.getProfileItemValue(DatabaseIds.yielde);
-    _weightController.text = _profile.getProfileItemValue(DatabaseIds.brewWeight);
-  }
+  );
+  _RatioCardState createState() => _RatioCardState();
+}
+class _RatioCardState extends State<RatioCard> {
+
+  TextEditingController _doseController = new TextEditingController();
+  TextEditingController _yieldController = new TextEditingController();
+  TextEditingController _weightController = new TextEditingController();
+
+  @override
+    void initState() {
+    _doseController.text = widget._profile.getProfileItemValue(DatabaseIds.brewingDose);
+    _yieldController.text = widget._profile.getProfileItemValue(DatabaseIds.yielde);
+    _weightController.text = widget._profile.getProfileItemValue(DatabaseIds.brewWeight);
+    super.initState();
+    }
 
   @override
   Widget build(BuildContext context) {
     return 
     
     Card(child:Container(
-      margin: EdgeInsets.all(_margin),
-      padding: EdgeInsets.all(_padding),
+      margin: EdgeInsets.all(widget._margin),
+      padding: EdgeInsets.all(widget._padding),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Container(
-            margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, _padding),
+            margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, widget._padding),
             child: Text(
               StringLabels.ratios,
               style: Theme.of(context).textTheme.title,
@@ -654,7 +648,7 @@ class RatioCard extends StatelessWidget {
             children: <Widget>[
               /// Dose
               Container(
-                  width: _textFieldWidth,
+                  width: widget._textFieldWidth,
                   child: TextField(
                     controller: _doseController,
                     textAlign: TextAlign.start,
@@ -663,12 +657,12 @@ class RatioCard extends StatelessWidget {
                       labelText: StringLabels.brewingDose,
                       hintText: StringLabels.enterValue,
                     ),
-                    onChanged: _doseChanged,
+                    onChanged: widget._doseChanged,
                   )),
 
               /// Yield
               Container(
-                width: _textFieldWidth,
+                width: widget._textFieldWidth,
                 child: TextField(
                   controller: _yieldController,
                   textAlign: TextAlign.start,
@@ -677,12 +671,12 @@ class RatioCard extends StatelessWidget {
                     labelText: StringLabels.yielde,
                     hintText: StringLabels.enterValue,
                   ),
-                  onChanged: _yieldChanged,
+                  onChanged: widget._yieldChanged,
                 )),
 
               /// Brew wieght
               Container(
-                width: _textFieldWidth,
+                width: widget._textFieldWidth,
                 child: TextField(
                   controller: _weightController,
                   textAlign: TextAlign.start,
@@ -691,7 +685,7 @@ class RatioCard extends StatelessWidget {
                     labelText: StringLabels.brewWeight,
                     hintText: StringLabels.enterValue,
                   ),
-                  onChanged: _brewWeightChanged,
+                  onChanged: widget._brewWeightChanged,
                 )),
             ],
           ),
@@ -704,7 +698,7 @@ class RatioCard extends StatelessWidget {
 }
 
 ///Two textFieldcard
-class TwoTextfieldCard extends StatelessWidget {
+class TwoTextfieldCard extends StatefulWidget {
   final double _padding = 20.0;
   final double _margin = 10.0;
   final double _cornerRadius = 20.0;
@@ -712,10 +706,6 @@ class TwoTextfieldCard extends StatelessWidget {
   final Item _itemLeft;
   final Item _itemRight;
   
-  TextEditingController _leftController = new TextEditingController(); 
-  TextEditingController _rightController = new TextEditingController(); 
-
-
   final Function(String) _onLeftTextChanged;
   final Function(String) _onRightTextChanged;
 
@@ -724,17 +714,26 @@ class TwoTextfieldCard extends StatelessWidget {
       this._onRightTextChanged,
       this._itemLeft,
       this._itemRight,
-     ){
-        _leftController.text = _itemLeft.value;
-        _rightController.text = _itemRight.value;
-     }
+     );
 
+  _TwoTextfieldCardState createState() => _TwoTextfieldCardState();
+}
+class _TwoTextfieldCardState extends State<TwoTextfieldCard> {
+
+  TextEditingController _leftController = new TextEditingController(); 
+  TextEditingController _rightController = new TextEditingController();
+
+  @override
+    void initState() {
+        _leftController.text = widget._itemLeft.value;
+        _rightController.text = widget._itemRight.value;      super.initState();
+    }
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(_margin),
+      margin: EdgeInsets.all(widget._margin),
       child: Container(
-        padding: EdgeInsets.all(_padding),
+        padding: EdgeInsets.all(widget._padding),
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
@@ -750,9 +749,9 @@ class TwoTextfieldCard extends StatelessWidget {
                         textAlign: TextAlign.start,
                         keyboardType: TextInputType.number,
                         decoration: new InputDecoration(
-                            labelText: _itemLeft.title, 
-                            hintText: _itemLeft.placeHolderText),
-                        onChanged: _onLeftTextChanged,
+                            labelText: widget._itemLeft.title, 
+                            hintText: widget._itemLeft.placeHolderText),
+                        onChanged: widget._onLeftTextChanged,
                       )),
 
                   // Right
@@ -763,9 +762,9 @@ class TwoTextfieldCard extends StatelessWidget {
                         textAlign: TextAlign.start,
                         keyboardType: TextInputType.number,
                         decoration: new InputDecoration(
-                            labelText: _itemRight.title,
-                             hintText: _itemRight.placeHolderText),
-                        onChanged: _onRightTextChanged,
+                            labelText: widget._itemRight.title,
+                             hintText: widget._itemRight.placeHolderText),
+                        onChanged: widget._onRightTextChanged,
                       )),
                 ],
               ),
@@ -776,32 +775,38 @@ class TwoTextfieldCard extends StatelessWidget {
 }
 
 /// Notes card
-class NotesCard extends StatelessWidget {
+class NotesCard extends StatefulWidget {
   final double _padding = 20.0;
   final double _margin = 10.0;
   final double _cornerRadius = 20.0;
   final double _textFieldWidth = 150.0;
   final Function(String) _onTextChanged;
   final String _title;
-  TextEditingController controller;
   final String _notes;
 
-  NotesCard(this._title, this._notes, this._onTextChanged){
-    controller = new TextEditingController(text: this._notes);
-  }
+  NotesCard(this._title, this._notes, this._onTextChanged);
+  _NotesCardState createState() => _NotesCardState();
+}
+class _NotesCardState extends State<NotesCard> {
 
+  TextEditingController controller;
+
+  void initState() { 
+    controller = new TextEditingController(text: this.widget._notes);
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Card(
       child: Container(
       height: 200.0,
-      margin: EdgeInsets.all(_margin),
-      padding: EdgeInsets.all(_padding),
+      margin: EdgeInsets.all(widget._margin),
+      padding: EdgeInsets.all(widget._padding),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(_title),
+          Text(widget._title),
           Container(
               child: TextField(
                   controller: controller,
@@ -811,7 +816,7 @@ class NotesCard extends StatelessWidget {
                   decoration: new InputDecoration(
                     hintText: StringLabels.enterInfo,
                   ),
-                  onChanged: _onTextChanged))
+                  onChanged: widget._onTextChanged))
         ],
       ),
     ));

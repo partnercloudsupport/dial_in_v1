@@ -49,8 +49,7 @@ class DialInLogo extends StatelessWidget {
 class TextFieldEntry extends StatefulWidget {
   final String _placeholder;
   final bool _obscureText;
-  TextEditingController _controller;
-
+  final TextEditingController _controller;
 
   TextFieldEntry(this._placeholder, this._controller, this._obscureText);
 
@@ -58,7 +57,6 @@ class TextFieldEntry extends StatefulWidget {
   _TextFieldEntryState createState() => new _TextFieldEntryState();
 }
 class _TextFieldEntryState extends State<TextFieldEntry> {
-  
 
   @override
   void initState() {
@@ -97,12 +95,19 @@ class CircularPicture extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [BoxShadow
+          (color: Colors.black87, offset: new Offset(0.0, 2.0),blurRadius: 2.0,)],
+          shape: BoxShape.circle
+        ),
+        height:_size,
+        width: _size,
         margin: const EdgeInsets.all(15.0),
         child: ClipRRect(
           borderRadius: new BorderRadius.circular(_size),
           child: Image.network(_image, fit: BoxFit.cover),),
-          height: _size,
-          width: _size,);   
+          );   
   }
 }
 
@@ -255,62 +260,76 @@ class UserCard extends StatelessWidget {
   }
 }
 
+
+
+
+
+
 ///Profile card
-class ProfileCard extends StatelessWidget {
+class ProfileCard extends StatefulWidget {
   
   final Function(Profile) _giveprofile;
   final Function(Profile) _deleteProfile;
   final Profile _profile;
+  final _dateFormat = DateFormat.yMd();
+
+  ProfileCard(this._profile, this._giveprofile, this._deleteProfile);
+
+
+    _ProfileCardState createState() => _ProfileCardState();
+}
+class _ProfileCardState extends State<ProfileCard> {
+
   String _topLeft = 'error';
   String _topRight = 'error';
   String _bottomRight = 'error';
   String _bottomleft = 'error';
-  final _dateFormat = DateFormat.yMd();
 
-  ProfileCard(this._profile, this._giveprofile, this._deleteProfile){
-
-    switch(_profile.type){
+@override
+  void initState() {
+ 
+    switch(widget._profile.type){
       
       case ProfileType.recipe: 
-      _topLeft = _profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.coffee);
-      _topRight = _dateFormat.format(_profile.getProfileItemValue(DatabaseIds.date));
-      _bottomRight = _profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.brewingEquipment);
-      _bottomleft = _profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.score);
+      _topLeft = widget._profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.coffee);
+      _topRight = widget._dateFormat.format(widget._profile.getProfileItemValue(DatabaseIds.date));
+      _bottomRight = widget._profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.brewingEquipment);
+      _bottomleft = widget._profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.score);
       break;
 
       case ProfileType.coffee:  
-      _topLeft = _profile.getProfileItemValue( DatabaseIds.coffeeId);
-      _topRight = _profile.getProfileItemValue( DatabaseIds.processingMethod);
-      _bottomRight = _dateFormat.format(_profile.getProfileItemValue(DatabaseIds.roastDate));
-      _bottomleft = _profile.getProfileItemValue( DatabaseIds.country);
+      _topLeft = widget._profile.getProfileItemValue( DatabaseIds.coffeeId);
+      _topRight = widget._profile.getProfileItemValue( DatabaseIds.processingMethod);
+      _bottomRight = widget._dateFormat.format(widget._profile.getProfileItemValue(DatabaseIds.roastDate));
+      _bottomleft = widget._profile.getProfileItemValue( DatabaseIds.country);
       break;
 
       case ProfileType.water:   
-      _topLeft = _profile.getProfileItemValue( DatabaseIds.waterID);
-      _topRight = _profile.getProfileItemValue( DatabaseIds.ppm);
-      _bottomRight = _profile.getProfileItemValue( DatabaseIds.kh);
-      _bottomleft = _profile.getProfileItemValue( DatabaseIds.gh);
+      _topLeft = widget._profile.getProfileItemValue( DatabaseIds.waterID);
+      _topRight = widget._profile.getProfileItemValue( DatabaseIds.ppm);
+      _bottomRight = widget._profile.getProfileItemValue( DatabaseIds.kh);
+      _bottomleft = widget._profile.getProfileItemValue( DatabaseIds.gh);
       break;
 
       case ProfileType.equipment:   
-      _topLeft = _profile.getProfileItemValue( DatabaseIds.equipmentId);
-      _topRight = _profile.getProfileItemValue( DatabaseIds.type);
-      _bottomRight = _profile.getProfileItemValue( DatabaseIds.method);
-      _bottomleft = _profile.getProfileItemValue( DatabaseIds.equipmentModel); 
+      _topLeft = widget._profile.getProfileItemValue( DatabaseIds.equipmentId);
+      _topRight = widget._profile.getProfileItemValue( DatabaseIds.type);
+      _bottomRight = widget._profile.getProfileItemValue( DatabaseIds.method);
+      _bottomleft = widget._profile.getProfileItemValue( DatabaseIds.equipmentModel); 
       break;
 
       case ProfileType.grinder:   
-      _topLeft = _profile.getProfileItemValue( DatabaseIds.grinderId);
-      _topRight = _profile.getProfileItemValue( DatabaseIds.burrs);
-      _bottomRight = _profile.getProfileItemValue( DatabaseIds.grinderMake);
-      _bottomleft = _profile.getProfileItemValue( DatabaseIds.grinderModel);      
+      _topLeft = widget._profile.getProfileItemValue( DatabaseIds.grinderId);
+      _topRight = widget._profile.getProfileItemValue( DatabaseIds.burrs);
+      _bottomRight = widget._profile.getProfileItemValue( DatabaseIds.grinderMake);
+      _bottomleft = widget._profile.getProfileItemValue( DatabaseIds.grinderModel);      
       break;
 
       case ProfileType.barista:   
-      _topLeft = _profile.getProfileItemValue( DatabaseIds.name);
-      _topRight = _profile.getProfileItemValue( DatabaseIds.level);
-      _bottomleft = _profile.getProfileItemValue( DatabaseIds.notes);
-      _bottomRight = _profile.getProfileItemValue( DatabaseIds.age);       
+      _topLeft = widget._profile.getProfileItemValue( DatabaseIds.name);
+      _topRight = widget._profile.getProfileItemValue( DatabaseIds.level);
+      _bottomleft = widget._profile.getProfileItemValue( DatabaseIds.notes);
+      _bottomRight = widget._profile.getProfileItemValue( DatabaseIds.age);       
       break;
 
       case ProfileType.none:  
@@ -334,6 +353,7 @@ class ProfileCard extends StatelessWidget {
       _bottomleft = 'error default';              
       break;
     }
+   super.initState();
   }
 
   @override
@@ -343,12 +363,12 @@ class ProfileCard extends StatelessWidget {
     // Each Dismissible must contain a Key. Keys allow Flutter to
     // uniquely identify Widgets.
     background: Container(color: Colors.red),
-    key: Key(_profile.objectId),
+    key: Key(widget._profile.objectId),
     // We also need to provide a function that will tell our app
     // what to do after an item has been swiped away.
     onDismissed: (direction) {
       // Remove the item from our data source.
-      _deleteProfile(this._profile);
+      widget._deleteProfile(widget._profile);
 
     // Show a snackbar! This snackbar could also contain "Undo" actions.
     Scaffold
@@ -357,7 +377,7 @@ class ProfileCard extends StatelessWidget {
   },
   child: 
     Card(child: 
-      InkWell(onTap:() => _giveprofile(_profile)
+      InkWell(onTap:() => widget._giveprofile(widget._profile)
        
       ,child: 
         
@@ -365,8 +385,8 @@ class ProfileCard extends StatelessWidget {
       ///
       /// Profile picture
       ///
-      Hero(tag: _profile.objectId , child: Container(
-          child: CircularPicture(_profile.image, 60.0)),),
+      Hero(tag: widget._profile.objectId , child: Container(
+          child: CircularPicture(widget._profile.image, 60.0)),),
           
 
       Expanded(
@@ -480,7 +500,6 @@ class SocialProfileCard extends StatelessWidget {
     );
   }
 }
-
 
 class CountLabel extends StatelessWidget {
   final String _text;
@@ -711,11 +730,10 @@ class _DateInputCardState extends State<DateInputCard> {
 
 
 
-/// Widgets
-class TextFieldWithInitalValue extends StatelessWidget {
+///TextField Value input
+class TextFieldWithInitalValue extends StatefulWidget {
 
 final double _textFieldWidth = 150.0;
-TextEditingController _controller;
 final Function(dynamic) _giveValue;
 final dynamic _initalValue; 
 final String _titleLabel;
@@ -723,52 +741,73 @@ final String _hintText;
 final TextInputType _inputType;
 
 TextFieldWithInitalValue
-(this._inputType,this._titleLabel, this._hintText, this._initalValue, this._giveValue)
-{_controller = new TextEditingController(text: _initalValue.toString());}
+(this._inputType,this._titleLabel, this._hintText, this._initalValue, this._giveValue);
 
+  _TextFieldWithInitalValueState createState() => _TextFieldWithInitalValueState();
+}
+
+class _TextFieldWithInitalValueState extends State<TextFieldWithInitalValue> {
+
+TextEditingController _controller;
+
+  @override
+    void initState() {
+        _controller = new TextEditingController(text: widget._initalValue.toString());
+      super.initState();
+    }
 @override
   Widget build(BuildContext context) {
     return
     Container(
-      width: _textFieldWidth,
+      width: widget._textFieldWidth,
         child: TextField(
         controller: _controller ,
         textAlign: TextAlign.start,
-        keyboardType: _inputType,
+        keyboardType: widget._inputType,
         decoration: new InputDecoration(
-        labelText: _titleLabel,
-        hintText: _hintText,),
-          onChanged: _giveValue,
+        labelText: widget._titleLabel,
+        hintText: widget._hintText,),
+          onChanged: widget._giveValue,
         )
     ); 
   }
 }       
 
-class TextFieldItemWithInitalValue extends StatelessWidget {
+///TextField Item input
+class TextFieldItemWithInitalValue extends StatefulWidget {
 
 final double _textFieldWidth = 150.0;
-TextEditingController _controller;
 final Function(dynamic) _giveValue;
-final Item item;
+final Item _item;
 
-TextFieldItemWithInitalValue
-(this.item, this._giveValue)
-{_controller = new TextEditingController(text: item.value);}
+TextFieldItemWithInitalValue(this._item, this._giveValue);
+
+ _TextFieldItemWithInitialValueState createState() => _TextFieldItemWithInitialValueState();
+}
+class _TextFieldItemWithInitialValueState extends State<TextFieldItemWithInitalValue> {
+
+TextEditingController _controller;
+
+@override
+  void initState() {
+      _controller = new TextEditingController(text: widget._item.value);
+    super.initState();
+  }
 
 @override
   Widget build(BuildContext context) {
     return
 Container(
-  width: _textFieldWidth,
+  width: widget._textFieldWidth,
    child: TextField(
    controller: _controller ,
    textAlign: TextAlign.start,
-   keyboardType: item.keyboardType,
+   keyboardType: widget._item.keyboardType,
    decoration: new InputDecoration(
-   labelText: item.title,
-   hintText: item.placeHolderText,
+   labelText: widget._item.title,
+   hintText: widget._item.placeHolderText,
              ),
-             onChanged: _giveValue,
+             onChanged: widget._giveValue,
            )
            ); 
   }
@@ -784,7 +823,6 @@ TextfieldWithFixedValue(this._titleLabel, this._initalValue,);
 
  _TextfieldWithFixedValueState createState() => _TextfieldWithFixedValueState();
 }
-
 class _TextfieldWithFixedValueState extends State<TextfieldWithFixedValue> {
   
   TextEditingController _controller = new TextEditingController();

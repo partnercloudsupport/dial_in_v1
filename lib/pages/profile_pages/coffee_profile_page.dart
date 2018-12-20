@@ -260,35 +260,7 @@ class RoastingDetailsCardState extends State<RoastingDetailsCard> {
 }
 }
 
-/// Widgets
-class TextFieldWithInitalValue extends StatelessWidget {
-
-final double _textFieldWidth = 150.0;
-TextEditingController _controller;
-final Function(dynamic) _giveValue;
-final dynamic _initalValue; 
-final String _titleLabel;
-final String _hintText;
-final TextInputType _inputType;
-
-TextFieldWithInitalValue(this._inputType,this._titleLabel, this._hintText, this._initalValue, this._giveValue){_controller = new TextEditingController(text: _initalValue.toString());}
-
-@override
-  Widget build(BuildContext context) {
-    return
-Container(width: _textFieldWidth,
-                    child: TextField(
-                    controller: _controller ,
-                    textAlign: TextAlign.start,
-                    keyboardType: _inputType,
-                    decoration: new InputDecoration(
-                    labelText: _titleLabel,
-                    hintText: _hintText,
-                              ),
-                              onChanged: _giveValue,
-                            )); 
-  }
-}                
+// /            
         
 class ProfileInputCard extends StatelessWidget {
   final double _padding = 20.0;
