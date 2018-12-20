@@ -279,7 +279,7 @@ class _ProfileCardState extends State<ProfileCard> {
   String _topRight = 'error';
   String _bottomRight = 'error';
   String _bottomleft = 'error';
-  String _score;
+  double _score;
 
 @override
   void initState() {
@@ -292,7 +292,7 @@ class _ProfileCardState extends State<ProfileCard> {
       _topRight = widget._dateFormat.format(widget._profile.getProfileItemValue(DatabaseIds.date));
       _bottomRight = widget._profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.brewingEquipment);
       _bottomleft = 'widget._profile.getTotalScore()';
-      // _score = widget._profile.getTotalScore().toInt().toString();
+      _score = widget._profile.getTotalScore();
       break;
 
       case ProfileType.coffee:  
@@ -402,7 +402,7 @@ class _ProfileCardState extends State<ProfileCard> {
                           margin: EdgeInsets.all(10.0), child: Text(_topLeft, maxLines: 1, overflow: TextOverflow.clip, style: Theme.of(context).textTheme.display1,)),
                       Container(
                         margin: EdgeInsets.all(10.0),
-                        child:  Text(_bottomleft, maxLines: 1),
+ child: widget._profile.type == ProfileType.recipe ? FiveStarRating(widget._profile.getTotalScore().toInt()) : Text(_bottomleft, maxLines: 1),
                       )
                     ]
                 )

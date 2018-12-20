@@ -594,7 +594,7 @@ class Functions {
       case DatabaseIds.flavour:
         _item = new Item(
           title: StringLabels.flavour,
-          value: 0,
+          value: '0.0',
           databaseId: DatabaseIds.flavour,
           placeHolderText: StringLabels.flavour,
           keyboardType: TextInputType.number,
@@ -604,7 +604,7 @@ class Functions {
       case DatabaseIds.body:
         _item = new Item(
           title: StringLabels.body,
-          value: 0,
+          value: '0.0',
           databaseId: DatabaseIds.body,
           placeHolderText: StringLabels.enterValue,
           keyboardType: TextInputType.number,
@@ -614,7 +614,7 @@ class Functions {
       case DatabaseIds.balance:
         _item = new Item(
           title: StringLabels.balance,
-          value: 0,
+          value: '0.0',
           databaseId: DatabaseIds.balance,
           placeHolderText: StringLabels.enterValue,
           keyboardType: TextInputType.number,
@@ -624,7 +624,7 @@ class Functions {
       case DatabaseIds.afterTaste:
         _item = new Item(
           title: StringLabels.afterTaste,
-          value: 0,
+          value: '0.0',
           databaseId: DatabaseIds.afterTaste,
           placeHolderText: StringLabels.enterDescription,
           keyboardType: TextInputType.text,
@@ -634,7 +634,7 @@ class Functions {
       case DatabaseIds.strength:
         _item = new Item(
           title: StringLabels.strength,
-          value: 0,
+          value: '0.0',
           databaseId: DatabaseIds.strength,
           placeHolderText: StringLabels.enterDescription,
           keyboardType: TextInputType.text,
