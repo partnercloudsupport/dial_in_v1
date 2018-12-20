@@ -186,10 +186,11 @@ class DatabaseFunctions {
 
   /// Delete profile 
   static Future<void> deleteProfile(Profile profile)async{
-    DatabaseFunctions.deleteFireBaseStorageItem(profile.image);
     Firestore.instance.collection(profile.databaseId).document(profile.objectId)
         .delete()
-        .whenComplete((){print('Successfully deleted ${profile.objectId}');})
+        .whenComplete((){
+          DatabaseFunctions.deleteFireBaseStorageItem(profile.image);
+          print('Successfully deleted ${profile.objectId}');})
         .catchError((e){print(e);});
   }
 

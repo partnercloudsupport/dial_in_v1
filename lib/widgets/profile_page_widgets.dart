@@ -730,7 +730,7 @@ class _TwoTextfieldCardState extends State<TwoTextfieldCard> {
     }
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Card(child:Container(
       margin: EdgeInsets.all(widget._margin),
       child: Container(
         padding: EdgeInsets.all(widget._padding),
@@ -770,7 +770,7 @@ class _TwoTextfieldCardState extends State<TwoTextfieldCard> {
               ),
             ]),
       ),
-    );
+    ));
   }
 }
 
