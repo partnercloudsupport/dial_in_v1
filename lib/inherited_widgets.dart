@@ -4,6 +4,8 @@ import 'package:dial_in_v1/data/streams.dart';
 import 'package:dial_in_v1/database_functions.dart';
 import 'package:dial_in_v1/data/profile.dart';
 import 'package:dial_in_v1/data/mini_classes.dart';
+import 'package:dial_in_v1/data/mini_classes.dart';
+import 'package:dial_in_v1/data/functions.dart';
 
 
 class CameraWidget extends InheritedWidget {
@@ -100,6 +102,7 @@ class ProfilesModel extends Model{
       DatabaseFunctions.getCurrentUserId().then((user){_userId = user;});
       DatabaseFunctions.getUserImage().then((image){_userImage = image;});
       DatabaseFunctions.getUserName().then((name){_userName = name;});
+      // Functions.getRatio([2362,24534]);
     }
 
     void deInit(){

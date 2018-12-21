@@ -9,7 +9,7 @@ import 'package:dial_in_v1/data/images.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'package:dial_in_v1/pages/profile_pages/profile_page.dart';
-import 'dart:math';
+import 'dart:math' as math;
 import 'dart:io';
 import 'dart:async';
 import 'package:flutter/services.dart';
@@ -21,6 +21,64 @@ import 'package:dial_in_v1/data/mini_classes.dart';
 
 class Functions {
 
+  static void getRatio (List<int> numbers){
+    
+    List<List<int>> primeFactorList;
+
+    /// Find prime factors for each number
+    numbers.forEach((number){
+      bool check = true;
+      int x = 0;
+
+      List<int> primeFactors;
+
+      while(check == true && number <= primeNumbers[x]/2 && x < primeNumbers.length){
+
+        if( number % primeFactors[x] == 0){
+
+          primeFactors.add(primeNumbers[x]);
+
+        }
+
+      }
+      primeFactorList.add(primeFactors);
+    }
+    );
+  
+    
+    List<int> commonFactors;
+
+    /// Find matching values
+    for (var i = 0; i < primeFactorList.length; i++) {
+          bool check = true;
+
+     for (var x = 0; x < primeFactorList[i].length; x++){
+
+       for (var y = 0; y < primeFactorList[i+1].length - 1; y++){
+
+         while (check == true){
+          if(primeFactorList[i][x] == primeFactorList[i][y]){
+
+            commonFactors.add(primeFactorList[i][x]);
+            check = false;
+          }
+         }
+       }
+     }
+    }
+    int highestDemoniator = commonFactors.reduce((value, element) => value * element);
+
+    List<int> newNumbers;
+
+     for (var x = 0; x < numbers.length; x++){
+
+       newNumbers.add(numbers[x] * highestDemoniator);
+
+      }
+      print('New ratio $newNumbers');
+    }
+  
+
   static File fileToPng(File file){
   // decodeImage will identify the format of the image and use the appropriate
   // decoder.
@@ -28,7 +86,7 @@ class Functions {
 
   // Resize the image to a 120x? thumbnail (maintaining the aspect ratio).
   Image.Image thumbnail = Image.copyResize(image, 120);
-  final String filename = '${Random().nextInt(10000)}.png';
+  final String filename = '${math.Random().nextInt(10000)}.png';
   // Save the thumbnail as a PNG.
   File returnFile =new Io.File(filename) ..writeAsBytesSync(Image.encodePng(thumbnail));
 
@@ -42,7 +100,7 @@ class Functions {
 
   // Resize the image to a 120x? thumbnail (maintaining the aspect ratio).
   Image.Image thumbnail = Image.copyResize(image, 120);
-  final String filename = '${Random().nextInt(10000)}.jpg';
+  final String filename = '${math.Random().nextInt(10000)}.jpg';
   // Save the thumbnail as a PNG.
   File returnFile =new Io.File(filename) ..writeAsBytesSync(Image.encodeJpg(thumbnail));
 
@@ -91,14 +149,14 @@ class Functions {
   static Future<File> getFile(String filepath)async{
     final ByteData bytes = await rootBundle.load(filepath);
     final Directory tempDir = Directory.systemTemp;
-    final String filename = '${Random().nextInt(10000)}.png';
+    final String filename = '${math.Random().nextInt(10000)}.png';
     final File file = File('${tempDir.path}/$filename');
     file.writeAsBytes(bytes.buffer.asUint8List(), mode: FileMode.write);
     return file;
   }
 
   static String getRandomNumber(){
-    var rng = new Random();
+    var rng = new math.Random();
     var code = rng.nextInt(900000) + 100000;
     return code.toString();
   }

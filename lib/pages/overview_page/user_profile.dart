@@ -21,12 +21,12 @@ class UserProfileState extends State<UserProfilePage>{
 
     new Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center ,children:[
 
-      Container(
+      Container(padding: EdgeInsets.all(10.0), margin: EdgeInsets.all(10.0),
               child: Center(
                   child: CircularPicture(
                       ProfilesModel.of(context).userImage, 150.0))),
       /// User name
-      Text(model.userName),
+      Text(model.userName, style: Theme.of(context).textTheme.display3,),
 
       ///Spacer
       Container(height: 20.0,),

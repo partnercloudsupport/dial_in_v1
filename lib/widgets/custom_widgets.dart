@@ -390,7 +390,7 @@ class _ProfileCardState extends State<ProfileCard> {
                         margin: EdgeInsets.all(10.0),
                               child: widget._profile.type == ProfileType.recipe ? 
                               ScalableWidget(FiveStarRating(widget._profile.getTotalScore().toInt()))  :
-                              FittedBox(fit: BoxFit.scaleDown, child: Text(_bottomleft, maxLines: 1))
+                              Text(_bottomleft, maxLines: 1)
                       )
                     ]
                 )
@@ -528,7 +528,7 @@ class CountLabel extends StatelessWidget {
           _text,
           style: TextStyle(
               color: AppColors.getColor(ColorType.primarySwatch),
-              fontSize: 20.0),
+              fontSize: 25.0),
         ));
   }
 }

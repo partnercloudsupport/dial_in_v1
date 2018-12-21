@@ -424,8 +424,8 @@ class ProfileInputWithDetailsCardState extends State<ProfileInputWithDetailsCard
                               focusNode: _focus,
                               controller: _controller,
                           )),
-                  
-                  TextfieldWithFixedValue(widget._detailTitle, _detailController.text)
+                  ScalableWidget(
+                  TextfieldWithFixedValue(widget._detailTitle, _detailController.text))
 
                 ]
             )
@@ -690,7 +690,8 @@ class _RatioCardState extends State<RatioCard> {
             ],
           ),
 
-          Container(margin: EdgeInsets.all(20),child: Text('Ratio'),)
+          Container(margin: EdgeInsets.all(30.0),child: Text('Ratio',
+          style: Theme.of(context).textTheme.display3,),)
         ],
       ),
     ));
