@@ -179,7 +179,7 @@ class ProfilePageState extends State<ProfilePage> {
                   RawMaterialButton(
                       child: Icon(Icons.delete),
                       onPressed: ()async{ if(_isOldProfile ) 
-                        {await DatabaseFunctions.deleteProfile(_profile);
+                        {await ProfilesModel.of(context).delete(_profile);
                         Navigator.pop(context);}}),
                 ],),),
               ));

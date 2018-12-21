@@ -199,44 +199,47 @@ class ProfilesModel extends Model{
     }
     
     void delete(Profile profile){
-      // switch (profile.type){
 
-      //   case ProfileType.recipe:
-      //    _recipeFeed.add(profile);
-      //   break;
+      DatabaseFunctions.deleteProfile(profile);
 
-      //   case ProfileType.coffee:
-      //    _coffeeFeed.add(profile);
-      //   break;
+      switch (profile.type){
 
-      //   case ProfileType.grinder:
-      //    _grinderFeed.add(profile);
-      //   break;
+        case ProfileType.recipe:
+         _recipeFeed.removeProfile(profile);
+        break;
 
-      //   case ProfileType.equipment:
-      //    _equipmentFeed.add(profile);
-      //   break;
+        case ProfileType.coffee:
+         _coffeeFeed.removeProfile(profile);
+        break;
 
-      //   case ProfileType.water:
-      //    _waterFeed.add(profile);
-      //   break;
+        case ProfileType.grinder:
+         _grinderFeed.removeProfile(profile);
+        break;
 
-      //   case ProfileType.barista:
-      //    _baristaFeed.add(profile);
-      //   break;
+        case ProfileType.equipment:
+         _equipmentFeed.removeProfile(profile);
+        break;
 
-      //   case ProfileType.none:
-      //    throw(profile.type);
-      //   break;
+        case ProfileType.water:
+         _waterFeed.removeProfile(profile);
+        break;
 
-      //   case ProfileType.feed:
-      //    throw(profile.type);
-      //   break;
+        case ProfileType.barista:
+         _baristaFeed.removeProfile(profile);
+        break;
 
-      //   default:
-      //    throw(profile.type);
-      //   break;
-      // }
+        case ProfileType.none:
+         throw(profile.type);
+        break;
+
+        case ProfileType.feed:
+         throw(profile.type);
+        break;
+
+        default:
+         throw(profile.type);
+        break;
+      }
     }
    
     /// Get social feeds with type

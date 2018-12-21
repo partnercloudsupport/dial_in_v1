@@ -18,6 +18,11 @@ class FeedBloc{
   final _incomingController = StreamController<QuerySnapshot>.broadcast();
 
   
+  void removeProfile(Profile profile){
+    _profiles.removeWhere((p){p.objectId == profile.objectId;});
+        _outgoingController.add(_profiles);
+  }
+
   Stream<List<Profile>> get profiles => _outgoingController.stream;
     
   List<Profile> _profiles;

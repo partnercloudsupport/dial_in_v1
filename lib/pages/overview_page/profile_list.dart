@@ -39,7 +39,7 @@ class _ProfileListState extends State<ProfileList>{
 
   void _deleteProfile(Profile profile){
     
-    setState((){DatabaseFunctions.deleteProfile(profile);});
+    setState((){ProfilesModel.of(context).delete(profile);});
   }
 
 @override
