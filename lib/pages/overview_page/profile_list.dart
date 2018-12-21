@@ -8,6 +8,7 @@ import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'package:dial_in_v1/data/functions.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dial_in_v1/database_functions.dart';
+import 'package:dial_in_v1/routes.dart';
 
 /// Profile list
 class ProfileList extends StatefulWidget{
@@ -26,7 +27,7 @@ class _ProfileListState extends State<ProfileList>{
 
      if (widget._isOnOverviewScreen){
 
-       Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
+       Navigator.push(context, SlowerRoute((BuildContext context) =>
         ProfilePage(isOldProfile: true, isCopying: false, isEditing: true, isNew: false, type: profile.type, referance: profile.objectId, profile: profile)));
 
      }else{
@@ -65,7 +66,7 @@ class _ProfileListState extends State<ProfileList>{
                    _reversedList.forEach((x){_list.add(x);});
                   return new 
                     ListView.builder(
-                        itemExtent: 100,
+                        itemExtent: 120,
                         itemCount: snapshot.data.length,
                         itemBuilder: (BuildContext context, int index) =>
                           ProfileCard(_list[index], _dealWithProfileSelection, _deleteProfile)

@@ -15,6 +15,10 @@ import 'package:dial_in_v1/data/strings.dart';
 
 class DatabaseFunctions {
 
+  Firestore fireStore;
+
+  DatabaseFunctions(){this.fireStore = new Firestore();}
+
   ///Login
   static Future<void> logIn(String emailUser, String password,Function(bool, String) completion) async {
           // try {
@@ -47,38 +51,17 @@ class DatabaseFunctions {
   /// Get User Image
   static Future <String> getUserImage()async{
 
-    String result = '';
     String userId = await getCurrentUserId();
 
-    DocumentSnapshot document = await Firestore.instance.collection(DatabaseIds.User).document(userId).get();
-
-    if(document != null){
-    for(var doc in document.data.entries){  /// <<<<==== changed line
-                  
-                  if(doc.key == DatabaseIds.objectId){
-                    result = doc.value;
-                  } 
-      }
-    }
-   return result;
+      return await getValueFromFireStoreWithDocRef(DatabaseIds.User, userId, DatabaseIds.image) ?? '';
   }
 
   /// Get User Name
   static Future <String> getUserName()async{
 
-    String result = '';
     String userId = await getCurrentUserId();
 
-    DocumentSnapshot document = await Firestore.instance.collection(DatabaseIds.User).document(userId).get();
-      if(document != null){
-        for(var doc in document.data.entries){  /// <<<<==== changed line
-                      
-                      if(doc.key == DatabaseIds.name){
-                        result = doc.value;
-                      } 
-          }
-      }
-      return result;
+      return await getValueFromFireStoreWithDocRef(DatabaseIds.User, userId, DatabaseIds.userName) ?? '';
         
   }
   
@@ -126,7 +109,7 @@ class DatabaseFunctions {
   }
    
   /// Upload file to Firebase
-  static Future<String> upLoadFileReturnUrl(File file, List<String> folders)async{
+  static Future<String> upLoadFileReturnUrl(File file, List<String> folders, {Function(String)  errorHandler})async{
     
    StorageReference ref;
     if(folders.length == 0){
@@ -142,18 +125,19 @@ class DatabaseFunctions {
     }
 
     final StorageUploadTask uploadTask = ref.putFile(file);
-    return await (await uploadTask.onComplete).ref.getDownloadURL().catchError((error){print(error);});
+    
+    return await (await uploadTask.onComplete).ref.getDownloadURL().catchError((error){errorHandler(error);});
   }
 
   /// Delete Firebase Storage Item
   static void deleteFireBaseStorageItem(String fileUrl){
-        // Create a reference to the file to delete
-      StorageReference desertRef = FirebaseStorage.instance.ref().child(fileUrl);
+      // Create a reference to the file to delete
+      // StorageReference desertRef = FirebaseStorage.instance.ref().child(fileUrl);
 
-      // Delete the file
-      desertRef.delete()
-      .then((_) {})
-      .catchError((e){print(e);});
+      // // Delete the file
+      // desertRef.delete()
+      // .then((_) {})
+      // .catchError((e){print(e);});
   }
 
   /// Prepare Profile for FirebaseUpload or Update

@@ -30,14 +30,13 @@ class SignUpPage extends StatefulWidget{
       if(success){
         Navigator.pop(context, true);
       
-        
       }else{
         PopUps.showAlert( 
-          buttonFunction:() {Navigator.of(context).pop();},
-          buttonText: StringLabels.ok ,
-          title: StringLabels.warning,
-          message: message,
-          context: context);
+        StringLabels.warning,
+        message,
+        StringLabels.ok ,
+        (){Navigator.of(context).pop();},
+        context);
       }
     });              
   }

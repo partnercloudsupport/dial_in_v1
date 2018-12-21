@@ -5,11 +5,11 @@ import 'package:dial_in_v1/inherited_widgets.dart';
 import 'package:dial_in_v1/data/strings.dart';
 import 'package:scoped_model/scoped_model.dart';
 
+
 class UserProfilePage extends StatefulWidget{
  @override
   UserProfileState createState() => new UserProfileState();
 }
-
 class UserProfileState extends State<UserProfilePage>{
 
 /// UI Build
@@ -17,34 +17,43 @@ class UserProfileState extends State<UserProfilePage>{
   Widget build(BuildContext context) {
     return ScopedModelDescendant<ProfilesModel>
       (builder: (context, _ ,model) =>
+
+
     new Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center ,children:[
 
       Container(
               child: Center(
                   child: CircularPicture(
-                      ProfilesModel.of(context).userImage, 100.0))),
-      Text(ProfilesModel.of(context).userName),
+                      ProfilesModel.of(context).userImage, 150.0))),
+      /// User name
       Text(model.userName),
 
-      Row(mainAxisAlignment: MainAxisAlignment.center,crossAxisAlignment: CrossAxisAlignment.stretch,
+      ///Spacer
+      Container(height: 20.0,),
+
+      Container(margin: EdgeInsets.all(20.0) , child:
+      Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
 
+        /// Brew count
         CountBlock(
             model.recipeProfilesCount.toString(),
             StringLabels.brewCount,
         ),
 
+        /// Bean Stash
         CountBlock(
             model.recipeProfilesCount.toString(),
             StringLabels.beanStash,
         ),
 
+        /// Followers
         CountBlock(
             model.recipeProfilesCount.toString(),
             StringLabels.followers,
         ),
       ],
-      )
+      ),),
       ]
     )
       );
@@ -61,10 +70,10 @@ class CountBlock extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return 
-    Container(
+    FittedBox(fit: BoxFit.fitWidth ,
       child: Column(children: <Widget>[
             CountLabel(_count),
-            Text(_label),
+            Text(_label)
         ],),
      );
   }

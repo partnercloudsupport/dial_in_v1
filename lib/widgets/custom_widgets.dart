@@ -129,21 +129,7 @@ class ActionButton extends StatelessWidget {
   }
 }
 
-/// Custom page transitions
-class MyCustomRoute<T> extends MaterialPageRoute<T> {
-  MyCustomRoute({WidgetBuilder builder, RouteSettings settings})
-      : super(builder: builder, settings: settings);
-
-  @override
-  Widget buildTransitions(BuildContext context, Animation<double> animation,
-      Animation<double> secondaryAnimation, Widget child) {
-    if (settings.isInitialRoute) return child;
-    // Fades between routes. (If you don't want any animation,
-    // just return child.)
-    return new FadeTransition(opacity: animation, child: child);
-  }
-}
-
+/// Custom Toolbar
 class CustomToolbar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
@@ -374,7 +360,7 @@ class _ProfileCardState extends State<ProfileCard> {
         .showSnackBar(SnackBar(content: Text("Profile deleted")));
   },
   child: 
-    Card(child: 
+    Card(child: Container(padding: EdgeInsets.all(5.0),child:
       InkWell(onTap:() => widget._giveprofile(widget._profile)
        
       ,child: 
@@ -402,14 +388,15 @@ class _ProfileCardState extends State<ProfileCard> {
                           margin: EdgeInsets.all(10.0), child: Text(_topLeft, maxLines: 1, overflow: TextOverflow.clip, style: Theme.of(context).textTheme.display1,)),
                       Container(
                         margin: EdgeInsets.all(10.0),
- child: widget._profile.type == ProfileType.recipe ? FiveStarRating(widget._profile.getTotalScore().toInt()) : Text(_bottomleft, maxLines: 1),
+                              child: widget._profile.type == ProfileType.recipe ? 
+                              ScalableWidget(FiveStarRating(widget._profile.getTotalScore().toInt()))  :
+                              FittedBox(fit: BoxFit.scaleDown, child: Text(_bottomleft, maxLines: 1))
                       )
                     ]
                 )
             )
         ),
  // child: widget._profile.type == ProfileType.recipe ? Text(_bottomleft, maxLines: 1) : FiveStarRating(widget._profile.getTotalScore()),
-
 
         ///
         /// Third and fourth details
@@ -429,10 +416,14 @@ class _ProfileCardState extends State<ProfileCard> {
                     ])))
       ]))
     ]),
-    ))
+    )))
   );
   }
 }
+
+  class ScalableWidget extends FittedBox{
+     ScalableWidget(Widget child) : super(child: child, fit: BoxFit.scaleDown);
+  }
 
 ///Social card
 class SocialProfileCard extends StatelessWidget {
@@ -443,7 +434,6 @@ class SocialProfileCard extends StatelessWidget {
 
   SocialProfileCard(this._profile, this._giveprofile,);
 
-  
   @override
   Widget build(BuildContext context) {
     return 
@@ -452,9 +442,10 @@ class SocialProfileCard extends StatelessWidget {
        
       ,child: 
 
-      Column(children: <Widget>[
+       Column(children: <Widget>[
         
-       Row(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
+      Material (color: Theme.of(context).bottomAppBarColor, 
+      child: Row(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
 
 
       Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
@@ -465,8 +456,12 @@ class SocialProfileCard extends StatelessWidget {
               ]),
       
           Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+
             ///User Name
-            Text(_profile.userName,  maxLines: 1, style: Theme.of(context).textTheme.display1,),
+            Container(margin: EdgeInsets.all(5.0), child: Text(_profile.userName,  maxLines: 1, style: Theme.of(context).textTheme.display1,),),
+
+            /// Date
+            Container(margin: EdgeInsets.all(5.0), child: Text(_dateFormat.format(_profile.profile.getProfileItemValue(DatabaseIds.date)) ,  maxLines: 1), ),
 
         ]),
         Expanded(child: Column(mainAxisAlignment: MainAxisAlignment.end, crossAxisAlignment: CrossAxisAlignment.end, children: [ 
@@ -474,24 +469,23 @@ class SocialProfileCard extends StatelessWidget {
           Container(margin: const EdgeInsets.all(15.0) ,child:RaisedButton(child: Text('Follow'),onPressed: (){},),),
           ]) ,)
             
-  
-      ],),      
+      ],),),      
 
       /// Recipe picture
       Hero(tag: _profile.profile.objectId, child: SizedBox(width: double.infinity, height: 200.0, child:
-        Image.network(_profile.profile.image, fit: BoxFit.cover,),),),
+        Material(type: MaterialType.card, elevation: 2.0 ,color: Theme.of(context).scaffoldBackgroundColor, child: Image.network(_profile.profile.image, fit: BoxFit.cover,),),),),
+      
+      ///Spacer
+        Container(height: 20.0,),
 
        /// Coffee Name
-        Text(_profile.profile.getProfileProfileItemValue(ProfileType.coffee, DatabaseIds.coffeeId),  maxLines: 1, style: Theme.of(context).textTheme.display1,),
-
-        /// Brew method
-        Text(_profile.profile.getProfileProfileItemValue(ProfileType.equipment, DatabaseIds.equipmentId),  maxLines: 1), 
+        Container(margin: EdgeInsets.all(5.0), child: Text(_profile.profile.getProfileProfileItemValue(ProfileType.coffee, DatabaseIds.coffeeId),  maxLines: 1, style: Theme.of(context).textTheme.title,),),
 
         /// Notes
-        Text(_profile.profile.getProfileProfileItemValue(ProfileType.equipment, DatabaseIds.descriptors),  maxLines: 1), 
+        Container(margin: EdgeInsets.all(5.0), child: Text(_profile.profile.getProfileItemValue(DatabaseIds.descriptors),  maxLines: 1), ),
 
         ///Score
-        FiveStarRating(_profile.profile.getProfileTotalScoreValue())      
+        FiveStarRating(_profile.profile.getTotalScore().toInt())      
       ]),
       ),
     );
@@ -511,7 +505,7 @@ class FiveStarRating extends StatelessWidget {
     return Container(
       child: new StarRating(
         size: 25.0,
-        rating: _score/5,
+        rating: _score/10,
         color: Colors.orange,
         borderColor: Colors.grey,
         starCount: _starCount
@@ -582,7 +576,8 @@ class PopUps{
 /// Show alert
 /// 
 
-static Future<void> showAlert({String title, String message, String buttonText, Function buttonFunction, BuildContext context }) async {
+static Future<void> showAlert(String title, String message, String buttonText, Function buttonFunction, BuildContext context) async {
+
   return showDialog<void>(
     context: context,
     barrierDismissible: false, // user must tap button!
@@ -600,11 +595,9 @@ static Future<void> showAlert({String title, String message, String buttonText, 
         actions: <Widget>[
           FlatButton(
             child: Text(buttonText),
-            onPressed: () {
-              buttonFunction();
-              // Navigator.of(context).pop();
-            },
-          ),
+            onPressed: buttonFunction ??
+                           Navigator.of(context).pop()
+          )
         ],
       );
     },
@@ -665,12 +658,10 @@ class DateInputCard extends StatefulWidget {
 
   _DateInputCardState createState() => new _DateInputCardState();
 }
-
 class _DateInputCardState extends State<DateInputCard> {
   
   TextEditingController _controller = new TextEditingController();
   FocusNode _focus = new FocusNode();
-
 
   @override
     void initState() {
@@ -747,7 +738,7 @@ class _DateInputCardState extends State<DateInputCard> {
 ///TextField Value input
 class TextFieldWithInitalValue extends StatefulWidget {
 
-final double _textFieldWidth = 150.0;
+final double _textFieldWidth = 140.0;
 final Function(dynamic) _giveValue;
 final dynamic _initalValue; 
 final String _titleLabel;
@@ -759,7 +750,6 @@ TextFieldWithInitalValue
 
   _TextFieldWithInitalValueState createState() => _TextFieldWithInitalValueState();
 }
-
 class _TextFieldWithInitalValueState extends State<TextFieldWithInitalValue> {
 
 TextEditingController _controller;
@@ -773,7 +763,7 @@ TextEditingController _controller;
   Widget build(BuildContext context) {
     return
     Container(
-      width: widget._textFieldWidth,
+        width: widget._textFieldWidth,
         child: TextField(
         controller: _controller ,
         textAlign: TextAlign.start,
@@ -783,7 +773,8 @@ TextEditingController _controller;
         hintText: widget._hintText,),
           onChanged: widget._giveValue,
         )
-    ); 
+    )
+    ; 
   }
 }       
 

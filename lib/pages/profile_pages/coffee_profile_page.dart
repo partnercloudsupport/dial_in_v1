@@ -408,7 +408,7 @@ class GreenDetailsCard extends StatelessWidget {
                _processingMethodValue,
                 (value){_processingMethod(value);}),
           ///Density
-          TextFieldWithInitalValue(TextInputType.text, StringLabels.density, StringLabels.enterDescription,
+          TextFieldWithInitalValue(TextInputType.number, StringLabels.density, StringLabels.enterDescription,
                _densityValue,
                 (value){_density(value);})                
         ],),
@@ -420,7 +420,7 @@ class GreenDetailsCard extends StatelessWidget {
                _awValue,
                 (value){_aw(value);}),
           ///moisture Content
-          TextFieldWithInitalValue(TextInputType.text, StringLabels.moisture, StringLabels.enterDescription,
+          TextFieldWithInitalValue(TextInputType.number, StringLabels.moisture, StringLabels.enterDescription,
                _moiValue,
                 (value){_moi(value);})                  
         ],),

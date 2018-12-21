@@ -424,7 +424,7 @@ class ProfileInputWithDetailsCardState extends State<ProfileInputWithDetailsCard
                               focusNode: _focus,
                               controller: _controller,
                           )),
-
+                  
                   TextfieldWithFixedValue(widget._detailTitle, _detailController.text)
 
                 ]

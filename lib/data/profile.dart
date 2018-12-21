@@ -177,7 +177,7 @@ Future<String> getUserImage ()async{
 } 
 
  dynamic getProfileProfileItemValue(ProfileType profiletype, String itemDatabaseId) {
-  dynamic value = 'Error';
+  dynamic value = '';
    if (this.profiles != null) {
       for (var i = 0; i < this.profiles.length; i++) {
         if (this.profiles[i].type == profiletype) {
@@ -239,30 +239,30 @@ Future<String> getUserImage ()async{
   return userId;
  }
 
-  dynamic getProfileTotalScoreValue(){
-  dynamic value = 0;
-   if (this.type == ProfileType.recipe) {
-      for (var i = 0; i < this.profiles.length; i++) {
-        if (this.profiles[i].type == ProfileType.recipe) {
-          for (var x = 0; x < this.profiles[i].properties.length; x++) {
-            if (
-              this.profiles[i].properties[x].databaseId == DatabaseIds.balance ||
-              this.profiles[i].properties[x].databaseId == DatabaseIds.strength ||
-              this.profiles[i].properties[x].databaseId == DatabaseIds.flavour ||
-              this.profiles[i].properties[x].databaseId == DatabaseIds.afterTaste ||
-              this.profiles[i].properties[x].databaseId == DatabaseIds.acidic ||
-              this.profiles[i].properties[x].databaseId == DatabaseIds.body 
-              )
+  // dynamic getProfileTotalScoreValue(){
+//   dynamic value = 0;
+//    if (this.type == ProfileType.recipe) {
+//       for (var i = 0; i < this.profiles.length; i++) {
+//         if (this.profiles[i].type == ProfileType.recipe) {
+//           for (var x = 0; x < this.profiles[i].properties.length; x++) {
+//             if (
+//               this.profiles[i].properties[x].databaseId == DatabaseIds.balance ||
+//               this.profiles[i].properties[x].databaseId == DatabaseIds.strength ||
+//               this.profiles[i].properties[x].databaseId == DatabaseIds.flavour ||
+//               this.profiles[i].properties[x].databaseId == DatabaseIds.afterTaste ||
+//               this.profiles[i].properties[x].databaseId == DatabaseIds.acidic ||
+//               this.profiles[i].properties[x].databaseId == DatabaseIds.body 
+//               )
               
-              {
-              value = value + this.profiles[i].properties[x].value;
-              }
-        }
-      }
-     }
-   }
-    return value;
- }
+//               {
+//               value = value + this.profiles[i].properties[x].value;
+//               }
+//         }
+//       }
+//      }
+//    }
+//     return value;
+//  }
 
   String getProfileProfileTitleValue({String profileDatabaseId}) {
     String value = 'Error';

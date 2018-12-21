@@ -58,14 +58,15 @@ void loginButtonPressed(){
        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => OverviewPage()));
       }else{
       PopUps.showAlert( 
-        buttonFunction:() {Navigator.of(context).pop();},
-        buttonText: StringLabels.ok ,
-        title: StringLabels.warning,
-        message: error,
-        context: context);
+        StringLabels.warning,
+        error,
+        StringLabels.ok ,
+        (){Navigator.of(context).pop();},
+        context);
       }
  });
 }
+
 
 void signUpButtonPressed() {print('signUp');}
 

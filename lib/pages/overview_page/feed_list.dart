@@ -5,8 +5,9 @@ import 'package:dial_in_v1/pages/profile_pages/profile_page.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:dial_in_v1/inherited_widgets.dart';
 import 'package:dial_in_v1/widgets/custom_widgets.dart';
-
 import 'package:dial_in_v1/data/mini_classes.dart';
+import 'package:dial_in_v1/routes.dart';
+
 
 class FeedList extends StatefulWidget{
 
@@ -24,7 +25,7 @@ class _FeedListState extends State<FeedList>{
    void _dealWithProfileSelection(Profile profile){
 
      if (widget._isOnOverviewScreen){
-       Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
+       Navigator.push(context, SlowerRoute((BuildContext context) =>
         ProfilePage(isOldProfile: true, isCopying: false, isEditing: true, isNew: false, type: profile.type, referance: profile.objectId, profile: profile)));
 
      }else{
@@ -56,7 +57,7 @@ class _FeedListState extends State<FeedList>{
                    _reversedList.forEach((x){_list.add(x);});
                   return new 
                     ListView.builder(
-                    itemExtent: 400,
+                    itemExtent: 450,
                     itemCount: snapshot.data.length,
                     itemBuilder: (BuildContext context, int index) =>
                         SocialProfileCard(snapshot.data[index], _dealWithProfileSelection)

@@ -77,13 +77,10 @@ class SocialFeedBloc{
   String get databaseId => _databaseId;
   bool initilised = false;
 
-
-
   final _outgoingController = BehaviorSubject<List<FeedProfileData>>();
   Stream<List<FeedProfileData>> get profiles => _outgoingController.stream;
 
   final _incomingController = StreamController<QuerySnapshot>.broadcast();
-
 
   /// Init of the class
   SocialFeedBloc(this._databaseId);

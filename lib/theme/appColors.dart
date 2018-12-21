@@ -9,27 +9,27 @@ class AppColors {
     switch ( font ) {
 
       case ColorType.background:
-        returnValue = Colors.black12;
+        returnValue = Colors.black;
         break;
 
         case ColorType.tint:
-        returnValue = Colors.orange.shade500;
+        returnValue = Colors.orange;
         break;
 
         case ColorType.button:
-        returnValue = Colors.orange.shade500;
+        returnValue = Colors.orange;
         break;
 
         case ColorType.white:
-        returnValue = Colors.white70;
+        returnValue = Colors.white;
         break;
 
         case ColorType.toolBar:
-        returnValue = Colors.black87;
+        returnValue = Colors.black;
         break;
 
         case ColorType.popupBackground:
-        returnValue = Colors.black26;
+        returnValue = Colors.black;
         break;
 
         case ColorType.primarySwatch:
@@ -37,19 +37,19 @@ class AppColors {
         break;
 
         case ColorType.lightBackground:
-        returnValue = Colors.white70;
+        returnValue = Colors.white;
         break;
 
         case ColorType.lightColor:
-        returnValue = Colors.white70;
+        returnValue = Colors.white;
         break;
 
         case ColorType.textLight:
-        returnValue = Colors.white70;
+        returnValue = Colors.white;
         break;
 
         case ColorType.textDark:
-        returnValue = Colors.black87;
+        returnValue = Colors.black;
         break;
 
       default:

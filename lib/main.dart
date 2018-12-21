@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:dial_in_v1/pages/log_in.dart';
 import 'package:dial_in_v1/theme/app_theme.dart';
 import 'package:dial_in_v1/pages/sign_up.dart';
-import 'widgets/custom_widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:dial_in_v1/inherited_widgets.dart';
+import 'package:dial_in_v1/routes.dart';
 
 void main() {runApp(new MyApp());}
  
@@ -21,6 +21,10 @@ class MyApp extends StatelessWidget {
       title: 'Login',
       theme: buildThemeData(),
       home: LoginPage(),
+
+      /// Debugginf options
+      checkerboardOffscreenLayers: true,
+      showPerformanceOverlay: true,
 
       onGenerateRoute: (RouteSettings settings) {
         print(settings.name);

@@ -243,7 +243,15 @@ class ProfilePageState extends State<ProfilePage> {
           onPressed: ()async{ 
             File image = await ImagePicker.pickImage
                               (maxWidth: 640.0, maxHeight: 480.0, source: ImageSource.camera);
-            url = await DatabaseFunctions.upLoadFileReturnUrl(image,[ProfilesModel.of(context).userId  , DatabaseIds.image]);
+            url = await DatabaseFunctions.upLoadFileReturnUrl
+            (image,[ProfilesModel.of(context).userId  , DatabaseIds.image, _profile.databaseId],
+            errorHandler: (e){
+              PopUps.showAlert( 
+                StringLabels.error,
+                e,
+                StringLabels.ok ,
+                (){Navigator.of(context).pop();},
+                context);});
             Navigator.of(context).pop(then(url));
           }
       ),
@@ -254,8 +262,15 @@ class ProfilePageState extends State<ProfilePage> {
           onPressed: ()async{ 
             File image = await ImagePicker.pickImage
                               (maxWidth: 640.0, maxHeight: 480.0, source: ImageSource.gallery);
-            url = await DatabaseFunctions.upLoadFileReturnUrl(image,[ProfilesModel.of(context).userId  , DatabaseIds.image]);
-            Navigator.of(context).pop(then(url));
+            url = await DatabaseFunctions.upLoadFileReturnUrl
+            (image,[ProfilesModel.of(context).userId  , DatabaseIds.image, _profile.databaseId],
+            errorHandler: (e){
+              PopUps.showAlert( 
+                StringLabels.error,
+                e,
+                StringLabels.ok ,
+                (){Navigator.of(context).pop();},
+                context);});            Navigator.of(context).pop(then(url));
           }
       ),
     ],));
@@ -296,11 +311,11 @@ class ProfilePageState extends State<ProfilePage> {
                     )
                   )
                 );
-               if (result as bool != false){ 
+               if (result is bool){ if (result as bool != false){ 
                Navigator.pop(context, result);             
                setState(() 
                {  _profile.setSubProfile(result); });}         
-              },
+              }},
               child: Text('Add new profile'),
             ),
               ProfileListDialog(
