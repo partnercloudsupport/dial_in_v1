@@ -122,7 +122,10 @@ class DataPageState extends State<DataPage>with SingleTickerProviderStateMixin {
           type: _lists.ref[controller.index].type,
           referance: '',
           profile: _profile ,
-          )));
+          ))
+          
+          ).then((value){setState((){});});
+
         })));
   }
 }

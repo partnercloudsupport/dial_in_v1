@@ -34,18 +34,16 @@ class Functions {
 
       while(check == true && number <= primeNumbers[x]/2 && x < primeNumbers.length){
 
-        if( number % primeFactors[x] == 0){
+        if( number % primeNumbers[x] == 0){
 
           primeFactors.add(primeNumbers[x]);
 
         }
-
       }
       primeFactorList.add(primeFactors);
     }
     );
   
-    
     List<int> commonFactors;
 
     /// Find matching values

@@ -17,9 +17,8 @@ class FeedBloc{
   final _outgoingController = BehaviorSubject<List<Profile>>();
   final _incomingController = StreamController<QuerySnapshot>.broadcast();
 
-  
   void removeProfile(Profile profile){
-    _profiles.removeWhere((p){p.objectId == profile.objectId;});
+    _profiles.removeWhere((p) => p.objectId == profile.objectId);
         _outgoingController.add(_profiles);
   }
 
@@ -53,7 +52,8 @@ class FeedBloc{
       .then((profiles){ 
         _profiles = profiles;
         if (profile != null){profiles.add(profile);}
-        _outgoingController.add(profiles);});
+        _outgoingController.add(profiles);}
+        );
       }
     );
     }
@@ -69,7 +69,10 @@ class FeedBloc{
 
 
   void add(Profile profile){
-    // _getProfiles(profile: profile);
+    // _profiles.add(profile);
+    // DatabaseFunctions.saveProfile(profile);
+    // _outgoingController.add(_profiles);
+
   }
 }  
 

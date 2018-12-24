@@ -42,6 +42,12 @@ class _ProfileListState extends State<ProfileList>{
     setState((){ProfilesModel.of(context).delete(profile);});
   }
 
+  @override
+void didUpdateWidget(dynamic oldWidget) {
+    
+    super.didUpdateWidget(oldWidget);
+}
+
 @override
     Widget build(BuildContext context) {  
 

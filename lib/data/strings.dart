@@ -3,7 +3,8 @@
 class  StringLabels {
 
 ///since flutter
-
+  static const String brew = "Brew (g)";
+  static const String rested = 'Rested';
   static const String followers = 'Followers';
   static const String daysRested = 'Days rested';
   static const String noData = 'No data';
@@ -187,6 +188,7 @@ class  StringLabels {
   static const String time = "Time";
   static const String water = "Water";
   static const String temparature = "Temparature ℃";
+  static const String degreeC = '℃';
   static const String tds = "TDS %";
   static const String score = "Score";
   static const String preinfusion =  "Pre-infusion";

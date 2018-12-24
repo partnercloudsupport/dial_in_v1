@@ -80,11 +80,11 @@ class GrinderDetailsCard extends StatelessWidget {
               
               /// Name
               TextFieldItemWithInitalValue(_nameValue,
-              (value){ _name(value);}),
+              (value){ _name(value);}, 100.0),
 
               /// Burrs
               TextFieldItemWithInitalValue(_burrsValue,
-              (value){_burrs(value);}),
+              (value){_burrs(value);}, 100.0),
 
             ],
           ),
@@ -97,11 +97,11 @@ class GrinderDetailsCard extends StatelessWidget {
 
               /// Make
               TextFieldItemWithInitalValue(
-               _makeValue, (value){ _make(value);}),
+               _makeValue, (value){ _make(value);}, 100.0),
 
               /// Model
               TextFieldItemWithInitalValue(
-               _modelValue, (value){ _model(value);}),
+               _modelValue, (value){ _model(value);} , 100.0),
 
             ],
           ),

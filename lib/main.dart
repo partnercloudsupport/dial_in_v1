@@ -22,9 +22,9 @@ class MyApp extends StatelessWidget {
       theme: buildThemeData(),
       home: LoginPage(),
 
-      /// Debugginf options
-      checkerboardOffscreenLayers: true,
-      showPerformanceOverlay: true,
+      /// Debugging options
+      // checkerboardOffscreenLayers: true,
+      // showPerformanceOverlay: true,
 
       onGenerateRoute: (RouteSettings settings) {
         print(settings.name);

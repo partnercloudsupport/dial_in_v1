@@ -74,11 +74,11 @@ class BaristaDetailsCard extends StatelessWidget {
               
               /// Name
               TextFieldItemWithInitalValue(_nameValue,
-               (value){ _name(value);}),   
+               (value){ _name(value);},  100.0),   
 
               /// Level
               TextFieldItemWithInitalValue( _levelValue,
-               (value){ _level(value);}),  
+               (value){ _level(value);}, 100.0),  
 
             ],
           ),

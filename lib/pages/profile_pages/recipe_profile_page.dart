@@ -36,8 +36,8 @@ class RecipePage extends StatelessWidget{
               ///Coffee
               ProfileInputWithDetailsCard(
                 _profile.getProfileProfile(ProfileType.coffee),
-                StringLabels.daysRested,
-                _profile.getDaysRested().toString(),
+                StringLabels.rested,
+                _profile.getDaysRested().toString() + ' days',
                 (){_showOptions(ProfileType.coffee);},),
 
               ///Barista
@@ -45,13 +45,13 @@ class RecipePage extends StatelessWidget{
                 _profile.getProfileProfile(ProfileType.barista),
                 (){_showOptions(ProfileType.barista);},),
 
-
+              /// Water
               ProfileInputCardWithAttribute(
                   imageRefString: Images.drop,
                   title: StringLabels.water,
                   keyboardType: TextInputType.number,
                   onAttributeTextChange: (text) {
-                    _setProfileItemValue( DatabaseIds.temparature,text);
+                    _setProfileItemValue( DatabaseIds.temparature, text);
                   },
                   onProfileTextPressed: () {
                     _showOptions(ProfileType.water);
@@ -59,7 +59,7 @@ class RecipePage extends StatelessWidget{
                   attributeTextfieldText: _profile.getProfileItemValue(
                        DatabaseIds.temparature),
                   attributeHintText: StringLabels.enterValue,
-                  attributeTitle: StringLabels.temparature,
+                  attributeTitle: StringLabels.degreeC,
                   profileName: _profile.getProfileProfileTitleValue( profileDatabaseId: DatabaseIds.water)),
 
               /// Grinder

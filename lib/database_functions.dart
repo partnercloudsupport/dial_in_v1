@@ -129,12 +129,12 @@ class DatabaseFunctions {
     return await (await uploadTask.onComplete).ref.getDownloadURL().catchError((error){errorHandler(error);});
   }
 
-  /// Delete Firebase Storage Item
+  /// Delete Firebase Storage Item //TODO
   static void deleteFireBaseStorageItem(String fileUrl){
       // Create a reference to the file to delete
-      // StorageReference desertRef = FirebaseStorage.instance.ref().child(fileUrl);
+      StorageReference desertRef = FirebaseStorage.instance.ref().child(fileUrl);
 
-      // // Delete the file
+      // Delete the file
       // desertRef.delete()
       // .then((_) {})
       // .catchError((e){print(e);});

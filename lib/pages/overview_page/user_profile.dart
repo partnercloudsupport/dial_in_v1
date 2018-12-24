@@ -43,7 +43,7 @@ class UserProfileState extends State<UserProfilePage>{
 
         /// Bean Stash
         CountBlock(
-            model.recipeProfilesCount.toString(),
+            model.coffeeProfilesCount.toString(),
             StringLabels.beanStash,
         ),
 

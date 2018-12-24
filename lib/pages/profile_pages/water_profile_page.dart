@@ -27,7 +27,7 @@ final Function(String , dynamic) _setProfileItemValue;
                   /// Name
                   TextFieldItemWithInitalValue
                   (_profile.getProfileItem(DatabaseIds.waterID),
-                  (name){_setProfileItemValue( DatabaseIds.waterID, name);}), 
+                  (name){_setProfileItemValue( DatabaseIds.waterID, name);}, 200.0), 
                   
                   /// Date
                   DateInputCard(StringLabels.dateTested,
@@ -79,26 +79,22 @@ WaterDetailsCard(
     return Card(child: Container(padding: EdgeInsets.all(_padding), margin: EdgeInsets.all( _margin), child: Column(children: <Widget>[
 
         ///Row 1
-        Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: <Widget>[
 
           ///Total ppm
-          TextFieldItemWithInitalValue( _totalPpmItem,(value){ _totalPpm(value);}),
+          TextFieldItemWithInitalValue( _totalPpmItem,(value){ _totalPpm(value);}, 200.0),
 
           ///gh Ppm
-          TextFieldItemWithInitalValue( _ghPpmItem,(value){ _ghPpm(value);}),               
-        ],),
+          TextFieldItemWithInitalValue( _ghPpmItem,(value){ _ghPpm(value);}, 200.0),               
 
         ///Row 2
-        Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: <Widget>[
 
           /// kH
-          TextFieldItemWithInitalValue( _khPpmItem,(value){ _khPpm(value);}),
+          TextFieldItemWithInitalValue( _khPpmItem,(value){ _khPpm(value);}, 200.0),
 
           /// pH
-          TextFieldItemWithInitalValue( _pHItem,(value){ _pH(value);}),
+          TextFieldItemWithInitalValue( _pHItem,(value){ _pH(value);}, 200.0),
 
           /// Notes                              
-        ],),
     ],),)
     );
 }

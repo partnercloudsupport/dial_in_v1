@@ -44,7 +44,6 @@ class ProfilePage extends StatefulWidget {
 
   ProfilePageState createState() => new ProfilePageState();
 }
-
 class ProfilePageState extends State<ProfilePage> {
   double _padding = 20.0;
   double _margin = 10.0;
@@ -179,7 +178,7 @@ class ProfilePageState extends State<ProfilePage> {
                   RawMaterialButton(
                       child: Icon(Icons.delete),
                       onPressed: ()async{ if(_isOldProfile ) 
-                        {await ProfilesModel.of(context).delete(_profile);
+                        {ProfilesModel.of(context).delete(_profile);
                         Navigator.pop(context);}}),
                 ],),),
               ));
@@ -277,7 +276,6 @@ class ProfilePageState extends State<ProfilePage> {
     }
     );
   }
-
 
   //// user defined function
   void _showProfileList(ProfileType profileType) {

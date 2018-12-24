@@ -267,10 +267,23 @@ class _ProfileCardState extends State<ProfileCard> {
   String _bottomleft = 'error';
   double _score;
 
-@override
+  @override
   void initState() {
  
-    switch(widget._profile.type){
+  setWidgetUp();
+   super.initState();
+  }
+
+  @override
+    void didUpdateWidget(dynamic oldWidget) {
+    setWidgetUp();
+    
+    super.didUpdateWidget(oldWidget);
+    }
+
+void setWidgetUp(){
+
+   switch(widget._profile.type){
       
       case ProfileType.recipe: 
       
@@ -337,8 +350,8 @@ class _ProfileCardState extends State<ProfileCard> {
       _bottomleft = 'error default';              
       break;
     }
-   super.initState();
-  }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -781,11 +794,11 @@ TextEditingController _controller;
 ///TextField Item input
 class TextFieldItemWithInitalValue extends StatefulWidget {
 
-final double _textFieldWidth = 150.0;
+final double _textFieldWidth;
 final Function(dynamic) _giveValue;
 final Item _item;
 
-TextFieldItemWithInitalValue(this._item, this._giveValue);
+TextFieldItemWithInitalValue(this._item, this._giveValue, this._textFieldWidth);
 
  _TextFieldItemWithInitialValueState createState() => _TextFieldItemWithInitialValueState();
 }
@@ -847,8 +860,9 @@ class _TextfieldWithFixedValueState extends State<TextfieldWithFixedValue> {
   @override
   Widget build(BuildContext context) {
     return
+    ScalableWidget(
     Container(
-        width: 100.0,
+        width: 60.0,
         child: TextFormField(
         controller: _controller ,
         enabled: false,
@@ -857,7 +871,7 @@ class _TextfieldWithFixedValueState extends State<TextfieldWithFixedValue> {
         labelText: widget._titleLabel, 
         ),
       )
-    ); 
+    )); 
   }
 }   
 

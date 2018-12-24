@@ -32,9 +32,28 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
     super.initState();
   }
 
-  ///
+/// TODO ;
+  void showPickerMenu(Item item){
+
+ showModalBottomSheet(context: context, builder: (BuildContext context){
+
+   if (item.inputViewDataSet == null) {return Center(child: Text('Error No Data for picker'),);  
+   
+   }else{
+  
+      return CupertinoPicker.builder(
+      onSelectedItemChanged:
+      (value){ widget._setProfileItemValue(item.databaseId,item.inputViewDataSet[value]);},
+      itemExtent: 30.0,
+      itemBuilder: (BuildContext context, int x ){
+        Text(item.inputViewDataSet[0][x]);
+         }
+      );}
+    });
+  }
+
+
   /// UI Build
-  ///
   @override
   Widget build(BuildContext context) {
     return new 
@@ -158,7 +177,7 @@ class OriginDetailsCard extends StatelessWidget {
                _altitudeValue,
                 (value){_altitude(value);}), 
           ///Country
-          TextFieldItemWithInitalValue(_countryItem,(value){_country(value);}),
+          TextFieldItemWithInitalValue(_countryItem,(value){_country(value);},100.0),
         ],)
     ],),)
     );
@@ -258,9 +277,7 @@ class RoastingDetailsCardState extends State<RoastingDetailsCard> {
     ],))
     );
 }
-}
-
-// /            
+}           
         
 class ProfileInputCard extends StatelessWidget {
   final double _padding = 20.0;
@@ -428,7 +445,7 @@ class GreenDetailsCard extends StatelessWidget {
         ///Row 4
         Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: <Widget>[
           ///Harvest
-          TextFieldItemWithInitalValue(_harvestItem,(value){_harvest(value);})
+          TextFieldItemWithInitalValue(_harvestItem,(value){_harvest(value);}, 100.0)
                      
         ],),
 

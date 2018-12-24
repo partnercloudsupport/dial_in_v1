@@ -81,11 +81,11 @@ class EquipmentDetailsCard extends StatelessWidget {
               
               /// Name
               TextFieldItemWithInitalValue(
-               _nameValue, (value){ _name(value);}), 
+               _nameValue, (value){ _name(value);}, 100.0), 
 
               /// Type
               TextFieldItemWithInitalValue(
-               _typeValue, (value){ _type(value);}), 
+               _typeValue, (value){ _type(value);}, 100.0), 
 
             ],
           ),
@@ -97,11 +97,11 @@ class EquipmentDetailsCard extends StatelessWidget {
 
               /// Make
               TextFieldItemWithInitalValue(
-               _makeValue, (value){ _make(value);}),
+               _makeValue, (value){ _make(value);}, 100.0),
 
               /// Model
               TextFieldItemWithInitalValue(
-               _modelValue, (value){ _model(value);}),
+               _modelValue, (value){ _model(value);}, 100.0),
             ],
           ),
         ],

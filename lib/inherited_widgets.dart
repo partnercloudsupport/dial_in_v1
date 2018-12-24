@@ -4,8 +4,6 @@ import 'package:dial_in_v1/data/streams.dart';
 import 'package:dial_in_v1/database_functions.dart';
 import 'package:dial_in_v1/data/profile.dart';
 import 'package:dial_in_v1/data/mini_classes.dart';
-import 'package:dial_in_v1/data/mini_classes.dart';
-import 'package:dial_in_v1/data/functions.dart';
 
 
 class CameraWidget extends InheritedWidget {
@@ -54,6 +52,7 @@ class ProfilesModel extends Model{
     String get userImage => _userImage;
 
     int get recipeProfilesCount => _recipeFeed.profilesCount;
+    int get coffeeProfilesCount => _coffeeFeed.profilesCount;
     // cofflleProfilesCount
     // followersCount
     // followingCount
@@ -106,8 +105,6 @@ class ProfilesModel extends Model{
     }
 
     void deInit(){
-
-
       
     }
 
