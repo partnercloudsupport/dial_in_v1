@@ -48,6 +48,7 @@ class GrinderPage extends StatelessWidget {
 class GrinderDetailsCard extends StatelessWidget {
   final double _padding = 20.0;
   final double _margin = 10.0;
+  final double _textFieldWidth = 140.0;
   final Function(String) _name;
   final Function(String) _burrs;
   final Function(String) _make;
@@ -75,16 +76,16 @@ class GrinderDetailsCard extends StatelessWidget {
           ///Row 1
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               
               /// Name
               TextFieldItemWithInitalValue(_nameValue,
-              (value){ _name(value);}, 100.0),
+              (value){ _name(value);}, _textFieldWidth),
 
               /// Burrs
               TextFieldItemWithInitalValue(_burrsValue,
-              (value){_burrs(value);}, 100.0),
+              (value){_burrs(value);}, _textFieldWidth),
 
             ],
           ),
@@ -92,16 +93,16 @@ class GrinderDetailsCard extends StatelessWidget {
 
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
 
               /// Make
               TextFieldItemWithInitalValue(
-               _makeValue, (value){ _make(value);}, 100.0),
+               _makeValue, (value){ _make(value);}, _textFieldWidth),
 
               /// Model
               TextFieldItemWithInitalValue(
-               _modelValue, (value){ _model(value);} , 100.0),
+               _modelValue, (value){ _model(value);} , _textFieldWidth),
 
             ],
           ),

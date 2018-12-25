@@ -46,6 +46,7 @@ class BaristaPage extends StatelessWidget {
 class BaristaDetailsCard extends StatelessWidget {
   final double _padding = 20.0;
   final double _margin = 10.0;
+  final double _textFieldWidth = 150.0;
   final Function(String) _name;
   final Function(String) _level;
   final Item _nameValue;
@@ -74,11 +75,11 @@ class BaristaDetailsCard extends StatelessWidget {
               
               /// Name
               TextFieldItemWithInitalValue(_nameValue,
-               (value){ _name(value);},  100.0),   
+               (value){ _name(value);},  _textFieldWidth),   
 
               /// Level
               TextFieldItemWithInitalValue( _levelValue,
-               (value){ _level(value);}, 100.0),  
+               (value){ _level(value);}, _textFieldWidth),  
 
             ],
           ),

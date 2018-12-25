@@ -750,8 +750,7 @@ class _DateInputCardState extends State<DateInputCard> {
 
 ///TextField Value input
 class TextFieldWithInitalValue extends StatefulWidget {
-
-final double _textFieldWidth = 140.0;
+final _textFieldWidth;
 final Function(dynamic) _giveValue;
 final dynamic _initalValue; 
 final String _titleLabel;
@@ -759,7 +758,7 @@ final String _hintText;
 final TextInputType _inputType;
 
 TextFieldWithInitalValue
-(this._inputType,this._titleLabel, this._hintText, this._initalValue, this._giveValue);
+(this._inputType,this._titleLabel, this._hintText, this._initalValue, this._giveValue, this._textFieldWidth);
 
   _TextFieldWithInitalValueState createState() => _TextFieldWithInitalValueState();
 }
@@ -817,6 +816,48 @@ TextEditingController _controller;
     return
 Container(
   width: widget._textFieldWidth,
+   child: TextField(
+   controller: _controller ,
+   textAlign: TextAlign.start,
+   keyboardType: widget._item.keyboardType,
+   decoration: 
+   new InputDecoration(
+   prefixIcon: Icon(Icons.face),
+   labelText: widget._item.title,
+   hintText: widget._item.placeHolderText,
+             ),
+             onChanged: widget._giveValue,
+           )
+           ); 
+  }
+}       
+
+///TextField Item input
+class TextFieldSpanItemWithInitalValue extends StatefulWidget {
+
+final Function(dynamic) _giveValue;
+final Item _item;
+
+TextFieldSpanItemWithInitalValue(this._item, this._giveValue,);
+
+ _TextFieldSpanItemWithInitalValueState createState() => _TextFieldSpanItemWithInitalValueState();
+}
+class _TextFieldSpanItemWithInitalValueState extends State<TextFieldSpanItemWithInitalValue> {
+
+
+
+TextEditingController _controller;
+
+@override
+  void initState() {
+      _controller = new TextEditingController(text: widget._item.value);
+    super.initState();
+  }
+
+@override
+  Widget build(BuildContext context) {
+    return
+Container(
    child: TextField(
    controller: _controller ,
    textAlign: TextAlign.start,

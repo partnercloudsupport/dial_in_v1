@@ -57,6 +57,7 @@ final Function(String , dynamic) _setProfileItemValue;
 class WaterDetailsCard extends StatelessWidget {
   final double _padding = 20.0;
   final double _margin = 10.0;
+  final double _textFieldWidth = 140.0;
   final Function(String) _totalPpm;
   final Function(String) _ghPpm;
   final Function(String) _khPpm;
@@ -79,22 +80,25 @@ WaterDetailsCard(
     return Card(child: Container(padding: EdgeInsets.all(_padding), margin: EdgeInsets.all( _margin), child: Column(children: <Widget>[
 
         ///Row 1
-
+        Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
           ///Total ppm
-          TextFieldItemWithInitalValue( _totalPpmItem,(value){ _totalPpm(value);}, 200.0),
+          TextFieldItemWithInitalValue( _totalPpmItem,(value){ _totalPpm(value);}, _textFieldWidth),
 
           ///gh Ppm
-          TextFieldItemWithInitalValue( _ghPpmItem,(value){ _ghPpm(value);}, 200.0),               
+          TextFieldItemWithInitalValue( _ghPpmItem,(value){ _ghPpm(value);}, _textFieldWidth),               
+
+        ]),
 
         ///Row 2
+        Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
 
           /// kH
-          TextFieldItemWithInitalValue( _khPpmItem,(value){ _khPpm(value);}, 200.0),
+          TextFieldItemWithInitalValue( _khPpmItem,(value){ _khPpm(value);}, _textFieldWidth),
 
           /// pH
-          TextFieldItemWithInitalValue( _pHItem,(value){ _pH(value);}, 200.0),
+          TextFieldItemWithInitalValue( _pHItem,(value){ _pH(value);}, _textFieldWidth),
 
-          /// Notes                              
+        ],)
     ],),)
     );
 }

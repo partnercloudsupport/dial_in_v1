@@ -422,7 +422,7 @@ class ProfileInputWithDetailsCardState extends State<ProfileInputWithDetailsCard
                           child: TextFormField(
                               textAlign: TextAlign.start,
                               decoration: new InputDecoration(
-                                labelText: StringLabels.name,
+                                labelText: widget._profile.databaseId,
                               ),
                               focusNode: _focus,
                               controller: _controller,
@@ -568,7 +568,7 @@ class _ProfileInputCardState extends State<ProfileInputCard> {
                           child: TextFormField(
                               textAlign: TextAlign.start,
                               decoration: new InputDecoration(
-                                labelText: StringLabels.name,
+                                labelText: widget._profile.databaseId,
                               ),
                               focusNode: _focus,
                               controller: _controller,
