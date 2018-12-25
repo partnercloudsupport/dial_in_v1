@@ -10,20 +10,20 @@ import 'package:dial_in_v1/data/item.dart';
 
 /// Page
 class CoffeeProfilePage extends StatefulWidget {
-  final double _margin;
   final Profile _profile;
+  final _isEditing;
+ 
 
 // Sets a String and Value in the Parent profile
   final Function(String, dynamic) _setProfileItemValue;
 
-  CoffeeProfilePage(this._profile, this._margin, this._setProfileItemValue);
+  CoffeeProfilePage(this._profile, this._setProfileItemValue, this._isEditing);
 
   _CoffeeProfilePageState createState() => new _CoffeeProfilePageState();
 }
 
 class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
-  final double _padding = 20.0;
-  final double _margin = 10.0;
+
   Profile _profile;
 
   @override
@@ -62,7 +62,7 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
 
               Container(padding: EdgeInsets.all(20.0), child:TextFieldWithInitalValue(TextInputType.text, StringLabels.name, StringLabels.enterNickname,
                _profile.getProfileItemValue( DatabaseIds.coffeeId),
-                (name){ widget._setProfileItemValue(DatabaseIds.coffeeId,name);}, double.infinity)),
+                (name){ widget._setProfileItemValue(DatabaseIds.coffeeId,name);}, double.infinity, widget._isEditing),),
 
               RoastingDetailsCard(
               ///Values
@@ -74,7 +74,8 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
                 (roastProfile){widget._setProfileItemValue( DatabaseIds.roastProfile,  roastProfile);}, 
                 (roasteryName){widget._setProfileItemValue( DatabaseIds.roasteryName,  roasteryName);}, 
                 (roasterName){widget._setProfileItemValue( DatabaseIds.roasterName,  roasterName);}, 
-                (roastDate){widget._setProfileItemValue( DatabaseIds.roastDate,  roastDate);}),
+                (roastDate){widget._setProfileItemValue( DatabaseIds.roastDate,  roastDate);},
+                widget._isEditing),
 
               OriginDetailsCard(
                 (altitude){widget._setProfileItemValue( DatabaseIds.altitude,  altitude);},
@@ -88,7 +89,8 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
                 _profile.getProfileItem(DatabaseIds.producer) ,
                 _profile.getProfileItem(DatabaseIds.lot) ,
                 _profile.getProfileItem(DatabaseIds.altitude) ,
-                _profile.getProfileItem(DatabaseIds.country)),
+                _profile.getProfileItem(DatabaseIds.country),
+                widget._isEditing),
 
                 GreenDetailsCard(
                 (beanType){widget._setProfileItemValue(DatabaseIds.beanType,  beanType );},
@@ -104,7 +106,8 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
                 _profile.getProfileItem(DatabaseIds.density),
                 _profile.getProfileItem(DatabaseIds.aW),
                 _profile.getProfileItem(DatabaseIds.moisture),
-                _profile.getProfileItem(DatabaseIds.harvest),),
+                _profile.getProfileItem(DatabaseIds.harvest),
+                widget._isEditing),
                 
               ],
           );
@@ -131,12 +134,15 @@ class OriginDetailsCard extends StatelessWidget {
   final Item _lotItem;
   final Item _altitudeItem;
   final Item _countryItem;
+  final bool _isEditing;
 
   OriginDetailsCard(
     /// Functions
     this._altitude, this._lot, this._producer, this._farm, this._region, this._country,
     /// Values
   this._regionItem,this._farmItem, this._producerItem, this._lotItem,this._altitudeItem, this._countryItem,
+  /// Editing
+  this._isEditing
   );
 
  @override
@@ -147,24 +153,24 @@ class OriginDetailsCard extends StatelessWidget {
         ///Row 1
         Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: <Widget>[
           ///Region
-          TextFieldItemWithInitalValue(_regionItem, (value){_region(value);},_textFieldWidth),
+          TextFieldItemWithInitalValue(_regionItem, (value){_region(value);},_textFieldWidth, _isEditing),
           
           ///Farm
-          TextFieldItemWithInitalValue( _farmItem, (value){_farm(value);}, _textFieldWidth),              
+          TextFieldItemWithInitalValue( _farmItem, (value){_farm(value);}, _textFieldWidth, _isEditing),              
         ],),
 
         ///Row 2
         Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: <Widget>[
         ///Producer
-          TextFieldItemWithInitalValue(_producerItem, (value){_producer(value);},_textFieldWidth), 
+          TextFieldItemWithInitalValue(_producerItem, (value){_producer(value);},_textFieldWidth, _isEditing), 
         ///Lot
-          TextFieldItemWithInitalValue(_lotItem, (value){_lot(value);}, _textFieldWidth),                
+          TextFieldItemWithInitalValue(_lotItem, (value){_lot(value);}, _textFieldWidth, _isEditing),                
         ],),
 
         ///Row 3
         Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: <Widget>[
           ///Alititude
-          TextFieldItemWithInitalValue(_altitudeItem, (value){_altitude(value);}, _textFieldWidth), 
+          TextFieldItemWithInitalValue(_altitudeItem, (value){_altitude(value);}, _textFieldWidth, _isEditing), 
           ///Country
           PickerTextField(_countryItem,_country(_countryItem), _textFieldWidth),
         ],)
@@ -184,6 +190,7 @@ class RoastingDetailsCard extends StatefulWidget {
   final String _roasteryNameValue;
   final String _roasterNameValue;
   final DateTime _roastDateValue;
+  final bool _isEditing;
  
   final dateFormat = DateFormat.yMd();
 
@@ -191,7 +198,9 @@ class RoastingDetailsCard extends StatefulWidget {
     /// Variables
     this._roastProfileValue,this._roasteryNameValue,this._roasterNameValue,this._roastDateValue,
     ///Functions
-    this._roastProfile,this._roasteryName, this._roasterName, this._roastDate);
+    this._roastProfile,this._roasteryName, this._roasterName, this._roastDate,
+    /// Editing
+    this._isEditing);
   
 
   RoastingDetailsCardState createState() => new RoastingDetailsCardState();
@@ -244,7 +253,7 @@ class RoastingDetailsCardState extends State<RoastingDetailsCard> {
                _roastProfileValue,
                 (value){
                   _roastProfileValue = value;
-                  setState(widget._roastProfile(value));}, _textFieldWidth),                  
+                  setState(widget._roastProfile(value));}, _textFieldWidth, widget._isEditing),                  
         ],),
 
         ///Row 2
@@ -254,14 +263,14 @@ class RoastingDetailsCardState extends State<RoastingDetailsCard> {
                _roasteryNameValue,
                 (value){
                   _roasteryNameValue = value;
-                  setState(widget._roasteryName(value));}, _textFieldWidth),    
+                  setState(widget._roasteryName(value));}, _textFieldWidth, widget._isEditing) ,    
           
           /// Roaster name
           TextFieldWithInitalValue(TextInputType.text, StringLabels.roasterName, StringLabels.enterName,
                _roasterNameValue,
                 (value){
                   _roasterNameValue = value;
-                  setState(widget._roasterName(value));}, _textFieldWidth),                                  
+                  setState(widget._roasterName(value));}, _textFieldWidth, widget._isEditing),                                  
         ],)
     ],))
     );
@@ -380,11 +389,15 @@ class GreenDetailsCard extends StatelessWidget {
   final Item _moiItem;
   final Item _harvestItem;
 
+  final bool _isEditing;
+
   GreenDetailsCard(
     /// Functions
     this._beanType,this._beanSize,this._processingMethod,this._density, this._aw,this._moi,this._harvest,
     /// Values
     this._beanTypeItem,this._beanSizeItem,this._processingMethodItem,this._densityItem ,this._awItem,this._moiItem,this._harvestItem,
+    /// Editing
+    this._isEditing
   );
 
  @override
@@ -395,32 +408,32 @@ class GreenDetailsCard extends StatelessWidget {
         ///Row 1
         Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: <Widget>[
           ///BeanType
-          TextFieldItemWithInitalValue(_beanTypeItem, (value){_beanType(value);}, _textFieldWidth),
+          TextFieldItemWithInitalValue(_beanTypeItem, (value){_beanType(value);}, _textFieldWidth, _isEditing),
         
           ///BeanSize
-           TextFieldItemWithInitalValue(_beanSizeItem, (value){_beanSize(value);}, _textFieldWidth)          
+           TextFieldItemWithInitalValue(_beanSizeItem, (value){_beanSize(value);}, _textFieldWidth, _isEditing)          
         ],),
 
         ///Row 2
         Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: <Widget>[
           ///Processing Methord
-          TextFieldItemWithInitalValue(_processingMethodItem, (value){_processingMethod(value);}, _textFieldWidth),
+          TextFieldItemWithInitalValue(_processingMethodItem, (value){_processingMethod(value);}, _textFieldWidth, _isEditing),
           ///Density
-          TextFieldItemWithInitalValue(_densityItem, (value){_density(value);}, _textFieldWidth)                
+          TextFieldItemWithInitalValue(_densityItem, (value){_density(value);}, _textFieldWidth, _isEditing)                
         ],),
 
         ///Row 3
         Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: <Widget>[
           ///Water activity
-          TextFieldItemWithInitalValue(_awItem, (value){_aw(value);},_textFieldWidth),
+          TextFieldItemWithInitalValue(_awItem, (value){_aw(value);},_textFieldWidth, _isEditing),
           ///moisture Content
-          TextFieldItemWithInitalValue(_moiItem, (value){_moi(value);},_textFieldWidth)                  
+          TextFieldItemWithInitalValue(_moiItem, (value){_moi(value);},_textFieldWidth,_isEditing)                  
         ],),
 
         ///Row 4
         Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: <Widget>[
           ///Harvest
-          TextFieldItemWithInitalValue(_harvestItem,(value){_harvest(value);}, _textFieldWidth)
+          TextFieldItemWithInitalValue(_harvestItem,(value){_harvest(value);}, _textFieldWidth, _isEditing)
                      
         ],),
 

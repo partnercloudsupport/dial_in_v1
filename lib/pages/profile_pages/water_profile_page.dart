@@ -12,12 +12,13 @@ class WaterPage extends StatelessWidget{
 final double _margin; 
 final Profile _profile;
 final double _padding = 20.0;
+final bool _isEditing;
 
 
 // Sets a String and Value in the Parent profie
 final Function(String , dynamic) _setProfileItemValue;
 
-  WaterPage(this._profile, this._margin, this._setProfileItemValue);
+  WaterPage(this._profile, this._margin, this._setProfileItemValue, this._isEditing);
 
   /// UI Build
   @override
@@ -27,12 +28,13 @@ final Function(String , dynamic) _setProfileItemValue;
                   /// Name
                   TextFieldItemWithInitalValue
                   (_profile.getProfileItem(DatabaseIds.waterID),
-                  (name){_setProfileItemValue( DatabaseIds.waterID, name);}, 200.0), 
+                  (name){_setProfileItemValue( DatabaseIds.waterID, name);}
+                  , 200.0,_isEditing) , 
                   
                   /// Date
                   DateInputCard(StringLabels.dateTested,
                   _profile.getProfileItemValue( DatabaseIds.date),
-                  (dateTime){_setProfileItemValue( DatabaseIds.date, dateTime);}),
+                  (dateTime){_setProfileItemValue( DatabaseIds.date, dateTime);}, _isEditing),
 
                   /// Details
                   WaterDetailsCard(
@@ -44,12 +46,14 @@ final Function(String , dynamic) _setProfileItemValue;
                     _profile.getProfileItem( DatabaseIds.gh),
                     _profile.getProfileItem( DatabaseIds.kh),
                     _profile.getProfileItem( DatabaseIds.ph),
+                    _isEditing
                     ),
 
                   /// Notes
                    NotesCard(StringLabels.notes,
                     _profile.getProfileItemValue( DatabaseIds.notes),
-                    (text){_profile.setProfileItemValue( DatabaseIds.notes, text);}) 
+                    (text){_profile.setProfileItemValue( DatabaseIds.notes, text);},
+                    _isEditing) 
     ]);
     }
 }
@@ -66,6 +70,7 @@ class WaterDetailsCard extends StatelessWidget {
   final Item _ghPpmItem;
   final Item _khPpmItem;
   final Item _pHItem;
+  final bool _isEditing;
 
 
 WaterDetailsCard(
@@ -73,6 +78,8 @@ WaterDetailsCard(
   this._totalPpm, this._ghPpm, this._khPpm, this._pH,
   /// Items 
   this._totalPpmItem, this._ghPpmItem, this._khPpmItem, this._pHItem,
+  /// Editing
+  this._isEditing
   );
 
  @override
@@ -82,10 +89,10 @@ WaterDetailsCard(
         ///Row 1
         Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
           ///Total ppm
-          TextFieldItemWithInitalValue( _totalPpmItem,(value){ _totalPpm(value);}, _textFieldWidth),
+          TextFieldItemWithInitalValue( _totalPpmItem,(value){ _totalPpm(value);}, _textFieldWidth,_isEditing ),
 
           ///gh Ppm
-          TextFieldItemWithInitalValue( _ghPpmItem,(value){ _ghPpm(value);}, _textFieldWidth),               
+          TextFieldItemWithInitalValue( _ghPpmItem,(value){ _ghPpm(value);}, _textFieldWidth, _isEditing),               
 
         ]),
 
@@ -93,10 +100,10 @@ WaterDetailsCard(
         Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
 
           /// kH
-          TextFieldItemWithInitalValue( _khPpmItem,(value){ _khPpm(value);}, _textFieldWidth),
+          TextFieldItemWithInitalValue( _khPpmItem,(value){ _khPpm(value);}, _textFieldWidth, _isEditing),
 
           /// pH
-          TextFieldItemWithInitalValue( _pHItem,(value){ _pH(value);}, _textFieldWidth),
+          TextFieldItemWithInitalValue( _pHItem,(value){ _pH(value);}, _textFieldWidth, _isEditing),
 
         ],)
     ],),)

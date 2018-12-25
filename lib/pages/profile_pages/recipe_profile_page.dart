@@ -13,11 +13,12 @@ class RecipePage extends StatelessWidget{
   final Function(ProfileType) _showOptions;
   final double _margin; 
   final Profile _profile;
+  final bool _isEditing;
 
   // Sets a String and Value in the Parent profie
   final Function(String , dynamic) _setProfileItemValue;
 
-  RecipePage(this._profile, this._margin, this._setProfileItemValue, this._showOptions);
+  RecipePage(this._profile, this._margin, this._setProfileItemValue, this._showOptions, this._isEditing);
 
   ///
   /// UI Build
@@ -31,7 +32,7 @@ class RecipePage extends StatelessWidget{
               DateInputCard(StringLabels.date,
                   _profile.getProfileItemValue( DatabaseIds.date),
                   (dateTime)
-                  {if (dateTime != null){ _setProfileItemValue( DatabaseIds.date, dateTime);}}),
+                  {if (dateTime != null){ _setProfileItemValue( DatabaseIds.date, dateTime);}}, _isEditing),
 
               ///Coffee
               ProfileInputWithDetailsCard(
@@ -113,7 +114,8 @@ class RecipePage extends StatelessWidget{
                   StringLabels.notes,
                   _profile.getProfileItemValue(
                        DatabaseIds.notes),
-                  (notes) {_setProfileItemValue( DatabaseIds.notes, notes);}),
+                  (notes) {_setProfileItemValue( DatabaseIds.notes, notes);},
+                  _isEditing),
 
               ///Score Section
               Card(
@@ -150,7 +152,8 @@ class RecipePage extends StatelessWidget{
                         StringLabels.descriptors,
                         _profile.getProfileItemValue(
                              DatabaseIds.descriptors),
-                        (text) {_setProfileItemValue( DatabaseIds.descriptors, text);}), 
+                        (text) {_setProfileItemValue( DatabaseIds.descriptors, text);},
+                        _isEditing), 
                       ],
                     )
                   ],

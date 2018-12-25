@@ -133,10 +133,10 @@ class ProfilePageState extends State<ProfilePage> {
             /// Profile Image
              InkWell(child:Hero(tag: _profile.objectId ,child: SizedBox(width: 300.0, height: 300.0,
              child: CircularPicture(_profile.image, 300.0)) ,),
-              onTap: ()
+              onTap: _isEditing?()
               {_getimage(
                 (image){ setState(() {_profile.image = image;});});
-              }),
+              }:(){}),
             
             // ///Change image button
             // FlatButton(
@@ -197,33 +197,33 @@ class ProfilePageState extends State<ProfilePage> {
 
     switch(profile.type){
       case ProfileType.barista:
-      _structure = BaristaPage(_profile, _margin, (key, value){ _profile.setProfileItemValue( key,  value);});
+      _structure = BaristaPage(_profile, _margin, (key, value){ _profile.setProfileItemValue( key,  value);}, _isEditing);
       break;
 
       case ProfileType.coffee:
-      _structure = CoffeeProfilePage(_profile, _margin, (key, value){ _profile.setProfileItemValue( key,  value);});
+      _structure = CoffeeProfilePage(_profile, (key, value){ _profile.setProfileItemValue( key,  value);}, _isEditing);
       break;
 
       case ProfileType.equipment:
-      _structure = EquipmentPage(_profile, _margin, (key, value){ _profile.setProfileItemValue( key,  value);});
+      _structure = EquipmentPage(_profile, _margin, (key, value){ _profile.setProfileItemValue( key,  value);}, _isEditing);
       break;
 
       case ProfileType.feed:
       break;
 
       case ProfileType.grinder:
-      _structure = GrinderPage(_profile, _margin, (key, value){ _profile.setProfileItemValue( key,  value);});
+      _structure = GrinderPage(_profile, _margin, (key, value){ _profile.setProfileItemValue( key,  value);}, _isEditing);
       break;
 
       case ProfileType.none:
       break;
 
       case ProfileType.water:
-      _structure = WaterPage(_profile, _margin, (key, value){ _profile.setProfileItemValue( key,  value);});
+      _structure = WaterPage(_profile, _margin, (key, value){ _profile.setProfileItemValue( key,  value);}, _isEditing);
       break;
 
       case ProfileType.recipe:
-      _structure = RecipePage(_profile, _margin, (key, value){setState((){_profile.setProfileItemValue( key,  value);});}, _showProfileList);
+      _structure = RecipePage(_profile, _margin, (key, value){setState((){_profile.setProfileItemValue( key,  value);});}, _showProfileList, _isEditing);
       break;
 
       default:

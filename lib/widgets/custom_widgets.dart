@@ -385,7 +385,6 @@ void setWidgetUp(){
       Hero(tag: widget._profile.objectId , child: Container(
           child: CircularPicture(widget._profile.image, 60.0)),),
           
-
       Expanded(
           child: Row(children: <Widget>[
         ///
@@ -398,7 +397,8 @@ void setWidgetUp(){
                     crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Container(
-                          margin: EdgeInsets.all(10.0), child: Text(_topLeft, maxLines: 1, overflow: TextOverflow.clip, style: Theme.of(context).textTheme.display1,)),
+                          margin: EdgeInsets.all(10.0), child: Text(_topLeft, maxLines: 1,
+                           overflow: TextOverflow.clip, style: Theme.of(context).textTheme.display1,)),
                       Container(
                         margin: EdgeInsets.all(10.0),
                               child: widget._profile.type == ProfileType.recipe ? 
@@ -409,7 +409,6 @@ void setWidgetUp(){
                 )
             )
         ),
- // child: widget._profile.type == ProfileType.recipe ? Text(_bottomleft, maxLines: 1) : FiveStarRating(widget._profile.getTotalScore()),
 
         ///
         /// Third and fourth details
@@ -726,8 +725,9 @@ class DateInputCard extends StatefulWidget {
   final DateTime _dateTime;
   final Function(DateTime) onDateChanged; 
   final String _title;
+  final bool _isEditing;
 
-  DateInputCard(this._title, this._dateTime, this.onDateChanged);
+  DateInputCard(this._title, this._dateTime, this.onDateChanged, this._isEditing);
 
   _DateInputCardState createState() => new _DateInputCardState();
 }
@@ -795,7 +795,8 @@ class _DateInputCardState extends State<DateInputCard> {
                 children: <Widget>[
                   Expanded(
                     child: TextFormField
-                    (controller: _controller,
+                    (enabled: widget._isEditing,
+                      controller: _controller,
                     focusNode: _focus,
                       decoration: InputDecoration(labelText: widget._title),
                     ),
@@ -816,9 +817,10 @@ final dynamic _initalValue;
 final String _titleLabel;
 final String _hintText;
 final TextInputType _inputType;
+final bool _isEditing;
 
 TextFieldWithInitalValue
-(this._inputType,this._titleLabel, this._hintText, this._initalValue, this._giveValue, this._textFieldWidth);
+(this._inputType,this._titleLabel, this._hintText, this._initalValue, this._giveValue, this._textFieldWidth, this._isEditing);
 
   _TextFieldWithInitalValueState createState() => _TextFieldWithInitalValueState();
 }
@@ -837,6 +839,7 @@ TextEditingController _controller;
     Container(
         width: widget._textFieldWidth,
         child: TextField(
+        enabled: widget._isEditing,
         controller: _controller ,
         textAlign: TextAlign.start,
         keyboardType: widget._inputType,
@@ -856,8 +859,9 @@ class TextFieldItemWithInitalValue extends StatefulWidget {
 final double _textFieldWidth;
 final Function(dynamic) _giveValue;
 final Item _item;
+final bool _isEditing;
 
-TextFieldItemWithInitalValue(this._item, this._giveValue, this._textFieldWidth);
+TextFieldItemWithInitalValue(this._item, this._giveValue, this._textFieldWidth, this._isEditing);
 
  _TextFieldItemWithInitialValueState createState() => _TextFieldItemWithInitialValueState();
 }
@@ -877,6 +881,7 @@ TextEditingController _controller;
 Container(
   width: widget._textFieldWidth,
    child: TextField(
+   enabled: widget._isEditing,
    controller: _controller ,
    textAlign: TextAlign.start,
    keyboardType: widget._item.keyboardType,

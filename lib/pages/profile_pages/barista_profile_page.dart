@@ -11,12 +11,13 @@ class BaristaPage extends StatelessWidget {
   final double _margin;
   final Profile _profile;
   final double _padding = 20.0;
+  final bool _isEditing;
 
 
   // Sets a String and Value in the Parent profie
   final Function(String, dynamic) _setProfileItemValue;
 
-  BaristaPage(this._profile, this._margin, this._setProfileItemValue);
+  BaristaPage(this._profile, this._margin, this._setProfileItemValue, this._isEditing);
 
   ///
   /// UI Build
@@ -31,6 +32,7 @@ class BaristaPage extends StatelessWidget {
         (level) {_setProfileItemValue(DatabaseIds.level, level);},
         _profile.getProfileItem(DatabaseIds.name),
         _profile.getProfileItem(DatabaseIds.level),
+        _isEditing
       ),
 
       /// Notes
@@ -51,12 +53,14 @@ class BaristaDetailsCard extends StatelessWidget {
   final Function(String) _level;
   final Item _nameValue;
   final Item _levelValue;
+  final bool _isEditing;
 
   BaristaDetailsCard(
     this._name,
     this._level,
     this._nameValue,
     this._levelValue,
+    this._isEditing
   );
 
   @override
@@ -75,11 +79,11 @@ class BaristaDetailsCard extends StatelessWidget {
               
               /// Name
               TextFieldItemWithInitalValue(_nameValue,
-               (value){ _name(value);},  _textFieldWidth),   
+               (value){ _name(value);},  _textFieldWidth,_isEditing),   
 
               /// Level
               TextFieldItemWithInitalValue( _levelValue,
-               (value){ _level(value);}, _textFieldWidth),  
+               (value){ _level(value);}, _textFieldWidth,_isEditing),  
 
             ],
           ),

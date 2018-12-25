@@ -790,8 +790,9 @@ class NotesCard extends StatefulWidget {
   final Function(String) _onTextChanged;
   final String _title;
   final String _notes;
+  final bool _isEditing;
 
-  NotesCard(this._title, this._notes, this._onTextChanged);
+  NotesCard(this._title, this._notes, this._onTextChanged, this._isEditing);
   _NotesCardState createState() => _NotesCardState();
 }
 class _NotesCardState extends State<NotesCard> {
@@ -816,14 +817,15 @@ class _NotesCardState extends State<NotesCard> {
           Text(widget._title),
           Container(
               child: TextField(
-                  controller: controller,
-                  textAlign: TextAlign.start,
-                  maxLines: null,
-                  keyboardType: TextInputType.text,
-                  decoration: new InputDecoration(
-                    hintText: StringLabels.enterInfo,
-                  ),
-                  onChanged: widget._onTextChanged))
+                enabled: widget._isEditing,
+                controller: controller,
+                textAlign: TextAlign.start,
+                maxLines: null,
+                keyboardType: TextInputType.text,
+                decoration: new InputDecoration(
+                  hintText: StringLabels.enterInfo,
+                ),
+                onChanged: widget._onTextChanged))
         ],
       ),
     ));

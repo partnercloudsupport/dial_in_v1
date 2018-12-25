@@ -11,11 +11,12 @@ import 'package:dial_in_v1/widgets/custom_widgets.dart';
 class EquipmentPage extends StatelessWidget {
   final double _margin;
   final Profile _profile;
+  final bool _isEditing;
 
 // Sets a String and Value in the Parent profie
   final Function(String, dynamic) _setProfileItemValue;
 
-  EquipmentPage(this._profile, this._margin, this._setProfileItemValue);
+  EquipmentPage(this._profile, this._margin, this._setProfileItemValue, this._isEditing);
 
   ///
   /// UI Build
@@ -34,14 +35,14 @@ class EquipmentPage extends StatelessWidget {
         _profile.getProfileItem(DatabaseIds.type),
         _profile.getProfileItem(DatabaseIds.equipmentMake),
         _profile.getProfileItem(DatabaseIds.equipmentModel),
+        _isEditing
       ),
 
       /// Notes
       NotesCard(StringLabels.method,
           _profile.getProfileItemValue( DatabaseIds.method),
-          (text) {
-        _profile.setProfileItemValue( DatabaseIds.method, text);
-      })
+          (text) {_profile.setProfileItemValue( DatabaseIds.method, text);},
+          _isEditing)
     ]);
   }
 }
@@ -58,12 +59,16 @@ class EquipmentDetailsCard extends StatelessWidget {
   final Item _typeValue;
   final Item _makeValue;
   final Item _modelValue;
+  final bool _isEditing;
 
   EquipmentDetailsCard(
     /// Functions
     this._name, this._type, this._make, this._model,
     /// Values
-    this._nameValue,this._typeValue,this._makeValue,this._modelValue
+    this._nameValue,this._typeValue,this._makeValue,this._modelValue,
+    /// Editing
+    this._isEditing
+
   );
 
   @override
@@ -82,11 +87,11 @@ class EquipmentDetailsCard extends StatelessWidget {
               
               /// Name
               TextFieldItemWithInitalValue(
-               _nameValue, (value){ _name(value);}, _textFieldWidth), 
+               _nameValue, (value){ _name(value);}, _textFieldWidth, _isEditing), 
 
               /// Type
               TextFieldItemWithInitalValue(
-               _typeValue, (value){ _type(value);}, _textFieldWidth), 
+               _typeValue, (value){ _type(value);}, _textFieldWidth, _isEditing), 
 
             ],
           ),
@@ -98,11 +103,11 @@ class EquipmentDetailsCard extends StatelessWidget {
 
               /// Make
               TextFieldItemWithInitalValue(
-               _makeValue, (value){ _make(value);}, _textFieldWidth),
+               _makeValue, (value){ _make(value);}, _textFieldWidth, _isEditing),
 
               /// Model
               TextFieldItemWithInitalValue(
-               _modelValue, (value){ _model(value);}, _textFieldWidth),
+               _modelValue, (value){ _model(value);}, _textFieldWidth, _isEditing),
             ],
           ),
         ],
