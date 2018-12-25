@@ -39,8 +39,8 @@ class BaristaPage extends StatelessWidget {
       NotesCard(StringLabels.notes,
           _profile.getProfileItemValue( DatabaseIds.notes),
           (text) {
-        _profile.setProfileItemValue( DatabaseIds.notes, text);
-      })
+        _profile.setProfileItemValue( DatabaseIds.notes, text);},
+        _isEditing)
     ]);
   }
 }
