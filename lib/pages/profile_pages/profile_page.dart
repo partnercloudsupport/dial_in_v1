@@ -132,16 +132,10 @@ class ProfilePageState extends State<ProfilePage> {
 
             /// Profile Image
             Hero(tag: _profile.objectId ,child: SizedBox(width: 300.0, height: 300.0,
-            child: CircularPicture(_profile.image, 300.0),),),
-            
-            ///Change image button
-            FlatButton(
-              onPressed: ()
+            child: InkWell(child: CircularPicture(_profile.image, 300.0),onTap: ()
               {_getimage(
                 (image){ setState(() {_profile.image = image;});});
-              },
-              child: Text(StringLabels.changeImage),
-            ),
+              }) ,),),
             
             /// All below changes depending on profile
              _returnPageStructure(_profile),
