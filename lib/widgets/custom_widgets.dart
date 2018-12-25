@@ -564,6 +564,66 @@ class AddButton extends StatelessWidget {
 
 ////////////////////////////////// Custom Classes ///////////////////////////////////////
 
+//Picker textfield card
+class PickerTextField extends StatefulWidget {
+  final double _padding = 20.0;
+  final double _margin = 10.0;
+  final double _textFieldWidth;
+  final double _cornerRadius = 20.0;
+  final Item _item;
+  /// Returns a funtion with an Dtabase Id 
+  /// of the item to open the picker view witht the correct data.
+  final Function(String) _onProfileTextPressed;
+
+
+  PickerTextField(this._item, this._onProfileTextPressed, this._textFieldWidth);
+
+  _PickerTextFieldState createState() => _PickerTextFieldState();
+}
+class _PickerTextFieldState extends State<PickerTextField> {
+
+  TextEditingController _controller;
+  FocusNode _focus;
+
+      @override
+       void initState() {
+            _focus = new FocusNode();
+            _focus.addListener(handleLeftProfileTextfieldFocus);
+            _controller = new TextEditingController(text: widget._item.value);
+            super.initState();
+      }
+
+      @override
+      void dispose() {
+        _controller.dispose();
+        super.dispose();
+      }
+
+      void handleLeftProfileTextfieldFocus(){
+        if (_focus.hasFocus){
+          widget._onProfileTextPressed(widget._item.databaseId);
+          _focus.unfocus();  
+        }
+      }
+
+  @override
+  Widget build(BuildContext context) {
+    return 
+     Container(
+       width: widget._textFieldWidth,
+       margin: EdgeInsets.all(widget._margin,),
+       child: TextFormField(
+           textAlign: TextAlign.start,
+           decoration: new InputDecoration(
+             labelText: StringLabels.name,
+           ),
+           focusNode: _focus,
+           controller: _controller,
+       ));
+  }
+}
+
+
 /// Tab View Data
 class TabViewData{
 

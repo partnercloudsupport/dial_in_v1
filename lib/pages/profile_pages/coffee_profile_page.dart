@@ -35,21 +35,21 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
 /// TODO ;
   void showPickerMenu(Item item){
 
- showModalBottomSheet(context: context, builder: (BuildContext context){
+    showModalBottomSheet(context: context, builder: (BuildContext context){
+    
+      if (item.inputViewDataSet == null) {return Center(child: Text('Error No Data for picker'),);  
 
-   if (item.inputViewDataSet == null) {return Center(child: Text('Error No Data for picker'),);  
-   
-   }else{
-  
-      return CupertinoPicker.builder(
-      onSelectedItemChanged:
-      (value){ widget._setProfileItemValue(item.databaseId,item.inputViewDataSet[value]);},
-      itemExtent: 30.0,
-      itemBuilder: (BuildContext context, int x ){
-        Text(item.inputViewDataSet[0][x]);
-         }
-      );}
-    });
+      }else{
+      
+        return CupertinoPicker.builder(
+        onSelectedItemChanged:
+        (value){ widget._setProfileItemValue(item.databaseId, item.inputViewDataSet[value]);},
+        itemExtent: 30.0,
+        itemBuilder: (BuildContext context, int x ){
+          Text(item.inputViewDataSet[0][x]);
+           }
+        );}
+       });
   }
 
 
@@ -124,7 +124,7 @@ class OriginDetailsCard extends StatelessWidget {
   final Function(String) _producer;
   final Function(String) _lot;
   final Function(String) _altitude;
-  final Function(String) _country;
+  final Function(Item) _country;
   final Item _regionItem;
   final Item _farmItem;
   final Item _producerItem;
@@ -166,7 +166,7 @@ class OriginDetailsCard extends StatelessWidget {
           ///Alititude
           TextFieldItemWithInitalValue(_altitudeItem, (value){_altitude(value);}, _textFieldWidth), 
           ///Country
-          TextFieldItemWithInitalValue(_countryItem,(value){_country(value);}, _textFieldWidth),
+          PickerTextField(_countryItem,_country(_countryItem), _textFieldWidth),
         ],)
     ],),)
     );
