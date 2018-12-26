@@ -24,6 +24,7 @@ final Function(String , dynamic) _setProfileItemValue;
     return new Column(children: <Widget>[
 
                   /// Name
+                  Container(margin: EdgeInsets.all(20.0),child: 
                   Row
                   (mainAxisAlignment: MainAxisAlignment.spaceEvenly, crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
@@ -31,7 +32,7 @@ final Function(String , dynamic) _setProfileItemValue;
                   (_profile.getProfileItem(DatabaseIds.waterID),
                   (name){_setProfileItemValue( DatabaseIds.waterID, name);}
                   , 200.0,_isEditing)
-                   ]) , 
+                   ]),) , 
                   
                   /// Date
                   DateInputCard(StringLabels.dateTested,
@@ -92,7 +93,7 @@ WaterDetailsCard(
 
         ///Row 1
         Row
-        (mainAxisAlignment: MainAxisAlignment.spaceEvenly, crossAxisAlignment: CrossAxisAlignment.center,
+        (mainAxisAlignment: MainAxisAlignment.spaceBetween, crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           ///Total ppm
           TextFieldItemWithInitalValue( _totalPpmItem,(value){ _totalPpm(value);}, _textFieldWidth,_isEditing ),
@@ -103,7 +104,7 @@ WaterDetailsCard(
         ]),
 
         ///Row 2
-        Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
          crossAxisAlignment: CrossAxisAlignment.center, 
          children: <Widget>[
 
