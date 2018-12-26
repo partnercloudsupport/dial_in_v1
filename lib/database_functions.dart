@@ -252,30 +252,6 @@ class DatabaseFunctions {
     return _value;
   }
 
-  /// Convert
-  static List<Item> convertDocumentDataToProperties(DocumentSnapshot document){
-
-  List<Item> _properties = new List<Item>();
-  document.data.forEach((key, value) {
-
-      if ( key != DatabaseIds.updatedAt){
-
-      if ( key != DatabaseIds.objectId) {
-
-      if ( key != DatabaseIds.databaseId){
-
-      if ( key != DatabaseIds.databaseId){
-
-      if ( key != DatabaseIds.orderNumber){
-
-      if ( key != DatabaseIds.user){  
-
-         Map<String, dynamic> item = {key: value};
-        _properties.add(Functions.createItemWithData(item));
-      }}}}
-  }}});
-  return _properties;
-}
 
   /// Convert profiles from data snapshot
   static Future<List<Profile>> createProfilesFromDataSnapshot(String databaseId, List<DocumentSnapshot> data)async{

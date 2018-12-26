@@ -25,30 +25,50 @@ class CoffeeProfilePage extends StatefulWidget {
 class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
 
   Profile _profile;
+  ScrollController _scrollController;
 
   @override
-  void initState() {
-    _profile = widget._profile;
+  void initState() { 
+    _scrollController = new ScrollController();
+    _scrollController.addListener(pickerScrolled);
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    _profile = widget._profile;      super.didChangeDependencies();
+    }
+
+  void pickerScrolled(){
+
   }
 
 /// TODO ;
   void showPickerMenu(Item item){
 
+   List< Widget> _items = new List<Widget>();
+
+    if (item.inputViewDataSet != null)
+    {item.inputViewDataSet[0]
+    .forEach((itemText){_items.add(Text(itemText, style: Theme.of(context).textTheme.display2,));});
+    }
     showModalBottomSheet(context: context, builder: (BuildContext context){
-    
+      
       if (item.inputViewDataSet == null) {return Center(child: Text('Error No Data for picker'),);  
 
       }else{
-      
-        return CupertinoPicker.builder(
+  
+        return CupertinoPicker(
+        useMagnifier: true,
         onSelectedItemChanged:
-        (value){ widget._setProfileItemValue(item.databaseId, item.inputViewDataSet[value]);},
-        itemExtent: 30.0,
-        itemBuilder: (BuildContext context, int x ){
-          Text(item.inputViewDataSet[0][x]);
-           }
-        );}
+          (value){setState(() {
+            widget._setProfileItemValue(item.databaseId, item.inputViewDataSet[0][value]);
+            _profile.setProfileItemValue(item.databaseId, item.inputViewDataSet[0][value]);
+          });}, 
+        itemExtent: 50.0,
+        children: _items
+        );
+        }
        });
   }
 
@@ -66,9 +86,9 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
 
               RoastingDetailsCard(
               ///Values
-                _profile.getProfileItemValue( DatabaseIds.roastProfile),
-                _profile.getProfileItemValue( DatabaseIds.roasteryName),
-                _profile.getProfileItemValue( DatabaseIds.roasterName),
+                _profile.getProfileItem( DatabaseIds.roastProfile),
+                _profile.getProfileItem( DatabaseIds.roasteryName),
+                _profile.getProfileItem( DatabaseIds.roasterName),
                 _profile.getProfileItemValue( DatabaseIds.roastDate), 
               /// Functions
                 (roastProfile){widget._setProfileItemValue( DatabaseIds.roastProfile,  roastProfile);}, 
@@ -77,27 +97,27 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
                 (roastDate){widget._setProfileItemValue( DatabaseIds.roastDate,  roastDate);},
                 widget._isEditing),
 
-              /// TODO;
+              ///Origon details
+              OriginDetailsCard(
+                (altitude){widget._setProfileItemValue( DatabaseIds.altitude,  altitude);},
+                (lot){widget._setProfileItemValue( DatabaseIds.lot,  lot);},
+                (producer){widget._setProfileItemValue( DatabaseIds.producer,  producer);},
+                (farm){widget._setProfileItemValue( DatabaseIds.farm,  farm);},
+                (region){widget._setProfileItemValue( DatabaseIds.region,  region);},
+                showPickerMenu,
+                _profile.getProfileItem(DatabaseIds.region),
+                _profile.getProfileItem(DatabaseIds.farm) ,
+                _profile.getProfileItem(DatabaseIds.producer) ,
+                _profile.getProfileItem(DatabaseIds.lot) ,
+                _profile.getProfileItem(DatabaseIds.altitude) ,
+                _profile.getProfileItem(DatabaseIds.country),
+                widget._isEditing),
 
-              // OriginDetailsCard(
-              //   (altitude){widget._setProfileItemValue( DatabaseIds.altitude,  altitude);},
-              //   (lot){widget._setProfileItemValue( DatabaseIds.lot,  lot);},
-              //   (producer){widget._setProfileItemValue( DatabaseIds.producer,  producer);},
-              //   (farm){widget._setProfileItemValue( DatabaseIds.farm,  farm);},
-              //   (region){widget._setProfileItemValue( DatabaseIds.region,  region);},
-              //   (country){showPickerMenu(country);},
-              //   _profile.getProfileItem(DatabaseIds.region),
-              //   _profile.getProfileItem(DatabaseIds.farm) ,
-              //   _profile.getProfileItem(DatabaseIds.producer) ,
-              //   _profile.getProfileItem(DatabaseIds.lot) ,
-              //   _profile.getProfileItem(DatabaseIds.altitude) ,
-              //   _profile.getProfileItem(DatabaseIds.country),
-              //   widget._isEditing),
-
-                GreenDetailsCard(
-                (beanType){widget._setProfileItemValue(DatabaseIds.beanType,  beanType );},
-                (beanSize){widget._setProfileItemValue( DatabaseIds.beanSize,  beanSize );},
-                (processingMethod){widget._setProfileItemValue( DatabaseIds.processingMethod, processingMethod );},
+              /// Green details
+              GreenDetailsCard(
+                showPickerMenu,
+                showPickerMenu,
+                showPickerMenu,
                 (density){widget._setProfileItemValue( DatabaseIds.density,  density );},
                 (aw){widget._setProfileItemValue( DatabaseIds.aW,  aw );},
                 (moi){widget._setProfileItemValue( DatabaseIds.moisture,  moi );}, 
@@ -141,9 +161,9 @@ class OriginDetailsCard extends StatelessWidget {
     /// Functions
     this._altitude, this._lot, this._producer, this._farm, this._region, this._country,
     /// Values
-  this._regionItem,this._farmItem, this._producerItem, this._lotItem,this._altitudeItem, this._countryItem,
-  /// Editing
-  this._isEditing
+    this._regionItem,this._farmItem, this._producerItem, this._lotItem,this._altitudeItem, this._countryItem,
+    /// Editing
+    this._isEditing
   );
 
  @override
@@ -173,7 +193,7 @@ class OriginDetailsCard extends StatelessWidget {
           ///Alititude
           TextFieldItemWithInitalValue(_altitudeItem, (value){_altitude(value);}, _textFieldWidth, _isEditing), 
           ///Country
-          PickerTextField(_countryItem, _country(_countryItem), _textFieldWidth),
+          PickerTextField(_countryItem, _country, _textFieldWidth, _isEditing ),
         ],)
     ],),)
     );
@@ -187,17 +207,17 @@ class RoastingDetailsCard extends StatefulWidget {
   final Function(String) _roasteryName; 
   final Function(String) _roasterName; 
   final Function(DateTime) _roastDate;  
-  final String _roastProfileValue;
-  final String _roasteryNameValue;
-  final String _roasterNameValue;
-  final DateTime _roastDateValue;
+  final Item _roastProfileItem;
+  final Item _roasteryNameItem;
+  final Item _roasterNameItem;
+  final DateTime _roastDateItem;
   final bool _isEditing;
  
   final dateFormat = DateFormat.yMd();
 
   RoastingDetailsCard( 
     /// Variables
-    this._roastProfileValue,this._roasteryNameValue,this._roasterNameValue,this._roastDateValue,
+    this._roastProfileItem,this._roasteryNameItem,this._roasterNameItem,this._roastDateItem,
     ///Functions
     this._roastProfile,this._roasteryName, this._roasterName, this._roastDate,
     /// Editing
@@ -211,19 +231,19 @@ class RoastingDetailsCardState extends State<RoastingDetailsCard> {
   final double _padding = 20.0;
   final double _margin = 10.0;
   final double _textFieldWidth = 150.0;
-  String _roastProfileValue;
-  String _roasteryNameValue;
-  String _roasterNameValue;
-  DateTime _roastDateValue;
+  Item _roastProfileItem;
+  Item _roasteryNameItem;
+  Item _roasterNameItem;
+  DateTime _roastDateItem;
   TextEditingController _controller = new TextEditingController();
   
   @override
   void initState() {
-    _roastProfileValue = widget._roastProfileValue;
-    _roasteryNameValue = widget._roasteryNameValue;
-    _roasterNameValue = widget._roasterNameValue;
-    _roastDateValue = widget._roastDateValue;
-    _controller.text = widget.dateFormat.format(widget._roastDateValue);
+    _roastProfileItem = widget._roastProfileItem;
+    _roasteryNameItem = widget._roasteryNameItem;
+    _roasterNameItem = widget._roasterNameItem;
+    _roastDateItem = widget._roastDateItem;
+    _controller.text = widget.dateFormat.format(widget._roastDateItem);
     super.initState();
   }
 
@@ -236,13 +256,14 @@ class RoastingDetailsCardState extends State<RoastingDetailsCard> {
 
         ///Row 1
         Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: <Widget>[
+
           ///Roast Date
           Container(width: _textFieldWidth,
                     child: DateTimePickerFormField(
                       enabled: widget._isEditing,
                       format: widget.dateFormat,
                       decoration: InputDecoration(labelText: StringLabels.date),
-                      initialDate: _roastDateValue,
+                      initialDate: _roastDateItem,
                       controller: _controller,
                       dateOnly: true,
                       onChanged: (date) {
@@ -251,27 +272,23 @@ class RoastingDetailsCardState extends State<RoastingDetailsCard> {
                     ),
 
         ///Roast profile
-          TextFieldWithInitalValue(TextInputType.text,StringLabels.roastProfile, StringLabels.enterDescription,
-               _roastProfileValue,
-                (value){
-                  _roastProfileValue = value;
+          TextFieldItemWithInitalValue(_roastProfileItem,
+                (value){  _roastProfileItem = value;
                   setState(widget._roastProfile(value));}, _textFieldWidth, widget._isEditing),                  
         ],),
 
         ///Row 2
         Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: <Widget>[
           ///Roastery Name
-          TextFieldWithInitalValue(TextInputType.text,StringLabels.roasteryName, StringLabels.enterDescription,
-               _roasteryNameValue,
+          TextFieldItemWithInitalValue(_roasteryNameItem,
                 (value){
-                  _roasteryNameValue = value;
+                  _roasteryNameItem = value;
                   setState(widget._roasteryName(value));}, _textFieldWidth, widget._isEditing) ,    
           
           /// Roaster name
-          TextFieldWithInitalValue(TextInputType.text, StringLabels.roasterName, StringLabels.enterName,
-               _roasterNameValue,
+          TextFieldItemWithInitalValue(_roasterNameItem,
                 (value){
-                  _roasterNameValue = value;
+                  _roasterNameItem = value;
                   setState(widget._roasterName(value));}, _textFieldWidth, widget._isEditing),                                  
         ],)
     ],))
@@ -375,9 +392,9 @@ class GreenDetailsCard extends StatelessWidget {
   final double _padding = 20.0;
   final double _margin = 10.0;
   final double _textFieldWidth = 150.0;
-  final Function(String) _beanType;
-  final Function(String) _beanSize;
-  final Function(String) _processingMethod;
+  final Function(Item) _beanType;
+  final Function(Item) _beanSize;
+  final Function(Item) _processingMethod;
   final Function(String) _density;
   final Function(String) _aw;
   final Function(String) _moi;
@@ -410,16 +427,16 @@ class GreenDetailsCard extends StatelessWidget {
         ///Row 1
         Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: <Widget>[
           ///BeanType
-          TextFieldItemWithInitalValue(_beanTypeItem, (value){_beanType(value);}, _textFieldWidth, _isEditing),
+          PickerTextField(_beanTypeItem, _beanType, _textFieldWidth, _isEditing),
         
           ///BeanSize
-           TextFieldItemWithInitalValue(_beanSizeItem, (value){_beanSize(value);}, _textFieldWidth, _isEditing)          
+          PickerTextField(_beanSizeItem, _beanSize ,_textFieldWidth, _isEditing),
         ],),
 
         ///Row 2
         Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: <Widget>[
           ///Processing Methord
-          TextFieldItemWithInitalValue(_processingMethodItem, (value){_processingMethod(value);}, _textFieldWidth, _isEditing),
+          PickerTextField(_processingMethodItem, _processingMethod,_textFieldWidth, _isEditing),
           ///Density
           TextFieldItemWithInitalValue(_densityItem, (value){_density(value);}, _textFieldWidth, _isEditing)                
         ],),

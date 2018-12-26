@@ -277,7 +277,6 @@ class _ProfileCardState extends State<ProfileCard> {
   @override
     void didUpdateWidget(dynamic oldWidget) {
     setWidgetUp();
-    
     super.didUpdateWidget(oldWidget);
     }
 
@@ -570,12 +569,12 @@ class PickerTextField extends StatefulWidget {
   final double _textFieldWidth;
   final double _cornerRadius = 20.0;
   final Item _item;
-  /// Returns a funtion with an Dtabase Id 
+  final bool _isEditing;
+  /// Returns a funtion with the Item 
   /// of the item to open the picker view witht the correct data.
-  final Function(String) _onProfileTextPressed;
+  final Function(Item) _onItemTextPressed;
 
-
-  PickerTextField(this._item, this._onProfileTextPressed, this._textFieldWidth);
+  PickerTextField(this._item, this._onItemTextPressed, this._textFieldWidth, this._isEditing);
 
   _PickerTextFieldState createState() => _PickerTextFieldState();
 }
@@ -599,21 +598,31 @@ class _PickerTextFieldState extends State<PickerTextField> {
       }
 
       void handleLeftProfileTextfieldFocus(){
-        if (_focus.hasFocus){
-          widget._onProfileTextPressed(widget._item.databaseId);
+        if (_focus.hasFocus){setState(() {
+            widget._onItemTextPressed(widget._item);
+        });
           _focus.unfocus();  
         }
       }
 
+      @override
+      void didChangeDependencies() {
+        _controller.text = widget._item.value;
+        super.didChangeDependencies();
+      }
+
   @override
   Widget build(BuildContext context) {
+     _controller.text = widget._item.value;
     return 
      Container(
        width: widget._textFieldWidth,
        margin: EdgeInsets.all(widget._margin,),
        child: TextFormField(
+          enabled: widget._isEditing,
            textAlign: TextAlign.start,
            decoration: new InputDecoration(
+             prefixIcon: Icon(Icons.tonality),
              labelText: widget._item.title,
            ),
            focusNode: _focus,
@@ -871,31 +880,31 @@ TextEditingController _controller;
 
 @override
   void initState() {
-      _controller = new TextEditingController(text: widget._item.value);
-    super.initState();
+    _controller = new TextEditingController(text: widget._item.value);
+  super.initState();
   }
 
 @override
   Widget build(BuildContext context) {
     return
-Expanded(
-  flex: 1,
-  // width: widget._textFieldWidth,
-   child: Container(padding: EdgeInsets.all(10.0), child: TextField(
-   enabled: widget._isEditing,
-   controller: _controller ,
-   textAlign: TextAlign.start,
-   keyboardType: widget._item.keyboardType,
-   decoration: 
-   new InputDecoration(
-   prefixIcon: Icon(Icons.face),
-   labelText: widget._item.title,
-   hintText: widget._item.placeHolderText,
-             ),
-             onChanged: widget._giveValue,
-           )
-           )); 
-  }
+    Expanded(
+      flex: 1,
+      // width: widget._textFieldWidth,
+       child: Container(padding: EdgeInsets.all(10.0), child: TextField(
+       enabled: widget._isEditing,
+       controller: _controller ,
+       textAlign: TextAlign.start,
+       keyboardType: widget._item.keyboardType,
+       decoration: 
+       new InputDecoration(
+       prefixIcon: Icon(Icons.face),
+       labelText: widget._item.title,
+       hintText: widget._item.placeHolderText,
+                 ),
+                 onChanged: widget._giveValue,
+               )
+               )); 
+      }
 }       
 
 ///TextField Item input
