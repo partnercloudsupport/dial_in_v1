@@ -28,25 +28,25 @@ class RecipePage extends StatelessWidget{
     return  
     Column(children: <Widget>[ 
 
-              /// Date
+            /// Date
               DateInputCard(StringLabels.date,
                   _profile.getProfileItemValue( DatabaseIds.date),
                   (dateTime)
                   {if (dateTime != null){ _setProfileItemValue( DatabaseIds.date, dateTime);}}, _isEditing),
 
-              ///Coffee
+            ///Coffee
               ProfileInputWithDetailsCard(
                 _profile.getProfileProfile(ProfileType.coffee),
                 StringLabels.rested,
                 _profile.getDaysRested().toString() + ' days',
                 (){_showOptions(ProfileType.coffee);},),
 
-              ///Barista
+            ///Barista
               ProfileInputCard(
                 _profile.getProfileProfile(ProfileType.barista),
                 (){_showOptions(ProfileType.barista);},),
 
-              /// Water
+            /// Water
               ProfileInputCardWithAttribute(
                   imageRefString: Images.drop,
                   title: StringLabels.water,
@@ -63,7 +63,7 @@ class RecipePage extends StatelessWidget{
                   attributeTitle: StringLabels.degreeC,
                   profileName: _profile.getProfileProfileTitleValue( profileDatabaseId: DatabaseIds.water)),
 
-              /// Grinder
+            /// Grinder
               ProfileInputCardWithAttribute(
                   imageRefString: Images.grinder,
                   title: StringLabels.grinder,
@@ -80,7 +80,7 @@ class RecipePage extends StatelessWidget{
                   keyboardType: TextInputType.number,
                   profileName: _profile.getProfileProfileTitleValue( profileDatabaseId: DatabaseIds.grinder)),
 
-              /// Equipment
+            /// Equipment
               ProfileInputCardWithAttribute(
                   imageRefString: Images.aeropressSmaller512x512,
                   title: StringLabels.brewingEquipment,
@@ -96,18 +96,20 @@ class RecipePage extends StatelessWidget{
                   attributeTitle: StringLabels.preinfusion,
                   profileName: _profile.getProfileProfileTitleValue( profileDatabaseId: DatabaseIds.brewingEquipment)),
 
-            /// Ratio card
+              /// Ratio card
                RatioCard(
-               _profile,
-              (dose) {_setProfileItemValue( DatabaseIds.brewingDose, dose);},  
-              ((yielde) {_setProfileItemValue( DatabaseIds.yielde, yielde);}),
-              (brewWeight) { _setProfileItemValue( DatabaseIds.brewWeight, brewWeight);}),
+                _profile,
+                (dose) {_setProfileItemValue( DatabaseIds.brewingDose, dose);},  
+                (yielde) {_setProfileItemValue( DatabaseIds.yielde, yielde);},
+                (brewWeight) { _setProfileItemValue( DatabaseIds.brewWeight, brewWeight);},
+                _isEditing),
 
               TwoTextfieldCard(
                 (time) { _setProfileItemValue( DatabaseIds.time, time);},
                 (tds) { _setProfileItemValue( DatabaseIds.tds, tds);},
                 _profile.getProfileItem(DatabaseIds.time),
                 _profile.getProfileItem(DatabaseIds.tds),
+                _isEditing
               ),
 
               NotesCard(

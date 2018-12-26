@@ -602,6 +602,7 @@ class RatioCard extends StatefulWidget {
   final double _margin = 10.0;
   final double _cornerRadius = 20.0;
   final double _textFieldWidth = 80.0;
+  final bool _isEditing;
 
   final Profile _profile;
 
@@ -614,22 +615,11 @@ class RatioCard extends StatefulWidget {
     this._doseChanged,
     this._yieldChanged,
     this._brewWeightChanged,
+    this._isEditing
   );
   _RatioCardState createState() => _RatioCardState();
 }
 class _RatioCardState extends State<RatioCard> {
-
-  TextEditingController _doseController = new TextEditingController();
-  TextEditingController _yieldController = new TextEditingController();
-  TextEditingController _weightController = new TextEditingController();
-
-  @override
-    void initState() {
-    _doseController.text = widget._profile.getProfileItemValue(DatabaseIds.brewingDose);
-    _yieldController.text = widget._profile.getProfileItemValue(DatabaseIds.yielde);
-    _weightController.text = widget._profile.getProfileItemValue(DatabaseIds.brewWeight);
-    super.initState();
-    }
 
   @override
   Widget build(BuildContext context) {
@@ -652,47 +642,28 @@ class _RatioCardState extends State<RatioCard> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
+              
               /// Dose
-              Container(
-                  width: widget._textFieldWidth,
-                  child: TextField(
-                    controller: _doseController,
-                    textAlign: TextAlign.start,
-                    keyboardType: TextInputType.number,
-                    decoration: new InputDecoration(
-                      labelText: StringLabels.brewingDose,
-                      hintText: StringLabels.enterValue,
-                    ),
-                    onChanged: widget._doseChanged,
-                  )),
+              TextFieldItemWithInitalValue(
+                widget._profile.getProfileItem(DatabaseIds.brewingDose), 
+                (value){widget._doseChanged(value);}, 
+                widget._textFieldWidth, 
+                widget._isEditing),
 
               /// Yield
-              Container(
-                width: widget._textFieldWidth,
-                child: TextField(
-                  controller: _yieldController,
-                  textAlign: TextAlign.start,
-                  keyboardType: TextInputType.number,
-                  decoration: new InputDecoration(
-                    labelText: StringLabels.yielde,
-                    hintText: StringLabels.enterValue,
-                  ),
-                  onChanged: widget._yieldChanged,
-                )),
-
+              TextFieldItemWithInitalValue(
+                widget._profile.getProfileItem(DatabaseIds.yielde), 
+                (value){widget._yieldChanged(value);}, 
+                widget._textFieldWidth, 
+                widget._isEditing), 
+              
               /// Brew wieght
-              Container(
-                width: widget._textFieldWidth,
-                child: TextField(
-                  controller: _weightController,
-                  textAlign: TextAlign.start,
-                  keyboardType: TextInputType.number,
-                  decoration: new InputDecoration(
-                    labelText: StringLabels.brewWeight,
-                    hintText: StringLabels.enterValue,
-                  ),
-                  onChanged: widget._brewWeightChanged,
-                )),
+              TextFieldItemWithInitalValue(
+                widget._profile.getProfileItem(DatabaseIds.brewWeight), 
+                (value){widget._brewWeightChanged(value);}, 
+                widget._textFieldWidth, 
+                widget._isEditing), 
+              
             ],
           ),
 
@@ -712,6 +683,7 @@ class TwoTextfieldCard extends StatefulWidget {
   final double _textFieldWidth = 150.0;
   final Item _itemLeft;
   final Item _itemRight;
+  final bool _isEditing;
   
   final Function(String) _onLeftTextChanged;
   final Function(String) _onRightTextChanged;
@@ -721,6 +693,7 @@ class TwoTextfieldCard extends StatefulWidget {
       this._onRightTextChanged,
       this._itemLeft,
       this._itemRight,
+      this._isEditing
      );
 
   _TwoTextfieldCardState createState() => _TwoTextfieldCardState();
@@ -748,31 +721,21 @@ class _TwoTextfieldCardState extends State<TwoTextfieldCard> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  /// Left
-                  Container(
-                      width: 100.0,
-                      child: TextField(
-                        controller: _leftController,
-                        textAlign: TextAlign.start,
-                        keyboardType: TextInputType.number,
-                        decoration: new InputDecoration(
-                            labelText: widget._itemLeft.title, 
-                            hintText: widget._itemLeft.placeHolderText),
-                        onChanged: widget._onLeftTextChanged,
-                      )),
 
-                  // Right
-                  Container(
-                      width: 100.0,
-                      child: TextField(
-                        controller: _rightController,
-                        textAlign: TextAlign.start,
-                        keyboardType: TextInputType.number,
-                        decoration: new InputDecoration(
-                            labelText: widget._itemRight.title,
-                             hintText: widget._itemRight.placeHolderText),
-                        onChanged: widget._onRightTextChanged,
-                      )),
+                  /// Left
+                  TextFieldItemWithInitalValue(
+                  widget._itemLeft,
+                  (value){widget._onLeftTextChanged(value);},
+                  100.0, 
+                  widget._isEditing),
+
+                // Right
+                TextFieldItemWithInitalValue(
+                  widget._itemRight,
+                  (value){widget._onRightTextChanged(value);},
+                  100.0, 
+                  widget._isEditing),
+
                 ],
               ),
             ]),
@@ -813,22 +776,25 @@ class _NotesCardState extends State<NotesCard> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
+
         children: <Widget>[
           Text(widget._title),
           Container(
-              child: TextField(
-                enabled: widget._isEditing,
-                controller: controller,
-                textAlign: TextAlign.start,
-                maxLines: null,
-                keyboardType: TextInputType.text,
-                decoration: new InputDecoration(
-                  hintText: StringLabels.enterInfo,
-                ),
-                onChanged: widget._onTextChanged))
-        ],
-      ),
-    ));
+            child: TextField(
+              enabled: widget._isEditing,
+              controller: controller,
+              textAlign: TextAlign.start,
+              maxLines: null,
+              keyboardType: TextInputType.text,
+              decoration: new InputDecoration(
+                hintText: StringLabels.enterInfo,
+              ),
+              onChanged: widget._onTextChanged)
+            )
+          ],
+        ),
+      )
+    );
   }
 }
 

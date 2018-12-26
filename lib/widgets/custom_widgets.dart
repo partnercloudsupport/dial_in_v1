@@ -889,22 +889,21 @@ TextEditingController _controller;
     return
     Expanded(
       flex: 1,
-      // width: widget._textFieldWidth,
-       child: Container(padding: EdgeInsets.all(10.0), child: TextField(
-       enabled: widget._isEditing,
-       controller: _controller ,
-       textAlign: TextAlign.start,
-       keyboardType: widget._item.keyboardType,
-       decoration: 
-       new InputDecoration(
-       prefixIcon: Icon(Icons.face),
-       labelText: widget._item.title,
-       hintText: widget._item.placeHolderText,
-                 ),
-                 onChanged: widget._giveValue,
-               )
-               )); 
-      }
+      child: Container(padding: EdgeInsets.all(10.0), child: TextField(
+      enabled: widget._isEditing,
+      controller: _controller ,
+      textAlign: TextAlign.start,
+      keyboardType: widget._item.keyboardType,
+      decoration: 
+        new InputDecoration(
+        prefixIcon: Icon(Icons.face),
+        labelText: widget._item.title,
+        hintText: widget._item.placeHolderText,
+          ),
+          onChanged: widget._giveValue,
+        )
+        )); 
+        }
 }       
 
 ///TextField Item input
