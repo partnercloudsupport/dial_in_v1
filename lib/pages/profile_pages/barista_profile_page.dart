@@ -66,15 +66,12 @@ class BaristaDetailsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-        child: Container(
-      padding: EdgeInsets.all(_padding),
-      margin: EdgeInsets.all(_margin),
+        child: Container(padding: EdgeInsets.all(_padding),margin: EdgeInsets.all(_margin),
       child: Column(
         children: <Widget>[
           ///Row 1
           Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               
               /// Name
@@ -88,7 +85,7 @@ class BaristaDetailsCard extends StatelessWidget {
             ],
           ),
         ],
-      ),
+      )
     ));
   }
 }

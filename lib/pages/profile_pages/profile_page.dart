@@ -138,15 +138,6 @@ class ProfilePageState extends State<ProfilePage> {
                 (image){ setState(() {_profile.image = image;});});
               }:(){}),
             
-            // ///Change image button
-            // FlatButton(
-            //   onPressed: ()
-            //   {_getimage(
-            //     (image){ setState(() {_profile.image = image;});});
-            //   },
-            //   child: Text(StringLabels.changeImage),
-            // ),
-            
             /// All below changes depending on profile
              _returnPageStructure(_profile),
 
@@ -219,7 +210,7 @@ class ProfilePageState extends State<ProfilePage> {
       break;
 
       case ProfileType.water:
-      _structure = WaterPage(_profile, _margin, (key, value){ _profile.setProfileItemValue( key,  value);}, _isEditing);
+      _structure = WaterPage(_profile, (key, value){ _profile.setProfileItemValue( key,  value);}, _isEditing);
       break;
 
       case ProfileType.recipe:

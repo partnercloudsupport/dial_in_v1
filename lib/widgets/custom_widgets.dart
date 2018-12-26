@@ -614,7 +614,7 @@ class _PickerTextFieldState extends State<PickerTextField> {
        child: TextFormField(
            textAlign: TextAlign.start,
            decoration: new InputDecoration(
-             labelText: StringLabels.name,
+             labelText: widget._item.title,
            ),
            focusNode: _focus,
            controller: _controller,
@@ -878,9 +878,10 @@ TextEditingController _controller;
 @override
   Widget build(BuildContext context) {
     return
-Container(
-  width: widget._textFieldWidth,
-   child: TextField(
+Expanded(
+  flex: 1,
+  // width: widget._textFieldWidth,
+   child: Container(padding: EdgeInsets.all(10.0), child: TextField(
    enabled: widget._isEditing,
    controller: _controller ,
    textAlign: TextAlign.start,
@@ -893,7 +894,7 @@ Container(
              ),
              onChanged: widget._giveValue,
            )
-           ); 
+           )); 
   }
 }       
 

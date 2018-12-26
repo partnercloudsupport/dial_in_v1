@@ -9,16 +9,14 @@ import 'package:dial_in_v1/data/item.dart';
 
 class WaterPage extends StatelessWidget{
 
-final double _margin; 
 final Profile _profile;
 final double _padding = 20.0;
 final bool _isEditing;
 
-
 // Sets a String and Value in the Parent profie
 final Function(String , dynamic) _setProfileItemValue;
 
-  WaterPage(this._profile, this._margin, this._setProfileItemValue, this._isEditing);
+  WaterPage(this._profile, this._setProfileItemValue, this._isEditing);
 
   /// UI Build
   @override
@@ -26,10 +24,14 @@ final Function(String , dynamic) _setProfileItemValue;
     return new Column(children: <Widget>[
 
                   /// Name
+                  Row
+                  (mainAxisAlignment: MainAxisAlignment.spaceEvenly, crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
                   TextFieldItemWithInitalValue
                   (_profile.getProfileItem(DatabaseIds.waterID),
                   (name){_setProfileItemValue( DatabaseIds.waterID, name);}
-                  , 200.0,_isEditing) , 
+                  , 200.0,_isEditing)
+                   ]) , 
                   
                   /// Date
                   DateInputCard(StringLabels.dateTested,
@@ -49,7 +51,7 @@ final Function(String , dynamic) _setProfileItemValue;
                     _isEditing
                     ),
 
-                  /// Notes
+                  // /// Notes
                    NotesCard(StringLabels.notes,
                     _profile.getProfileItemValue( DatabaseIds.notes),
                     (text){_profile.setProfileItemValue( DatabaseIds.notes, text);},
@@ -84,10 +86,14 @@ WaterDetailsCard(
 
  @override
   Widget build(BuildContext context) {
-    return Card(child: Container(padding: EdgeInsets.all(_padding), margin: EdgeInsets.all( _margin), child: Column(children: <Widget>[
+    return Card(child:
+     Container(padding: EdgeInsets.all(_padding), margin: EdgeInsets.all( _margin),
+     child: Column(children: <Widget>[
 
         ///Row 1
-        Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
+        Row
+        (mainAxisAlignment: MainAxisAlignment.spaceEvenly, crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
           ///Total ppm
           TextFieldItemWithInitalValue( _totalPpmItem,(value){ _totalPpm(value);}, _textFieldWidth,_isEditing ),
 
@@ -97,7 +103,9 @@ WaterDetailsCard(
         ]),
 
         ///Row 2
-        Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
+        Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+         crossAxisAlignment: CrossAxisAlignment.center, 
+         children: <Widget>[
 
           /// kH
           TextFieldItemWithInitalValue( _khPpmItem,(value){ _khPpm(value);}, _textFieldWidth, _isEditing),
@@ -105,8 +113,11 @@ WaterDetailsCard(
           /// pH
           TextFieldItemWithInitalValue( _pHItem,(value){ _pH(value);}, _textFieldWidth, _isEditing),
 
-        ],)
-    ],),)
+            ],
+          ),
+        ],
+      )
+    )
     );
-}
+  }
 }

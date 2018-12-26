@@ -77,20 +77,22 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
                 (roastDate){widget._setProfileItemValue( DatabaseIds.roastDate,  roastDate);},
                 widget._isEditing),
 
-              OriginDetailsCard(
-                (altitude){widget._setProfileItemValue( DatabaseIds.altitude,  altitude);},
-                (lot){widget._setProfileItemValue( DatabaseIds.lot,  lot);},
-                (producer){widget._setProfileItemValue( DatabaseIds.producer,  producer);},
-                (farm){widget._setProfileItemValue( DatabaseIds.farm,  farm);},
-                (region){widget._setProfileItemValue( DatabaseIds.region,  region);},
-                (country){widget._setProfileItemValue( DatabaseIds.country,  country);},
-                _profile.getProfileItem(DatabaseIds.region) ,
-                _profile.getProfileItem(DatabaseIds.farm) ,
-                _profile.getProfileItem(DatabaseIds.producer) ,
-                _profile.getProfileItem(DatabaseIds.lot) ,
-                _profile.getProfileItem(DatabaseIds.altitude) ,
-                _profile.getProfileItem(DatabaseIds.country),
-                widget._isEditing),
+              /// TODO;
+
+              // OriginDetailsCard(
+              //   (altitude){widget._setProfileItemValue( DatabaseIds.altitude,  altitude);},
+              //   (lot){widget._setProfileItemValue( DatabaseIds.lot,  lot);},
+              //   (producer){widget._setProfileItemValue( DatabaseIds.producer,  producer);},
+              //   (farm){widget._setProfileItemValue( DatabaseIds.farm,  farm);},
+              //   (region){widget._setProfileItemValue( DatabaseIds.region,  region);},
+              //   (country){showPickerMenu(country);},
+              //   _profile.getProfileItem(DatabaseIds.region),
+              //   _profile.getProfileItem(DatabaseIds.farm) ,
+              //   _profile.getProfileItem(DatabaseIds.producer) ,
+              //   _profile.getProfileItem(DatabaseIds.lot) ,
+              //   _profile.getProfileItem(DatabaseIds.altitude) ,
+              //   _profile.getProfileItem(DatabaseIds.country),
+              //   widget._isEditing),
 
                 GreenDetailsCard(
                 (beanType){widget._setProfileItemValue(DatabaseIds.beanType,  beanType );},
@@ -113,7 +115,6 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
           );
   }
 }
-
 
 //Widgets
 
@@ -172,7 +173,7 @@ class OriginDetailsCard extends StatelessWidget {
           ///Alititude
           TextFieldItemWithInitalValue(_altitudeItem, (value){_altitude(value);}, _textFieldWidth, _isEditing), 
           ///Country
-          PickerTextField(_countryItem,_country(_countryItem), _textFieldWidth),
+          PickerTextField(_countryItem, _country(_countryItem), _textFieldWidth),
         ],)
     ],),)
     );
@@ -238,6 +239,7 @@ class RoastingDetailsCardState extends State<RoastingDetailsCard> {
           ///Roast Date
           Container(width: _textFieldWidth,
                     child: DateTimePickerFormField(
+                      enabled: widget._isEditing,
                       format: widget.dateFormat,
                       decoration: InputDecoration(labelText: StringLabels.date),
                       initialDate: _roastDateValue,
