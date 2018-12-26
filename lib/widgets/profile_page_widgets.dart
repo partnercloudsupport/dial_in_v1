@@ -12,8 +12,9 @@ class ScoreSlider extends StatefulWidget {
   final double _value;
   final String _label;
   final Function(double) _sliderValue;
+  final bool _isEditing;
 
-  ScoreSlider(this._label, this._value, this._sliderValue);
+  ScoreSlider(this._label, this._value, this._sliderValue, this._isEditing);
 
   ScoreSliderState createState() => new ScoreSliderState();
 }
@@ -40,11 +41,12 @@ class ScoreSliderState extends State<ScoreSlider> {
           ),
           Slider(
             value: _value,
-            onChanged: (value){},
-            onChangeEnd:  (value) {
+            onChanged: widget._isEditing? (value){
               setState(() {
                 _value = value;
-              });
+              });}: null,
+            onChangeEnd:  (value) {
+              
               widget._sliderValue(value);
             },
             min: 0,

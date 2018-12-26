@@ -134,19 +134,24 @@ class RecipePage extends StatelessWidget{
                     Column(
                       children: <Widget>[
                         ScoreSlider(StringLabels.strength, 0.0,
-                         (value) { _setProfileItemValue( DatabaseIds.strength, value.toString());}),
+                         (value) { _setProfileItemValue( DatabaseIds.strength, value.toString());},
+                         _isEditing),
 
                         ScoreSlider(StringLabels.balance, 0.0,
-                         (value) { _setProfileItemValue( DatabaseIds.balance, value.toString());}),
+                         (value) { _setProfileItemValue( DatabaseIds.balance, value.toString());},
+                         _isEditing),
 
                         ScoreSlider(StringLabels.flavour, 0.0,
-                         (value) { _setProfileItemValue( DatabaseIds.flavour, value.toString());}),
+                         (value) { _setProfileItemValue( DatabaseIds.flavour, value.toString());},
+                         _isEditing),
 
                         ScoreSlider(StringLabels.body, 0.0,
-                         (value) {_setProfileItemValue( DatabaseIds.body, value.toString());}),
+                         (value) {_setProfileItemValue( DatabaseIds.body, value.toString());},
+                         _isEditing),
 
                         ScoreSlider(StringLabels.afterTaste, 0.0,
-                         (value) {_setProfileItemValue( DatabaseIds.afterTaste, value.toString());}),
+                         (value) {_setProfileItemValue( DatabaseIds.afterTaste, value.toString());},
+                         _isEditing),
 
                         /// End of score
                         
