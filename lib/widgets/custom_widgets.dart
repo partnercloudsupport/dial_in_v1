@@ -741,26 +741,24 @@ class _DateInputCardState extends State<DateInputCard> {
   
   TextEditingController _controller = new TextEditingController();
   FocusNode _focus = new FocusNode();
+  DateTime _dateTime;
+
 
   @override
     void initState() {
       _controller.text = widget._dateFormat.format(widget._dateTime);
       _focus = new FocusNode();
       _focus.addListener(handleTextfieldFocus);
+      _dateTime = widget._dateTime;
       super.initState();
-    }
-
-  @override
-    void didUpdateWidget(DateInputCard oldWidget) {
-      _controller.text = widget._dateFormat.format(widget._dateTime);
-      super.didUpdateWidget(oldWidget);
     }
 
    void handleTextfieldFocus()async{
     if (_focus.hasFocus){
       DateTime date = await getDateTimeInput(context, widget._dateTime, TimeOfDay.now());
       setState(() {
-        widget.onDateChanged(date);        
+        widget.onDateChanged(date);
+        _dateTime = date;        
         _focus.unfocus(); 
       });
     }
@@ -773,22 +771,13 @@ class _DateInputCardState extends State<DateInputCard> {
         lastDate: DateTime(2100),
         context: context,
         initialDate: initialDate,);
-     if (date != null) {
-      date = startOfDay(date);
-        final time = await showTimePicker(
-          context: context,
-          initialTime: initialTime ?? TimeOfDay.now(),
-        );
-        if (time != null) {
-          date = date.add(Duration(hours: time.hour, minutes: time.minute));
-        }
-    }
     return date;
   }    
     
    
   @override
   Widget build(BuildContext context) {
+     _controller.text = widget._dateFormat.format(_dateTime);
     return 
     Expanded(
       flex: 6,
@@ -845,7 +834,7 @@ class _DateTimeInputCardState extends State<DateTimeInputCard> {
         if (_focus.hasFocus){
         DateTime date = await getDateTimeInput(context, widget._dateTime, TimeOfDay.fromDateTime(widget._dateTime));
         setState(() {
-        widget.onDateChanged(date);        
+        widget.onDateChanged(date);
                   _focus.unfocus(); 
                 });
         }
