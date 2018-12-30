@@ -176,6 +176,9 @@ class _ProfileInputCardWithAttributeState extends State<ProfileInputCardWithAttr
                             controller: _profileTextController,)
                       ),
 
+                      /// Spacer
+                        Container(width: 20.0,),
+
                         Expanded(
                             child: TextFormField(
                             textAlign: TextAlign.start,
@@ -420,8 +423,8 @@ class ProfileInputWithDetailsCardState extends State<ProfileInputWithDetailsCard
 
                   CircularPicture(widget._profile.image, 40.0),
 
-                  Container(
-                          width: widget._textFieldWidth,
+                  /// Profile
+                  Expanded(child: Container(
                           margin: EdgeInsets.fromLTRB(0.0, 0.0, widget._margin, 0.0),
                           child: TextFormField(
                               textAlign: TextAlign.start,
@@ -430,7 +433,12 @@ class ProfileInputWithDetailsCardState extends State<ProfileInputWithDetailsCard
                               ),
                               focusNode: _focus,
                               controller: _controller,
-                          )),
+                          ))),
+
+                  /// Spacer        
+                  Container(width: 20.0,),
+                  
+                  /// Attribute Value
                   ScalableWidget(
                   TextfieldWithFixedValue(widget._detailTitle, _detailController.text))
 
@@ -627,18 +635,17 @@ class _RatioCardState extends State<RatioCard> {
     return 
     
     Card(child:Container(
-      margin: EdgeInsets.all(widget._margin),
-      padding: EdgeInsets.all(widget._padding),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Container(
-            margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, widget._padding),
+            margin: EdgeInsets.fromLTRB(0.0, widget._margin, 0.0, 0.0),
             child: Text(
               StringLabels.ratios,
               style: Theme.of(context).textTheme.title,
             ),
           ),
+
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
