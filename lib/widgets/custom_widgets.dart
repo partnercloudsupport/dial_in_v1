@@ -723,11 +723,11 @@ class ProfileImage extends StatelessWidget {
 
 /// Date input card
 class DateInputCard extends StatefulWidget {
-  final double _padding = 20.0;
+  final double _padding = 10.0;
   final double _margin = 10.0;
   final double _cornerRadius = 20.0;
   final double _textFieldWidth = 150.0;
-  final _dateFormat = DateFormat("MMMM d, yyyy");
+  final _dateFormat = DateFormat.yMd();
   final DateTime _dateTime;
   final Function(DateTime) onDateChanged; 
   final String _title;
@@ -757,53 +757,50 @@ class _DateInputCardState extends State<DateInputCard> {
     }
 
    void handleTextfieldFocus()async{
-        if (_focus.hasFocus){
-        DateTime date = await getDateTimeInput(context, widget._dateTime, TimeOfDay.fromDateTime(widget._dateTime));
-        setState(() {
+    if (_focus.hasFocus){
+      DateTime date = await getDateTimeInput(context, widget._dateTime, TimeOfDay.now());
+      setState(() {
         widget.onDateChanged(date);        
-                  _focus.unfocus(); 
-                });
-        }
-      }
+        _focus.unfocus(); 
+      });
+    }
+  }
 
-    Future<DateTime> getDateTimeInput(
+  Future<DateTime> getDateTimeInput(
       BuildContext context, DateTime initialDate, TimeOfDay initialTime) async {
     var date = await showDatePicker(
         firstDate: DateTime(2000),
         lastDate: DateTime(2100),
         context: context,
         initialDate: initialDate,);
-    if (date != null) {
+     if (date != null) {
       date = startOfDay(date);
+        final time = await showTimePicker(
+          context: context,
+          initialTime: initialTime ?? TimeOfDay.now(),
+        );
+        if (time != null) {
+          date = date.add(Duration(hours: time.hour, minutes: time.minute));
+        }
     }
     return date;
   }    
     
+   
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(widget._margin),
-      child: Container(
+    return 
+    Expanded(
+      flex: 6,
+      child:Container(
         padding: EdgeInsets.all(widget._padding),
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Expanded(
-                    child: TextFormField
-                    (enabled: widget._isEditing,
-                      controller: _controller,
-                    focusNode: _focus,
-                      decoration: InputDecoration(labelText: widget._title),
-                    ),
-                    ),
-                ],
-              ),
-            ]),
-      ),
+        child:  TextFormField
+          (enabled: widget._isEditing,
+            controller: _controller,
+          focusNode: _focus,
+            decoration: InputDecoration(labelText: widget._title),
+          ),
+          ),      
     );
   }
 }

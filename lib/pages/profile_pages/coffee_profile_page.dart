@@ -274,16 +274,13 @@ class RoastingDetailsCardState extends State<RoastingDetailsCard> {
           //           ),
         /// 
         /// 
-      Expanded(
-      flex: 6,
-      child:
+      
         DateInputCard(
           StringLabels.date,
           _roastDateItem,
-          (date) {
-          if (date != null){           
-          setState(widget._roastDate(date));}}, 
-          widget._isEditing),),
+          (dateTime)
+            {if (dateTime != null){ widget._roastDate(dateTime);}},
+          widget._isEditing),
 
         ///Roast profile
           TextFieldItemWithInitalValue(_roastProfileItem,
