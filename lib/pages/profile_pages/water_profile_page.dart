@@ -35,7 +35,7 @@ final Function(String , dynamic) _setProfileItemValue;
                    ]),) , 
                   
                   /// Date
-                  DateInputCard(StringLabels.dateTested,
+                  DateTimeInputCard(StringLabels.dateTested,
                   _profile.getProfileItemValue( DatabaseIds.date),
                   (dateTime){_setProfileItemValue( DatabaseIds.date, dateTime);}, _isEditing),
 

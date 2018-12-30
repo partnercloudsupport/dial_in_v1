@@ -36,7 +36,8 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
 
   @override
   void didChangeDependencies() {
-    _profile = widget._profile;      super.didChangeDependencies();
+    _profile = widget._profile; 
+    super.didChangeDependencies();
     }
 
   void pickerScrolled(){
@@ -91,13 +92,13 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
                 _profile.getProfileItem( DatabaseIds.roasterName),
                 _profile.getProfileItemValue( DatabaseIds.roastDate), 
               /// Functions
-                (roastProfile){widget._setProfileItemValue( DatabaseIds.roastProfile,  roastProfile);}, 
+                showPickerMenu,
                 (roasteryName){widget._setProfileItemValue( DatabaseIds.roasteryName,  roasteryName);}, 
                 (roasterName){widget._setProfileItemValue( DatabaseIds.roasterName,  roasterName);}, 
                 (roastDate){widget._setProfileItemValue( DatabaseIds.roastDate,  roastDate);},
                 widget._isEditing),
 
-              ///Origon details
+              ///Origin details
               OriginDetailsCard(
                 (altitude){widget._setProfileItemValue( DatabaseIds.altitude,  altitude);},
                 (lot){widget._setProfileItemValue( DatabaseIds.lot,  lot);},
@@ -203,7 +204,7 @@ class OriginDetailsCard extends StatelessWidget {
 /// Roasting details
 class RoastingDetailsCard extends StatefulWidget {
  
-  final Function(String) _roastProfile;
+  final Function(Item) _roastProfile;
   final Function(String) _roasteryName; 
   final Function(String) _roasterName; 
   final Function(DateTime) _roastDate;  
@@ -257,19 +258,32 @@ class RoastingDetailsCardState extends State<RoastingDetailsCard> {
         ///Row 1
         Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: <Widget>[
 
-          ///Roast Date
-          Container(width: _textFieldWidth,
-                    child: DateTimePickerFormField(
-                      enabled: widget._isEditing,
-                      format: widget.dateFormat,
-                      decoration: InputDecoration(labelText: StringLabels.date),
-                      initialDate: _roastDateItem,
-                      controller: _controller,
-                      dateOnly: true,
-                      onChanged: (date) {
-                      if (date != null){           
-                      setState(widget._roastDate(date));}}),
-                    ),
+        /// Roast Date
+        ///Roast Date
+          // Container(width: _textFieldWidth,
+          //           child: DateTimePickerFormField(
+          //             enabled: widget._isEditing,
+          //             format: widget.dateFormat,
+          //             decoration: InputDecoration(labelText: StringLabels.date),
+          //             initialDate: _roastDateItem,
+          //             controller: _controller,
+          //             dateOnly: true,
+          //             onChanged: (date) {
+          //             if (date != null){           
+          //             setState(widget._roastDate(date));}}),
+          //           ),
+        /// 
+        /// 
+      Expanded(
+      flex: 6,
+      child:
+        DateInputCard(
+          StringLabels.date,
+          _roastDateItem,
+          (date) {
+          if (date != null){           
+          setState(widget._roastDate(date));}}, 
+          widget._isEditing),),
 
         ///Roast profile
           TextFieldItemWithInitalValue(_roastProfileItem,

@@ -613,11 +613,9 @@ class _PickerTextFieldState extends State<PickerTextField> {
   @override
   Widget build(BuildContext context) {
      _controller.text = widget._item.value;
-    return 
-     Container(
-       width: widget._textFieldWidth,
-       margin: EdgeInsets.all(widget._margin,),
-       child: TextFormField(
+    return Expanded(
+      flex: 5,
+      child: Container(padding: EdgeInsets.all(10.0), child: TextFormField(
           enabled: widget._isEditing,
            textAlign: TextAlign.start,
            decoration: new InputDecoration(
@@ -626,7 +624,7 @@ class _PickerTextFieldState extends State<PickerTextField> {
            ),
            focusNode: _focus,
            controller: _controller,
-       ));
+       )));
   }
 }
 
@@ -722,13 +720,14 @@ class ProfileImage extends StatelessWidget {
   }
 }
 
+
 /// Date input card
 class DateInputCard extends StatefulWidget {
   final double _padding = 20.0;
   final double _margin = 10.0;
   final double _cornerRadius = 20.0;
   final double _textFieldWidth = 150.0;
-  final _dateFormat = DateFormat("MMMM d, yyyy 'at' h:mma");
+  final _dateFormat = DateFormat("MMMM d, yyyy");
   final DateTime _dateTime;
   final Function(DateTime) onDateChanged; 
   final String _title;
@@ -776,13 +775,6 @@ class _DateInputCardState extends State<DateInputCard> {
         initialDate: initialDate,);
     if (date != null) {
       date = startOfDay(date);
-        final time = await showTimePicker(
-          context: context,
-          initialTime: initialTime ?? TimeOfDay.now(),
-        );
-        if (time != null) {
-          date = date.add(Duration(hours: time.hour, minutes: time.minute));
-        }
     }
     return date;
   }    
@@ -813,6 +805,99 @@ class _DateInputCardState extends State<DateInputCard> {
             ]),
       ),
     );
+  }
+}
+
+
+/// Date input card
+class DateTimeInputCard extends StatefulWidget {
+  final double _padding = 20.0;
+  final double _margin = 10.0;
+  final double _cornerRadius = 20.0;
+  final double _textFieldWidth = 150.0;
+  final _dateFormat = DateFormat("MMMM d, yyyy 'at' h:mma");
+  final DateTime _dateTime;
+  final Function(DateTime) onDateChanged; 
+  final String _title;
+  final bool _isEditing;
+
+  DateTimeInputCard(this._title, this._dateTime, this.onDateChanged, this._isEditing);
+
+  _DateTimeInputCardState createState() => new _DateTimeInputCardState();
+}
+class _DateTimeInputCardState extends State<DateTimeInputCard> {
+  
+  TextEditingController _controller = new TextEditingController();
+  FocusNode _focus = new FocusNode();
+
+  @override
+    void initState() {
+      _controller.text = widget._dateFormat.format(widget._dateTime);
+      _focus = new FocusNode();
+      _focus.addListener(handleTextfieldFocus);
+      super.initState();
+    }
+
+  @override
+    void didUpdateWidget(DateTimeInputCard oldWidget) {
+      _controller.text = widget._dateFormat.format(widget._dateTime);
+      super.didUpdateWidget(oldWidget);
+    }
+
+   void handleTextfieldFocus()async{
+        if (_focus.hasFocus){
+        DateTime date = await getDateTimeInput(context, widget._dateTime, TimeOfDay.fromDateTime(widget._dateTime));
+        setState(() {
+        widget.onDateChanged(date);        
+                  _focus.unfocus(); 
+                });
+        }
+      }
+
+    Future<DateTime> getDateTimeInput(
+      BuildContext context, DateTime initialDate, TimeOfDay initialTime) async {
+    var date = await showDatePicker(
+        firstDate: DateTime(2000),
+        lastDate: DateTime(2100),
+        context: context,
+        initialDate: initialDate,);
+    if (date != null) {
+      date = startOfDay(date);
+        final time = await showTimePicker(
+          context: context,
+          initialTime: initialTime ?? TimeOfDay.now(),
+        );
+        if (time != null) {
+          date = date.add(Duration(hours: time.hour, minutes: time.minute));
+        }
+    }
+    return date;
+  }    
+    
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        padding: EdgeInsets.all(widget._padding),
+        margin: EdgeInsets.all(widget._margin),
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Expanded(
+                    child: TextFormField
+                    (enabled: widget._isEditing,
+                      controller: _controller,
+                    focusNode: _focus,
+                      decoration: InputDecoration(labelText: widget._title),
+                    ),
+                    ),
+                ],
+              ),
+            ]),
+      );
   }
 }
 

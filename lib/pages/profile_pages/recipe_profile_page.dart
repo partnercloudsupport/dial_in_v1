@@ -29,7 +29,7 @@ class RecipePage extends StatelessWidget{
     Column(children: <Widget>[ 
 
             /// Date
-              DateInputCard(StringLabels.date,
+              DateTimeInputCard(StringLabels.date,
                   _profile.getProfileItemValue( DatabaseIds.date),
                   (dateTime)
                   {if (dateTime != null){ _setProfileItemValue( DatabaseIds.date, dateTime);}}, _isEditing),
