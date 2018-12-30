@@ -109,7 +109,8 @@ class RecipePage extends StatelessWidget{
                 (tds) { _setProfileItemValue( DatabaseIds.tds, tds);},
                 _profile.getProfileItem(DatabaseIds.time),
                 _profile.getProfileItem(DatabaseIds.tds),
-                _isEditing
+                _isEditing,
+                _profile.getExtractionYield() 
               ),
 
               NotesCard(

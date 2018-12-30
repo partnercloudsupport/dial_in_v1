@@ -40,7 +40,7 @@ Future<void> logIn(String emailUser, String password,
 void loginButtonPressed(){ 
   print(" Login button pressed");
 
-  showDialog(context: context ,
+  showDialog(barrierDismissible: false, context: context ,
     builder: (context) => Center(child:CircularProgressIndicator()
      )); 
 
@@ -95,13 +95,14 @@ void initState() {
           Pagebackground(AssetImage('assets/images/cherries.jpg')), 
        
           new Center(
-            ///
+            
             /// View components
-            /// 
+             
             child: new Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-
+                
+                /// Logo
                 DialInLogo(),
 
                 // Welcome text
@@ -143,6 +144,7 @@ void initState() {
                       }),
                 ),
 
+                /// Login button
                 LoginButton(loginButtonPressed),
 
                 Container(
@@ -196,7 +198,7 @@ class LoginButton extends StatelessWidget {
   }
 }
 
-///Sign up Button
+/// Sign up Button
 class SignUpButton extends StatelessWidget {
 
 final Function _onPressed;

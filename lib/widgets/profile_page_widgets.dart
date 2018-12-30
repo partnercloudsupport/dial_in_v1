@@ -70,6 +70,7 @@ class ProfileInputCardWithAttribute extends StatefulWidget {
   final double _cornerRadius = 20.0;
   final double _textFieldWidth = 150.0;
 
+  
   final String imageRefString;
   final String title;
   final Function(String) onAttributeTextChange;
@@ -361,7 +362,8 @@ class ProfileInputWithDetailsCard extends StatefulWidget {
   final String _detailValue;
   final Function _onProfileTextPressed;
 
-  ProfileInputWithDetailsCard(this._profile, this._detailTitle, this._detailValue, this._onProfileTextPressed,);
+  ProfileInputWithDetailsCard
+  (this._profile, this._detailTitle, this._detailValue, this._onProfileTextPressed,);
 
   ProfileInputWithDetailsCardState createState() => ProfileInputWithDetailsCardState();
 }
@@ -504,8 +506,7 @@ class _ProfileInputCardState extends State<ProfileInputCard> {
 
                   CircularPicture(widget._profile.image, 40.0),
 
-                  Container(
-                          width: widget._textFieldWidth,
+                        Expanded(child:Container(
                           margin: EdgeInsets.all(widget._margin,),
                           child: TextFormField(
                               textAlign: TextAlign.start,
@@ -514,9 +515,7 @@ class _ProfileInputCardState extends State<ProfileInputCard> {
                               ),
                               focusNode: _focus,
                               controller: _controller,
-                          )),
-
-
+                          ))),
                 ]
             )
           )
@@ -686,6 +685,7 @@ class TwoTextfieldCard extends StatefulWidget {
   final Item _itemLeft;
   final Item _itemRight;
   final bool _isEditing;
+  final double _extractionYield;
   
   final Function(String) _onLeftTextChanged;
   final Function(String) _onRightTextChanged;
@@ -695,7 +695,8 @@ class TwoTextfieldCard extends StatefulWidget {
       this._onRightTextChanged,
       this._itemLeft,
       this._itemRight,
-      this._isEditing
+      this._isEditing,
+      this._extractionYield
      );
 
   _TwoTextfieldCardState createState() => _TwoTextfieldCardState();
@@ -737,6 +738,9 @@ class _TwoTextfieldCardState extends State<TwoTextfieldCard> {
                   (value){widget._onRightTextChanged(value);},
                   100.0, 
                   widget._isEditing),
+
+                ScalableWidget(
+                  TextfieldWithFixedValue(StringLabels.extractionYield, widget._extractionYield.toString()+'%'))
 
                 ],
               ),

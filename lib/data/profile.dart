@@ -72,10 +72,45 @@ class Profile {
       default:
         break;
     }
-    // setDefaultPic();
   }
 
   //  Future<void> setDefaultPic()async{if (this.image == null){ this.image = await Functions.getFile(Images.recipeSmaller);}}
+
+  /// TODO;
+  double getExtractionYield(){
+
+    dynamic tds = this.getProfileItemValue(DatabaseIds.tds) == '' ? 
+    0.0:
+    double.parse(this.getProfileItemValue(DatabaseIds.tds));
+
+    dynamic method = this.getProfileItemValue(DatabaseIds.equipmentType) == '' ? 
+    StringLabels.filter:
+    double.parse(this.getProfileItemValue(DatabaseIds.equipmentType));
+
+    dynamic dose = this.getProfileItemValue(DatabaseIds.brewingDose) == '' ? 
+    0.0:
+    double.parse(this.getProfileItemValue(DatabaseIds.brewingDose));
+
+    dynamic yielde = this.getProfileItemValue(DatabaseIds.yielde) == '' ?
+    0.0:
+    double.parse(this.getProfileItemValue(DatabaseIds.yielde));
+
+    double extractionYield = 0.0;
+
+    if (method == StringLabels.immersion || method == StringLabels.coldBrew){
+
+        double coffeeInCoffee = tds * (yielde + dose);
+        extractionYield = coffeeInCoffee / dose;
+
+    }else{
+            
+            double coffeeInCoffee = tds * yielde;
+            if (coffeeInCoffee > 0.0 && dose > 0.0){
+              extractionYield = coffeeInCoffee / dose;
+            }
+    } 
+    return extractionYield; 
+  }
 
   void setProfileItemValue(String itemDatabaseId, dynamic value) {
     if (value != null){
@@ -96,11 +131,11 @@ class Profile {
       }
     }
 
-    
     if (value == null) {
       if(itemDatabaseId == DatabaseIds.date || itemDatabaseId == DatabaseIds.roastDate)
       { return DateTime.now();}
       else{return '';}
+   
     } else {
       return value;
     }

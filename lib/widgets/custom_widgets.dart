@@ -351,7 +351,6 @@ void setWidgetUp(){
     }
 }
 
-
   @override
   Widget build(BuildContext context) {
     return 
@@ -630,7 +629,6 @@ class _PickerTextFieldState extends State<PickerTextField> {
        ));
   }
 }
-
 
 /// Tab View Data
 class TabViewData{
@@ -961,14 +959,8 @@ class _TextfieldWithFixedValueState extends State<TextfieldWithFixedValue> {
   TextEditingController _controller = new TextEditingController();
 
   @override
-    void initState() {
-      _controller.text = widget._initalValue;
-      super.initState();
-    }
-
-  @override
   void didUpdateWidget(TextfieldWithFixedValue oldWidget) {
-      _controller.text = widget._initalValue;
+      _controller.text = widget._initalValue.toString();
       super.didUpdateWidget(oldWidget);
     }
 

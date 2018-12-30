@@ -3,6 +3,9 @@
 class  StringLabels {
 
 ///since flutter
+  static const String extractionYield = 'Extraction yield';
+  static const String coldBrew = 'Cold brew';
+  static const String immersion = 'Immersion';
   static const String brew = "Brew (g)";
   static const String rested = 'Rested';
   static const String followers = 'Followers';
@@ -363,7 +366,7 @@ class StringDataArrays {
         [["","Unknown","Blend","Supremo","Excelso","Elephants","AA","AB","C","20/64","18/64","16/64","14/64","12/64","10/64","8/64","20,18","16,14","12,10","8","Very Large","Large","Medium","Small","Shells","Superior","Segundas","Terceras","Caracol","Caracolli","Caracolillo"]];
     
     
-    static List<List<String>> equipmentTypes = [["","Unknown","Espresso", "Drip" , "Immersion", "Vaccum", "Coldbrew", "ColdDrip"]];
+    static List<List<String>> equipmentTypes = [["","Unknown","Espresso", "Drip" , StringLabels.immersion, "Vaccum", StringLabels.coldBrew, "ColdDrip"]];
     
     static List<List<String>> equipmentMake = [["","Unknown","Synesso", "Hario" , "Kalita", "Chemex", "La Morrozocco", "Slayer", "Aerobie"]];
     
