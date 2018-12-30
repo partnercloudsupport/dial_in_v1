@@ -886,7 +886,7 @@ TextEditingController _controller;
   Widget build(BuildContext context) {
     return
     Expanded(
-      flex: 1,
+      flex: 5,
       child: Container(padding: EdgeInsets.all(10.0), child: TextField(
       enabled: widget._isEditing,
       controller: _controller ,
@@ -969,7 +969,7 @@ class _TextfieldWithFixedValueState extends State<TextfieldWithFixedValue> {
     return
     ScalableWidget(
     Container(
-        width: 60.0,
+        width: 100.0,
         child: TextFormField(
         controller: _controller ,
         enabled: false,

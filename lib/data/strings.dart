@@ -3,6 +3,7 @@
 class  StringLabels {
 
 ///since flutter
+  static const String ey = 'Ext/y';
   static const String extractionYield = 'Extraction yield';
   static const String coldBrew = 'Cold brew';
   static const String immersion = 'Immersion';

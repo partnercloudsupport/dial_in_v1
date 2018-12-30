@@ -104,15 +104,23 @@ class RecipePage extends StatelessWidget{
                 (brewWeight) { _setProfileItemValue( DatabaseIds.brewWeight, brewWeight);},
                 _isEditing),
 
+              /// Time
+              Card(child: Container(margin: EdgeInsets.all(20.0), child: Row(children: <Widget>[
+                TextFieldItemWithInitalValue(
+                  _profile.getProfileItem(DatabaseIds.time),
+                  (time) { _setProfileItemValue( DatabaseIds.time, time);},
+                  100.0, 
+                  _isEditing)],)),),
+
+              /// Extraction and TDS
               TwoTextfieldCard(
-                (time) { _setProfileItemValue( DatabaseIds.time, time);},
                 (tds) { _setProfileItemValue( DatabaseIds.tds, tds);},
-                _profile.getProfileItem(DatabaseIds.time),
                 _profile.getProfileItem(DatabaseIds.tds),
                 _isEditing,
                 _profile.getExtractionYield() 
               ),
 
+              /// Notes
               NotesCard(
                   StringLabels.notes,
                   _profile.getProfileItemValue(

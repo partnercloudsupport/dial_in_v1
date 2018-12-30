@@ -682,18 +682,14 @@ class TwoTextfieldCard extends StatefulWidget {
   final double _margin = 10.0;
   final double _cornerRadius = 20.0;
   final double _textFieldWidth = 150.0;
-  final Item _itemLeft;
   final Item _itemRight;
   final bool _isEditing;
   final double _extractionYield;
   
-  final Function(String) _onLeftTextChanged;
   final Function(String) _onRightTextChanged;
 
   TwoTextfieldCard(
-      this._onLeftTextChanged,
       this._onRightTextChanged,
-      this._itemLeft,
       this._itemRight,
       this._isEditing,
       this._extractionYield
@@ -703,12 +699,10 @@ class TwoTextfieldCard extends StatefulWidget {
 }
 class _TwoTextfieldCardState extends State<TwoTextfieldCard> {
 
-  TextEditingController _leftController = new TextEditingController(); 
   TextEditingController _rightController = new TextEditingController();
 
   @override
     void initState() {
-        _leftController.text = widget._itemLeft.value;
         _rightController.text = widget._itemRight.value;      super.initState();
     }
   @override
@@ -725,13 +719,6 @@ class _TwoTextfieldCardState extends State<TwoTextfieldCard> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
 
-                  /// Left
-                  TextFieldItemWithInitalValue(
-                  widget._itemLeft,
-                  (value){widget._onLeftTextChanged(value);},
-                  100.0, 
-                  widget._isEditing),
-
                 // Right
                 TextFieldItemWithInitalValue(
                   widget._itemRight,
@@ -739,8 +726,11 @@ class _TwoTextfieldCardState extends State<TwoTextfieldCard> {
                   100.0, 
                   widget._isEditing),
 
-                ScalableWidget(
-                  TextfieldWithFixedValue(StringLabels.extractionYield, widget._extractionYield.toString()+'%'))
+                /// Spacer
+                Container(width: 10.0,),
+
+                Container(width: 150.0, child: 
+                TextfieldWithFixedValue(StringLabels.extractionYield, widget._extractionYield.toString()+'%'),)
 
                 ],
               ),
