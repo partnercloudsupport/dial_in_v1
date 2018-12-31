@@ -238,12 +238,16 @@ class ProfilePageState extends State<ProfilePage> {
     await showDialog(context: context, builder: (BuildContext context){
       return Center(child: 
         Container(width: 250.0,
-          child: CupertinoActionSheet(title:Text(StringLabels.photoSource),actions: <Widget>[
+          child: CupertinoActionSheet(title:Text(StringLabels.photoSource),
+          actions: <Widget>[
 
       new CupertinoDialogAction(
           child: const Text(StringLabels.camera),
           isDestructiveAction: false,
-          onPressed: ()async{ 
+          onPressed: ()async{
+            showDialog(barrierDismissible: false, context: context ,
+            builder: (context) => Center(child:CircularProgressIndicator()
+            ));  
             File image = await ImagePicker.pickImage
                               (maxWidth: 640.0, maxHeight: 480.0, source: ImageSource.camera);
             url = await DatabaseFunctions.upLoadFileReturnUrl
@@ -255,7 +259,9 @@ class ProfilePageState extends State<ProfilePage> {
                 StringLabels.ok ,
                 (){Navigator.of(context).pop();},
                 context);});
-            Navigator.of(context).pop(then(url));
+                Navigator.of(context);
+                Navigator.of(context).pop(then(url))
+            ;
           }
       ),
     
@@ -263,6 +269,9 @@ class ProfilePageState extends State<ProfilePage> {
           child: const Text(StringLabels.photoLibrary),
           isDestructiveAction: false,
           onPressed: ()async{ 
+            showDialog(barrierDismissible: false, context: context ,
+            builder: (context) => Center(child:CircularProgressIndicator()
+            ));
             File image = await ImagePicker.pickImage
                               (maxWidth: 640.0, maxHeight: 480.0, source: ImageSource.gallery);
             url = await DatabaseFunctions.upLoadFileReturnUrl
@@ -273,7 +282,9 @@ class ProfilePageState extends State<ProfilePage> {
                 e,
                 StringLabels.ok ,
                 (){Navigator.of(context).pop();},
-                context);});            Navigator.of(context).pop(then(url));
+                context);}); 
+                Navigator.of(context);
+                Navigator.of(context).pop(then(url));
           }
       ),
     ],)));

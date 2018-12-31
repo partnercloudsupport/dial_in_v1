@@ -58,7 +58,13 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
 
       }else{
   
-        return Container(height: 100.0 ,child:CupertinoPicker(
+        return Container(height: 150.0 ,child:
+        
+      // Column(children:[
+          
+      // Material(color: Colors.black ,child:Container(child: Text('Cheese'))),
+
+      CupertinoPicker(
         useMagnifier: true,
         onSelectedItemChanged:
           (value){setState(() {
@@ -67,11 +73,12 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
           });}, 
         itemExtent: 50.0,
         children: _items
-        ));
-        }
-       });
+        )
+        // ])
+        );
+       }}
+    );
   }
-
 
   /// UI Build
   @override
