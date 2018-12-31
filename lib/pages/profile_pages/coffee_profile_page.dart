@@ -52,7 +52,7 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
     {item.inputViewDataSet[0]
     .forEach((itemText){_items.add(Text(itemText, style: Theme.of(context).textTheme.display2,));});
     }
-    showModalBottomSheet(context: context, builder: (BuildContext context){
+    showBottomSheet(context: context, builder: (BuildContext context){
       
       if (item.inputViewDataSet == null) {return Center(child: Text('Error No Data for picker'),);  
 

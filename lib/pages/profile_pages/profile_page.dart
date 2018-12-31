@@ -131,8 +131,8 @@ class ProfilePageState extends State<ProfilePage> {
             ],),),
 
             /// Profile Image
-             InkWell(child:Hero(tag: _profile.objectId ,child: SizedBox(width: 300.0, height: 300.0,
-             child: CircularPicture(_profile.image, 300.0)) ,),
+             InkWell(child:Hero(tag: _profile.objectId ,child: SizedBox(width: 200.0, height: 200.0,
+             child: CircularPicture(_profile.image, 200.0)) ,),
               onTap: _isEditing?()
               {_getimage(
                 (image){ setState(() {_profile.image = image;});});
@@ -161,27 +161,27 @@ class ProfilePageState extends State<ProfilePage> {
             BottomAppBar(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween, 
-              crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
+                crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
 
                   RawMaterialButton(
-                      child: Icon(Icons.content_copy),
-                      onPressed: ()async{  
-                        Profile _newProfile = _profile;
-                        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
-                        ProfilePage
-                        (isOldProfile: false,
-                         isCopying: true, 
-                         isEditing: true, 
-                         isNew: true, 
-                         type: _profile.type, 
-                         referance: '',
-                         profile: _newProfile ,)));}),
+                    child: Icon(Icons.content_copy),
+                    onPressed: ()async{  
+                      Profile _newProfile = _profile;
+                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
+                      ProfilePage
+                      (isOldProfile: false,
+                       isCopying: true, 
+                       isEditing: true, 
+                       isNew: true, 
+                       type: _profile.type, 
+                       referance: '',
+                       profile: _newProfile ,)));}),
 
                   RawMaterialButton(
-                      child: Icon(Icons.delete),
-                      onPressed: ()async{ if(_isOldProfile ) 
-                        {ProfilesModel.of(context).delete(_profile);
-                        Navigator.pop(context);}}),
+                    child: Icon(Icons.delete),
+                    onPressed: ()async{ if(_isOldProfile ) 
+                      {ProfilesModel.of(context).delete(_profile);
+                      Navigator.pop(context);}}),
                 ],),),
               ));
     }
@@ -236,7 +236,9 @@ class ProfilePageState extends State<ProfilePage> {
     String url = '';
 
     await showDialog(context: context, builder: (BuildContext context){
-      return Center(child: CupertinoActionSheet(actions: <Widget>[
+      return Center(child: 
+        Container(width: 250.0,
+          child: CupertinoActionSheet(title:Text(StringLabels.photoSource),actions: <Widget>[
 
       new CupertinoDialogAction(
           child: const Text(StringLabels.camera),
@@ -274,7 +276,7 @@ class ProfilePageState extends State<ProfilePage> {
                 context);});            Navigator.of(context).pop(then(url));
           }
       ),
-    ],));
+    ],)));
     }
     );
   }

@@ -47,7 +47,7 @@ class RecipePage extends StatelessWidget{
                 (){_showOptions(ProfileType.barista);},),
 
             /// Water
-              ProfileInputCardWithAttribute(
+              ProfileInputCardWithAttribute(_isEditing,
                   profile: _profile.getProfileProfile(ProfileType.water),
                   keyboardType: TextInputType.number,
                   onAttributeTextChange: (text) {
@@ -63,7 +63,7 @@ class RecipePage extends StatelessWidget{
                   ),
 
             /// Grinder
-              ProfileInputCardWithAttribute(
+              ProfileInputCardWithAttribute(_isEditing,
                   profile: _profile.getProfileProfile(ProfileType.grinder),
                   onAttributeTextChange: (text) {
                     _setProfileItemValue(DatabaseIds.grindSetting, text);
@@ -79,7 +79,7 @@ class RecipePage extends StatelessWidget{
               ),
 
             /// Equipment
-              ProfileInputCardWithAttribute(
+              ProfileInputCardWithAttribute(_isEditing,
                   profile: _profile.getProfileProfile(ProfileType.equipment),
                   onAttributeTextChange: (text) {
                     _setProfileItemValue(DatabaseIds.preinfusion, text);
@@ -162,17 +162,18 @@ class RecipePage extends StatelessWidget{
 
                         /// End of score
                         
-                        NotesCard(
-                        StringLabels.descriptors,
-                        _profile.getProfileItemValue(
-                             DatabaseIds.descriptors),
-                        (text) {_setProfileItemValue( DatabaseIds.descriptors, text);},
-                        _isEditing), 
+                        
                       ],
                     )
                   ],
                 ),
               ),
+               NotesCard(
+                        StringLabels.descriptors,
+                        _profile.getProfileItemValue(
+                             DatabaseIds.descriptors),
+                        (text) {_setProfileItemValue( DatabaseIds.descriptors, text);},
+                        _isEditing),
           ],
             );
       }

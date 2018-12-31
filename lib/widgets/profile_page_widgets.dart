@@ -78,9 +78,10 @@ class ProfileInputCardWithAttribute extends StatefulWidget {
   final String attributeTitle;
   final TextInputType keyboardType;
   final Profile profile;
+  final bool _isEditing;
   
 
-  ProfileInputCardWithAttribute(
+  ProfileInputCardWithAttribute(this._isEditing,
       {
       this.profile,
       this.onAttributeTextChange,
@@ -89,7 +90,8 @@ class ProfileInputCardWithAttribute extends StatefulWidget {
       this.attributeHintText,
       this.attributeTitle,
       this.keyboardType,
-      });
+      }
+      );
 
       _ProfileInputCardWithAttributeState createState() => new _ProfileInputCardWithAttributeState();
 }
@@ -172,13 +174,14 @@ class _ProfileInputCardWithAttributeState extends State<ProfileInputCardWithAttr
 
                         Expanded(
                             child: TextFormField(
-                            textAlign: TextAlign.start,
-                            keyboardType: widget.keyboardType,
-                            decoration: new InputDecoration(
-                              labelText: widget.attributeTitle,
-                              hintText: widget.attributeHintText,),
-                            controller: _attributeController,
-                            ))
+                              enabled: widget._isEditing,
+                              textAlign: TextAlign.start,
+                              keyboardType: widget.keyboardType,
+                              decoration: new InputDecoration(
+                                labelText: widget.attributeTitle,
+                                hintText: widget.attributeHintText,),
+                                controller: _attributeController,
+                              ))
                       ]
             )));
             }
