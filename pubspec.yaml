@@ -31,7 +31,7 @@ dependencies:
   image_picker: ^0.4.10
   path: ^1.6.2
   auto_size_text: ^0.3.0
-  transparent_image: ^0.1.0
+  
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -61,7 +61,12 @@ flutter:
   #  - images/a_dot_ham.jpeg
 
   assets:
-    - assets
+    - assets/images/
+    - assets/fonts/
+    - assets/gifs/
+    - assets/gifs/eclipseLoading.gif
+    - assets/
+
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

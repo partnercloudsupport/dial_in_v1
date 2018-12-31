@@ -25,9 +25,11 @@ class OverviewPageState extends State<OverviewPage> with SingleTickerProviderSta
 
   @override
   void initState() { 
-    super.initState();
+    ProfilesModel.of(context).init();
     _tabViews = TabViewDataArray();
     controller = new TabController(vsync: this, length: _tabViews.tabs.length);
+    super.initState();
+
   }
 
   @override
@@ -91,15 +93,14 @@ class OverviewPageState extends State<OverviewPage> with SingleTickerProviderSta
   @override
   Widget build(BuildContext context) {
 
-    ProfilesModel.of(context).init();
-
     return  Scaffold(
        
       /// 
       /// App bar 
       ///
       appBar: AppBar(title: Text(StringLabels.overview, style: TextStyle( fontWeight: FontWeight.w700),), automaticallyImplyLeading: false,
-      leading: RawMaterialButton( onPressed: (){logOut(context);}, 
+      leading: RawMaterialButton( onPressed: ()
+      {logOut(context);}, 
       child: Icon(Icons.exit_to_app),), 
       actions: <Widget>[ 
         RawMaterialButton( onPressed: () => Navigator.pop(context), child: Icon(Icons.menu))  ], ),

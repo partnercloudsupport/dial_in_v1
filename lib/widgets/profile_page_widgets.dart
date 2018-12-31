@@ -69,8 +69,6 @@ class ProfileInputCardWithAttribute extends StatefulWidget {
   final double _margin = 5.0;
   final double _textFieldWidth = 150.0;
   
-  final String imageRefString;
-  final String title;
   final Function(String) onAttributeTextChange;
   final Function onProfileTextPressed;
   final String attributeTextfieldText;
@@ -78,19 +76,18 @@ class ProfileInputCardWithAttribute extends StatefulWidget {
   final String profileHintText = StringLabels.chooseProfile;
   final String attributeTitle;
   final TextInputType keyboardType;
-  final String profileName;
+  final Profile profile;
   
 
   ProfileInputCardWithAttribute(
-      {this.imageRefString,
-      this.title,
+      {
+      this.profile,
       this.onAttributeTextChange,
       this.onProfileTextPressed,
       this.attributeTextfieldText,
       this.attributeHintText,
       this.attributeTitle,
       this.keyboardType,
-      this.profileName,
       });
 
       _ProfileInputCardWithAttributeState createState() => new _ProfileInputCardWithAttributeState();
@@ -105,7 +102,7 @@ class _ProfileInputCardWithAttributeState extends State<ProfileInputCardWithAttr
        void initState() {
             _attributeController = new TextEditingController(text: widget.attributeTextfieldText);
             _attributeController.addListener(sendAttributeValue);
-            _profileTextController = new TextEditingController(text: widget.profileName);
+            _profileTextController = new TextEditingController();
             _textFocus = new FocusNode();
             _textFocus.addListener(handleProfileTextfieldFocus);
             super.initState();
@@ -132,13 +129,14 @@ class _ProfileInputCardWithAttributeState extends State<ProfileInputCardWithAttr
 
        @override
           void didUpdateWidget(Widget oldWidget) {
-            _profileTextController = new TextEditingController(text: widget.profileName);
+            _profileTextController.text =  widget.profile.getProfileTitleValue();
            super.didUpdateWidget(oldWidget);
       }
 
 
   @override
   Widget build(BuildContext context) {
+    _profileTextController.text =  widget.profile.getProfileTitleValue();
     return Card(
         margin: EdgeInsets.all(widget._margin),
           child: Container(
@@ -150,13 +148,7 @@ class _ProfileInputCardWithAttributeState extends State<ProfileInputCardWithAttr
 
                   /// Left profile selection
              
-                       Container(
-                            width: 40.0,
-                            height: 40.0,
-                            child: Image.asset(
-                              widget.imageRefString,
-                              fit: BoxFit.cover,
-                            )),
+                       CircularPicture(widget.profile.image, 40.0),
 
                         /// Spacer
                         Container(width: 10.0,),
@@ -168,7 +160,7 @@ class _ProfileInputCardWithAttributeState extends State<ProfileInputCardWithAttr
                             textAlign: TextAlign.start,
                             keyboardType: widget.keyboardType,
                             decoration: new InputDecoration(
-                              labelText: widget.title,
+                              labelText: widget.profile.databaseId,
                               hintText: StringLabels.selectProfile,),
                             focusNode: _textFocus,
                             controller: _profileTextController,)
@@ -379,15 +371,15 @@ class ProfileInputWithDetailsCardState extends State<ProfileInputWithDetailsCard
        void initState() {
             _focus = new FocusNode();
             _focus.addListener(handleLeftProfileTextfieldFocus);
-            _controller = new TextEditingController(text: widget._profile.getProfileTitleValue());
-            _detailController = new TextEditingController(text: widget._detailValue);
+            _controller = new TextEditingController();
+            _detailController = new TextEditingController();
             super.initState();
       }
 
       @override
         void didUpdateWidget(Widget oldWidget) {
-          _controller = new TextEditingController(text: widget._profile.getProfileTitleValue());
-          _detailController = new TextEditingController(text: widget._detailValue);
+          _controller.text = widget._profile.getProfileTitleValue();
+          _detailController.text =  widget._detailValue;
          super.didUpdateWidget(oldWidget);
         }
 
@@ -472,13 +464,13 @@ class _ProfileInputCardState extends State<ProfileInputCard> {
        void initState() {
             _focus = new FocusNode();
             _focus.addListener(handleLeftProfileTextfieldFocus);
-            _controller = new TextEditingController(text: widget._profile.getProfileTitleValue());
+            _controller = new TextEditingController();
             super.initState();
       }
 
       @override
           void didUpdateWidget(Widget oldWidget) {
-            _controller = new TextEditingController(text: widget._profile.getProfileTitleValue());
+            _controller.text =  widget._profile.getProfileTitleValue();
            super.didUpdateWidget(oldWidget);
           }
 
@@ -498,6 +490,7 @@ class _ProfileInputCardState extends State<ProfileInputCard> {
 
   @override
   Widget build(BuildContext context) {
+    _controller.text =  widget._profile.getProfileTitleValue();
     return Container(
        child: Card(
         margin: EdgeInsets.all(widget._margin),

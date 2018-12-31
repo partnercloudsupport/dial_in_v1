@@ -10,7 +10,6 @@ import 'package:dial_in_v1/data/item.dart';
 import 'package:flutter_rating/flutter_rating.dart';
 import 'dart:async';
 import 'package:dial_in_v1/data/mini_classes.dart';
-import 'package:transparent_image/transparent_image.dart' as transparant;
 
 
 /// Background
@@ -111,7 +110,7 @@ class CircularPicture extends StatelessWidget {
           
           FadeInImage.assetNetwork(
             fit: BoxFit.cover,
-            placeholder: Images.eclipseLoadingGif,
+            placeholder: Images.userFirebase,
             image: _image
              )),
           

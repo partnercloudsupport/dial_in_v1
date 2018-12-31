@@ -22,9 +22,9 @@ class SignUpPage extends StatefulWidget{
 
   TextEditingController _passwordController = new TextEditingController();
  
-  void signUpButton(){  
+  void signUpButton()async{  
 
-    DatabaseFunctions.signUp
+    await DatabaseFunctions.signUp
     (_userNameController.text, _emailController.text, _passwordController.text,
     (success, message) {
       if(success){
@@ -54,7 +54,7 @@ class SignUpPage extends StatefulWidget{
           ///
           /// Background
           /// 
-           Pagebackground(AssetImage('assets/images/cherriestwo.jpg')),
+          //  Pagebackground(AssetImage('assets/images/cherriestwo.jpg')),
 
           ///
           /// Back icon
@@ -73,7 +73,7 @@ class SignUpPage extends StatefulWidget{
                 ///User Picture
                  InkWell(
                    child: Container( decoration: BoxDecoration(shape: BoxShape.circle),margin: EdgeInsets.fromLTRB(25.0, 0.0, 25.0, 25.0) , 
-                    child:CircularPicture(_userImage, 100.0)
+                    child:CircularPicture(_userImage, 150.0)
                     ),
                    onTap:(){ Functions.getimageFromCameraOrGallery(context,
                     (image){ setState(() {_userImage = image;});});}

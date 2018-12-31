@@ -92,7 +92,7 @@ void initState() {
       body: new Stack(
         children: <Widget>[
 
-          Pagebackground(AssetImage('assets/images/cherries.jpg')), 
+          // Pagebackground(AssetImage('assets/images/cherries.jpg')), 
        
           new Center(
             

@@ -76,7 +76,6 @@ class Profile {
 
   //  Future<void> setDefaultPic()async{if (this.image == null){ this.image = await Functions.getFile(Images.recipeSmaller);}}
 
-  /// TODO;
   double getExtractionYield(){
 
     dynamic tds = this.getProfileItemValue(DatabaseIds.tds) == '' ? 
@@ -156,7 +155,6 @@ class Profile {
       return item;
     }
   } 
-
 
   void setProfileProfileTitleValue({String profileDatabaseId, String profileDatabaseIdref}) {
     for (var i = 0; i < this.profiles.length; i++) {
@@ -273,7 +271,6 @@ Future<String> getUserImage ()async{
 
   return userId;
  }
-
 
   String getProfileProfileTitleValue({String profileDatabaseId}) {
     String value = 'Error';

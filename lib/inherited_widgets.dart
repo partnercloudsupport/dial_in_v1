@@ -53,11 +53,7 @@ class ProfilesModel extends Model{
 
     int get recipeProfilesCount => _recipeFeed.profilesCount;
     int get coffeeProfilesCount => _coffeeFeed.profilesCount;
-    // cofflleProfilesCount
-    // followersCount
-    // followingCount
 
-  
     Stream<List<Profile>> communityFeed;
     Stream<List<Profile>> followersFeed;
 

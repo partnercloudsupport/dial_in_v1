@@ -4,7 +4,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:dial_in_v1/data/profile.dart';
 import 'package:dial_in_v1/data/functions.dart';
-import 'package:dial_in_v1/data/item.dart';
 import 'package:dial_in_v1/data/images.dart';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';

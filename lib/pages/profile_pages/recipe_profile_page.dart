@@ -3,7 +3,6 @@ import 'package:dial_in_v1/data/profile.dart';
 import 'package:dial_in_v1/data/strings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:dial_in_v1/data/images.dart';
 import 'package:dial_in_v1/database_functions.dart';
 import 'package:dial_in_v1/widgets/profile_page_widgets.dart';
 import 'package:dial_in_v1/widgets/custom_widgets.dart';
@@ -49,8 +48,7 @@ class RecipePage extends StatelessWidget{
 
             /// Water
               ProfileInputCardWithAttribute(
-                  imageRefString: Images.drop,
-                  title: StringLabels.water,
+                  profile: _profile.getProfileProfile(ProfileType.water),
                   keyboardType: TextInputType.number,
                   onAttributeTextChange: (text) {
                     _setProfileItemValue( DatabaseIds.temparature, text);
@@ -62,12 +60,11 @@ class RecipePage extends StatelessWidget{
                        DatabaseIds.temparature),
                   attributeHintText: StringLabels.enterValue,
                   attributeTitle: StringLabels.degreeC,
-                  profileName: _profile.getProfileProfileTitleValue( profileDatabaseId: DatabaseIds.water)),
+                  ),
 
             /// Grinder
               ProfileInputCardWithAttribute(
-                  imageRefString: Images.grinder,
-                  title: StringLabels.grinder,
+                  profile: _profile.getProfileProfile(ProfileType.grinder),
                   onAttributeTextChange: (text) {
                     _setProfileItemValue(DatabaseIds.grindSetting, text);
                   },
@@ -79,12 +76,11 @@ class RecipePage extends StatelessWidget{
                   attributeHintText: StringLabels.enterValue,
                   attributeTitle: StringLabels.setting,
                   keyboardType: TextInputType.number,
-                  profileName: _profile.getProfileProfileTitleValue( profileDatabaseId: DatabaseIds.grinder)),
+              ),
 
             /// Equipment
               ProfileInputCardWithAttribute(
-                  imageRefString: Images.aeropressSmaller512x512,
-                  title: StringLabels.brewingEquipment,
+                  profile: _profile.getProfileProfile(ProfileType.equipment),
                   onAttributeTextChange: (text) {
                     _setProfileItemValue(DatabaseIds.preinfusion, text);
                   },
@@ -95,7 +91,7 @@ class RecipePage extends StatelessWidget{
                        DatabaseIds.preinfusion),
                   attributeHintText: StringLabels.enterValue,
                   attributeTitle: StringLabels.preinfusion,
-                  profileName: _profile.getProfileProfileTitleValue( profileDatabaseId: DatabaseIds.brewingEquipment)),
+              ),
 
               /// Ratio card
                RatioCard(
