@@ -10,6 +10,8 @@ import 'package:dial_in_v1/data/item.dart';
 import 'package:flutter_rating/flutter_rating.dart';
 import 'dart:async';
 import 'package:dial_in_v1/data/mini_classes.dart';
+import 'package:transparent_image/transparent_image.dart' as transparant;
+
 
 /// Background
 class Pagebackground extends StatelessWidget {
@@ -105,7 +107,16 @@ class CircularPicture extends StatelessWidget {
         margin: const EdgeInsets.all(15.0),
         child: ClipRRect(
           borderRadius: new BorderRadius.circular(_size),
-          child: Image.network(_image, fit: BoxFit.cover),),
+          child: 
+          
+          FadeInImage.assetNetwork(
+            fit: BoxFit.cover,
+            placeholder: Images.eclipseLoadingGif,
+            image: _image
+             )),
+          
+          
+          // Image.network(_image, fit: BoxFit.cover),),
           );   
   }
 }
@@ -653,7 +664,8 @@ class PopUps{
 /// Show alert
 /// 
 
-static Future<void> showAlert(String title, String message, String buttonText, Function buttonFunction, BuildContext context) async {
+static Future<void> showAlert
+(String title, String message, String buttonText, Function buttonFunction, BuildContext context) async {
 
   return showDialog<void>(
     context: context,
@@ -680,6 +692,8 @@ static Future<void> showAlert(String title, String message, String buttonText, F
     },
   );
 }
+
+
 }
 
 class ProfileImage extends StatelessWidget {
@@ -958,7 +972,7 @@ TextEditingController _controller;
     return
     Expanded(
       flex: 5,
-      child: Container(padding: EdgeInsets.all(5.0), 
+      child: Container(padding: EdgeInsets.all(5.0), margin: EdgeInsets.all(5.0), 
         child: TextField(
           enabled: widget._isEditing,
           controller: _controller ,

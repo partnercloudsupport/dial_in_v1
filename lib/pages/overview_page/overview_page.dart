@@ -37,10 +37,55 @@ class OverviewPageState extends State<OverviewPage> with SingleTickerProviderSta
   }
 
 
-  void logOut(){
-    DatabaseFunctions.logOut((){});
-    Navigator.pop(context);
+  void logOut(BuildContext context){
+    showLogOutWarning(context)
+    .then((loggedOut){
+       if (loggedOut != null){
+        if (loggedOut is bool){  
+          if (loggedOut){
+            Navigator.pop(context);
+          }
+        }
+      }
+    });
   }
+  
+
+  Future<bool> showLogOutWarning
+        (BuildContext context) async {
+
+  return showDialog<bool>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        
+        title: Text(StringLabels.logOut),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text('Are you sure you want to log out?'),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('Yes'),
+            onPressed: (){ 
+              DatabaseFunctions.logOut((){});
+              Navigator.pop(context, true);}               
+          ),
+
+          FlatButton(
+            child: Text('No'),
+            onPressed: (){ 
+              Navigator.pop(context);}               
+          )
+        ],
+      );
+    },
+  );
+}
 
   /// UI Build  
   @override
@@ -54,7 +99,7 @@ class OverviewPageState extends State<OverviewPage> with SingleTickerProviderSta
       /// App bar 
       ///
       appBar: AppBar(title: Text(StringLabels.overview, style: TextStyle( fontWeight: FontWeight.w700),), automaticallyImplyLeading: false,
-      leading: RawMaterialButton( onPressed: (){logOut();}, 
+      leading: RawMaterialButton( onPressed: (){logOut(context);}, 
       child: Icon(Icons.exit_to_app),), 
       actions: <Widget>[ 
         RawMaterialButton( onPressed: () => Navigator.pop(context), child: Icon(Icons.menu))  ], ),

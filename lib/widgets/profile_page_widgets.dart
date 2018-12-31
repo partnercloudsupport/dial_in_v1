@@ -65,11 +65,9 @@ class ScoreSliderState extends State<ScoreSlider> {
 
 class ProfileInputCardWithAttribute extends StatefulWidget {
 
-  final double _padding = 20.0;
-  final double _margin = 10.0;
-  final double _cornerRadius = 20.0;
+  final double _padding = 5.0;
+  final double _margin = 5.0;
   final double _textFieldWidth = 150.0;
-
   
   final String imageRefString;
   final String title;
@@ -164,7 +162,7 @@ class _ProfileInputCardWithAttributeState extends State<ProfileInputCardWithAttr
                         Container(width: 10.0,),
 
                         Container(
-                          margin: EdgeInsets.fromLTRB(0.0, 0.0, widget._margin, 0.0),
+                          margin: EdgeInsets.all(5.0),
                           width: widget._textFieldWidth,
                           child: TextFormField(
                             textAlign: TextAlign.start,
@@ -356,8 +354,8 @@ class _DoubleProfileInputCardState extends State<DoubleProfileInputCard> {
 
 ///Profile details card
 class ProfileInputWithDetailsCard extends StatefulWidget {
-  final double _padding = 20.0;
-  final double _margin = 10.0;
+  final double _padding = 5.0;
+  final double _margin = 5.0;
   final double _cornerRadius = 20.0;
   final double _textFieldWidth = 150.0;
   final Profile _profile;
@@ -455,10 +453,8 @@ class ProfileInputWithDetailsCardState extends State<ProfileInputWithDetailsCard
 
 //Single profile card
 class ProfileInputCard extends StatefulWidget {
-  final double _padding = 20.0;
-  final double _margin = 10.0;
-  final double _cornerRadius = 20.0;
-  final double _textFieldWidth = 180.0;
+  final double _padding = 5.0;
+  final double _margin = 5.0;
   final Profile _profile;
   final Function _onProfileTextPressed;
 
@@ -607,9 +603,7 @@ class CoffeeCard extends StatelessWidget {
 
 /// Ratio Card
 class RatioCard extends StatefulWidget {
-  final double _padding = 20.0;
-  final double _margin = 10.0;
-  final double _cornerRadius = 20.0;
+  final double _margin = 5.0;
   final double _textFieldWidth = 80.0;
   final bool _isEditing;
 
@@ -639,7 +633,8 @@ class _RatioCardState extends State<RatioCard> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Container(
-            margin: EdgeInsets.fromLTRB(0.0, widget._margin, 0.0, 0.0),
+            margin: EdgeInsets.all( widget._margin),
+            padding: EdgeInsets.all( widget._margin),
             child: Text(
               StringLabels.ratios,
               style: Theme.of(context).textTheme.title,
@@ -675,7 +670,8 @@ class _RatioCardState extends State<RatioCard> {
             ],
           ),
 
-          Container(margin: EdgeInsets.all(30.0),child: Text('Ratio',
+          Container(margin: EdgeInsets.all( widget._margin),
+            padding: EdgeInsets.all( widget._margin),child: Text('Ratio',
           style: Theme.of(context).textTheme.display3,),)
         ],
       ),
