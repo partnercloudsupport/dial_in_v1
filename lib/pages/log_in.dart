@@ -38,7 +38,6 @@ Future<void> logIn(String emailUser, String password,
   }
 
 void loginButtonPressed(){ 
-  print(" Login button pressed");
 
   showDialog(barrierDismissible: false, context: context ,
     builder: (context) => Center(child:CircularProgressIndicator()

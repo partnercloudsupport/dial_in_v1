@@ -20,7 +20,6 @@ ThemeData buildThemeData(){
     // canvasColor: Colors.black12,
     cursorColor: Colors.black,
     
-
     /// Font
     fontFamily: Fonts.getFontType(FontType.comfortaa),
 

@@ -110,7 +110,7 @@ class CircularPicture extends StatelessWidget {
           
           FadeInImage.assetNetwork(
             fit: BoxFit.cover,
-            placeholder: Images.userFirebase,
+            placeholder: 'assets/gifs/eclipseLoading.gif',
             image: _image
              )),
           

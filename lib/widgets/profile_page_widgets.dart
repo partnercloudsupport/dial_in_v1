@@ -412,6 +412,9 @@ class ProfileInputWithDetailsCardState extends State<ProfileInputWithDetailsCard
                 children: <Widget>[
 
                   CircularPicture(widget._profile.image, 40.0),
+                  
+                  Container(width: 10.0,),
+
 
                   /// Profile
                   Expanded(child: Container(
@@ -426,7 +429,7 @@ class ProfileInputWithDetailsCardState extends State<ProfileInputWithDetailsCard
                           ))),
 
                   /// Spacer        
-                  Container(width: 20.0,),
+                  Container(width: 10.0,),
                   
                   /// Attribute Value
                   ScalableWidget(
@@ -503,16 +506,19 @@ class _ProfileInputCardState extends State<ProfileInputCard> {
 
                   CircularPicture(widget._profile.image, 40.0),
 
-                        Expanded(child:Container(
-                          margin: EdgeInsets.all(widget._margin,),
-                          child: TextFormField(
-                              textAlign: TextAlign.start,
-                              decoration: new InputDecoration(
-                                labelText: widget._profile.databaseId,
-                              ),
-                              focusNode: _focus,
-                              controller: _controller,
-                          ))),
+                  /// Spacer
+                  Container(width: 10.0,),
+
+                  Expanded(child:Container(
+                    margin: EdgeInsets.all(widget._margin,),
+                    child: TextFormField(
+                        textAlign: TextAlign.start,
+                        decoration: new InputDecoration(
+                          labelText: widget._profile.databaseId,
+                        ),
+                        focusNode: _focus,
+                        controller: _controller,
+                    ))),
                 ]
             )
           )
