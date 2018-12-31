@@ -25,6 +25,8 @@ class UserProfileState extends State<UserProfilePage>{
               child: Center(
                   child: CircularPicture(
                       ProfilesModel.of(context).userImage, 150.0))),
+
+      ///TODO: when values have not loaded it thorws an error make loading screen while loading                
       /// User name
       Text(model.userName, style: Theme.of(context).textTheme.display3,),
 

@@ -9,6 +9,7 @@ import 'package:dial_in_v1/database_functions.dart';
 import 'package:dial_in_v1/data/profile.dart';
 import 'package:dial_in_v1/inherited_widgets.dart';
 import 'package:dial_in_v1/pages/overview_page/user_profile.dart';
+import 'package:dial_in_v1/data/functions.dart';
 
 
 
@@ -22,22 +23,32 @@ class OverviewPageState extends State<OverviewPage> with SingleTickerProviderSta
   TabController controller;
   TabViewDataArray _tabViews;
   
-
   @override
   void initState() { 
     ProfilesModel.of(context).init();
     _tabViews = TabViewDataArray();
     controller = new TabController(vsync: this, length: _tabViews.tabs.length);
     super.initState();
-
   }
+
+  @override
+  void didUpdateWidget(OverviewPage oldWidget) {
+      // TODO: implement didUpdateWidget
+      super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void didChangeDependencies() {
+    ProfilesModel.of(context).init();
+      super.didChangeDependencies();
+    }
+  
 
   @override
   void dispose(){
     controller.dispose();
     super.dispose();
   }
-
 
   void logOut(BuildContext context){
     showLogOutWarning(context)
@@ -99,11 +110,11 @@ class OverviewPageState extends State<OverviewPage> with SingleTickerProviderSta
       /// App bar 
       ///
       appBar: AppBar(title: Text(StringLabels.overview, style: TextStyle( fontWeight: FontWeight.w700),), automaticallyImplyLeading: false,
-      leading: RawMaterialButton( onPressed: ()
-      {logOut(context);}, 
+      leading: RawMaterialButton( onPressed: () {logOut(context);}, 
       child: Icon(Icons.exit_to_app),), 
       actions: <Widget>[ 
-        RawMaterialButton( onPressed: () => Navigator.pop(context), child: Icon(Icons.menu))  ], ),
+        RawMaterialButton( onPressed: () =>  Functions.getRatio([2362,24534])
+        , child: Icon(Icons.menu))  ], ),
     
       body: TabBarView(
         controller: controller,
@@ -129,7 +140,6 @@ class OverviewPageState extends State<OverviewPage> with SingleTickerProviderSta
       );
     }
 }
-
 
 class TabViewDataArray{
 

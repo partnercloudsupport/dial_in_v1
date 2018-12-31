@@ -718,14 +718,19 @@ class _TwoTextfieldCardState extends State<TwoTextfieldCard> {
                 // Right
                 TextFieldItemWithInitalValue(
                   widget._itemRight,
-                  (value){widget._onRightTextChanged(value);},
+                  (value){
+                    var val = value;
+                    if(val.contains(',')){
+                      val.replaceAll(new RegExp(r','), '.');
+                      val.replaceAll(new RegExp(r'. '), '.0');
+                    }
+                    widget._onRightTextChanged(val);
+                    },
                   100.0, 
                   widget._isEditing),
 
-                /// Spacer
-                Container(width: widget._padding),
 
-                Container(width: 150.0, child: 
+                Container(width: 160.0, child: 
                 TextfieldWithFixedValue(StringLabels.extractionYield, widget._extractionYield.toString()+'%'),)
 
                 ],
@@ -777,6 +782,7 @@ class _NotesCardState extends State<NotesCard> {
               maxLines: null,
               keyboardType: TextInputType.text,
               decoration: new InputDecoration(
+                border: InputBorder.none,
                 hintText: StringLabels.enterInfo,
               ),
               onChanged: widget._onTextChanged)

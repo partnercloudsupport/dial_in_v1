@@ -110,10 +110,9 @@ class CircularPicture extends StatelessWidget {
           
           FadeInImage.assetNetwork(
             fit: BoxFit.cover,
-            placeholder: 'assets/gifs/eclipseLoading.gif',
+            placeholder: Images.rippleLoadingGif,
             image: _image
              )),
-          
           
           // Image.network(_image, fit: BoxFit.cover),),
           );   
@@ -493,7 +492,8 @@ class SocialProfileCard extends StatelessWidget {
 
       /// Recipe picture
       Hero(tag: _profile.profile.objectId, child: SizedBox(width: double.infinity, height: 200.0, child:
-        Material(type: MaterialType.card, elevation: 2.0 ,color: Theme.of(context).scaffoldBackgroundColor, child: Image.network(_profile.profile.image, fit: BoxFit.cover,),),),),
+        Material(type: MaterialType.card, elevation: 2.0 ,color: Theme.of(context).scaffoldBackgroundColor,
+         child: FadeInImage.assetNetwork(image:_profile.profile.image, fit: BoxFit.cover, placeholder: Images.rippleLoadingGif),),),),
       
       ///Spacer
         Container(height: 20.0,),
@@ -973,6 +973,8 @@ TextEditingController _controller;
       flex: 5,
       child: Container(padding: EdgeInsets.all(5.0), margin: EdgeInsets.all(5.0), 
         child: TextField(
+          ///TODO;
+          // inputFormatters: [NumericTextFormatter()],
           enabled: widget._isEditing,
           controller: _controller ,
           textAlign: TextAlign.start,

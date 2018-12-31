@@ -31,11 +31,8 @@ class Images{
     static const String groupHandle = 'assets/images/whiteGrouphandle80x80@2x.png';
     static const String water = 'assets/images/drop.png';
     static const String recipeSmaller = 'assets/images/recipeSmaller512x512.png';
-    static const String eclipseLoadingGif = ' assets/gifs/eclipseLoading.gif';
-   
-
-    // static const String recipeSmaller = 'assets/images/recipeSmaller512x512.png';
-
+    static const String eclipseLoadingGif = 'assets/gifs/eclipseLoading.gif';
+    static const String rippleLoadingGif = 'assets/gifs/rippleLoading.gif';
 
   static  Future<void> getFile(String filePath, Function(File) completion) async{
 

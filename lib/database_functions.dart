@@ -132,11 +132,11 @@ class DatabaseFunctions {
   static void deleteFireBaseStorageItem(String fileUrl){
       // Create a reference to the file to delete
       StorageReference desertRef = FirebaseStorage.instance.ref().child(fileUrl);
-
+      
       // Delete the file
-      // desertRef.delete()
-      // .then((_) {})
-      // .catchError((e){print(e);});
+      desertRef.delete()
+      .then((_) {})
+      .catchError((e){print(e);});
   }
 
   /// Prepare Profile for FirebaseUpload or Update

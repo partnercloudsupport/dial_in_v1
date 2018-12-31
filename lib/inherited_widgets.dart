@@ -42,17 +42,17 @@ class ProfilesInheritedWidget extends InheritedWidget {
 /// Profiles scoped model
 class ProfilesModel extends Model{
 
-    String _userId;
+    String _userId = '';
     String get userId => _userId;
 
-    String _userName;
+    String _userName = '';
     String get userName => _userName;
 
-    String _userImage;
+    String _userImage = '';
     String get userImage => _userImage;
 
-    int get recipeProfilesCount => _recipeFeed.profilesCount;
-    int get coffeeProfilesCount => _coffeeFeed.profilesCount;
+    int get recipeProfilesCount => _recipeFeed.profilesCount ?? 0;
+    int get coffeeProfilesCount => _coffeeFeed.profilesCount ?? 0;
 
     Stream<List<Profile>> communityFeed;
     Stream<List<Profile>> followersFeed;
@@ -97,8 +97,7 @@ class ProfilesModel extends Model{
       DatabaseFunctions.getCurrentUserId().then((user){_userId = user;});
       DatabaseFunctions.getUserImage().then((image){_userImage = image;});
       DatabaseFunctions.getUserName().then((name){_userName = name;});
-      // Functions.getRatio([2362,24534]);
-    }
+    } 
 
     void deInit(){
       

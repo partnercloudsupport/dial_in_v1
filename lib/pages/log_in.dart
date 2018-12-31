@@ -92,6 +92,7 @@ void initState() {
         children: <Widget>[
 
           // Pagebackground(AssetImage('assets/images/cherries.jpg')), 
+          Material(color: Colors.amber,),
        
           new Center(
             

@@ -58,26 +58,26 @@ void didUpdateWidget(dynamic oldWidget) {
           stream:  model.profiles(widget._profilesType),
           builder: (context, snapshot) {
 
-                if (!snapshot.hasData) { return  
-                  Center(child:
-                    Column
-                    (mainAxisAlignment: MainAxisAlignment.center ,children: <Widget>[CircularProgressIndicator(),
-                    Container(margin: EdgeInsets.all(20.0),child: Text('Loading...'),) ,],));
+            if (!snapshot.hasData) { return  
+              Center(child:
+                Column
+                (mainAxisAlignment: MainAxisAlignment.center ,children: <Widget>[CircularProgressIndicator(),
+                Container(margin: EdgeInsets.all(20.0),child: Text('Loading...'),) ,],));
 
-                } else if (snapshot.hasError) { return const Center(child: Text('Error'));  
-                } else if (snapshot.data.length < 1) {return const Center(child: Text('No data'));
-                } else {
-                  Iterable<Profile> _reversedList = snapshot.data.reversed;
-                  List<Profile> _list = new List<Profile>();
-                   _reversedList.forEach((x){_list.add(x);});
-                  return new 
-                    ListView.builder(
-                        itemExtent: 120,
-                        itemCount: snapshot.data.length,
-                        itemBuilder: (BuildContext context, int index) =>
-                          ProfileCard(_list[index], _dealWithProfileSelection, _deleteProfile)
-                    );
-                }
+            } else if (snapshot.hasError) { return const Center(child: Text('Error'));  
+            } else if (snapshot.data.length < 1) {return const Center(child: Text('No data'));
+            } else {
+              Iterable<Profile> _reversedList = snapshot.data.reversed;
+              List<Profile> _list = new List<Profile>();
+                _reversedList.forEach((x){_list.add(x);});
+              return new 
+                ListView.builder(
+                    itemExtent: 120,
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (BuildContext context, int index) =>
+                      ProfileCard(_list[index], _dealWithProfileSelection, _deleteProfile)
+                );
+            }
           }
         )
       );

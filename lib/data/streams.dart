@@ -95,6 +95,8 @@ class SocialFeedBloc{
 
   Future getProfiles()async{
   
+   if(!initilised){
+    initilised = true;
     if(_databaseId == DatabaseIds.community)
     {_incomingController.addStream(Firestore.instance.collection(DatabaseIds.recipe)
     .where(DatabaseIds.public, isEqualTo: true).snapshots());}
@@ -115,6 +117,7 @@ class SocialFeedBloc{
       );
     }
     );
+   }
   }
 
   Future<List<Profile>> convertStreamToListOfProfiles(QuerySnapshot stream) async {
