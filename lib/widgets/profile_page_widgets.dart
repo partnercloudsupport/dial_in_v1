@@ -37,6 +37,7 @@ class ScoreSliderState extends State<ScoreSlider> {
         children: <Widget>[
           Container(
             margin: EdgeInsets.all(_margin),
+            padding: EdgeInsets.all(_margin),
             child: Text(widget._label),
           ),
           Slider(
@@ -743,8 +744,8 @@ class _TwoTextfieldCardState extends State<TwoTextfieldCard> {
 
 /// Notes card
 class NotesCard extends StatefulWidget {
-  final double _padding = 5.0;
-  final double _margin = 5.0;
+  final double _padding = 10.0;
+  final double _margin = 10.0;
   final Function(String) _onTextChanged;
   final String _title;
   final String _notes;

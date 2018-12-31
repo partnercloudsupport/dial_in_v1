@@ -32,12 +32,6 @@ class OverviewPageState extends State<OverviewPage> with SingleTickerProviderSta
   }
 
   @override
-  void didUpdateWidget(OverviewPage oldWidget) {
-      // TODO: implement didUpdateWidget
-      super.didUpdateWidget(oldWidget);
-  }
-
-  @override
   void didChangeDependencies() {
     ProfilesModel.of(context).init();
       super.didChangeDependencies();

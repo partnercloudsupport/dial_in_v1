@@ -736,10 +736,8 @@ class ProfileImage extends StatelessWidget {
 
 /// Date input card
 class DateInputCard extends StatefulWidget {
-  final double _padding = 10.0;
-  final double _margin = 10.0;
-  final double _cornerRadius = 20.0;
-  final double _textFieldWidth = 150.0;
+  final double _padding = 5.0;
+  final double _margin = 5.0;
   final _dateFormat = DateFormat.yMd();
   final DateTime _dateTime;
   final Function(DateTime) onDateChanged; 
@@ -810,10 +808,8 @@ class _DateInputCardState extends State<DateInputCard> {
 
 /// Date input card
 class DateTimeInputCard extends StatefulWidget {
-  final double _padding = 20.0;
+  final double _padding = 10.0;
   final double _margin = 10.0;
-  final double _cornerRadius = 20.0;
-  final double _textFieldWidth = 150.0;
   final _dateFormat = DateFormat("MMMM d, yyyy 'at' h:mma");
   final DateTime _dateTime;
   final Function(DateTime) onDateChanged; 
@@ -855,27 +851,27 @@ class _DateTimeInputCardState extends State<DateTimeInputCard> {
 
     Future<DateTime> getDateTimeInput(
       BuildContext context, DateTime initialDate, TimeOfDay initialTime) async {
-    var date = await showDatePicker(
-        firstDate: DateTime(2000),
-        lastDate: DateTime(2100),
-        context: context,
-        initialDate: initialDate,);
-    if (date != null) {
-      date = startOfDay(date);
-        final time = await showTimePicker(
-          context: context,
-          initialTime: initialTime ?? TimeOfDay.now(),
-        );
-        if (time != null) {
-          date = date.add(Duration(hours: time.hour, minutes: time.minute));
+        var date = await showDatePicker(
+            firstDate: DateTime(2000),
+            lastDate: DateTime(2100),
+            context: context,
+            initialDate: initialDate,);
+        if (date != null) {
+          date = startOfDay(date);
+            final time = await showTimePicker(
+              context: context,
+              initialTime: initialTime ?? TimeOfDay.now(),
+            );
+            if (time != null) {
+              date = date.add(Duration(hours: time.hour, minutes: time.minute));
+            }
         }
-    }
-    return date;
-  }    
+        return date;
+      }    
     
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Card(child: Container(
         padding: EdgeInsets.all(widget._padding),
         margin: EdgeInsets.all(widget._margin),
         child: Column(
@@ -889,13 +885,15 @@ class _DateTimeInputCardState extends State<DateTimeInputCard> {
                     child: TextFormField
                     (enabled: widget._isEditing,
                       controller: _controller,
-                    focusNode: _focus,
-                      decoration: InputDecoration(labelText: widget._title),
+                      focusNode: _focus,
+                      decoration: InputDecoration(
+                        icon: Icon(Icons.date_range),
+                        labelText: widget._title),
                     ),
                     ),
                 ],
               ),
-            ]),
+            ])),
       );
   }
 }

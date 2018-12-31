@@ -132,6 +132,7 @@ class RecipePage extends StatelessWidget{
                   children: <Widget>[
                     Container(
                       margin: EdgeInsets.all(_margin),
+                      padding: EdgeInsets.all(_margin),
                       child: Text(
                         StringLabels.score,
                         style: Theme.of(context).textTheme.title,
