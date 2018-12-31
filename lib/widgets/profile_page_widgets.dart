@@ -685,10 +685,7 @@ class _RatioCardState extends State<RatioCard> {
 
 ///Two textFieldcard
 class TwoTextfieldCard extends StatefulWidget {
-  final double _padding = 20.0;
-  final double _margin = 10.0;
-  final double _cornerRadius = 20.0;
-  final double _textFieldWidth = 150.0;
+  final double _padding = 10.0;
   final Item _itemRight;
   final bool _isEditing;
   final double _extractionYield;
@@ -714,10 +711,7 @@ class _TwoTextfieldCardState extends State<TwoTextfieldCard> {
     }
   @override
   Widget build(BuildContext context) {
-    return Card(child:Container(
-      margin: EdgeInsets.all(widget._margin),
-      child: Container(
-        padding: EdgeInsets.all(widget._padding),
+    return Card(child: Container(
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
@@ -734,7 +728,7 @@ class _TwoTextfieldCardState extends State<TwoTextfieldCard> {
                   widget._isEditing),
 
                 /// Spacer
-                Container(width: 10.0,),
+                Container(width: widget._padding),
 
                 Container(width: 150.0, child: 
                 TextfieldWithFixedValue(StringLabels.extractionYield, widget._extractionYield.toString()+'%'),)
@@ -743,16 +737,14 @@ class _TwoTextfieldCardState extends State<TwoTextfieldCard> {
               ),
             ]),
       ),
-    ));
+    );
   }
 }
 
 /// Notes card
 class NotesCard extends StatefulWidget {
-  final double _padding = 20.0;
-  final double _margin = 10.0;
-  final double _cornerRadius = 20.0;
-  final double _textFieldWidth = 150.0;
+  final double _padding = 5.0;
+  final double _margin = 5.0;
   final Function(String) _onTextChanged;
   final String _title;
   final String _notes;

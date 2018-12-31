@@ -62,8 +62,8 @@ final Function(String , dynamic) _setProfileItemValue;
 }
 
 class WaterDetailsCard extends StatelessWidget {
-  final double _padding = 20.0;
-  final double _margin = 10.0;
+  final double _padding = 5.0;
+  final double _margin = 5.0;
   final double _textFieldWidth = 140.0;
   final Function(String) _totalPpm;
   final Function(String) _ghPpm;

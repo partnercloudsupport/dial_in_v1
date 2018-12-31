@@ -59,7 +59,7 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
 
       }else{
   
-        return CupertinoPicker(
+        return Container(height: 100.0 ,child:CupertinoPicker(
         useMagnifier: true,
         onSelectedItemChanged:
           (value){setState(() {
@@ -68,7 +68,7 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
           });}, 
         itemExtent: 50.0,
         children: _items
-        );
+        ));
         }
        });
   }
@@ -141,8 +141,8 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
 
 /// Origin details
 class OriginDetailsCard extends StatelessWidget {
-  final double _padding = 20.0;
-  final double _margin = 10.0;
+  final double _padding = 5.0;
+  final double _margin = 5.0;
   final double _textFieldWidth = 150.0;
   final Function(String) _region;
   final Function(String) _farm;
@@ -229,8 +229,8 @@ class RoastingDetailsCard extends StatefulWidget {
 }
 
 class RoastingDetailsCardState extends State<RoastingDetailsCard> {
-  final double _padding = 20.0;
-  final double _margin = 10.0;
+  final double _padding = 5.0;
+  final double _margin = 5.0;
   final double _textFieldWidth = 150.0;
   Item _roastProfileItem;
   Item _roasteryNameItem;
@@ -400,8 +400,8 @@ class ProfileInputCard extends StatelessWidget {
 
 ///Green details
 class GreenDetailsCard extends StatelessWidget {
-  final double _padding = 20.0;
-  final double _margin = 10.0;
+  final double _padding = 5.0;
+  final double _margin = 5.0;
   final double _textFieldWidth = 150.0;
   final Function(Item) _beanType;
   final Function(Item) _beanSize;

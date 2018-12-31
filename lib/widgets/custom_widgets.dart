@@ -958,20 +958,21 @@ TextEditingController _controller;
     return
     Expanded(
       flex: 5,
-      child: Container(padding: EdgeInsets.all(10.0), child: TextField(
-      enabled: widget._isEditing,
-      controller: _controller ,
-      textAlign: TextAlign.start,
-      keyboardType: widget._item.keyboardType,
-      decoration: 
-        new InputDecoration(
-        prefixIcon: Icon(Icons.face),
-        labelText: widget._item.title,
-        hintText: widget._item.placeHolderText,
-          ),
-          onChanged: widget._giveValue,
-        )
-        )); 
+      child: Container(padding: EdgeInsets.all(5.0), 
+        child: TextField(
+          enabled: widget._isEditing,
+          controller: _controller ,
+          textAlign: TextAlign.start,
+          keyboardType: widget._item.keyboardType,
+          decoration: 
+            new InputDecoration(
+            prefixIcon: Icon(Icons.face),
+            labelText: widget._item.title,
+            hintText: widget._item.placeHolderText,
+              ),
+              onChanged: widget._giveValue,
+            )
+          )); 
         }
 }       
 
