@@ -603,7 +603,7 @@ class CoffeeCard extends StatelessWidget {
 
 /// Ratio Card
 class RatioCard extends StatefulWidget {
-  final double _margin = 5.0;
+  final double _margin = 10.0;
   final double _textFieldWidth = 80.0;
   final bool _isEditing;
 

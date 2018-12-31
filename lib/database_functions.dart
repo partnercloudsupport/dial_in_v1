@@ -225,10 +225,10 @@ class DatabaseFunctions {
     
     if (doc.exists) {
           _profile = await DatabaseFunctions.createProfileFromDocumentSnapshot(collectionDataBaseId, doc);
-      } else {
-          _profile = await Functions.createBlankProfile(ProfileType.barista);
-      }
+      } else {_profile =  await Functions.createBlankProfile(Functions.getProfileDatabaseIdType(collectionDataBaseId));}
+
     }else{_profile =  await Functions.createBlankProfile(Functions.getProfileDatabaseIdType(collectionDataBaseId));}
+    
     return _profile;
   }
 
@@ -357,7 +357,7 @@ class DatabaseFunctions {
       return  new Profile(
               userId: _user,
               isPublic: _ispublic,
-              updatedAt: _updatedAt,
+              updatedAt: DateTime.now(),
               objectId: _objectId,
               type: ProfileType.coffee,
               image: _image,

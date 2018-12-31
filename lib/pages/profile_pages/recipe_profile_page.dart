@@ -102,7 +102,7 @@ class RecipePage extends StatelessWidget{
                 _isEditing),
 
               /// Time
-              Card(child: Container(margin: EdgeInsets.all(5.0), child: Row(children: <Widget>[
+              Card(child: Container(margin: EdgeInsets.all(10.0), child: Row(children: <Widget>[
                 TextFieldItemWithInitalValue(
                   _profile.getProfileItem(DatabaseIds.time),
                   (time) { _setProfileItemValue( DatabaseIds.time, time);},

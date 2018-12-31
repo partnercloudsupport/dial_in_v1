@@ -45,7 +45,7 @@ class ProfilePage extends StatefulWidget {
   ProfilePageState createState() => new ProfilePageState();
 }
 class ProfilePageState extends State<ProfilePage> {
-  double _padding = 20.0;
+  double _padding = 10.0;
   double _margin = 10.0;
   bool _isCopying;
   bool _isEditing;
@@ -168,7 +168,14 @@ class ProfilePageState extends State<ProfilePage> {
                       onPressed: ()async{  
                         Profile _newProfile = _profile;
                         Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
-                        ProfilePage(isOldProfile: false, isCopying: true, isEditing: true, isNew: true, type: _profile.type, referance: '',profile: _newProfile ,)));}),
+                        ProfilePage
+                        (isOldProfile: false,
+                         isCopying: true, 
+                         isEditing: true, 
+                         isNew: true, 
+                         type: _profile.type, 
+                         referance: '',
+                         profile: _newProfile ,)));}),
 
                   RawMaterialButton(
                       child: Icon(Icons.delete),

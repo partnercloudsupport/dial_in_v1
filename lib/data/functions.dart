@@ -22,30 +22,32 @@ import 'package:dial_in_v1/data/mini_classes.dart';
 
 class Functions {
 
+  /// TODO;
   static void getRatio (List<int> numbers){
     
-    List<List<int>> primeFactorList;
+    List<List<int>> primeFactorList = new List<List<int>>();
 
     /// Find prime factors for each number
     numbers.forEach((number){
       bool check = true;
       int x = 0;
 
-      List<int> primeFactors;
+      List<int> primeFactors = List<int> ();
 
-      while(check == true && number <= primeNumbers[x]/2 && x < primeNumbers.length){
+      while(check == true && x < primeNumbers.length){
 
         if( number % primeNumbers[x] == 0){
 
           primeFactors.add(primeNumbers[x]);
 
         }
+        x = x + 1;
       }
-      primeFactorList.add(primeFactors);
+      if (primeFactors != null){primeFactorList.add(primeFactors);}
     }
     );
   
-    List<int> commonFactors;
+    List<int> commonFactors = new List<int>();
 
     /// Find matching values
     for (var i = 0; i < primeFactorList.length; i++) {
@@ -63,19 +65,20 @@ class Functions {
           }
          }
        }
+       check = true;
      }
     }
     int highestDemoniator = commonFactors.reduce((value, element) => value * element);
 
-    List<int> newNumbers;
+    List<int> newNumbers =  new List<int>();
 
      for (var x = 0; x < numbers.length; x++){
 
        newNumbers.add(numbers[x] * highestDemoniator);
 
       }
-      print('New ratio $newNumbers');
-    }
+    print('New ratio $newNumbers');
+  }
   
 
   static File fileToPng(File file){
@@ -314,6 +317,7 @@ class Functions {
 
       case ProfileType.recipe:
         return new Profile(
+            userId: '',
             isPublic: true,
             updatedAt: DateTime.now(),
             objectId: '',
@@ -352,6 +356,7 @@ class Functions {
 
       case ProfileType.water:
         return new Profile(
+            userId: '',
             isPublic: true,
             updatedAt: DateTime.now(),
             objectId: '',
@@ -373,6 +378,7 @@ class Functions {
 
       case ProfileType.coffee:
         return new Profile(
+          userId: '',
             isPublic: true,
             updatedAt: DateTime.now(),
             objectId: '',
@@ -405,6 +411,7 @@ class Functions {
 
       case ProfileType.equipment:
         return new Profile(
+          userId: '',
           isPublic: true,
           updatedAt: DateTime.now(),
           objectId: '',
@@ -425,6 +432,7 @@ class Functions {
 
       case ProfileType.feed:
         return new Profile(
+          userId: '',
           isPublic: true,
           updatedAt: DateTime.now(),
           objectId: '',
@@ -441,6 +449,7 @@ class Functions {
 
       case ProfileType.grinder:
         return new Profile(
+          userId: '',
           isPublic: true,
           updatedAt: DateTime.now(),
           objectId: '',
@@ -461,6 +470,7 @@ class Functions {
 
       case ProfileType.none:
         return new Profile(
+          userId: '',
           isPublic: true,
           updatedAt: DateTime.now(),
           objectId: '',
@@ -478,6 +488,7 @@ class Functions {
 
       case ProfileType.barista:
         return new Profile(
+          userId: '',
           isPublic: true,
           updatedAt: DateTime.now(),
           objectId: '',
@@ -1094,7 +1105,6 @@ class Functions {
 
     return _item;
   }
-
  
   static Future<List<Widget>> buildFeedCardArray( BuildContext context, AsyncSnapshot documents, Function(Profile) giveProfile) async {
 

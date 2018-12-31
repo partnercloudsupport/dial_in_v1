@@ -100,15 +100,16 @@ class OverviewPageState extends State<OverviewPage> with SingleTickerProviderSta
 
     return  Scaffold(
        
-      /// 
       /// App bar 
-      ///
-      appBar: AppBar(title: Text(StringLabels.overview, style: TextStyle( fontWeight: FontWeight.w700),), automaticallyImplyLeading: false,
+      appBar: AppBar
+              (title: Text
+              (StringLabels.overview, style: TextStyle( fontWeight: FontWeight.w700),),
+               automaticallyImplyLeading: false,
       leading: RawMaterialButton( onPressed: () {logOut(context);}, 
       child: Icon(Icons.exit_to_app),), 
       actions: <Widget>[ 
-        RawMaterialButton( onPressed: () =>  Functions.getRatio([2362,24534])
-        , child: Icon(Icons.menu))  ], ),
+        RawMaterialButton( onPressed: () { Functions.getRatio([2362,24534]);},
+         child: Icon(Icons.menu))  ], ),
     
       body: TabBarView(
         controller: controller,

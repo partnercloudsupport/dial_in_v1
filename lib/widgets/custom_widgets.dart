@@ -98,7 +98,7 @@ class CircularPicture extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           boxShadow: [BoxShadow
-          (color: Colors.black87, offset: new Offset(0.0, 2.0),blurRadius: 2.0,)],
+          (color: Colors.black, offset: new Offset(0.0, 2.0),blurRadius: 2.0,)],
           shape: BoxShape.circle
         ),
         height:_size,
