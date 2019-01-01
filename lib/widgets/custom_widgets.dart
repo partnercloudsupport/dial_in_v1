@@ -951,7 +951,7 @@ final double _textFieldWidth;
 final Function(dynamic) _giveValue;
 final Item _item;
 final bool _isEditing;
-List<TextInputFormatter> textInputFormatters;
+final List<TextInputFormatter> textInputFormatters;
 
 TextFieldItemWithInitalValue
 (this._item, this._giveValue, this._textFieldWidth, this._isEditing,{this.textInputFormatters});
@@ -975,7 +975,6 @@ TextEditingController _controller;
       flex: 5,
       child: Container(padding: EdgeInsets.all(5.0), margin: EdgeInsets.all(5.0), 
         child: TextField(
-          ///TODO;
           inputFormatters: widget.textInputFormatters ?? <TextInputFormatter>[],
           enabled: widget._isEditing,
           controller: _controller ,

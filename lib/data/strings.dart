@@ -361,7 +361,7 @@ class StringDataArrays {
         
     static List<List<String>> beanType =
         
-        [["","Unknown","Blend","Bourbon","Yellow Bourbon" , "Caturra", "Mixed Heirlooms", "Geisha" ,"Typica", "HR-61", "Catuai","Yellow Catuai", "Catimor","Blue Mountain","Colombian","Java","K7", "Maragogipe", "Maragaturra", "Mocha", "Mundo Novo", "Pacamara", "Pacas", "Ruiru 11", "Sarchimor", "SL28","SL34", "Mandheling ", "Timor"]];
+        [["","Unknown","Blend","Bourbon", "Yellow Bourbon" , "Caturra", "Mixed Heirlooms", "Geisha" ,"Typica", "HR-61", "Catuai","Yellow Catuai", "Catimor","Blue Mountain","Colombian","Java","K7", "Maragogipe", "Maragaturra", "Mocha", "Mundo Novo", "Pacamara", "Pacas", "Ruiru 11", "Sarchimor", "SL28","SL34", "Mandheling ", "Timor"]];
     
     static List<List<String>> beanSize =
         [["","Unknown","Blend","Supremo","Excelso","Elephants","AA","AB","C","20/64","18/64","16/64","14/64","12/64","10/64","8/64","20,18","16,14","12,10","8","Very Large","Large","Medium","Small","Shells","Superior","Segundas","Terceras","Caracol","Caracolli","Caracolillo"]];

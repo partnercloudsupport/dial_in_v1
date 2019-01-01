@@ -887,6 +887,7 @@ class Functions {
           databaseId: DatabaseIds.roastProfile,
           placeHolderText: StringLabels.enterDescription,
           keyboardType: TextInputType.text,
+          inputViewDataSet: StringDataArrays.roastTypes
         );
         break;
 
@@ -919,6 +920,7 @@ class Functions {
             keyboardType: TextInputType.text,
             inputViewDataSet: StringDataArrays.beanType);
         break;
+
 
       case DatabaseIds.beanSize:
         _item = new Item(

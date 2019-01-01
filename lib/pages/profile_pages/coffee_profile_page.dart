@@ -48,38 +48,42 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
 
    List< Widget> _items = new List<Widget>();
 
-    if (item.inputViewDataSet != null)
+    if (item.inputViewDataSet != null && item.inputViewDataSet.length > 0)
     {item.inputViewDataSet[0]
     .forEach((itemText){_items.add(Text(itemText, style: Theme.of(context).textTheme.display2,));});
     }
-    PersistentBottomSheetController controller = showBottomSheet(context: context, builder: (BuildContext context){
+
+     showBottomSheet(context: context, builder: (BuildContext context){
        
-      if (item.inputViewDataSet == null) {return Center(child: Text('Error No Data for picker'),);  
+      if (item.inputViewDataSet != null && item.inputViewDataSet.length < 1)
+      {return Center(child: Text('Error No Data for picker'),);  
 
       }else{
   
-        return Container(height: 150.0 ,child:
-        
-      Column(children:[
-          
-      // Material(color: Colors.black ,child:Container(child: Text('Cheese'))),
-      
-      CupertinoPicker(
-        useMagnifier: true,
-        onSelectedItemChanged:
-          (value){setState(() {
-            widget._setProfileItemValue(item.databaseId, item.inputViewDataSet[0][value]);
-            _profile.setProfileItemValue(item.databaseId, item.inputViewDataSet[0][value]);
-          });}, 
-        itemExtent: 50.0,
-        children: _items
-        )
-        ])
-        );
-       }}
+        return  
+        Container(child: SizedBox(height: 200.0, width: double.infinity, child: Column(children: <Widget>[
+
+                    PreferredSize(preferredSize: Size.fromHeight(10.0),child:AppBar
+                    (automaticallyImplyLeading: false, 
+                    actions: <Widget>[FlatButton(onPressed:() => Navigator.pop(context),
+                    child: Text('Done'))],),),   
+
+                    SizedBox(height: 150.0, width: double.infinity  ,child: CupertinoPicker(
+                      useMagnifier: true,
+                      onSelectedItemChanged:
+                        (value){setState(() {
+                          widget._setProfileItemValue(item.databaseId, item.inputViewDataSet[0][value]);
+                          _profile.setProfileItemValue(item.databaseId, item.inputViewDataSet[0][value]);
+                        });}, 
+                      itemExtent: 20.0,
+                      children: _items
+                      ),)
+        ],) )
+      );
+      }
+      }
     );
-    controller.close();
-  }
+}
 
   /// UI Build
   @override
@@ -273,9 +277,10 @@ class RoastingDetailsCardState extends State<RoastingDetailsCard> {
           widget._isEditing),
 
         ///Roast profile
-          PickerTextField(_roastProfileItem,
-                (value){  _roastProfileItem = value;
-                  setState(widget._roastProfile(value));}, _textFieldWidth, widget._isEditing),                  
+          PickerTextField(
+            _roastProfileItem,
+            widget._roastProfile,
+            _textFieldWidth, widget._isEditing),                  
         ],),
 
         ///Row 2
