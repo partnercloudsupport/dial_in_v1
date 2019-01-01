@@ -1129,6 +1129,22 @@ class Functions {
 
   }
 
+      // Method that return count of the given 
+    // character in the string 
+  static int countChacters(String string, String c) 
+    { 
+        int res = 0; 
+  
+        for (int i=0; i< string.length; i++) 
+        { 
+            // checking character in string 
+            if (string[i] == c) 
+            res++; 
+        }  
+        return res; 
+    } 
+
+
   static Future<Widget> buildFeedCardFromProfile(Profile profile, Function(Profile) giveprofile) async {
     
     FeedProfileData feedProfile = await Functions.createFeedProfileFromProfile(profile);

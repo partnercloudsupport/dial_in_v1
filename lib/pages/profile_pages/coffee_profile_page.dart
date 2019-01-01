@@ -52,18 +52,18 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
     {item.inputViewDataSet[0]
     .forEach((itemText){_items.add(Text(itemText, style: Theme.of(context).textTheme.display2,));});
     }
-    showBottomSheet(context: context, builder: (BuildContext context){
-      
+    PersistentBottomSheetController controller = showBottomSheet(context: context, builder: (BuildContext context){
+       
       if (item.inputViewDataSet == null) {return Center(child: Text('Error No Data for picker'),);  
 
       }else{
   
         return Container(height: 150.0 ,child:
         
-      // Column(children:[
+      Column(children:[
           
       // Material(color: Colors.black ,child:Container(child: Text('Cheese'))),
-
+      
       CupertinoPicker(
         useMagnifier: true,
         onSelectedItemChanged:
@@ -74,10 +74,11 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
         itemExtent: 50.0,
         children: _items
         )
-        // ])
+        ])
         );
        }}
     );
+    controller.close();
   }
 
   /// UI Build
@@ -263,23 +264,6 @@ class RoastingDetailsCardState extends State<RoastingDetailsCard> {
 
         ///Row 1
         Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: <Widget>[
-
-        /// Roast Date
-        ///Roast Date
-          // Container(width: _textFieldWidth,
-          //           child: DateTimePickerFormField(
-          //             enabled: widget._isEditing,
-          //             format: widget.dateFormat,
-          //             decoration: InputDecoration(labelText: StringLabels.date),
-          //             initialDate: _roastDateItem,
-          //             controller: _controller,
-          //             dateOnly: true,
-          //             onChanged: (date) {
-          //             if (date != null){           
-          //             setState(widget._roastDate(date));}}),
-          //           ),
-        /// 
-        /// 
       
         DateInputCard(
           StringLabels.date,
@@ -289,7 +273,7 @@ class RoastingDetailsCardState extends State<RoastingDetailsCard> {
           widget._isEditing),
 
         ///Roast profile
-          TextFieldItemWithInitalValue(_roastProfileItem,
+          PickerTextField(_roastProfileItem,
                 (value){  _roastProfileItem = value;
                   setState(widget._roastProfile(value));}, _textFieldWidth, widget._isEditing),                  
         ],),

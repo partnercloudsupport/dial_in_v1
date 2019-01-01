@@ -10,6 +10,8 @@ import 'package:dial_in_v1/data/item.dart';
 import 'package:flutter_rating/flutter_rating.dart';
 import 'dart:async';
 import 'package:dial_in_v1/data/mini_classes.dart';
+import 'package:flutter/services.dart';
+
 
 
 /// Background
@@ -949,8 +951,10 @@ final double _textFieldWidth;
 final Function(dynamic) _giveValue;
 final Item _item;
 final bool _isEditing;
+List<TextInputFormatter> textInputFormatters;
 
-TextFieldItemWithInitalValue(this._item, this._giveValue, this._textFieldWidth, this._isEditing);
+TextFieldItemWithInitalValue
+(this._item, this._giveValue, this._textFieldWidth, this._isEditing,{this.textInputFormatters});
 
  _TextFieldItemWithInitialValueState createState() => _TextFieldItemWithInitialValueState();
 }
@@ -972,7 +976,7 @@ TextEditingController _controller;
       child: Container(padding: EdgeInsets.all(5.0), margin: EdgeInsets.all(5.0), 
         child: TextField(
           ///TODO;
-          // inputFormatters: [NumericTextFormatter()],
+          inputFormatters: widget.textInputFormatters ?? <TextInputFormatter>[],
           enabled: widget._isEditing,
           controller: _controller ,
           textAlign: TextAlign.start,

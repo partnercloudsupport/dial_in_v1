@@ -7,6 +7,8 @@ import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'package:dial_in_v1/data/item.dart';
 import 'package:dial_in_v1/data/profile.dart';
 import 'package:dial_in_v1/database_functions.dart';
+import 'package:flutter/services.dart';
+import 'package:dial_in_v1/data/functions.dart';
 
 class ScoreSlider extends StatefulWidget {
   final double _value;
@@ -723,19 +725,26 @@ class _TwoTextfieldCardState extends State<TwoTextfieldCard> {
                 TextFieldItemWithInitalValue(
                   widget._itemRight,
                   (value){
-                    var val = value;
-                    if(val.contains(',')){
-                      val.replaceAll(new RegExp(r','), '.');
-                      val.replaceAll(new RegExp(r'. '), '.0');
-                    }
-                    widget._onRightTextChanged(val);
+                     if (Functions.countChacters(value,'.')>1)
+                              {PopUps.showAlert(StringLabels.error,
+                               'Only one decimel can be used.', 
+                               StringLabels.ok, 
+                               (){Navigator.pop(context);},
+                              context);}
+                              else{
+                                widget._onRightTextChanged(value);
+                                }
                     },
                   100.0, 
-                  widget._isEditing),
+                  widget._isEditing,
+                  textInputFormatters: [
+                    BlacklistingTextInputFormatter
+                                      (new RegExp('[\\,]'), replacementString: '.',)]),
 
 
                 Container(width: 160.0, child: 
-                TextfieldWithFixedValue(StringLabels.extractionYield, widget._extractionYield.toString()+'%'),)
+                TextfieldWithFixedValue
+                (StringLabels.extractionYield, widget._extractionYield.toString()+'%'),)
 
                 ],
               ),
