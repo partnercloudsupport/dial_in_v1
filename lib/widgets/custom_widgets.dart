@@ -601,7 +601,7 @@ class _TimePickerTextFieldState extends State<TimePickerTextField> {
             _item = widget._item;
             _focus = new FocusNode();
             _focus.addListener(handleLeftProfileTextfieldFocus);
-            _controller = new TextEditingController(text: Functions.convertSecsmmss(Functions.getIntValue(_item.value)));
+            _controller = new TextEditingController(text: Functions.convertSecsToMinsAndSec(Functions.getIntValue(_item.value)));
             super.initState();
       }
 
@@ -621,12 +621,9 @@ class _TimePickerTextFieldState extends State<TimePickerTextField> {
 
       @override
       void didUpdateWidget(TimePickerTextField oldWidget) {
-        _controller.text = Functions.convertSecsmmss(Functions.getIntValue(_item.value));
+        _controller.text = Functions.convertSecsToMinsAndSec(Functions.getIntValue(_item.value));
           super.didUpdateWidget(oldWidget);
-        }
-
-/// TODO sort out text format :)
-      
+        }      
 
   @override
   Widget build(BuildContext context) {

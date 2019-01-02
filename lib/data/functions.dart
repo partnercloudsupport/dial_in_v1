@@ -37,6 +37,15 @@ class Functions {
    }
    
 
+  static String convertSecsToMinsAndSec(int timeInput){
+        
+        int timeSecs = timeInput;
+        
+        int minutes = (timeSecs / 60).floor();
+        int seconds = timeSecs % 60;
+            
+        return "$minutes minutes and $seconds seconds";
+    }
 
 
 
@@ -687,7 +696,7 @@ class Functions {
 
       case DatabaseIds.time:
         _item = new Item(
-          title: StringLabels.time,
+          title: StringLabels.brewTime,
           value: '',
           databaseId: DatabaseIds.time,
           placeHolderText: StringLabels.enterValue,

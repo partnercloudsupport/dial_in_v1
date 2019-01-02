@@ -67,7 +67,6 @@ class DatabaseFunctions {
   // Get current User from firebase
   static Future<String> getCurrentUserId()async{
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    print('Current user ${user.uid}');
     return user.uid.toString();
   }
 

@@ -104,9 +104,16 @@ class ProfilePageState extends State<ProfilePage> {
            RawMaterialButton(
                   child: Icon(Icons.save_alt),
                   onPressed: ()async{ if(_isOldProfile ) 
-                    {await DatabaseFunctions.updateProfile(_profile);
-                    Navigator.pop(context);}
-                    else{
+                    {
+                    showDialog(barrierDismissible: false, context: context ,
+                          builder: (context) => Center(child:CircularProgressIndicator()
+                          )); 
+                    await DatabaseFunctions.updateProfile(_profile);
+                    Navigator.pop(context);
+                    }else{
+                       showDialog(barrierDismissible: false, context: context ,
+                          builder: (context) => Center(child:CircularProgressIndicator()
+                          )); 
                     var newProfile = await DatabaseFunctions.saveProfile(_profile);
                     Navigator.pop(context, newProfile);
                     _model.add(_profile);}},)

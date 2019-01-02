@@ -3,6 +3,7 @@ import 'package:dial_in_v1/data/functions.dart';
 class  StringLabels {
 
 ///since flutter
+   static const String brewTime = 'Brew Time';
   static const String ey = 'Ext/y';
   static const String extractionYield = 'Extraction yield';
   static const String coldBrew = 'Cold brew';

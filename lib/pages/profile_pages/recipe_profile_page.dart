@@ -8,6 +8,8 @@ import 'package:dial_in_v1/widgets/profile_page_widgets.dart';
 import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'package:flutter/services.dart';
 import 'package:dial_in_v1/data/item.dart';
+import 'package:dial_in_v1/data/functions.dart';
+
 
 
 
@@ -32,14 +34,8 @@ class _RecipePageState extends State<RecipePage> {
 
    void showPickerMenu(Item item, BuildContext context){
 
-    int value;
+    int value = Functions.getIntValue(item.value);
     
-    if (item.value == null){value = 0;}
-    else if (item.value is String && item.value == ''){value = 0;}
-    else if (item.value is double){value = (item.value as double).floorToDouble().toInt();}
-    else if (item.value is !int){value = 0;}
-    else{value = item.value;}
-
     List< Widget> _minutes = new List<Widget>();
     List< Widget> _seconds = new List<Widget>();
     double _itemHeight = 40.0; 
@@ -74,9 +70,25 @@ class _RecipePageState extends State<RecipePage> {
         Container(child: SizedBox(height: 200.0, width: double.infinity, child: Column(children: <Widget>[
 
                     Material(elevation: 5.0, shadowColor: Colors.black, color:Theme.of(context).accentColor, type:MaterialType.card, 
-                    child: Container(height: 40.0, width: double.infinity, alignment: Alignment(1, 0),
-                    child: FlatButton(onPressed:() => Navigator.pop(context),
-                    child: Text('Done')),)),
+                    child: Container(height: 40.0, width: double.infinity,
+                    child:
+                    Row(mainAxisAlignment: MainAxisAlignment.center ,children: <Widget>[
+                    /// TODO; make timer
+
+                    FlatButton(onPressed:() => Navigator.pop(context),
+                    child: Icon(Icons.play_arrow)),
+
+                    FlatButton(onPressed:() => Navigator.pop(context),
+                    child: Icon(Icons.stop)),
+
+                    Expanded(child: Container(),),
+
+                     FlatButton(onPressed:() => Navigator.pop(context),
+                    child: Text('Done')),
+
+                    ],)
+                    )
+                    ),
 
                SizedBox(height: 160.0, width: double.infinity  ,child:
                 Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, crossAxisAlignment: CrossAxisAlignment.center,  
