@@ -28,7 +28,6 @@ class NumericTextFormatter extends TextInputFormatter {
     }
 }
 
-/// TODO;
 class UserProfile {
     String _userId;
     String get userId => _userId;

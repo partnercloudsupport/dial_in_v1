@@ -24,13 +24,13 @@ class CoffeeProfilePage extends StatefulWidget {
 class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
 
   Profile _profile;
-  ScrollController _scrollController;
+  final _scaffoldKey =  new GlobalKey<ScaffoldState>();
+  Function(Item) _showBottomSheetCallBack;
 
   @override
   void initState() { 
-    _scrollController = new ScrollController();
-    _scrollController.addListener(pickerScrolled);
-    super.initState();
+        super.initState();
+    _showBottomSheetCallBack = _showBottomSheet;
   }
 
   @override
@@ -39,9 +39,54 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
     super.didChangeDependencies();
     }
 
-  void pickerScrolled(){
+  void _showBottomSheet(Item item){
+    setState(() {
+          _showBottomSheetCallBack = null;
+        });
 
+        List< Widget> _items = new List<Widget>();
+
+    if (item.inputViewDataSet != null && item.inputViewDataSet.length > 0)
+    {item.inputViewDataSet[0]
+    .forEach((itemText){_items.add(Text(itemText, style: Theme.of(context).textTheme.display2,));});
+    }
+        _scaffoldKey.currentState..showBottomSheet((context) { 
+          if (item.inputViewDataSet != null && item.inputViewDataSet.length < 1)
+            {
+              return Center(child: Text('Error No Data for picker'),);  
+            }else{
+  
+          return  
+          Container(child: SizedBox(height: 200.0, width: double.infinity, child: Column(children: <Widget>[
+
+            Material(elevation: 5.0, shadowColor: Colors.black, color:Theme.of(context).accentColor, type:MaterialType.card, 
+            child: Container(height: 40.0, width: double.infinity, alignment: Alignment(1, 0),
+            child: FlatButton(onPressed:() => Navigator.pop(context),
+            child: Text('Done')),)),
+
+            SizedBox(height: 160.0, width: double.infinity  ,child: CupertinoPicker(
+              useMagnifier: true,
+              onSelectedItemChanged:
+                (value){setState(() {
+                  widget._setProfileItemValue(item.databaseId, item.inputViewDataSet[0][value]);
+                  _profile.setProfileItemValue(item.databaseId, item.inputViewDataSet[0][value]);
+                });}, 
+              itemExtent: 20.0,
+              children: _items
+              ),)
+          ],) )
+        );
+        }
+      }).closed.whenComplete((){
+        if(mounted){
+          setState(() {
+                      _showBottomSheetCallBack = _showBottomSheet;
+                    });
+        }
+      }
+      );
   }
+  
 
 /// TODO ;
   void showPickerMenu(Item item){
@@ -53,7 +98,7 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
     .forEach((itemText){_items.add(Text(itemText, style: Theme.of(context).textTheme.display2,));});
     }
 
-     showBottomSheet(context: context, builder: (BuildContext context){
+     showModalBottomSheet(context: context, builder: (BuildContext context){
        
       if (item.inputViewDataSet != null && item.inputViewDataSet.length < 1)
       {return Center(child: Text('Error No Data for picker'),);  
@@ -67,11 +112,6 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
                     child: Container(height: 40.0, width: double.infinity, alignment: Alignment(1, 0),
                     child: FlatButton(onPressed:() => Navigator.pop(context),
                     child: Text('Done')),)),
-
-                    // PreferredSize(preferredSize: Size.fromHeight(10.0),child:AppBar
-                    // (automaticallyImplyLeading: false, 
-                    // actions: <Widget>[FlatButton(onPressed:() => Navigator.pop(context),
-                    // child: Text('Done'))],),),40  
 
                     SizedBox(height: 160.0, width: double.infinity  ,child: CupertinoPicker(
                       useMagnifier: true,
