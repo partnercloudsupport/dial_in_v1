@@ -1101,8 +1101,9 @@ class TextfieldWithFixedValue extends StatefulWidget {
 
 final dynamic _initalValue; 
 final String _titleLabel;
+final double width;
 
-TextfieldWithFixedValue(this._titleLabel, this._initalValue,);
+TextfieldWithFixedValue(this._titleLabel, this._initalValue,{this.width});
 
  _TextfieldWithFixedValueState createState() => _TextfieldWithFixedValueState();
 }
@@ -1121,7 +1122,7 @@ class _TextfieldWithFixedValueState extends State<TextfieldWithFixedValue> {
     return
     ScalableWidget(
     Container(
-        width: 100.0,
+        width: widget.width ?? 100.0,
         child: TextFormField(
         controller: _controller ,
         enabled: false,

@@ -108,7 +108,7 @@ class Profile {
               extractionYield = coffeeInCoffee / dose;
             }
     } 
-    return extractionYield; 
+    return double.parse(extractionYield.toStringAsFixed(2)); 
   }
 
   void setProfileItemValue(String itemDatabaseId, dynamic value) {

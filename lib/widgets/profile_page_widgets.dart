@@ -634,12 +634,12 @@ class _RatioCardState extends State<RatioCard> {
     return 
     
     Card(child:Container(
+      margin: EdgeInsets.all(widget._margin),
+      padding: EdgeInsets.all(widget._margin),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Container(
-            margin: EdgeInsets.all( widget._margin),
-            padding: EdgeInsets.all( widget._margin),
             child: Text(
               StringLabels.ratios,
               style: Theme.of(context).textTheme.title,
@@ -650,7 +650,9 @@ class _RatioCardState extends State<RatioCard> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              
+
+              // Padding(padding: EdgeInsets.all(widget._margin)),
+
               /// Dose
               TextFieldItemWithInitalValue(
                 widget._profile.getProfileItem(DatabaseIds.brewingDose), 
@@ -672,11 +674,17 @@ class _RatioCardState extends State<RatioCard> {
                 widget._textFieldWidth, 
                 widget._isEditing), 
               
+              // Padding(padding: EdgeInsets.all(widget._margin)),
+
             ],
           ),
 
-          Container(margin: EdgeInsets.all( widget._margin),
-            padding: EdgeInsets.all( widget._margin),child: Text('Ratio',
+          Padding(padding: EdgeInsets.all(widget._margin)),
+
+          Container(
+            // margin: EdgeInsets.all( widget._margin),
+            // padding: EdgeInsets.all( widget._margin),
+            child: Text('Ratio',
           style: Theme.of(context).textTheme.display3,),)
         ],
       ),
@@ -713,6 +721,8 @@ class _TwoTextfieldCardState extends State<TwoTextfieldCard> {
   @override
   Widget build(BuildContext context) {
     return Card(child: Container(
+      // margin: EdgeInsets.all(widget._padding),
+      // padding: EdgeInsets.all(widget._padding),
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
@@ -720,6 +730,8 @@ class _TwoTextfieldCardState extends State<TwoTextfieldCard> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
+
+                Padding(padding: EdgeInsets.all(widget._padding/2)),
 
                 // Right
                 TextFieldItemWithInitalValue(
@@ -741,11 +753,14 @@ class _TwoTextfieldCardState extends State<TwoTextfieldCard> {
                     BlacklistingTextInputFormatter
                                       (new RegExp('[\\,]'), replacementString: '.',)]),
 
-
-                Container(width: 160.0, child: 
+                Container(  margin: EdgeInsets.all(widget._padding),
+                width: 140,child: 
                 TextfieldWithFixedValue
-                (StringLabels.extractionYield, widget._extractionYield.toString()+'%'),)
+                (StringLabels.extractionYield, 
+                widget._extractionYield.toString()+'%',
+                width: 140.0,),),
 
+                Padding(padding: EdgeInsets.all(widget._padding/2)),
                 ],
               ),
             ]),
