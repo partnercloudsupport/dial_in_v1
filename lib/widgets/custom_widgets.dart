@@ -575,10 +575,7 @@ class AddButton extends StatelessWidget {
 
 //Picker textfield card
 class PickerTextField extends StatefulWidget {
-  final double _padding = 20.0;
-  final double _margin = 10.0;
   final double _textFieldWidth;
-  final double _cornerRadius = 20.0;
   final Item _item;
   final bool _isEditing;
   /// Returns a funtion with the Item 
@@ -738,8 +735,7 @@ class ProfileImage extends StatelessWidget {
 
 /// Date input card
 class DateInputCard extends StatefulWidget {
-  final double _padding = 5.0;
-  final double _margin = 5.0;
+  final double _padding = 10.0;
   final _dateFormat = DateFormat.yMd();
   final DateTime _dateTime;
   final Function(DateTime) onDateChanged; 
@@ -794,7 +790,7 @@ class _DateInputCardState extends State<DateInputCard> {
     return 
     Expanded(
       flex: 6,
-      child:Container(
+      child:Container( margin:  EdgeInsets.all(widget._padding),
         padding: EdgeInsets.all(widget._padding),
         child:  TextFormField
           (enabled: widget._isEditing,

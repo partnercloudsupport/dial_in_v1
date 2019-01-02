@@ -139,3 +139,51 @@ class SocialFeedBloc{
     }
 
 }
+
+/// TODO;
+class UserFeed {
+   
+  bool _initilised = false;
+  UserProfile _userProfile;
+  String _userImage = '';
+  String _userId = '';
+  String _userName = '';
+
+  String get userImage => _userProfile.userImage;
+  String get userId => _userProfile.userId;
+  String get userName => _userProfile.userName;
+
+  Stream<UserProfile> get userProfile => _outgoingController.stream;
+  
+  final BehaviorSubject<UserProfile> _outgoingController = BehaviorSubject<UserProfile>();
+
+   Future getProfile()async{
+  
+   if(!_initilised){
+      DatabaseFunctions.getUserImage()
+      .then((image)
+      {_userImage = image;
+      _makeUserProfile();});
+
+      DatabaseFunctions.getCurrentUserId()
+      .then((user)
+      {_userId = user;
+      _makeUserProfile();});
+
+      DatabaseFunctions.getUserName()
+      .then((name)
+      {_userName = name;
+      _makeUserProfile();});
+    }
+  }
+
+void _makeUserProfile()async{
+    
+    if (_userImage != null || _userId != null || _userName != null){
+
+      _userProfile = UserProfile(_userId, _userName, _userImage);
+
+      _outgoingController.add(_userProfile);
+    }
+  }
+}

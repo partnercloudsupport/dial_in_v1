@@ -4,6 +4,8 @@ import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'package:dial_in_v1/inherited_widgets.dart';
 import 'package:dial_in_v1/data/strings.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:dial_in_v1/data/mini_classes.dart';
+
 
 
 class UserProfilePage extends StatefulWidget{
@@ -18,6 +20,13 @@ class UserProfileState extends State<UserProfilePage>{
     return ScopedModelDescendant<ProfilesModel>
       (builder: (context, _ ,model) =>
 
+      StreamBuilder<UserProfile>(
+          stream:  model.userProfile,
+          builder: (context, snapshot) {
+
+if (!snapshot.hasData) { return Center(child: CircularProgressIndicator(),);}else{ 
+  
+  return
 
     new Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center ,children:[
 
@@ -57,9 +66,10 @@ class UserProfileState extends State<UserProfilePage>{
       ],
       ),),
       ]
-    )
+    );
+          }})
       );
-    }
+}
 }
 
 class CountBlock extends StatelessWidget {

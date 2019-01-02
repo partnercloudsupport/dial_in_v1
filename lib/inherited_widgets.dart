@@ -42,14 +42,10 @@ class ProfilesInheritedWidget extends InheritedWidget {
 /// Profiles scoped model
 class ProfilesModel extends Model{
 
-    String _userId = '';
-    String get userId => _userId;
-
-    String _userName = '';
-    String get userName => _userName;
-
-    String _userImage = '';
-    String get userImage => _userImage;
+    Stream<UserProfile> get userProfile => _userFeed.userProfile;
+    String get userId => _userFeed.userId;
+    String get userName => _userFeed.userName;
+    String get userImage => _userFeed.userImage;
 
     int get recipeProfilesCount => _recipeFeed.profilesCount ?? 0;
     int get coffeeProfilesCount => _coffeeFeed.profilesCount ?? 0;
@@ -65,6 +61,7 @@ class ProfilesModel extends Model{
     FeedBloc _baristaFeed  = new FeedBloc(DatabaseIds.Barista);
     SocialFeedBloc _comminuty;
     SocialFeedBloc _followers;
+    UserFeed _userFeed = new UserFeed(); 
     
     /// Getters for profiles
     Stream<List<Profile>> get recipeProfiles => _recipeFeed.profiles;
@@ -94,9 +91,7 @@ class ProfilesModel extends Model{
       _baristaFeed.getProfiles();
       _comminuty.getProfiles();
       _followers.getProfiles();
-      DatabaseFunctions.getCurrentUserId().then((user){_userId = user;});
-      DatabaseFunctions.getUserImage().then((image){_userImage = image;});
-      DatabaseFunctions.getUserName().then((name){_userName = name;});
+      _userFeed.getProfile();
     } 
 
     void deInit(){
