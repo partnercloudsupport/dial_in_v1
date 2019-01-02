@@ -63,12 +63,17 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
         return  
         Container(child: SizedBox(height: 200.0, width: double.infinity, child: Column(children: <Widget>[
 
-                    PreferredSize(preferredSize: Size.fromHeight(10.0),child:AppBar
-                    (automaticallyImplyLeading: false, 
-                    actions: <Widget>[FlatButton(onPressed:() => Navigator.pop(context),
-                    child: Text('Done'))],),),   
+                    Material(elevation: 5.0, shadowColor: Colors.black, color:Theme.of(context).accentColor, type:MaterialType.card, 
+                    child: Container(height: 40.0, width: double.infinity, alignment: Alignment(1, 0),
+                    child: FlatButton(onPressed:() => Navigator.pop(context),
+                    child: Text('Done')),)),
 
-                    SizedBox(height: 150.0, width: double.infinity  ,child: CupertinoPicker(
+                    // PreferredSize(preferredSize: Size.fromHeight(10.0),child:AppBar
+                    // (automaticallyImplyLeading: false, 
+                    // actions: <Widget>[FlatButton(onPressed:() => Navigator.pop(context),
+                    // child: Text('Done'))],),),40  
+
+                    SizedBox(height: 160.0, width: double.infinity  ,child: CupertinoPicker(
                       useMagnifier: true,
                       onSelectedItemChanged:
                         (value){setState(() {
