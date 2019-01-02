@@ -117,14 +117,12 @@ class  StringLabels {
   static const String senior  = "Senior";
   static const String lead  = "Lead";
   
-  
   static const String flat = "Flat";
   static const String conical = "Conical";
   static const String turkish  = "Turkish";
   static const String blade = "Blade";
   
   static const String autoFill = "Autofill";
-  
   
   static const String american = "American";
   static const String french = "French";
@@ -371,7 +369,7 @@ class StringDataArrays {
     
     static List<List<String>> equipmentMake = [["","Unknown","Synesso", "Hario" , "Kalita", "Chemex", "La Morrozocco", "Slayer", "Aerobie"]];
     
-    static List<List<String>> countrys = [["","Unknown","Blend","Brazil" , "Colombia", "Ethiopia", "Indoneasia" , "Honduras", "India","Mexico", "Guatemala","Peru","Nicaragua","Ivory Coast", "Costa Rica", "Kenya", "Rwanada", "Burundi","Panama","Bolivia","Papua New Guinea", "Tanzania", "El Salvador", "Ecuador", "Yemen",'Myanmar', 'Nepal',"Cameroon", "Loas", "Madagascar","Ganbon", "Thailand", "Venezuala", "Dominican Republic", "Haiti", "Democratic Republic of the Congo",  "Pillipines", "Togo", "Guinea",  "Cuba",  "Veitnam","China","Uganda", "Timor Leste", "Central African Republic","Nigeria", "Ghana"]];
+    static List<List<String>> countrys = [["","Unknown","Blend","Brazil" , "Colombia", "Ethiopia", "Indoneasia" , "Honduras", "India","Mexico", "Guatemala","Peru","Nicaragua","Ivory Coast", "Costa Rica", "Kenya", "Rwanada", "Burundi","Panama","Bolivia","Papua New Guinea", "Tanzania", "El Salvador", "Ecuador", "Yemen",'Myanmar', 'Nepal',"Cameroon", "Loas", "Madagascar","Ganbon", "Thailand",'Austrlia' ,"Venezuala", "Dominican Republic", "Haiti", "Democratic Republic of the Congo",  "Pillipines", "Togo", "Guinea",  "Cuba",  "Veitnam","China","Uganda", "Timor Leste", "Central African Republic","Nigeria", "Ghana"]];
     
     static List<List<String>> burrTypes = [["","Unknown",StringLabels.flat, StringLabels.turkish ,StringLabels.conical , StringLabels.blade]];
     

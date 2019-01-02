@@ -22,7 +22,6 @@ class NumericTextFormatter extends TextInputFormatter {
        String newText = oldValue.text;
           if(oldValue.text.contains(',')){
           newText = oldValue.text.replaceAll(new RegExp(r','), '.');
-          // newValue.text         oldValue.text.replaceAll(new RegExp(r'. '), '.0');
           }else{newText = oldValue.text;}
       return TextEditingValue(text: newText);
     }

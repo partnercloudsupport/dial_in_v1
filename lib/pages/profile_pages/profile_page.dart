@@ -53,6 +53,7 @@ class ProfilePageState extends State<ProfilePage> {
   Profile _profile;
   ProfilesModel _model;
   String _appBarTitle;
+  ScrollController _scrollController;
 
 
   void initState() {
@@ -61,6 +62,7 @@ class ProfilePageState extends State<ProfilePage> {
       _profile = widget.profile;
       _isOldProfile = widget.isOldProfile; 
       _model = ProfilesModel.of(context);
+      _scrollController = ScrollController();
       
     if (widget.isNew || widget.isCopying) { this._appBarTitle = StringLabels.newe + ' ' +Functions.getProfileTypeString(_profile.type) + ' ' + StringLabels.profile;
     }else if (widget.isEditing){  this._appBarTitle =  StringLabels.editing + ' ' + Functions.getProfileTypeString(_profile.type) + ' ' + StringLabels.profile; }
@@ -260,8 +262,8 @@ class ProfilePageState extends State<ProfilePage> {
                 (){Navigator.of(context).pop();},
                 context);});
                 Navigator.of(context);
-                Navigator.of(context).pop(then(url))
-            ;
+                Navigator.of(context).pop(then(url));
+                Navigator.of(context).pop(then(url));
           }
       ),
     
@@ -274,7 +276,7 @@ class ProfilePageState extends State<ProfilePage> {
             ));
             File image = await ImagePicker.pickImage
                               (maxWidth: 640.0, maxHeight: 480.0, source: ImageSource.gallery);
-            url = await DatabaseFunctions.upLoadFileReturnUrl
+           url = await DatabaseFunctions.upLoadFileReturnUrl
             (image,[ProfilesModel.of(context).userId  , DatabaseIds.image, _profile.databaseId],
             errorHandler: (e){
               PopUps.showAlert( 
@@ -282,14 +284,23 @@ class ProfilePageState extends State<ProfilePage> {
                 e,
                 StringLabels.ok ,
                 (){Navigator.of(context).pop();},
-                context);}); 
+                context);});
                 Navigator.of(context);
+                Navigator.of(context).pop(then(url));
                 Navigator.of(context).pop(then(url));
           }
       ),
     ],)));
     }
     );
+  }
+
+/// TODO;
+  void _moveScreenForBottomSheet(){
+    _scrollController.animateTo
+    (_scrollController.position.pixels + 190.0, 
+    duration: Duration(milliseconds: 500),
+    curve: Curves.easeIn);
   }
 
   //// user defined function
