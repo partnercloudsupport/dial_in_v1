@@ -45,7 +45,6 @@ class ProfilePage extends StatefulWidget {
   ProfilePageState createState() => new ProfilePageState();
 }
 class ProfilePageState extends State<ProfilePage> {
-  double _padding = 10.0;
   double _margin = 10.0;
   bool _isCopying;
   bool _isEditing;
@@ -96,6 +95,7 @@ class ProfilePageState extends State<ProfilePage> {
                 child: Icon(Icons.arrow_back),
                 onPressed: () {
                   Navigator.pop(context, false);
+                  DatabaseFunctions.deleteFireBaseStorageItem(_profile.image);
                 },
               ),
         actions: <Widget>[
@@ -120,26 +120,38 @@ class ProfilePageState extends State<ProfilePage> {
                   }),
         ],
       ),
-      body: ListView(
+      body: 
+      
+      
+      ListView(
         children: <Widget>[
           Column(
             children: <Widget>[
 
+            Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
+
+           /// Spacer 
+            Expanded(child: Container(),),
+
+          /// Profile Image
+          Container(padding: EdgeInsets.all(_margin),child: 
+            InkWell(child:Hero(tag: _profile.objectId ,child: SizedBox(width: 200.0, height: 200.0,
+            child: CircularPicture(_profile.image, 200.0)) ,),
+             onTap: _isEditing?()
+             {_getimage(
+               (image){ setState(() {_profile.image = image;});});
+             }:(){}),),
+           
             ///Public profile switch
-            Container(padding: EdgeInsets.all(_padding),margin: EdgeInsets.all(_margin),child: 
-            Column(children: <Widget>[
+            Expanded(child: 
+            Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment:CrossAxisAlignment.center
+             ,children: <Widget>[
             Text(StringLabels.public), 
             Switch(onChanged: (on){setState(() {_profile.isPublic = on;}); }, value: _profile.isPublic,),
             ],),),
-
-            /// Profile Image
-             InkWell(child:Hero(tag: _profile.objectId ,child: SizedBox(width: 200.0, height: 200.0,
-             child: CircularPicture(_profile.image, 200.0)) ,),
-              onTap: _isEditing?()
-              {_getimage(
-                (image){ setState(() {_profile.image = image;});});
-              }:(){}),
             
+            ],),
+
             /// All below changes depending on profile
              _returnPageStructure(_profile),
 
@@ -235,6 +247,7 @@ class ProfilePageState extends State<ProfilePage> {
 
   /// Get image for profile photo
   Future  _getimage(Function(String) then)async{
+
     String url = '';
 
     await showDialog(context: context, builder: (BuildContext context){

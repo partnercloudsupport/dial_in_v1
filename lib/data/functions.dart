@@ -22,6 +22,15 @@ import 'package:dial_in_v1/data/mini_classes.dart';
 
 class Functions {
 
+  static List<int> oneToFiftynine(){
+
+    List<int> numbers = new List<int>();
+
+    for (var i = 0; i < 59; i++) {
+        numbers.add(i);
+    }
+    return numbers;
+  }
   /// TODO;
   static void getRatio (List<int> numbers){
     
@@ -636,6 +645,7 @@ class Functions {
           databaseId: DatabaseIds.time,
           placeHolderText: StringLabels.enterValue,
           keyboardType: TextInputType.number,
+          inputViewDataSet: StringDataArrays.minutesAndSeconds
         );
         break;
 

@@ -9,7 +9,7 @@ class Item{
      @required String segueId = '';
      @required String databaseId; 
      @required String placeHolderText; 
-     @required List<List<String>> inputViewDataSet = List<List<String>>();
+     @required List<List<dynamic>> inputViewDataSet = List<List<dynamic>>();
      @required TextInputType keyboardType = TextInputType.text; 
     
     Item({

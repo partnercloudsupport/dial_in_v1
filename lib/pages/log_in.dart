@@ -4,6 +4,8 @@ import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'package:dial_in_v1/pages/sign_up.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:dial_in_v1/pages/overview_page/overview_page.dart';
+import 'package:dial_in_v1/inherited_widgets.dart';
+
 
 
 class LoginPage extends StatefulWidget {
@@ -23,29 +25,29 @@ class _LoginPageState extends State<LoginPage> {
   String _password = "";
   TextEditingController _passwordController = new TextEditingController();
 
-  /// Functions
-void forgotPassword() {   print(" Forgot password button pressed");  }
+    /// Functions
+  void forgotPassword() {   print(" Forgot password button pressed");  }
 
-Future<void> logIn(String emailUser, String password,
-      Function(bool, String) completion) async {
-          try {
-            await FirebaseAuth.instance
-                .signInWithEmailAndPassword(email: emailUser, password: password);
-            completion(true, StringLabels.loggedIn);
-          } catch (e) {
-            completion(false, e.message);
-          }
-  }
+  Future<void> logIn(String emailUser, String password,
+        Function(bool, String) completion) async {
+            try {
+              await FirebaseAuth.instance
+                  .signInWithEmailAndPassword(email: emailUser, password: password);
+              completion(true, StringLabels.loggedIn);
+            } catch (e) {
+              completion(false, e.message);
+            }
+    }
 
-void loginButtonPressed(){ 
+  void loginButtonPressed(){ 
 
-  showDialog(barrierDismissible: false, context: context ,
-    builder: (context) => Center(child:CircularProgressIndicator()
-     )); 
+    showDialog(barrierDismissible: false, context: context ,
+      builder: (context) => Center(child:CircularProgressIndicator()
+      )); 
 
-  logIn(_email, _password, (success,error){  
+    logIn(_email, _password, (success,error){  
 
-      Navigator.pop(context);
+        Navigator.pop(context);
     
     if (success){   
        setState(() {
@@ -61,34 +63,42 @@ void loginButtonPressed(){
         error,
         StringLabels.ok ,
         (){Navigator.of(context).pop();},
-        context);
-      }
- });
-}
+          context);
+        }
+  });
+  }
 
-  Color gradientStart = Colors.deepPurple[700]; //Change start gradient color here
-  Color gradientEnd = Colors.purple[500];
+    Color gradientStart = Colors.deepPurple[700]; //Change start gradient color here
+    Color gradientEnd = Colors.purple[500];
 
-void signUpButtonPressed() {print('signUp');}
+  void signUpButtonPressed() {print('signUp');}
 
-void onEmailChange(){ _email =_emailController.text;}
+  void onEmailChange(){ _email =_emailController.text;}
 
-void onPasswordChange(){_password = _passwordController.text;}                               
+  void onPasswordChange(){_password = _passwordController.text;}                               
 
-@override
-void initState() {
+  @override
+  void initState() {
 
-  _emailController.addListener(onEmailChange); 
-  _passwordController.addListener(onPasswordChange);
-  
-    super.initState();
-}
+    _emailController.addListener(onEmailChange); 
+    _passwordController.addListener(onPasswordChange);
+    tryToLogIn();
+    
+      super.initState();
+  }
+    ///TODO;
+  void tryToLogIn()async{
+    var user = await FirebaseAuth.instance.currentUser();
+    if(user != null) {Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => OverviewPage()));}
+  }
 
-///
-/// UI Build
-///
+  ///
+  /// UI Build
+  ///
   @override
   Widget build(BuildContext context) {
+
+
     return new Scaffold(
       body: new Stack(
         children: <Widget>[

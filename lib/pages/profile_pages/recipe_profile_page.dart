@@ -7,6 +7,7 @@ import 'package:dial_in_v1/database_functions.dart';
 import 'package:dial_in_v1/widgets/profile_page_widgets.dart';
 import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'package:flutter/services.dart';
+import 'package:dial_in_v1/data/item.dart';
 
 class RecipePage extends StatelessWidget{
 
@@ -19,6 +20,96 @@ class RecipePage extends StatelessWidget{
   final Function(String , dynamic) _setProfileItemValue;
 
   RecipePage(this._profile, this._margin, this._setProfileItemValue, this._showOptions, this._isEditing);
+
+   void showPickerMenu(Item item, BuildContext context){
+
+    List< Widget> _minutes = new List<Widget>();
+    List< Widget> _seconds = new List<Widget>();
+    double _itemHeight = 40.0; 
+   
+    if (item.inputViewDataSet != null && item.inputViewDataSet.length > 0)
+    {item.inputViewDataSet[0]
+    .forEach((itemText){_minutes.add(Center(child:Text(itemText.toString(), style: Theme.of(context).textTheme.display2,)));}
+    );}
+
+    if (item.inputViewDataSet != null && item.inputViewDataSet.length > 0)
+    {item.inputViewDataSet[1]
+    .forEach((itemText){_seconds.add(Center(child:Text(itemText.toString(), style: Theme.of(context).textTheme.display2,)));}
+    );}
+
+     showModalBottomSheet(context: context, builder: (BuildContext context){
+       
+      if (item.inputViewDataSet != null && item.inputViewDataSet.length < 1)
+      {return Center(child: Text('Error No Data for picker'),);  
+
+      }else{
+
+    ///TODO;    
+    int secondStart = item.inputViewDataSet[0].indexWhere((value) => (value == item.value));
+    int minuteStart = item.inputViewDataSet[0].indexWhere((value) => (value == item.value));
+
+    FixedExtentScrollController _minuteController = new FixedExtentScrollController(initialItem: minuteStart);
+    FixedExtentScrollController _secondController = new FixedExtentScrollController(initialItem: secondStart);
+  
+        return  
+        Container(child: SizedBox(height: 200.0, width: double.infinity, child: Column(children: <Widget>[
+
+                    Material(elevation: 5.0, shadowColor: Colors.black, color:Theme.of(context).accentColor, type:MaterialType.card, 
+                    child: Container(height: 40.0, width: double.infinity, alignment: Alignment(1, 0),
+                    child: FlatButton(onPressed:() => Navigator.pop(context),
+                    child: Text('Done')),)),
+
+               SizedBox(height: 160.0, width: double.infinity  ,child:
+                Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, crossAxisAlignment: CrossAxisAlignment.center,  
+                children: <Widget>[
+
+                  Row(children: <Widget>[
+                    SizedBox(height: 160.0, width: 50.0 ,
+                    child: CupertinoPicker(
+                      backgroundColor: Colors.transparent,
+                      scrollController: _minuteController,
+                      useMagnifier: true,
+                      onSelectedItemChanged:
+                        (value){
+                        //   setState(() {
+                        //   widget._setProfileItemValue(item.databaseId, item.inputViewDataSet[0][value]);
+                        //   _profile.setProfileItemValue(item.databaseId, item.inputViewDataSet[0][value]);
+                        // });
+                        }, 
+                      itemExtent: _itemHeight,
+                      children: _minutes
+                      ),),
+                      Text('m')
+                  ],),
+
+                   Row(children: <Widget>[
+                       SizedBox(height: 160.0, width: 50.0  ,
+                    child: CupertinoPicker(
+                      backgroundColor:  Colors.transparent,
+                      scrollController: _secondController,
+                      useMagnifier: true,
+                      onSelectedItemChanged:
+                        (value){
+                        //   setState(() {
+                        //   widget._setProfileItemValue(item.databaseId, item.inputViewDataSet[0][value]);
+                        //   _profile.setProfileItemValue(item.databaseId, item.inputViewDataSet[0][value]);
+                        // });
+                        }, 
+                      itemExtent: _itemHeight,
+                      children: _seconds
+                      ),),
+                    Text('s'),
+
+                        ],
+                    )
+                ],))
+        ],) )
+      );
+      }
+      }
+    );
+}
+
 
   ///
   /// UI Build
@@ -104,11 +195,20 @@ class RecipePage extends StatelessWidget{
 
               /// Time
               Card(child: Container(margin: EdgeInsets.all(10.0), child: Row(children: <Widget>[
-                TextFieldItemWithInitalValue(
+                
+                 PickerTextField(
                   _profile.getProfileItem(DatabaseIds.time),
-                  (time) { _setProfileItemValue( DatabaseIds.time, time);},
+                  (item) => showPickerMenu(item, context),
                   100.0, 
-                  _isEditing)],)),),
+                  _isEditing)
+
+              
+                // TextFieldItemWithInitalValue(
+                //   _profile.getProfileItem(DatabaseIds.time),
+                //   (time) { _setProfileItemValue( DatabaseIds.time, time);},
+                //   100.0, 
+                //   _isEditing)
+                  ],)),),
 
               /// Extraction and TDS
               TwoTextfieldCard(

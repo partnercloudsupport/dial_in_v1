@@ -1,4 +1,4 @@
-
+import 'package:dial_in_v1/data/functions.dart';
 
 class  StringLabels {
 
@@ -391,4 +391,6 @@ class StringDataArrays {
             StringLabels.wetHulled,
             StringLabels.pulpNatural,
             ]];
+
+    static List<List<int>>  minutesAndSeconds = [Functions.oneToFiftynine(), Functions.oneToFiftynine()];
   }
