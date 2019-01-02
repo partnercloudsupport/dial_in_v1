@@ -37,59 +37,12 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
     super.didChangeDependencies();
     }
 
-  // void _showBottomSheet(Item item){
-  //   setState(() {
-  //         _showBottomSheetCallBack = null;
-  //       });
-
-  //       List< Widget> _items = new List<Widget>();
-
-  //   if (item.inputViewDataSet != null && item.inputViewDataSet.length > 0)
-  //   {item.inputViewDataSet[0]
-  //   .forEach((itemText){_items.add(Text(itemText, style: Theme.of(context).textTheme.display2,));});
-  //   }
-  //       _scaffoldKey.currentState..showBottomSheet((context) { 
-  //         if (item.inputViewDataSet != null && item.inputViewDataSet.length < 1)
-  //           {
-  //             return Center(child: Text('Error No Data for picker'),);  
-  //           }else{
-  
-  //         return  
-  //         Container(child: SizedBox(height: 200.0, width: double.infinity, child: Column(children: <Widget>[
-
-  //           Material(elevation: 5.0, shadowColor: Colors.black, color:Theme.of(context).accentColor, type:MaterialType.card, 
-  //           child: Container(height: 40.0, width: double.infinity, alignment: Alignment(1, 0),
-  //           child: FlatButton(onPressed:() => Navigator.pop(context),
-  //           child: Text('Done')),)),
-
-  //           SizedBox(height: 160.0, width: double.infinity  ,child: CupertinoPicker(
-  //             useMagnifier: true,
-  //             onSelectedItemChanged:
-  //               (value){setState(() {
-  //                 widget._setProfileItemValue(item.databaseId, item.inputViewDataSet[0][value]);
-  //                 _profile.setProfileItemValue(item.databaseId, item.inputViewDataSet[0][value]);
-  //               });}, 
-  //             itemExtent: 20.0,
-  //             children: _items
-  //             ),)
-  //         ],) )
-  //       );
-  //       }
-  //     }).closed.whenComplete((){
-  //       if(mounted){
-  //         setState(() {
-  //                     _showBottomSheetCallBack = _showBottomSheet;
-  //                   });
-  //       }
-  //     }
-  //     );
-  // }
-  
 
   void showPickerMenu(Item item){
 
-   List< Widget> _items = new List<Widget>();
-
+    List< Widget> _items = new List<Widget>();
+    double _itemHeight = 20.0; 
+   
     if (item.inputViewDataSet != null && item.inputViewDataSet.length > 0)
     {item.inputViewDataSet[0]
     .forEach((itemText){_items.add(Text(itemText, style: Theme.of(context).textTheme.display2,));});
@@ -101,6 +54,10 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
       {return Center(child: Text('Error No Data for picker'),);  
 
       }else{
+
+    int startItem = item.inputViewDataSet[0].indexWhere((value) => (value == item.value));
+
+    FixedExtentScrollController _scrollController = new FixedExtentScrollController(initialItem: startItem);
   
         return  
         Container(child: SizedBox(height: 200.0, width: double.infinity, child: Column(children: <Widget>[
@@ -110,14 +67,16 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
                     child: FlatButton(onPressed:() => Navigator.pop(context),
                     child: Text('Done')),)),
 
-                    SizedBox(height: 160.0, width: double.infinity  ,child: CupertinoPicker(
+                    SizedBox(height: 160.0, width: double.infinity  ,
+                    child: CupertinoPicker(
+                      scrollController: _scrollController,
                       useMagnifier: true,
                       onSelectedItemChanged:
                         (value){setState(() {
                           widget._setProfileItemValue(item.databaseId, item.inputViewDataSet[0][value]);
                           _profile.setProfileItemValue(item.databaseId, item.inputViewDataSet[0][value]);
                         });}, 
-                      itemExtent: 20.0,
+                      itemExtent: _itemHeight,
                       children: _items
                       ),)
         ],) )

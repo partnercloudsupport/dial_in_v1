@@ -130,7 +130,7 @@ class  StringLabels {
   static const String french = "French";
   static const String italian = "Italian";
   static const String cinnamon = "Cinnamon";
-  static const String light = "light";
+  static const String light = "Light";
   static const String dark = "Dark";
   static const String mediumDark = "Medium - Dark";
   static const String newEngland = "New England";
