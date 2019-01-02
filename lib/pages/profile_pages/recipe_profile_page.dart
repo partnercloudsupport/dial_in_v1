@@ -9,10 +9,16 @@ import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'package:flutter/services.dart';
 import 'package:dial_in_v1/data/item.dart';
 
-class RecipePage extends StatelessWidget{
 
-  final Function(ProfileType) _showOptions;
+
+
+class RecipePage extends StatefulWidget {
+
+  _RecipePageState createState() => _RecipePageState();
+
+
   final double _margin; 
+  final Function(ProfileType) _showOptions;
   final Profile _profile;
   final bool _isEditing;
 
@@ -20,12 +26,27 @@ class RecipePage extends StatelessWidget{
   final Function(String , dynamic) _setProfileItemValue;
 
   RecipePage(this._profile, this._margin, this._setProfileItemValue, this._showOptions, this._isEditing);
+}
+
+class _RecipePageState extends State<RecipePage> {
 
    void showPickerMenu(Item item, BuildContext context){
+
+    int value;
+    
+    if (item.value == null){value = 0;}
+    else if (item.value is String && item.value == ''){value = 0;}
+    else if (item.value is double){value = (item.value as double).floorToDouble().toInt();}
+    else if (item.value is !int){value = 0;}
+    else{value = item.value;}
 
     List< Widget> _minutes = new List<Widget>();
     List< Widget> _seconds = new List<Widget>();
     double _itemHeight = 40.0; 
+    double _pickerHeight = 120.0;
+    double _pickerWidth = 50.0;
+    int mins = (value/60).floor();
+    int sec = value % 60;
    
     if (item.inputViewDataSet != null && item.inputViewDataSet.length > 0)
     {item.inputViewDataSet[0]
@@ -45,11 +66,9 @@ class RecipePage extends StatelessWidget{
       }else{
 
     ///TODO;    
-    int secondStart = item.inputViewDataSet[0].indexWhere((value) => (value == item.value));
-    int minuteStart = item.inputViewDataSet[0].indexWhere((value) => (value == item.value));
 
-    FixedExtentScrollController _minuteController = new FixedExtentScrollController(initialItem: minuteStart);
-    FixedExtentScrollController _secondController = new FixedExtentScrollController(initialItem: secondStart);
+    FixedExtentScrollController _minuteController = new FixedExtentScrollController(initialItem: mins);
+    FixedExtentScrollController _secondController = new FixedExtentScrollController(initialItem: sec);
   
         return  
         Container(child: SizedBox(height: 200.0, width: double.infinity, child: Column(children: <Widget>[
@@ -63,18 +82,17 @@ class RecipePage extends StatelessWidget{
                 Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, crossAxisAlignment: CrossAxisAlignment.center,  
                 children: <Widget>[
 
+                  /// Minutes picker
                   Row(children: <Widget>[
-                    SizedBox(height: 160.0, width: 50.0 ,
+                    SizedBox(height: _pickerHeight, width: _pickerWidth ,
                     child: CupertinoPicker(
                       backgroundColor: Colors.transparent,
                       scrollController: _minuteController,
                       useMagnifier: true,
                       onSelectedItemChanged:
                         (value){
-                        //   setState(() {
-                        //   widget._setProfileItemValue(item.databaseId, item.inputViewDataSet[0][value]);
-                        //   _profile.setProfileItemValue(item.databaseId, item.inputViewDataSet[0][value]);
-                        // });
+                          mins = value;
+                          widget._setProfileItemValue(item.databaseId, ((mins * 60) + sec).toString());
                         }, 
                       itemExtent: _itemHeight,
                       children: _minutes
@@ -82,18 +100,18 @@ class RecipePage extends StatelessWidget{
                       Text('m')
                   ],),
 
+                  /// Seconds picker
                    Row(children: <Widget>[
-                       SizedBox(height: 160.0, width: 50.0  ,
+                       SizedBox(height: _pickerHeight, width: _pickerWidth  ,
                     child: CupertinoPicker(
                       backgroundColor:  Colors.transparent,
                       scrollController: _secondController,
                       useMagnifier: true,
                       onSelectedItemChanged:
                         (value){
-                        //   setState(() {
-                        //   widget._setProfileItemValue(item.databaseId, item.inputViewDataSet[0][value]);
-                        //   _profile.setProfileItemValue(item.databaseId, item.inputViewDataSet[0][value]);
-                        // });
+                          sec = value;
+                          widget._setProfileItemValue(item.databaseId,  ((mins * 60) + sec).toString());
+
                         }, 
                       itemExtent: _itemHeight,
                       children: _seconds
@@ -121,49 +139,49 @@ class RecipePage extends StatelessWidget{
 
             /// Date
               DateTimeInputCard(StringLabels.date,
-                  _profile.getProfileItemValue( DatabaseIds.date),
+                  widget._profile.getProfileItemValue( DatabaseIds.date),
                   (dateTime)
-                  {if (dateTime != null){ _setProfileItemValue( DatabaseIds.date, dateTime);}},
-                   _isEditing),
+                  {if (dateTime != null){ widget._setProfileItemValue( DatabaseIds.date, dateTime);}},
+                   widget._isEditing),
 
             ///Coffee
               ProfileInputWithDetailsCard(
-                _profile.getProfileProfile(ProfileType.coffee),
+                widget._profile.getProfileProfile(ProfileType.coffee),
                 StringLabels.rested,
-                _profile.getDaysRested().toString() + ' days',
-                (){_showOptions(ProfileType.coffee);},),
+                widget._profile.getDaysRested().toString() + ' days',
+                (){widget._showOptions(ProfileType.coffee);},),
 
             ///Barista
               ProfileInputCard(
-                _profile.getProfileProfile(ProfileType.barista),
-                (){_showOptions(ProfileType.barista);},),
+                widget._profile.getProfileProfile(ProfileType.barista),
+                (){widget._showOptions(ProfileType.barista);},),
 
             /// Water
-              ProfileInputCardWithAttribute(_isEditing,
-                  profile: _profile.getProfileProfile(ProfileType.water),
+              ProfileInputCardWithAttribute(widget._isEditing,
+                  profile: widget._profile.getProfileProfile(ProfileType.water),
                   keyboardType: TextInputType.number,
                   onAttributeTextChange: (text) {
-                    _setProfileItemValue( DatabaseIds.temparature, text);
+                    widget._setProfileItemValue( DatabaseIds.temparature, text);
                   },
                   onProfileTextPressed: () {
-                    _showOptions(ProfileType.water);
+                    widget._showOptions(ProfileType.water);
                   },
-                  attributeTextfieldText: _profile.getProfileItemValue(
+                  attributeTextfieldText: widget._profile.getProfileItemValue(
                        DatabaseIds.temparature),
                   attributeHintText: StringLabels.enterValue,
                   attributeTitle: StringLabels.degreeC,
                   ),
 
             /// Grinder
-              ProfileInputCardWithAttribute(_isEditing,
-                  profile: _profile.getProfileProfile(ProfileType.grinder),
+              ProfileInputCardWithAttribute(widget._isEditing,
+                  profile: widget._profile.getProfileProfile(ProfileType.grinder),
                   onAttributeTextChange: (text) {
-                    _setProfileItemValue(DatabaseIds.grindSetting, text);
+                    widget._setProfileItemValue(DatabaseIds.grindSetting, text);
                   },
                   onProfileTextPressed: () {
-                    _showOptions(ProfileType.grinder);
+                    widget._showOptions(ProfileType.grinder);
                   },
-                  attributeTextfieldText: _profile.getProfileItemValue(
+                  attributeTextfieldText: widget._profile.getProfileItemValue(
                        DatabaseIds.grindSetting),
                   attributeHintText: StringLabels.enterValue,
                   attributeTitle: StringLabels.setting,
@@ -171,15 +189,15 @@ class RecipePage extends StatelessWidget{
               ),
 
             /// Equipment
-              ProfileInputCardWithAttribute(_isEditing,
-                  profile: _profile.getProfileProfile(ProfileType.equipment),
+              ProfileInputCardWithAttribute(widget._isEditing,
+                  profile: widget._profile.getProfileProfile(ProfileType.equipment),
                   onAttributeTextChange: (text) {
-                    _setProfileItemValue(DatabaseIds.preinfusion, text);
+                    widget._setProfileItemValue(DatabaseIds.preinfusion, text);
                   },
                   onProfileTextPressed: () {
-                    _showOptions(ProfileType.equipment);
+                    widget._showOptions(ProfileType.equipment);
                   },
-                  attributeTextfieldText: _profile.getProfileItemValue(
+                  attributeTextfieldText: widget._profile.getProfileItemValue(
                        DatabaseIds.preinfusion),
                   attributeHintText: StringLabels.enterValue,
                   attributeTitle: StringLabels.preinfusion,
@@ -187,44 +205,38 @@ class RecipePage extends StatelessWidget{
 
               /// Ratio card
                RatioCard(
-                _profile,
-                (dose) {_setProfileItemValue( DatabaseIds.brewingDose, dose);},  
-                (yielde) {_setProfileItemValue( DatabaseIds.yielde, yielde);},
-                (brewWeight) { _setProfileItemValue( DatabaseIds.brewWeight, brewWeight);},
-                _isEditing),
+                widget._profile,
+                (dose) {widget._setProfileItemValue( DatabaseIds.brewingDose, dose);},  
+                (yielde) {widget._setProfileItemValue( DatabaseIds.yielde, yielde);},
+                (brewWeight) { widget._setProfileItemValue( DatabaseIds.brewWeight, brewWeight);},
+                widget._isEditing),
 
               /// Time
               Card(child: Container(margin: EdgeInsets.all(10.0), child: Row(children: <Widget>[
                 
-                 PickerTextField(
-                  _profile.getProfileItem(DatabaseIds.time),
+                 TimePickerTextField(
+                  widget._profile.getProfileItem(DatabaseIds.time),
                   (item) => showPickerMenu(item, context),
                   100.0, 
-                  _isEditing)
+                  widget._isEditing)
 
-              
-                // TextFieldItemWithInitalValue(
-                //   _profile.getProfileItem(DatabaseIds.time),
-                //   (time) { _setProfileItemValue( DatabaseIds.time, time);},
-                //   100.0, 
-                //   _isEditing)
                   ],)),),
 
               /// Extraction and TDS
               TwoTextfieldCard(
-                (tds) { _setProfileItemValue( DatabaseIds.tds, tds);},
-                _profile.getProfileItem(DatabaseIds.tds),
-                _isEditing,
-                _profile.getExtractionYield() 
+                (tds) { widget._setProfileItemValue( DatabaseIds.tds, tds);},
+                widget._profile.getProfileItem(DatabaseIds.tds),
+                widget._isEditing,
+                widget._profile.getExtractionYield() 
               ),
 
               /// Notes
               NotesCard(
                   StringLabels.notes,
-                  _profile.getProfileItemValue(
+                  widget._profile.getProfileItemValue(
                        DatabaseIds.notes),
-                  (notes) {_setProfileItemValue( DatabaseIds.notes, notes);},
-                  _isEditing),
+                  (notes) {widget._setProfileItemValue( DatabaseIds.notes, notes);},
+                  widget._isEditing),
 
               ///Score Section
               Card(
@@ -232,8 +244,8 @@ class RecipePage extends StatelessWidget{
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Container(
-                      margin: EdgeInsets.all(_margin),
-                      padding: EdgeInsets.all(_margin),
+                      margin: EdgeInsets.all(widget._margin),
+                      padding: EdgeInsets.all(widget._margin),
                       child: Text(
                         StringLabels.score,
                         style: Theme.of(context).textTheme.title,
@@ -242,27 +254,26 @@ class RecipePage extends StatelessWidget{
                     Column(
                       children: <Widget>[
                         ScoreSlider(StringLabels.strength, 0.0,
-                         (value) { _setProfileItemValue( DatabaseIds.strength, value.toString());},
-                         _isEditing),
+                         (value) { widget._setProfileItemValue( DatabaseIds.strength, value.toString());},
+                         widget._isEditing),
 
                         ScoreSlider(StringLabels.balance, 0.0,
-                         (value) { _setProfileItemValue( DatabaseIds.balance, value.toString());},
-                         _isEditing),
+                         (value) { widget._setProfileItemValue( DatabaseIds.balance, value.toString());},
+                         widget._isEditing),
 
                         ScoreSlider(StringLabels.flavour, 0.0,
-                         (value) { _setProfileItemValue( DatabaseIds.flavour, value.toString());},
-                         _isEditing),
+                         (value) { widget._setProfileItemValue( DatabaseIds.flavour, value.toString());},
+                         widget._isEditing),
 
                         ScoreSlider(StringLabels.body, 0.0,
-                         (value) {_setProfileItemValue( DatabaseIds.body, value.toString());},
-                         _isEditing),
+                         (value) {widget._setProfileItemValue( DatabaseIds.body, value.toString());},
+                         widget._isEditing),
 
                         ScoreSlider(StringLabels.afterTaste, 0.0,
-                         (value) {_setProfileItemValue( DatabaseIds.afterTaste, value.toString());},
-                         _isEditing),
+                         (value) {widget._setProfileItemValue( DatabaseIds.afterTaste, value.toString());},
+                         widget._isEditing),
 
-                        /// End of score
-                        
+                        /// End of score   
                         
                       ],
                     )
@@ -271,10 +282,10 @@ class RecipePage extends StatelessWidget{
               ),
                NotesCard(
                         StringLabels.descriptors,
-                        _profile.getProfileItemValue(
+                        widget._profile.getProfileItemValue(
                              DatabaseIds.descriptors),
-                        (text) {_setProfileItemValue( DatabaseIds.descriptors, text);},
-                        _isEditing),
+                        (text) {widget._setProfileItemValue( DatabaseIds.descriptors, text);},
+                        widget._isEditing),
           ],
             );
       }

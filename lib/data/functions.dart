@@ -22,6 +22,53 @@ import 'package:dial_in_v1/data/mini_classes.dart';
 
 class Functions {
 
+   static int getIntValue(dynamic item){
+
+    int value;
+    
+    if (item == null){value = 0;}
+    else if (item is String && item == ''){value = 0;}
+    else if (item is String && item != ''){value = int.parse(item);}
+    else if (item is double){value = item.round().toInt();}
+    else if (item is !int){value = 0;}
+    else{value = item.value;}
+
+    return value;
+   }
+   
+
+
+
+
+    static String convertSecsmmss(int timeInput){
+        
+        int timeSecs = timeInput;
+        String timeString;
+        
+        int minutes = (timeSecs / 60).floor();
+        int seconds = timeSecs % 60;
+        
+        if (minutes < 10 && seconds < 10){
+            
+            timeString = "0$minutes:0$seconds";
+            
+        }else if (minutes < 10) {
+            
+            timeString = "0$minutes:$seconds";
+            
+        }else if (seconds < 10) {
+            
+            timeString = "$minutes:0$seconds";
+            
+            
+        } else {
+            
+            timeString = "$minutes:$seconds";
+            
+        }
+        return timeString;
+    }
+
   static List<int> oneToFiftynine(){
 
     List<int> numbers = new List<int>();

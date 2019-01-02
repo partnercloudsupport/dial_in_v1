@@ -11,6 +11,8 @@ import 'package:flutter_rating/flutter_rating.dart';
 import 'dart:async';
 import 'package:dial_in_v1/data/mini_classes.dart';
 import 'package:flutter/services.dart';
+import 'package:dial_in_v1/data/functions.dart';
+
 
 
 
@@ -573,6 +575,77 @@ class AddButton extends StatelessWidget {
 
 ////////////////////////////////// Custom Classes ///////////////////////////////////////
 
+
+// TimePicker textfield card
+class TimePickerTextField extends StatefulWidget {
+  final double _textFieldWidth;
+  final Item _item;
+  final bool _isEditing;
+  /// Returns a funtion with the Item 
+  /// of the item to open the picker view witht the correct data.
+  final Function(Item) _onItemTextPressed;
+
+  TimePickerTextField(this._item, this._onItemTextPressed, this._textFieldWidth, this._isEditing);
+
+  _TimePickerTextFieldState createState() => _TimePickerTextFieldState();
+}
+class _TimePickerTextFieldState extends State<TimePickerTextField> {
+
+  TextEditingController _controller;
+  FocusNode _focus;
+  Item _item;
+
+
+      @override
+       void initState() {
+            _item = widget._item;
+            _focus = new FocusNode();
+            _focus.addListener(handleLeftProfileTextfieldFocus);
+            _controller = new TextEditingController(text: Functions.convertSecsmmss(Functions.getIntValue(_item.value)));
+            super.initState();
+      }
+
+      @override
+      void dispose() {
+        _controller.dispose();
+        super.dispose();
+      }
+
+      void handleLeftProfileTextfieldFocus(){
+        if (_focus.hasFocus){setState(() {
+            widget._onItemTextPressed(widget._item);
+        });
+          _focus.unfocus();  
+        }
+      }
+
+      @override
+      void didUpdateWidget(TimePickerTextField oldWidget) {
+        _controller.text = Functions.convertSecsmmss(Functions.getIntValue(_item.value));
+          super.didUpdateWidget(oldWidget);
+        }
+
+/// TODO sort out text format :)
+      
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      flex: 5,
+      child: Container(padding: EdgeInsets.all(10.0), child: TextFormField(
+          enabled: widget._isEditing,
+           textAlign: TextAlign.start,
+           decoration: new InputDecoration(
+             prefixIcon: Icon(Icons.timer),
+             labelText: widget._item.title,
+           ),
+           focusNode: _focus,
+           controller: _controller,
+       )));
+  }
+}
+
+
 //Picker textfield card
 class PickerTextField extends StatefulWidget {
   final double _textFieldWidth;
@@ -689,9 +762,7 @@ static Future<void> showAlert
       );
     },
   );
-}
-
-
+  }
 }
 
 class ProfileImage extends StatelessWidget {
