@@ -66,118 +66,21 @@ class _RecipePageState extends State<RecipePage> {
       });
   }
 
-   void showPickerMenu(Item item, BuildContext context){
+  void showPickerMenu(Item item, BuildContext context){
 
-    time = Functions.getIntValue(item.value);
-    
-    List< Widget> _minutes = new List<Widget>();
-    List< Widget> _seconds = new List<Widget>();
-    double _itemHeight = 40.0; 
-    double _pickerHeight = 120.0;
-    double _pickerWidth = 50.0;
-    mins = (time/60).floor();
-    sec = time % 60;
-   
-    if (item.inputViewDataSet != null && item.inputViewDataSet.length > 0)
-    {item.inputViewDataSet[0]
-    .forEach((itemText){_minutes.add(Center(child:Text(itemText.toString(), style: Theme.of(context).textTheme.display2,)));}
-    );}
+    showModalBottomSheet(context: context, builder: (BuildContext context){
 
-    if (item.inputViewDataSet != null && item.inputViewDataSet.length > 0)
-    {item.inputViewDataSet[1]
-    .forEach((itemText){_seconds.add(Center(child:Text(itemText.toString(), style: Theme.of(context).textTheme.display2,)));}
-    );}
-
-     showModalBottomSheet(context: context, builder: (BuildContext context){
-       
-      if (item.inputViewDataSet != null && item.inputViewDataSet.length < 1)
-      {return Center(child: Text('Error No Data for picker'),);  
-
-      }else{
-
-    FixedExtentScrollController _minuteController = new FixedExtentScrollController(initialItem: mins);
-    FixedExtentScrollController _secondController = new FixedExtentScrollController(initialItem: sec);
-  
-        return  
-        Container(child: SizedBox(height: 200.0, width: double.infinity, child: Column(children: <Widget>[
-
-              Material(elevation: 5.0, shadowColor: Colors.black, color:Theme.of(context).accentColor, type:MaterialType.card, 
-              child: Container(height: 40.0, width: double.infinity,
-              child:
-              Row(mainAxisAlignment: MainAxisAlignment.center ,children: <Widget>[
-              /// TODO; make timer
-
-              FlatButton(onPressed:() => timer.isActive ? stopWatch() :  startWatch() ,
-              child: timer.isActive ? Icon(Icons.stop): Icon(Icons.play_arrow)),
-
-              FlatButton(onPressed:() => resetWatch(),
-              child: Icon(Icons.restore)),
-
-              Expanded(child: Container(),),
-
-              FlatButton(onPressed:() => Navigator.pop(context),
-              child: Text('Done')),
-
-              ],)
-              )
-              ),
-
-          SizedBox(height: 160.0, width: double.infinity  ,child:
-          Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, crossAxisAlignment: CrossAxisAlignment.center,  
-          children: <Widget>[
-
-            /// Minutes picker
-            Row(children: <Widget>[
-              SizedBox(height: _pickerHeight, width: _pickerWidth ,
-              child: CupertinoPicker(
-                backgroundColor: Colors.transparent,
-                scrollController: _minuteController,
-                useMagnifier: true,
-                onSelectedItemChanged:
-                  (value){
-                    mins = value;
-                    widget._setProfileItemValue(item.databaseId, ((mins * 60) + sec).toString());
-                  }, 
-                itemExtent: _itemHeight,
-                children: _minutes
-                ),),
-                Text('m')
-            ],),
-
-            /// Seconds picker
-              Row(children: <Widget>[
-                  SizedBox(height: _pickerHeight, width: _pickerWidth  ,
-              child: CupertinoPicker(
-                backgroundColor:  Colors.transparent,
-                scrollController: _secondController,
-                useMagnifier: true,
-                onSelectedItemChanged:
-                  (value){
-                    sec = value;
-                    widget._setProfileItemValue(item.databaseId,  ((mins * 60) + sec).toString());
-
-                  }, 
-                itemExtent: _itemHeight,
-                children: _seconds
-                ),),
-              Text('s'),
-
-                  ],
-              )
-          ],))
-        ],) )
-      );
-      }
+      return TimePicker(item, widget._setProfileItemValue);
       }
     );
-}
+  }
 
 
   ///
   /// UI Build
   ///
-  @override
-  Widget build(BuildContext context) {
+@override
+Widget build(BuildContext context) {
     return  
     Column(children: <Widget>[ 
 
@@ -339,52 +242,58 @@ class _RecipePageState extends State<RecipePage> {
 
 class TimePicker extends StatefulWidget {
 
-  Item item;
-  TimePicker(this.item);
+  final Item item;
+  final Function(String , dynamic) _setProfileItemValue;
+
+  TimePicker(this.item, this._setProfileItemValue);
+  
 
   _TimePickerState createState() => _TimePickerState();
 }
 
 class _TimePickerState extends State<TimePicker> {
 
+  double _itemHeight = 40.0; 
+  double _pickerHeight = 120.0;
+  double _pickerWidth = 50.0;
+
   List< Widget> _minutes = new List<Widget>();
   List< Widget> _seconds = new List<Widget>();
 
   Stopwatch stopwatch = new Stopwatch();
   Timer timer = Timer(Duration(milliseconds:1000), (){},);
-  int time;
+  int time = 0;
   int mins;
   int sec;
+  bool timerIsActive = false;
 
-  FixedExtentScrollController _minuteController = new FixedExtentScrollController(initialItem: mins);
-  FixedExtentScrollController _secondController = new FixedExtentScrollController(initialItem: sec);
+  FixedExtentScrollController _minuteController;
+  FixedExtentScrollController _secondController;  
 
-@override
+  @override
   void initState() {
- if (widget.item.inputViewDataSet != null && widget.item.inputViewDataSet.length > 0)
-    {widget.item.inputViewDataSet[0]
-    .forEach((itemText){_minutes.add(Center(child:Text(itemText.toString(), style: Theme.of(context).textTheme.display2,)));}
-    );}
-
-    if (widget.item.inputViewDataSet != null && widget.item.inputViewDataSet.length > 0)
-    {widget.item.inputViewDataSet[1]
-    .forEach((itemText){_seconds.add(Center(child:Text(itemText.toString(), style: Theme.of(context).textTheme.display2,)));}
-    );}    super.initState();
+  mins = (Functions.getIntValue(widget.item.value)/60).floor();
+  sec = Functions.getIntValue(widget.item.value) % 60;
+    super.initState();
   }
-   
 
-    void startWatch() {
-  timer = new Timer.periodic(new Duration(milliseconds:1000), updateTime);
+  void startWatch() {
+      setState(() {
+        timerIsActive = true;
+        timer = Timer.periodic(Duration(seconds:1),  (Timer t) => updateTime(t));
+            });
   }
 
   void stopWatch() {
     setState(() {
+      timerIsActive = false;
       timer.cancel();
     });
   }
 
   void resetWatch() {
     setState(() {
+      timerIsActive = false;
       time = 0;
       timer.cancel();
     });
@@ -400,7 +309,26 @@ class _TimePickerState extends State<TimePicker> {
   }
 
   @override
+    void dispose() {
+      timer.cancel();
+      super.dispose();
+    }
+
+  @override
   Widget build(BuildContext context) {
+     if (widget.item.inputViewDataSet != null && widget.item.inputViewDataSet.length > 0)
+    {widget.item.inputViewDataSet[0]
+    .forEach((itemText){_minutes.add(Center(child:Text(itemText.toString(), style: Theme.of(context).textTheme.display2,)));}
+    );}
+
+    if (widget.item.inputViewDataSet != null && widget.item.inputViewDataSet.length > 0)
+    {widget.item.inputViewDataSet[1]
+    .forEach((itemText){_seconds.add(Center(child:Text(itemText.toString(), style: Theme.of(context).textTheme.display2,)));}
+    );}    
+
+    _minuteController = new FixedExtentScrollController(initialItem: mins);
+    _secondController = new FixedExtentScrollController(initialItem: sec);
+
     return Container(
        child: Container(child: SizedBox(height: 200.0, width: double.infinity, child: Column(children: <Widget>[
 
@@ -410,10 +338,14 @@ class _TimePickerState extends State<TimePicker> {
       Row(mainAxisAlignment: MainAxisAlignment.center ,children: <Widget>[
       /// TODO; make timer
 
-      FlatButton(onPressed:() => timer.isActive ? stopWatch() :  startWatch() ,
-      child: timer.isActive ? Icon(Icons.stop): Icon(Icons.play_arrow)),
+      FlatButton(onPressed:() { setState(() {
+                    timerIsActive ? stopWatch() :  startWatch(); 
+            });},
+      child: timerIsActive ? Icon(Icons.stop): Icon(Icons.play_arrow)),
 
-      FlatButton(onPressed:() => resetWatch(),
+      FlatButton(onPressed:() { setState(() {
+         resetWatch();}
+         );},
       child: Icon(Icons.restore)),
 
       Expanded(child: Container(),),
@@ -439,7 +371,7 @@ class _TimePickerState extends State<TimePicker> {
         onSelectedItemChanged:
           (value){
             mins = value;
-            widget._setProfileItemValue(item.databaseId, ((mins * 60) + sec).toString());
+            widget._setProfileItemValue(widget.item.databaseId, ((mins * 60) + sec).toString());
           }, 
         itemExtent: _itemHeight,
         children: _minutes
@@ -457,7 +389,7 @@ class _TimePickerState extends State<TimePicker> {
         onSelectedItemChanged:
           (value){
             sec = value;
-            widget._setProfileItemValue(item.databaseId,  ((mins * 60) + sec).toString());
+            widget._setProfileItemValue(widget.item.databaseId,  ((mins * 60) + sec).toString());
 
           }, 
         itemExtent: _itemHeight,
