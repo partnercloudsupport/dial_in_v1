@@ -74,6 +74,8 @@ class Profile {
     }
   }
 
+  String get userID => this.userId;
+  
   //  Future<void> setDefaultPic()async{if (this.image == null){ this.image = await Functions.getFile(Images.recipeSmaller);}}
 
   double getExtractionYield(){

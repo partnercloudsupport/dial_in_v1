@@ -2,7 +2,8 @@ import 'package:dial_in_v1/data/functions.dart';
 
 class  StringLabels {
 
-///since flutter
+  static const String follow = 'Follow';
+  static const String userProfile = 'User Profile';
    static const String brewTime = 'Brew Time';
   static const String ey = 'Ext/y';
   static const String extractionYield = 'Extraction yield';

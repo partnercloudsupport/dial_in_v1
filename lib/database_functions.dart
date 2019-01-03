@@ -211,6 +211,29 @@ class DatabaseFunctions {
       return profile;
   }
 
+  static Future<int> getCount(ProfileType profileType, String userId)async{
+
+    // int count =  await Firestore.instance.
+    // collection(Functions.getProfileTypeDatabaseId(profileType))
+    // .where(DatabaseIds.user, isEqualTo: userId).snapshots().length;
+
+    // var snaps = await Firestore.instance.collection(DatabaseIds.recipe)
+    // .where(DatabaseIds.user, isEqualTo: userId).snapshots();
+    var snaps = Firestore.instance
+      .collection(Functions.getProfileTypeDatabaseId(profileType))
+      .where(DatabaseIds.user, isEqualTo: userId);
+
+    var querySnapshot = await snaps.getDocuments();
+
+    var totalEquals = querySnapshot.documents.length;
+
+    // var snaps = await Firestore.instance.collection(DatabaseIds.recipe).snapshots().toList();
+
+    // int count = int.parse(snaps.length.toString());
+  
+    return totalEquals;
+  }
+
   /// Get Image from assets
   static void getImageFromAssets(String id, Function completion(Image image)){
     Image pic = Image.asset(id);
@@ -253,7 +276,6 @@ class DatabaseFunctions {
 
     return _value;
   }
-
 
   /// Convert profiles from data snapshot
   static Future<List<Profile>> createProfilesFromDataSnapshot(String databaseId, List<DocumentSnapshot> data)async{
@@ -461,56 +483,6 @@ class DatabaseFunctions {
     });
   }
 
-  /// Get feed
-  static StreamBuilder getFeed(String _listDatabaseId, bool isProfileFeed ,Function(Profile)  _dealWithProfileSelection, Function(Profile) _deleteProfile){
-
-    return StreamBuilder(
-      stream: Firestore.instance.collection(_listDatabaseId).snapshots(),
-      initialData: 10,
-      builder: (context, snapshot) {
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.waiting:
-                    case ConnectionState.none: return const Center(child: Text('No internet connection'));
-                    case ConnectionState.active:
-                    case ConnectionState.done:
-                      if (!snapshot.hasData) {
-                        return const Center(child: Text('Loading'));
-                      } else if (snapshot.hasError) {
-                        return const Center(child: Text('Error'));
-                      } else if (snapshot.data.documents.length < 1) {
-                        return const Center(child: Text('No data'));
-                      } else {
-                        return new Container(
-                            height: 200.0,
-                            width: 150.0,
-                            child: new FutureBuilder(
-                                future: isProfileFeed ? Functions.buildProfileCardArrayFromAsyncSnapshot(context, snapshot, _listDatabaseId, _dealWithProfileSelection, _deleteProfile):
-                                Functions.buildFeedCardArray(context, snapshot, _dealWithProfileSelection),
-                                builder: (BuildContext context, AsyncSnapshot futureSnapshot) {
-                                  switch (futureSnapshot.connectionState) {
-                                    case ConnectionState.none: return Text('Press button to start.');  
-                                    case ConnectionState.active:
-                                    case ConnectionState.waiting: return Center(child: Text(StringLabels.loading));                                     
-                                    case ConnectionState.done:
-                                      if (futureSnapshot.hasError){return Text('Error: ${futureSnapshot.error}');}
-                                      else if (futureSnapshot.data == null){ return Center(child: Text(StringLabels.noData));}
-                                      else{
-                                      List<dynamic> list = futureSnapshot.data;
-                                      List<dynamic> reversedlist = list.reversed.toList();
-                                      return 
-                                      ListView.builder(
-                                          itemExtent: 100,
-                                          itemCount: reversedlist.length,
-                                          itemBuilder: (BuildContext context, int index) =>
-                                              reversedlist[index]);}
-                                  }
-                                  return new Container(width: 0.0, height: 0.0,); // unreachable
-                                }));
-                      }
-                  }
-                }
-      );
-  }
 }
 
 class Storage {

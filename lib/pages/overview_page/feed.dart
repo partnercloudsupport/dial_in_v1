@@ -18,7 +18,6 @@ class FeedPageState extends State<FeedPage> with SingleTickerProviderStateMixin{
 TabController controller;
 TabViewDataArray _lists;
 
-
 @override
 void initState() { 
   super.initState();

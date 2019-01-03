@@ -451,32 +451,28 @@ void setWidgetUp(){
 ///Social card
 class SocialProfileCard extends StatelessWidget {
 
+  final Function(UserProfile) _giveUserProfile;
   final Function(Profile) _giveprofile;
   final FeedProfileData _profile;
   final _dateFormat = DateFormat.yMd();
 
-  SocialProfileCard(this._profile, this._giveprofile,);
+  SocialProfileCard(this._profile, this._giveprofile, this._giveUserProfile);
 
   @override
   Widget build(BuildContext context) {
     return 
     Card(child: 
-      InkWell(onTap:() => _giveprofile(_profile.profile)
-       
-      ,child: 
 
        Column(children: <Widget>[
-        
-      Material (color: Theme.of(context).bottomAppBarColor, 
+
+      InkWell(onTap:() => _giveUserProfile(_profile.userProfile),child:  
+      Material (color: Theme.of(context).dividerColor, 
       child: Row(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
 
-
-      Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
-      
-          /// User picture
-          Container(
-              child: CircularPicture(_profile.userImage , 60.0)),
-              ]),
+         /// User picture
+          Container(child:InkWell(onTap:() => _giveUserProfile(_profile.userProfile),
+              child: CircularPicture(_profile.userImage , 60.0))),
+              
       
           Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
 
@@ -489,29 +485,33 @@ class SocialProfileCard extends StatelessWidget {
         ]),
         Expanded(child: Column(mainAxisAlignment: MainAxisAlignment.end, crossAxisAlignment: CrossAxisAlignment.end, children: [ 
       
-          Container(margin: const EdgeInsets.all(15.0) ,child:RaisedButton(child: Text('Follow'),onPressed: (){},),),
+          Container(margin: const EdgeInsets.all(15.0) ,
+          child: RaisedButton(color: Theme.of(context).accentColor,
+          child: Text('Follow'),onPressed: (){},),),
           ]) ,)
             
-      ],),),      
+      ],),)),      
 
-      /// Recipe picture
-      Hero(tag: _profile.profile.objectId, child: SizedBox(width: double.infinity, height: 200.0, child:
-        Material(type: MaterialType.card, elevation: 2.0 ,color: Theme.of(context).scaffoldBackgroundColor,
-         child: FadeInImage.assetNetwork(image:_profile.profile.image, fit: BoxFit.cover, placeholder: Images.rippleLoadingGif),),),),
-      
-      ///Spacer
-        Container(height: 20.0,),
+      InkWell(onTap:() => _giveprofile(_profile.profile),child: Column(children: <Widget>[
 
-       /// Coffee Name
-        Container(margin: EdgeInsets.all(5.0), child: Text(_profile.profile.getProfileProfileItemValue(ProfileType.coffee, DatabaseIds.coffeeId),  maxLines: 1, style: Theme.of(context).textTheme.title,),),
+        /// Recipe picture
+        Hero(tag: _profile.profile.objectId, child: SizedBox(width: double.infinity, height: 200.0, child:
+          Material(type: MaterialType.card, elevation: 2.0 ,color: Theme.of(context).scaffoldBackgroundColor,
+          child: FadeInImage.assetNetwork(image:_profile.profile.image, fit: BoxFit.cover, placeholder: Images.rippleLoadingGif),),),),
+        
+        ///Spacer
+          Container(height: 20.0,),
 
-        /// Notes
-        Container(margin: EdgeInsets.all(5.0), child: Text(_profile.profile.getProfileItemValue(DatabaseIds.descriptors),  maxLines: 1), ),
+        /// Coffee Name
+          Container(margin: EdgeInsets.all(5.0), child: Text(_profile.profile.getProfileProfileItemValue(ProfileType.coffee, DatabaseIds.coffeeId),  maxLines: 1, style: Theme.of(context).textTheme.title,),),
 
-        ///Score
-        FiveStarRating(_profile.profile.getTotalScore().toInt())      
+          /// Notes
+          Container(margin: EdgeInsets.all(5.0), child: Text(_profile.profile.getProfileItemValue(DatabaseIds.descriptors),  maxLines: 1), ),
+
+          ///Score
+          FiveStarRating(_profile.profile.getTotalScore().toInt())  
+        ],))      
       ]),
-      ),
     );
   }
 }

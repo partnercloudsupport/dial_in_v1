@@ -1174,14 +1174,15 @@ class Functions {
     return _item;
   }
  
-  static Future<List<Widget>> buildFeedCardArray( BuildContext context, AsyncSnapshot documents, Function(Profile) giveProfile) async {
+  static Future<List<Widget>> buildFeedCardArray(
+     BuildContext context, AsyncSnapshot documents, Function(Profile) giveProfile, Function(UserProfile) _giveUserProfile) async {
 
     List<Widget> _cardArray = new List<Widget>();
 
      if (documents.data.documents != null || documents.data.documents.length != 0) {
 
         for(var document in documents.data.documents){  /// <<<<==== changed line
-            Widget result = await buildFeedCardFromDocument(context, document,giveProfile);
+            Widget result = await buildFeedCardFromDocument(context, document, giveProfile, _giveUserProfile);
             _cardArray.add(result);
         }
      }
@@ -1192,8 +1193,12 @@ class Functions {
   static Future<FeedProfileData> createFeedProfileFromProfile(Profile profile)async{
 
     String image =  await profile.getUserImage();
-    String userId = await profile.getProfileUserName();
-    return FeedProfileData(profile, userId, image);
+    String username = await profile.getProfileUserName();
+    String userId = profile.userID;
+
+    UserProfile userProfile = new UserProfile(userId, username, image);
+
+    return FeedProfileData(profile, userProfile);
 
   }
 
@@ -1213,18 +1218,20 @@ class Functions {
     } 
 
 
-  static Future<Widget> buildFeedCardFromProfile(Profile profile, Function(Profile) giveprofile) async {
+  static Future<Widget> buildFeedCardFromProfile
+  (Profile profile, Function(Profile) giveprofile, Function(UserProfile) _giveUserProfile) async {
     
     FeedProfileData feedProfile = await Functions.createFeedProfileFromProfile(profile);
 
-    return SocialProfileCard(feedProfile, giveprofile);
+    return SocialProfileCard(feedProfile, giveprofile, _giveUserProfile);
   }
 
-  static Future<Widget> buildFeedCardFromDocument(BuildContext context, DocumentSnapshot document, Function(Profile) giveprofile) async {
+  static Future<Widget> buildFeedCardFromDocument
+  (BuildContext context, DocumentSnapshot document, Function(Profile) giveprofile, Function(UserProfile) _giveUserProfile) async {
     
     Profile profile = await DatabaseFunctions.createProfileFromDocumentSnapshot(DatabaseIds.recipe, document);
     FeedProfileData feedProfile = await Functions.createFeedProfileFromProfile(profile);
-    return SocialProfileCard(feedProfile, giveprofile);
+    return SocialProfileCard(feedProfile, giveprofile, _giveUserProfile);
   }
   
   static Future<Widget> buildProfileCardFromDocument(DocumentSnapshot document, String databaseId, Function(Profile) giveprofile, Function(Profile) deleteProfile) async {

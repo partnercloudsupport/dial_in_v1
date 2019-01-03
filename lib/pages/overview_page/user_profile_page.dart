@@ -8,25 +8,16 @@ import 'package:dial_in_v1/data/mini_classes.dart';
 
 
 
-class UserProfilePage extends StatefulWidget{
- @override
-  UserProfileState createState() => new UserProfileState();
-}
-class UserProfileState extends State<UserProfilePage>{
+class UserProfilePage extends StatelessWidget{
 
-/// UI Build
+  final UserProfile _userProfile;
+
+  UserProfilePage(this._userProfile);
+
+  /// UI Build
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant<ProfilesModel>
-      (builder: (context, _ ,model) =>
-
-      StreamBuilder<UserProfile>(
-          stream:  model.userProfile,
-          builder: (context, snapshot) {
-
-if (!snapshot.hasData) { return Center(child: CircularProgressIndicator(),);}else{ 
-  
-  return
+    return Container(child: 
 
     new Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center ,children:[
 
@@ -36,7 +27,7 @@ if (!snapshot.hasData) { return Center(child: CircularProgressIndicator(),);}els
                       ProfilesModel.of(context).userImage, 150.0))),
 
       /// User name
-      Text(model.userName, style: Theme.of(context).textTheme.display3,),
+      Text(_userProfile.userName, style: Theme.of(context).textTheme.display3,),
 
       ///Spacer
       Container(height: 20.0,),
@@ -46,30 +37,34 @@ if (!snapshot.hasData) { return Center(child: CircularProgressIndicator(),);}els
       children: <Widget>[
 
         /// Brew count
+        FutureBuilder(future: _userProfile.getRecipeCount(),initialData: '' ,builder: (context, snapshot) =>
         CountBlock(
-            model.recipeProfilesCount.toString(),
+            snapshot.data.toString(),
             StringLabels.brewCount,
-        ),
+        )),
 
         /// Bean Stash
+        FutureBuilder(future: _userProfile.getcoffeeCount(),initialData: '' ,builder: (context, snapshot) =>
         CountBlock(
-            model.coffeeProfilesCount.toString(),
-            StringLabels.beanStash,
-        ),
+            snapshot.data.toString(),
+            StringLabels.brewCount,
+        )),
 
         /// Followers
+        FutureBuilder(future: _userProfile.getRecipeCount(),initialData: '' ,builder: (context, snapshot) =>
         CountBlock(
-            model.recipeProfilesCount.toString(),
-            StringLabels.followers,
-        ),
+            snapshot.data.toString(),
+            StringLabels.brewCount,
+        )),
       ],
       ),),
       ]
+    ,)
     );
-          }})
-      );
+    
+  }
 }
-}
+
 
 class CountBlock extends StatelessWidget {
 
@@ -89,3 +84,4 @@ class CountBlock extends StatelessWidget {
      );
   }
 }
+

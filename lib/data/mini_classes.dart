@@ -1,18 +1,20 @@
 import 'package:dial_in_v1/data/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:dial_in_v1/database_functions.dart';
 
 class FeedProfileData{
 
   Profile _profile;
-  String _userName;
-  String _userImage;
+  UserProfile _userProfile;
 
-  FeedProfileData(this._profile, this._userName, this._userImage);
+  FeedProfileData(this._profile, this._userProfile);
 
   Profile get profile => _profile;
-  String get userName => _userName;
-  String get userImage => _userImage;
+  UserProfile get userProfile => _userProfile;
+  String get userName => _userProfile._userName;
+  String get userImage => _userProfile._userImage;
+
 }
 
 class NumericTextFormatter extends TextInputFormatter {
@@ -28,6 +30,9 @@ class NumericTextFormatter extends TextInputFormatter {
 }
 
 class UserProfile {
+
+    UserProfile(this._userId,this._userName,this._userImage);
+
     String _userId;
     String get userId => _userId;
 
@@ -37,7 +42,14 @@ class UserProfile {
     String _userImage;
     String get userImage => _userImage;
 
-    UserProfile(this._userId,this._userName,this._userImage);
+    Future<int> getRecipeCount()async{ 
+      return await DatabaseFunctions.getCount(ProfileType.recipe, _userId);
+    }
+
+    Future<int> getcoffeeCount()async{ 
+      return await DatabaseFunctions.getCount(ProfileType.coffee, _userId);
+    }
+
 }
 
  List<int> primeNumbers =

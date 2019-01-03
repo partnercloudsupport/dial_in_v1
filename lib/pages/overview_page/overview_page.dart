@@ -8,8 +8,9 @@ import 'package:dial_in_v1/pages/overview_page/feed.dart';
 import 'package:dial_in_v1/database_functions.dart';
 import 'package:dial_in_v1/data/profile.dart';
 import 'package:dial_in_v1/inherited_widgets.dart';
-import 'package:dial_in_v1/pages/overview_page/user_profile.dart';
 import 'package:dial_in_v1/data/functions.dart';
+import 'package:dial_in_v1/pages/overview_page/current_user_page.dart';
+
 
 
 
@@ -26,7 +27,7 @@ class OverviewPageState extends State<OverviewPage> with SingleTickerProviderSta
   @override
   void initState() { 
     ProfilesModel.of(context).init();
-    _tabViews = TabViewDataArray();
+    _tabViews = TabViewDataArray(context);
     controller = new TabController(vsync: this, length: _tabViews.tabs.length);
     super.initState();
   }
@@ -140,7 +141,7 @@ class TabViewDataArray{
 
   List<TabViewData> tabs;
 
- TabViewDataArray(){ 
+ TabViewDataArray(BuildContext context){ 
    
     this.tabs = [
 
@@ -151,10 +152,13 @@ class TabViewDataArray{
    
     TabViewData(new 
     DataPage(),
-    Tab(icon: Icon(Icons.list), text: "Data"),
+    Tab(icon: Icon(Icons.list),text: "Data"),
     ProfileType.feed),
 
-    TabViewData(new UserProfilePage(),Tab(icon: Icon(Icons.portrait), text: "User"), ProfileType.none),
+    TabViewData(
+      new CurrentUserPage(ProfilesModel.of(context).userProfile),
+      Tab(icon: Icon(Icons.portrait),text: "User"),
+      ProfileType.none),
     ];
  }
 }

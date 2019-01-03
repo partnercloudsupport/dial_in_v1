@@ -7,7 +7,8 @@ import 'package:dial_in_v1/inherited_widgets.dart';
 import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'package:dial_in_v1/data/mini_classes.dart';
 import 'package:dial_in_v1/routes.dart';
-
+import 'package:dial_in_v1/pages/overview_page/user_profile_page.dart';
+import 'package:dial_in_v1/data/strings.dart';
 
 class FeedList extends StatefulWidget{
 
@@ -22,17 +23,40 @@ class FeedList extends StatefulWidget{
 
 class _FeedListState extends State<FeedList>{
 
-   void _dealWithProfileSelection(Profile profile){
+  
+  void _handleUserSelection(UserProfile userProfile){
+   
+      Navigator.push(context, SlowerRoute((BuildContext context) =>
 
-     if (widget._isOnOverviewScreen){
-       Navigator.push(context, SlowerRoute((BuildContext context) =>
-        ProfilePage(isOldProfile: true, isCopying: false, isEditing: true, isNew: false, type: profile.type, referance: profile.objectId, profile: profile)));
+      Scaffold(
+       
+      /// App bar 
+      appBar: AppBar
+              (title: Text
+              (StringLabels.userProfile, style: 
+                TextStyle( fontWeight: FontWeight.w700,),textAlign: TextAlign.center,),
+               automaticallyImplyLeading: false,
+      leading: FlatButton( onPressed: () {Navigator.pop(context);}, 
+      child: Icon(Icons.arrow_back),), 
+      actions: <Widget>[ 
+        RawMaterialButton( onPressed: () { },
+         child: Text(StringLabels.follow))  ], ),
+    
+      body: UserProfilePage(userProfile))));
 
-     }else{
-       widget._giveProfile(profile);
-       Navigator.pop(context);
-     }
-   }
+  }
+
+  void _dealWithProfileSelection(Profile profile){
+
+    if (widget._isOnOverviewScreen){
+      Navigator.push(context, SlowerRoute((BuildContext context) =>
+      ProfilePage(isOldProfile: true, isCopying: false, isEditing: true, isNew: false, type: profile.type, referance: profile.objectId, profile: profile)));
+
+    }else{
+      widget._giveProfile(profile);
+      Navigator.pop(context);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +84,7 @@ class _FeedListState extends State<FeedList>{
                     itemExtent: 450,
                     itemCount: snapshot.data.length,
                     itemBuilder: (BuildContext context, int index) =>
-                        SocialProfileCard(snapshot.data[index], _dealWithProfileSelection)
+                        SocialProfileCard(snapshot.data[index], _dealWithProfileSelection, _handleUserSelection)
                 );
               }
           }
