@@ -281,7 +281,7 @@ class _TimePickerState extends State<TimePicker> {
   void startWatch() {
       setState(() {
         timerIsActive = true;
-        timer = Timer.periodic(Duration(seconds:1),  (Timer t) => updateTime(t));
+        timer = Timer.periodic(Duration(seconds:1),(Timer t) => updateTime(t));
             });
   }
 
@@ -310,11 +310,11 @@ class _TimePickerState extends State<TimePicker> {
             sec = (time % 60);
            _minuteController.animateTo(mins*_itemHeight.toDouble(),
             duration: Duration(
-                      seconds: 1), curve: Curves.easeInOut);
+                      seconds: 1), curve: Curves.linear);
 
           _secondController.animateTo(sec*_itemHeight.toDouble(),
             duration: Duration(
-                      seconds: 1), curve: Curves.easeInOut);
+                      seconds: 1), curve: Curves.linear);
            sec = time % 60;
       }
       );
