@@ -77,7 +77,7 @@ class Functions {
         }
         return timeString;
     }
-
+/// Get Numbers 0 to fifity nine
   static List<int> oneToFiftynine(){
 
     List<int> numbers = new List<int>();
@@ -87,71 +87,91 @@ class Functions {
     }
     return numbers;
   }
-  /// TODO;
-  static void getRatio (List<int> numbers){
-    
-    List<List<int>> primeFactorList = new List<List<int>>();
 
-    /// Find prime factors for each number
-    numbers.forEach((number){
-      bool check = true;
-      int x = 0;
 
-      List<int> primeFactors = List<int> ();
+  static String getTwoNumberRatio(int first, int second){
 
-      while(check == true && x < primeNumbers.length){
+    List<int> newNumbers = getRatio([first,second]);
 
-        if( number % primeNumbers[x] == 0){
+    return '${newNumbers[0]} : ${newNumbers[1]}';
 
-          primeFactors.add(primeNumbers[x]);
+  }
 
-        }
-        x = x + 1;
+/// Get ratio
+  static List<int> getRatio (List<int> numbers){
+
+    List<int> numbersSorted = numbers;
+
+    // numbersSorted.sort((a, b) => a.compareTo(b));
+
+    List<List<int>> factorList = new List<List<int>>();
+
+    /// Find factors for each number
+
+    /// Find matching values
+    for (var i = 0; i < numbersSorted.length; i++) {
+
+      List<int> factors = new  List<int>();
+
+      for (var x = 0 ; x <= numbersSorted[i]; x++) {
+
+        if (numbersSorted[i].toDouble() % x.toDouble() == 0){factors.add(x);}
       }
-      if (primeFactors != null){primeFactorList.add(primeFactors);}
-      else{primeFactorList.add([0]);}
+      factors.add(numbersSorted[i]);
+      factorList.add(factors);
     }
-    );
-  
+
     List<int> commonFactors = new List<int>();
 
     /// Find matching values
-    for (var i = 0; i < primeFactorList.length; i++) {
+    for (var i = 0; i < factorList.length - 1; i++) {
 
-     for (var x = 0; x < primeFactorList[i].length; x++){
+      for (var x = 0; x < factorList[i].length; x++){
 
-       for (var y = 0; y < primeFactorList[i + 1].length; y++){
+       for (var y = 0; y < factorList[i + 1].length; y++){
 
-          if(primeFactorList[i][x] == primeFactorList[i + 1][y]){
+          if(factorList[i][x] == factorList[i + 1][y]){
 
-            commonFactors.add(primeFactorList[i][x]);
+            if (i > 0){
+              for (var z = 0; z < factorList[i - 1].length ; z++) {
+                
+                if(factorList[i][x] == factorList[i - 1][z]){
+
+                  commonFactors.add(factorList[i][x]);
+
+                }
+              }
+            }else{
+                  commonFactors.add(factorList[i][x]);
+            }
          }
-         y++;
        }
-        x++;
-     }
-     i++;
+      }
     }
 
     if (commonFactors.length > 0){
       
-      int highestDemoniator = commonFactors.reduce((value, element) => value * element);
+      int highestDemoniator = commonFactors.reduce((current, next){
+
+        if (current > next){return current;}
+        else{ return next; }
+
+      });
     
       List<int> newNumbers =  new List<int>();
 
-     for (var x = 0; x < numbers.length; x++){
+     for (var x = 0; x < numbersSorted.length; x++){
 
-       int number = numbers[x] ~/ highestDemoniator;
+       int number = numbersSorted[x] ~/ highestDemoniator;
        newNumbers.add(number);
 
       }
-      print('New ratio $newNumbers');
+      return newNumbers;
     }
 
-    else{ print('New ratio $numbers');}
+    else{ return numbersSorted;}
      
-  }
-  
+  }  
 
   static File fileToPng(File file){
   // decodeImage will identify the format of the image and use the appropriate

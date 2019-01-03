@@ -608,7 +608,7 @@ class CoffeeCard extends StatelessWidget {
 
 /// Ratio Card
 class RatioCard extends StatefulWidget {
-  final double _margin = 10.0;
+  final double _margin = 5.0;
   final double _textFieldWidth = 80.0;
   final bool _isEditing;
 
@@ -639,19 +639,14 @@ class _RatioCardState extends State<RatioCard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Container(
-            child: Text(
-              StringLabels.ratios,
-              style: Theme.of(context).textTheme.title,
-            ),
-          ),
+
+         
 
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
 
-              // Padding(padding: EdgeInsets.all(widget._margin)),
 
               /// Dose
               TextFieldItemWithInitalValue(
@@ -674,7 +669,6 @@ class _RatioCardState extends State<RatioCard> {
                 widget._textFieldWidth, 
                 widget._isEditing), 
               
-              // Padding(padding: EdgeInsets.all(widget._margin)),
 
             ],
           ),
@@ -682,10 +676,22 @@ class _RatioCardState extends State<RatioCard> {
           Padding(padding: EdgeInsets.all(widget._margin)),
 
           Container(
-            // margin: EdgeInsets.all( widget._margin),
-            // padding: EdgeInsets.all( widget._margin),
-            child: Text('Ratio',
-          style: Theme.of(context).textTheme.display3,),)
+
+          child:Text
+          (Functions.getTwoNumberRatio(
+          Functions.getIntValue(widget._profile.getProfileItemValue(DatabaseIds.brewingDose)),
+          Functions.getIntValue(widget._profile.getProfileItemValue(DatabaseIds.yielde))),
+          style: Theme.of(context).textTheme.display3,),),
+
+          Container(
+            child: Text(
+              'Dose : Yield',
+              style: Theme.of(context).textTheme.caption,
+            ),
+          ),
+
+          Padding(padding: EdgeInsets.all(widget._margin)),
+
         ],
       ),
     ));
@@ -716,13 +722,13 @@ class _TwoTextfieldCardState extends State<TwoTextfieldCard> {
 
   @override
     void initState() {
-        _rightController.text = widget._itemRight.value;      super.initState();
+        _rightController.text = widget._itemRight.value;     
+        super.initState();
     }
   @override
   Widget build(BuildContext context) {
     return Card(child: Container(
-      // margin: EdgeInsets.all(widget._padding),
-      // padding: EdgeInsets.all(widget._padding),
+
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
@@ -743,15 +749,14 @@ class _TwoTextfieldCardState extends State<TwoTextfieldCard> {
                                StringLabels.ok, 
                                (){Navigator.pop(context);},
                               context);}
-                              else{
-                                widget._onRightTextChanged(value);
-                                }
+
+                              else{widget._onRightTextChanged(value);}
                     },
                   100.0, 
                   widget._isEditing,
                   textInputFormatters: [
                     BlacklistingTextInputFormatter
-                                      (new RegExp('[\\,]'), replacementString: '.',)]),
+                      (new RegExp('[\\,]'), replacementString: '.',)]),
 
                 Container(  margin: EdgeInsets.all(widget._padding),
                 width: 140,child: 

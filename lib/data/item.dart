@@ -11,6 +11,7 @@ class Item{
      @required String placeHolderText; 
      @required List<List<dynamic>> inputViewDataSet = List<List<dynamic>>();
      @required TextInputType keyboardType = TextInputType.text; 
+     @required Icon icon;
     
     Item({
         this.title,
@@ -19,7 +20,8 @@ class Item{
         this.databaseId,
         this.placeHolderText,
         this.keyboardType,
-        this.inputViewDataSet   
+        this.inputViewDataSet, 
+        this.icon 
     })
     {
       if (this.inputViewDataSet == null){  this.inputViewDataSet = List<List<String>>(); }

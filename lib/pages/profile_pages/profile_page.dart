@@ -84,20 +84,20 @@ class ProfilePageState extends State<ProfilePage> {
         automaticallyImplyLeading: false,
         leading: _isEditing ? 
         RawMaterialButton(
-                child: Icon(Icons.cancel),
-                onPressed: () {
-                  setState(() {
-                    _isEditing = false;
-                    print(_isEditing.toString());
-                  });
-                })
-            : RawMaterialButton(
-                child: Icon(Icons.arrow_back),
-                onPressed: () {
-                  Navigator.pop(context, false);
-                  DatabaseFunctions.deleteFireBaseStorageItem(_profile.image);
-                },
-              ),
+            child: Icon(Icons.cancel),
+            onPressed: () {
+              setState(() {
+                _isEditing = false;
+                print(_isEditing.toString());
+              });
+            })
+        : RawMaterialButton(
+            child: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context, false);
+              DatabaseFunctions.deleteFireBaseStorageItem(_profile.image);
+            },
+          ),
         actions: <Widget>[
           
           _isEditing?  

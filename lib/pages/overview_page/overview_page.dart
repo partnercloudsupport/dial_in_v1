@@ -109,7 +109,7 @@ class OverviewPageState extends State<OverviewPage> with SingleTickerProviderSta
       leading: RawMaterialButton( onPressed: () {logOut(context);}, 
       child: Icon(Icons.exit_to_app),), 
       actions: <Widget>[ 
-        RawMaterialButton( onPressed: () { Functions.getRatio([300,200,100]);},
+        RawMaterialButton( onPressed: () { Functions.getRatio([30000,20000]);},
          child: Icon(Icons.menu))  ], ),
     
       body: TabBarView(

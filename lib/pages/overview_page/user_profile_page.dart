@@ -19,9 +19,9 @@ class UserProfilePage extends StatelessWidget{
     new Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center ,children:[
 
       Container(padding: EdgeInsets.all(10.0), margin: EdgeInsets.all(10.0),
-              child: Center(
+              child: Center(child: Hero(tag: _userProfile.userId ,
                   child: CircularPicture(
-                      _userProfile.userImage, 150.0))),
+                      _userProfile.userImage, 150.0)))),
 
       /// User name
       Text(_userProfile.userName, style: Theme.of(context).textTheme.display3,),

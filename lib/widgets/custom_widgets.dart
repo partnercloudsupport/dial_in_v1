@@ -471,7 +471,7 @@ class SocialProfileCard extends StatelessWidget {
 
          /// User picture
           Container(child:InkWell(onTap:() => _giveUserProfile(_profile.userProfile),
-              child: CircularPicture(_profile.userImage , 60.0))),
+              child: Hero(tag: _profile.userProfile.userId, child:CircularPicture(_profile.userImage , 60.0)))),
               
       
           Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
@@ -1049,7 +1049,7 @@ TextEditingController _controller;
           keyboardType: widget._item.keyboardType,
           decoration: 
             new InputDecoration(
-            prefixIcon: Icon(Icons.face),
+            prefixIcon: widget._item.icon ?? null,
             labelText: widget._item.title,
             hintText: widget._item.placeHolderText,
               ),
