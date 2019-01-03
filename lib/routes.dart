@@ -20,12 +20,16 @@ enum RouteOption{
 
 class SlowerRoute extends MaterialPageRoute{
 
-
   SlowerRoute(WidgetBuilder builder) : super(builder:builder);
 
 @override
 Duration get transitionDuration => const Duration(milliseconds: 1000);
 
+@override
+Widget buildTransitions(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
+    // TODO: implement buildTransitions
+    return super.buildTransitions(context, animation, secondaryAnimation, child);
+  }
 
 }
 

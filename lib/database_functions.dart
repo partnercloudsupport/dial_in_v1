@@ -213,12 +213,6 @@ class DatabaseFunctions {
 
   static Future<int> getCount(ProfileType profileType, String userId)async{
 
-    // int count =  await Firestore.instance.
-    // collection(Functions.getProfileTypeDatabaseId(profileType))
-    // .where(DatabaseIds.user, isEqualTo: userId).snapshots().length;
-
-    // var snaps = await Firestore.instance.collection(DatabaseIds.recipe)
-    // .where(DatabaseIds.user, isEqualTo: userId).snapshots();
     var snaps = Firestore.instance
       .collection(Functions.getProfileTypeDatabaseId(profileType))
       .where(DatabaseIds.user, isEqualTo: userId);
@@ -227,10 +221,6 @@ class DatabaseFunctions {
 
     var totalEquals = querySnapshot.documents.length;
 
-    // var snaps = await Firestore.instance.collection(DatabaseIds.recipe).snapshots().toList();
-
-    // int count = int.parse(snaps.length.toString());
-  
     return totalEquals;
   }
 

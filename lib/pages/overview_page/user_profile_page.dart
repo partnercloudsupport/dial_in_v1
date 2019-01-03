@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'package:dial_in_v1/inherited_widgets.dart';
 import 'package:dial_in_v1/data/strings.dart';
-import 'package:scoped_model/scoped_model.dart';
 import 'package:dial_in_v1/data/mini_classes.dart';
-
-
 
 class UserProfilePage extends StatelessWidget{
 
@@ -24,7 +21,7 @@ class UserProfilePage extends StatelessWidget{
       Container(padding: EdgeInsets.all(10.0), margin: EdgeInsets.all(10.0),
               child: Center(
                   child: CircularPicture(
-                      ProfilesModel.of(context).userImage, 150.0))),
+                      _userProfile.userImage, 150.0))),
 
       /// User name
       Text(_userProfile.userName, style: Theme.of(context).textTheme.display3,),

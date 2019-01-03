@@ -109,6 +109,7 @@ class Functions {
         x = x + 1;
       }
       if (primeFactors != null){primeFactorList.add(primeFactors);}
+      else{primeFactorList.add([0]);}
     }
     );
   
@@ -120,7 +121,7 @@ class Functions {
 
      for (var x = 0; x < primeFactorList[i].length; x++){
 
-       for (var y = 0; y < primeFactorList[i+1].length - 1; y++){
+       for (var y = 0; y < primeFactorList[i].length - 1; y++){
 
          while (check == true){
           if(primeFactorList[i][x] == primeFactorList[i][y]){
