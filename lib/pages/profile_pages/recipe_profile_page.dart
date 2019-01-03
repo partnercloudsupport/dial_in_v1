@@ -305,7 +305,16 @@ class _TimePickerState extends State<TimePicker> {
 
       setState(() {
            time ++;
-      });
+           _minuteController.animateTo((time/60).floor().toDouble(),
+            duration: Duration(
+                      milliseconds: 100), curve: Curves.easeInOut);
+
+          _secondController.animateTo((time % 60).toDouble(),
+            duration: Duration(
+                      milliseconds: 100), curve: Curves.easeInOut);
+           sec = time % 60;
+      }
+      );
   }
 
   @override
