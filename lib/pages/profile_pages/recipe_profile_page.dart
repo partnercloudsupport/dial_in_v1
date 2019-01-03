@@ -253,6 +253,7 @@ class TimePicker extends StatefulWidget {
 
 class _TimePickerState extends State<TimePicker> {
 
+  bool stateInitialised = false;
   double _itemHeight = 40.0; 
   double _pickerHeight = 120.0;
   double _pickerWidth = 50.0;
@@ -305,13 +306,15 @@ class _TimePickerState extends State<TimePicker> {
 
       setState(() {
            time ++;
-           _minuteController.animateTo((time/60).floor().toDouble(),
+            mins = (time ~/ 60).toInt();
+            sec = (time % 60);
+           _minuteController.animateTo(mins*_itemHeight.toDouble(),
             duration: Duration(
-                      milliseconds: 100), curve: Curves.easeInOut);
+                      seconds: 1), curve: Curves.easeInOut);
 
-          _secondController.animateTo((time % 60).toDouble(),
+          _secondController.animateTo(sec*_itemHeight.toDouble(),
             duration: Duration(
-                      milliseconds: 100), curve: Curves.easeInOut);
+                      seconds: 1), curve: Curves.easeInOut);
            sec = time % 60;
       }
       );
@@ -325,18 +328,24 @@ class _TimePickerState extends State<TimePicker> {
 
   @override
   Widget build(BuildContext context) {
-     if (widget.item.inputViewDataSet != null && widget.item.inputViewDataSet.length > 0)
-    {widget.item.inputViewDataSet[0]
-    .forEach((itemText){_minutes.add(Center(child:Text(itemText.toString(), style: Theme.of(context).textTheme.display2,)));}
-    );}
 
-    if (widget.item.inputViewDataSet != null && widget.item.inputViewDataSet.length > 0)
-    {widget.item.inputViewDataSet[1]
-    .forEach((itemText){_seconds.add(Center(child:Text(itemText.toString(), style: Theme.of(context).textTheme.display2,)));}
-    );}    
+    if (stateInitialised == false){
 
-    _minuteController = new FixedExtentScrollController(initialItem: mins);
-    _secondController = new FixedExtentScrollController(initialItem: sec);
+      if (widget.item.inputViewDataSet != null && widget.item.inputViewDataSet.length > 0)
+      {widget.item.inputViewDataSet[0]
+      .forEach((itemText){_minutes.add(Center(child:Text(itemText.toString(), style: Theme.of(context).textTheme.display2,)));}
+      );}
+
+      if (widget.item.inputViewDataSet != null && widget.item.inputViewDataSet.length > 0)
+      {widget.item.inputViewDataSet[1]
+      .forEach((itemText){_seconds.add(Center(child:Text(itemText.toString(), style: Theme.of(context).textTheme.display2,)));}
+      );}    
+
+      _minuteController = new FixedExtentScrollController(initialItem: mins);
+      _secondController = new FixedExtentScrollController(initialItem: sec);
+      stateInitialised = true;
+
+    }
 
     return Container(
        child: Container(child: SizedBox(height: 200.0, width: double.infinity, child: Column(children: <Widget>[
