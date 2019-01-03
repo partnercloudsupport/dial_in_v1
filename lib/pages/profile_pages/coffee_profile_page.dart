@@ -278,10 +278,8 @@ class RoastingDetailsCardState extends State<RoastingDetailsCard> {
           widget._isEditing),
 
         ///Roast profile
-          PickerTextField(
-            _roastProfileItem,
-            widget._roastProfile,
-            _textFieldWidth, widget._isEditing),                  
+          PickerTextField
+          (_roastProfileItem, widget._roastProfile, _textFieldWidth, widget._isEditing),                  
         ],),
 
         ///Row 2

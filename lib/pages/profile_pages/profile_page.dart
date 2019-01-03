@@ -135,7 +135,7 @@ class ProfilePageState extends State<ProfilePage> {
           Column(
             children: <Widget>[
 
-            Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
 
            /// Spacer 
             Expanded(child: Container(),),
@@ -151,7 +151,7 @@ class ProfilePageState extends State<ProfilePage> {
            
             ///Public profile switch
             Expanded(child: 
-            Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment:CrossAxisAlignment.center
+            Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment:CrossAxisAlignment.center
              ,children: <Widget>[
             Text(StringLabels.public), 
             Switch(onChanged: (on){setState(() {_profile.isPublic = on;}); }, value: _profile.isPublic,),

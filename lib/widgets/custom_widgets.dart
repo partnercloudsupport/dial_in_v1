@@ -803,7 +803,7 @@ class ProfileImage extends StatelessWidget {
 
 /// Date input card
 class DateInputCard extends StatefulWidget {
-  final double _padding = 10.0;
+  final double _padding = 5.0;
   final _dateFormat = DateFormat.yMd();
   final DateTime _dateTime;
   final Function(DateTime) onDateChanged; 
@@ -857,14 +857,17 @@ class _DateInputCardState extends State<DateInputCard> {
      _controller.text = widget._dateFormat.format(_dateTime);
     return 
     Expanded(
-      flex: 6,
-      child:Container( margin:  EdgeInsets.all(widget._padding),
+      flex: 5,
+      child:Container( 
+        margin:  EdgeInsets.all(widget._padding),
         padding: EdgeInsets.all(widget._padding),
         child:  TextFormField
           (enabled: widget._isEditing,
             controller: _controller,
           focusNode: _focus,
-            decoration: InputDecoration(labelText: widget._title),
+            decoration: InputDecoration(
+              prefixIcon: Icon(Icons.date_range),
+              labelText: widget._title),
           ),
           ),      
     );
