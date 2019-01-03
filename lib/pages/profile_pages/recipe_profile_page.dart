@@ -302,20 +302,23 @@ class _TimePickerState extends State<TimePicker> {
 
   void updateTime(Timer timer){
        
-      print('time is $time ${timer.isActive}');
-
       setState(() {
            time ++;
             mins = (time ~/ 60).toInt();
             sec = (time % 60);
-           _minuteController.animateTo(mins*_itemHeight.toDouble(),
-            duration: Duration(
-                      seconds: 1), curve: Curves.linear);
 
-          _secondController.animateTo(sec*_itemHeight.toDouble(),
+            
+            _minuteController.animateTo(
+            mins * _itemHeight.toDouble(),
             duration: Duration(
-                      seconds: 1), curve: Curves.linear);
-           sec = time % 60;
+            seconds: 1), curve: Curves.linear);
+
+          if (time % 60 == 0){ _secondController.jumpToItem(mins);}
+            else{
+                _secondController.animateTo(
+                sec * _itemHeight.toDouble(),
+                duration: Duration(
+                      seconds: 1), curve: Curves.linear);}
       }
       );
   }
@@ -354,14 +357,13 @@ class _TimePickerState extends State<TimePicker> {
       child: Container(height: 40.0, width: double.infinity,
       child:
       Row(mainAxisAlignment: MainAxisAlignment.center ,children: <Widget>[
-      /// TODO; make timer
 
-      FlatButton(onPressed:() { setState(() {
+      MaterialButton(onPressed:() { setState(() {
                     timerIsActive ? stopWatch() :  startWatch(); 
             });},
       child: timerIsActive ? Icon(Icons.stop): Icon(Icons.play_arrow)),
 
-      FlatButton(onPressed:() { setState(() {
+      MaterialButton(onPressed:() { setState(() {
          resetWatch();}
          );},
       child: Icon(Icons.restore)),
@@ -376,7 +378,7 @@ class _TimePickerState extends State<TimePicker> {
       ),
 
   SizedBox(height: 160.0, width: double.infinity  ,child:
-  Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, crossAxisAlignment: CrossAxisAlignment.center,  
+  Row(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center,  
   children: <Widget>[
 
     /// Minutes picker
@@ -396,6 +398,8 @@ class _TimePickerState extends State<TimePicker> {
         ),),
         Text('m')
     ],),
+
+      Padding(padding: EdgeInsets.all(20.0)),
 
     /// Seconds picker
       Row(children: <Widget>[
