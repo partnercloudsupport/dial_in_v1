@@ -121,26 +121,31 @@ class Functions {
 
      for (var x = 0; x < primeFactorList[i].length; x++){
 
-       for (var y = 0; y < primeFactorList[i].length - 1; y++){
+       for (var y = 0; y < primeFactorList[i + 1].length; y++){
 
-         while (check == true){
-          if(primeFactorList[i][x] == primeFactorList[i][y]){
+        //  while (check == true){
+          if(primeFactorList[i][x] == primeFactorList[i + 1][y]){
 
             commonFactors.add(primeFactorList[i][x]);
-            check = false;
-          }
+            // check = false;
+          // }
          }
+         y++;
        }
-       check = true;
+        x++;
+      //  check = true;
      }
+     i++;
     }
+
     int highestDemoniator = commonFactors.reduce((value, element) => value * element);
 
     List<int> newNumbers =  new List<int>();
 
      for (var x = 0; x < numbers.length; x++){
 
-       newNumbers.add(numbers[x] * highestDemoniator);
+       int number = numbers[x] ~/ highestDemoniator;
+       newNumbers.add(number);
 
       }
     print('New ratio $newNumbers');
