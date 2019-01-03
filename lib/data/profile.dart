@@ -685,7 +685,7 @@ Future<String> getUserImage ()async{
 
       case DatabaseIds.brewWeight:
         _item = new Item(
-          title: StringLabels.brewWeight,
+          title: StringLabels.weight,
           value: '',
           databaseId: DatabaseIds.brewWeight,
           placeHolderText: StringLabels.enterValue,

@@ -157,7 +157,9 @@ class Functions {
         else{ return next; }
 
       });
-    
+
+    if (highestDemoniator > 0){
+
       List<int> newNumbers =  new List<int>();
 
      for (var x = 0; x < numbersSorted.length; x++){
@@ -166,7 +168,8 @@ class Functions {
        newNumbers.add(number);
 
       }
-      return newNumbers;
+      return newNumbers;}
+      else{  return numbersSorted; }
     }
 
     else{ return numbersSorted;}
@@ -713,7 +716,7 @@ class Functions {
 
       case DatabaseIds.brewWeight:
         _item = new Item(
-          title: StringLabels.brewWeight,
+          title: StringLabels.weightG,
           value: '',
           databaseId: DatabaseIds.brewWeight,
           placeHolderText: StringLabels.enterValue,

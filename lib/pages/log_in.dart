@@ -4,9 +4,6 @@ import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'package:dial_in_v1/pages/sign_up.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:dial_in_v1/pages/overview_page/overview_page.dart';
-import 'package:dial_in_v1/inherited_widgets.dart';
-
-
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key, this.title}) : super(key: key);

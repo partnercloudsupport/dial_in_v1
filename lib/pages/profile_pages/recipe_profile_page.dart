@@ -9,6 +9,8 @@ import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'package:flutter/services.dart';
 import 'package:dial_in_v1/data/item.dart';
 import 'package:dial_in_v1/data/functions.dart';
+import 'dart:async';
+
 
 
 
@@ -32,17 +34,49 @@ class RecipePage extends StatefulWidget {
 
 class _RecipePageState extends State<RecipePage> {
 
+  Stopwatch stopwatch = new Stopwatch();
+  Timer timer = Timer(Duration(milliseconds:1000), (){},);
+  int time;
+  int mins;
+  int sec;
+
+  void startWatch() {
+  timer = new Timer.periodic(new Duration(milliseconds:1000), updateTime);
+  }
+
+  void stopWatch() {
+    setState(() {
+      timer.cancel();
+    });
+  }
+
+  void resetWatch() {
+    setState(() {
+      time = 0;
+      timer.cancel();
+    });
+  }
+
+  void updateTime(Timer timer){
+       
+      print('time is $time ${timer.isActive}');
+
+      setState(() {
+           time ++;
+      });
+  }
+
    void showPickerMenu(Item item, BuildContext context){
 
-    int value = Functions.getIntValue(item.value);
+    time = Functions.getIntValue(item.value);
     
     List< Widget> _minutes = new List<Widget>();
     List< Widget> _seconds = new List<Widget>();
     double _itemHeight = 40.0; 
     double _pickerHeight = 120.0;
     double _pickerWidth = 50.0;
-    int mins = (value/60).floor();
-    int sec = value % 60;
+    mins = (time/60).floor();
+    sec = time % 60;
    
     if (item.inputViewDataSet != null && item.inputViewDataSet.length > 0)
     {item.inputViewDataSet[0]
@@ -61,78 +95,76 @@ class _RecipePageState extends State<RecipePage> {
 
       }else{
 
-    ///TODO;    
-
     FixedExtentScrollController _minuteController = new FixedExtentScrollController(initialItem: mins);
     FixedExtentScrollController _secondController = new FixedExtentScrollController(initialItem: sec);
   
         return  
         Container(child: SizedBox(height: 200.0, width: double.infinity, child: Column(children: <Widget>[
 
-                    Material(elevation: 5.0, shadowColor: Colors.black, color:Theme.of(context).accentColor, type:MaterialType.card, 
-                    child: Container(height: 40.0, width: double.infinity,
-                    child:
-                    Row(mainAxisAlignment: MainAxisAlignment.center ,children: <Widget>[
-                    /// TODO; make timer
+              Material(elevation: 5.0, shadowColor: Colors.black, color:Theme.of(context).accentColor, type:MaterialType.card, 
+              child: Container(height: 40.0, width: double.infinity,
+              child:
+              Row(mainAxisAlignment: MainAxisAlignment.center ,children: <Widget>[
+              /// TODO; make timer
 
-                    FlatButton(onPressed:() => Navigator.pop(context),
-                    child: Icon(Icons.play_arrow)),
+              FlatButton(onPressed:() => timer.isActive ? stopWatch() :  startWatch() ,
+              child: timer.isActive ? Icon(Icons.stop): Icon(Icons.play_arrow)),
 
-                    FlatButton(onPressed:() => Navigator.pop(context),
-                    child: Icon(Icons.stop)),
+              FlatButton(onPressed:() => resetWatch(),
+              child: Icon(Icons.restore)),
 
-                    Expanded(child: Container(),),
+              Expanded(child: Container(),),
 
-                     FlatButton(onPressed:() => Navigator.pop(context),
-                    child: Text('Done')),
+              FlatButton(onPressed:() => Navigator.pop(context),
+              child: Text('Done')),
 
-                    ],)
-                    )
-                    ),
+              ],)
+              )
+              ),
 
-               SizedBox(height: 160.0, width: double.infinity  ,child:
-                Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, crossAxisAlignment: CrossAxisAlignment.center,  
-                children: <Widget>[
+          SizedBox(height: 160.0, width: double.infinity  ,child:
+          Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, crossAxisAlignment: CrossAxisAlignment.center,  
+          children: <Widget>[
 
-                  /// Minutes picker
-                  Row(children: <Widget>[
-                    SizedBox(height: _pickerHeight, width: _pickerWidth ,
-                    child: CupertinoPicker(
-                      backgroundColor: Colors.transparent,
-                      scrollController: _minuteController,
-                      useMagnifier: true,
-                      onSelectedItemChanged:
-                        (value){
-                          mins = value;
-                          widget._setProfileItemValue(item.databaseId, ((mins * 60) + sec).toString());
-                        }, 
-                      itemExtent: _itemHeight,
-                      children: _minutes
-                      ),),
-                      Text('m')
-                  ],),
+            /// Minutes picker
+            Row(children: <Widget>[
+              SizedBox(height: _pickerHeight, width: _pickerWidth ,
+              child: CupertinoPicker(
+                backgroundColor: Colors.transparent,
+                scrollController: _minuteController,
+                useMagnifier: true,
+                onSelectedItemChanged:
+                  (value){
+                    mins = value;
+                    widget._setProfileItemValue(item.databaseId, ((mins * 60) + sec).toString());
+                  }, 
+                itemExtent: _itemHeight,
+                children: _minutes
+                ),),
+                Text('m')
+            ],),
 
-                  /// Seconds picker
-                   Row(children: <Widget>[
-                       SizedBox(height: _pickerHeight, width: _pickerWidth  ,
-                    child: CupertinoPicker(
-                      backgroundColor:  Colors.transparent,
-                      scrollController: _secondController,
-                      useMagnifier: true,
-                      onSelectedItemChanged:
-                        (value){
-                          sec = value;
-                          widget._setProfileItemValue(item.databaseId,  ((mins * 60) + sec).toString());
+            /// Seconds picker
+              Row(children: <Widget>[
+                  SizedBox(height: _pickerHeight, width: _pickerWidth  ,
+              child: CupertinoPicker(
+                backgroundColor:  Colors.transparent,
+                scrollController: _secondController,
+                useMagnifier: true,
+                onSelectedItemChanged:
+                  (value){
+                    sec = value;
+                    widget._setProfileItemValue(item.databaseId,  ((mins * 60) + sec).toString());
 
-                        }, 
-                      itemExtent: _itemHeight,
-                      children: _seconds
-                      ),),
-                    Text('s'),
+                  }, 
+                itemExtent: _itemHeight,
+                children: _seconds
+                ),),
+              Text('s'),
 
-                        ],
-                    )
-                ],))
+                  ],
+              )
+          ],))
         ],) )
       );
       }
@@ -149,156 +181,296 @@ class _RecipePageState extends State<RecipePage> {
     return  
     Column(children: <Widget>[ 
 
-            /// Date
-              DateTimeInputCard(StringLabels.date,
-                  widget._profile.getProfileItemValue( DatabaseIds.date),
-                  (dateTime)
-                  {if (dateTime != null){ widget._setProfileItemValue( DatabaseIds.date, dateTime);}},
-                   widget._isEditing),
+/// Date
+  DateTimeInputCard(StringLabels.date,
+      widget._profile.getProfileItemValue( DatabaseIds.date),
+      (dateTime)
+      {if (dateTime != null){ widget._setProfileItemValue( DatabaseIds.date, dateTime);}},
+        widget._isEditing),
 
-            ///Coffee
-              ProfileInputWithDetailsCard(
-                widget._profile.getProfileProfile(ProfileType.coffee),
-                StringLabels.rested,
-                widget._profile.getDaysRested().toString() + ' days',
-                (){widget._showOptions(ProfileType.coffee);},),
+///Coffee
+  ProfileInputWithDetailsCard(
+    widget._profile.getProfileProfile(ProfileType.coffee),
+    StringLabels.rested,
+    widget._profile.getDaysRested().toString() + ' days',
+    (){widget._showOptions(ProfileType.coffee);},),
 
-            ///Barista
-              ProfileInputCard(
-                widget._profile.getProfileProfile(ProfileType.barista),
-                (){widget._showOptions(ProfileType.barista);},),
+///Barista
+  ProfileInputCard(
+    widget._profile.getProfileProfile(ProfileType.barista),
+    (){widget._showOptions(ProfileType.barista);},),
 
-            /// Water
-              ProfileInputCardWithAttribute(widget._isEditing,
-                  profile: widget._profile.getProfileProfile(ProfileType.water),
-                  keyboardType: TextInputType.number,
-                  onAttributeTextChange: (text) {
-                    widget._setProfileItemValue( DatabaseIds.temparature, text);
-                  },
-                  onProfileTextPressed: () {
-                    widget._showOptions(ProfileType.water);
-                  },
-                  attributeTextfieldText: widget._profile.getProfileItemValue(
-                       DatabaseIds.temparature),
-                  attributeHintText: StringLabels.enterValue,
-                  attributeTitle: StringLabels.degreeC,
-                  ),
+/// Water
+  ProfileInputCardWithAttribute(widget._isEditing,
+      profile: widget._profile.getProfileProfile(ProfileType.water),
+      keyboardType: TextInputType.number,
+      onAttributeTextChange: (text) {
+        widget._setProfileItemValue( DatabaseIds.temparature, text);
+      },
+      onProfileTextPressed: () {
+        widget._showOptions(ProfileType.water);
+      },
+      attributeTextfieldText: widget._profile.getProfileItemValue(
+            DatabaseIds.temparature),
+      attributeHintText: StringLabels.enterValue,
+      attributeTitle: StringLabels.degreeC,
+      ),
 
-            /// Grinder
-              ProfileInputCardWithAttribute(widget._isEditing,
-                  profile: widget._profile.getProfileProfile(ProfileType.grinder),
-                  onAttributeTextChange: (text) {
-                    widget._setProfileItemValue(DatabaseIds.grindSetting, text);
-                  },
-                  onProfileTextPressed: () {
-                    widget._showOptions(ProfileType.grinder);
-                  },
-                  attributeTextfieldText: widget._profile.getProfileItemValue(
-                       DatabaseIds.grindSetting),
-                  attributeHintText: StringLabels.enterValue,
-                  attributeTitle: StringLabels.setting,
-                  keyboardType: TextInputType.number,
-              ),
+/// Grinder
+  ProfileInputCardWithAttribute(widget._isEditing,
+      profile: widget._profile.getProfileProfile(ProfileType.grinder),
+      onAttributeTextChange: (text) {
+        widget._setProfileItemValue(DatabaseIds.grindSetting, text);
+      },
+      onProfileTextPressed: () {
+        widget._showOptions(ProfileType.grinder);
+      },
+      attributeTextfieldText: widget._profile.getProfileItemValue(
+            DatabaseIds.grindSetting),
+      attributeHintText: StringLabels.enterValue,
+      attributeTitle: StringLabels.setting,
+      keyboardType: TextInputType.number,
+  ),
 
-            /// Equipment
-              ProfileInputCardWithAttribute(widget._isEditing,
-                  profile: widget._profile.getProfileProfile(ProfileType.equipment),
-                  onAttributeTextChange: (text) {
-                    widget._setProfileItemValue(DatabaseIds.preinfusion, text);
-                  },
-                  onProfileTextPressed: () {
-                    widget._showOptions(ProfileType.equipment);
-                  },
-                  attributeTextfieldText: widget._profile.getProfileItemValue(
-                       DatabaseIds.preinfusion),
-                  attributeHintText: StringLabels.enterValue,
-                  attributeTitle: StringLabels.preinfusion,
-              ),
+/// Equipment
+  ProfileInputCardWithAttribute(widget._isEditing,
+      profile: widget._profile.getProfileProfile(ProfileType.equipment),
+      onAttributeTextChange: (text) {
+        widget._setProfileItemValue(DatabaseIds.preinfusion, text);
+      },
+      onProfileTextPressed: () {
+        widget._showOptions(ProfileType.equipment);
+      },
+      attributeTextfieldText: widget._profile.getProfileItemValue(
+            DatabaseIds.preinfusion),
+      attributeHintText: StringLabels.enterValue,
+      attributeTitle: StringLabels.preinfusion,
+  ),
 
-              /// Ratio card
-               RatioCard(
-                widget._profile,
-                (dose) {widget._setProfileItemValue( DatabaseIds.brewingDose, dose);},  
-                (yielde) {widget._setProfileItemValue( DatabaseIds.yielde, yielde);},
-                (brewWeight) { widget._setProfileItemValue( DatabaseIds.brewWeight, brewWeight);},
-                widget._isEditing),
+  /// Ratio card
+    RatioCard(
+    widget._profile,
+    (dose) {widget._setProfileItemValue( DatabaseIds.brewingDose, dose);},  
+    (yielde) {widget._setProfileItemValue( DatabaseIds.yielde, yielde);},
+    (brewWeight) { widget._setProfileItemValue( DatabaseIds.brewWeight, brewWeight);},
+    widget._isEditing),
 
-              /// Time
-              Card(child: Container(margin: EdgeInsets.all(10.0), child: Row(children: <Widget>[
-                
-                 TimePickerTextField(
-                  widget._profile.getProfileItem(DatabaseIds.time),
-                  (item) => showPickerMenu(item, context),
-                  100.0, 
-                  widget._isEditing)
+  /// Time
+  Card(child: Container(margin: EdgeInsets.all(10.0), child: Row(children: <Widget>[
+    
+      TimePickerTextField(
+      widget._profile.getProfileItem(DatabaseIds.time),
+      (item) => showPickerMenu(item, context),
+      100.0, 
+      widget._isEditing)
 
-                  ],)),),
+      ],)),),
 
-              /// Extraction and TDS
-              TwoTextfieldCard(
-                (tds) { widget._setProfileItemValue( DatabaseIds.tds, tds);},
-                widget._profile.getProfileItem(DatabaseIds.tds),
-                widget._isEditing,
-                widget._profile.getExtractionYield() 
-              ),
+  /// Extraction and TDS
+  TwoTextfieldCard(
+    (tds) { widget._setProfileItemValue( DatabaseIds.tds, tds);},
+    widget._profile.getProfileItem(DatabaseIds.tds),
+    widget._isEditing,
+    widget._profile.getExtractionYield() 
+  ),
 
-              /// Notes
-              NotesCard(
-                  StringLabels.notes,
-                  widget._profile.getProfileItemValue(
-                       DatabaseIds.notes),
-                  (notes) {widget._setProfileItemValue( DatabaseIds.notes, notes);},
-                  widget._isEditing),
+  /// Notes
+  NotesCard(
+      StringLabels.notes,
+      widget._profile.getProfileItemValue(
+            DatabaseIds.notes),
+      (notes) {widget._setProfileItemValue( DatabaseIds.notes, notes);},
+      widget._isEditing),
 
-              ///Score Section
-              Card(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.all(widget._margin),
-                      padding: EdgeInsets.all(widget._margin),
-                      child: Text(
-                        StringLabels.score,
-                        style: Theme.of(context).textTheme.title,
-                      ),
-                    ),
-                    Column(
-                      children: <Widget>[
-                        ScoreSlider(StringLabels.strength, 0.0,
-                         (value) { widget._setProfileItemValue( DatabaseIds.strength, value.toString());},
-                         widget._isEditing),
+  ///Score Section
+  Card(
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        Container(
+          margin: EdgeInsets.all(widget._margin),
+          padding: EdgeInsets.all(widget._margin),
+          child: Text(
+            StringLabels.score,
+            style: Theme.of(context).textTheme.title,
+          ),
+        ),
+        Column(
+          children: <Widget>[
+            ScoreSlider(StringLabels.strength, 0.0,
+              (value) { widget._setProfileItemValue( DatabaseIds.strength, value.toString());},
+              widget._isEditing),
 
-                        ScoreSlider(StringLabels.balance, 0.0,
-                         (value) { widget._setProfileItemValue( DatabaseIds.balance, value.toString());},
-                         widget._isEditing),
+            ScoreSlider(StringLabels.balance, 0.0,
+              (value) { widget._setProfileItemValue( DatabaseIds.balance, value.toString());},
+              widget._isEditing),
 
-                        ScoreSlider(StringLabels.flavour, 0.0,
-                         (value) { widget._setProfileItemValue( DatabaseIds.flavour, value.toString());},
-                         widget._isEditing),
+            ScoreSlider(StringLabels.flavour, 0.0,
+              (value) { widget._setProfileItemValue( DatabaseIds.flavour, value.toString());},
+              widget._isEditing),
 
-                        ScoreSlider(StringLabels.body, 0.0,
-                         (value) {widget._setProfileItemValue( DatabaseIds.body, value.toString());},
-                         widget._isEditing),
+            ScoreSlider(StringLabels.body, 0.0,
+              (value) {widget._setProfileItemValue( DatabaseIds.body, value.toString());},
+              widget._isEditing),
 
-                        ScoreSlider(StringLabels.afterTaste, 0.0,
-                         (value) {widget._setProfileItemValue( DatabaseIds.afterTaste, value.toString());},
-                         widget._isEditing),
+            ScoreSlider(StringLabels.afterTaste, 0.0,
+              (value) {widget._setProfileItemValue( DatabaseIds.afterTaste, value.toString());},
+              widget._isEditing),
 
-                        /// End of score   
-                        
-                      ],
-                    )
-                  ],
-                ),
-              ),
-               NotesCard(
-                        StringLabels.descriptors,
-                        widget._profile.getProfileItemValue(
-                             DatabaseIds.descriptors),
-                        (text) {widget._setProfileItemValue( DatabaseIds.descriptors, text);},
-                        widget._isEditing),
+            /// End of score   
+            
           ],
-            );
-      }
+        )
+      ],
+    ),
+  ),
+    NotesCard(
+            StringLabels.descriptors,
+            widget._profile.getProfileItemValue(
+                  DatabaseIds.descriptors),
+            (text) {widget._setProfileItemValue( DatabaseIds.descriptors, text);},
+            widget._isEditing),
+          ],
+    );
+  }
 }
+
+
+
+class TimePicker extends StatefulWidget {
+
+  Item item;
+  TimePicker(this.item);
+
+  _TimePickerState createState() => _TimePickerState();
+}
+
+class _TimePickerState extends State<TimePicker> {
+
+  List< Widget> _minutes = new List<Widget>();
+  List< Widget> _seconds = new List<Widget>();
+
+  Stopwatch stopwatch = new Stopwatch();
+  Timer timer = Timer(Duration(milliseconds:1000), (){},);
+  int time;
+  int mins;
+  int sec;
+
+  FixedExtentScrollController _minuteController = new FixedExtentScrollController(initialItem: mins);
+  FixedExtentScrollController _secondController = new FixedExtentScrollController(initialItem: sec);
+
+@override
+  void initState() {
+ if (widget.item.inputViewDataSet != null && widget.item.inputViewDataSet.length > 0)
+    {widget.item.inputViewDataSet[0]
+    .forEach((itemText){_minutes.add(Center(child:Text(itemText.toString(), style: Theme.of(context).textTheme.display2,)));}
+    );}
+
+    if (widget.item.inputViewDataSet != null && widget.item.inputViewDataSet.length > 0)
+    {widget.item.inputViewDataSet[1]
+    .forEach((itemText){_seconds.add(Center(child:Text(itemText.toString(), style: Theme.of(context).textTheme.display2,)));}
+    );}    super.initState();
+  }
+   
+
+    void startWatch() {
+  timer = new Timer.periodic(new Duration(milliseconds:1000), updateTime);
+  }
+
+  void stopWatch() {
+    setState(() {
+      timer.cancel();
+    });
+  }
+
+  void resetWatch() {
+    setState(() {
+      time = 0;
+      timer.cancel();
+    });
+  }
+
+  void updateTime(Timer timer){
+       
+      print('time is $time ${timer.isActive}');
+
+      setState(() {
+           time ++;
+      });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+       child: Container(child: SizedBox(height: 200.0, width: double.infinity, child: Column(children: <Widget>[
+
+      Material(elevation: 5.0, shadowColor: Colors.black, color:Theme.of(context).accentColor, type:MaterialType.card, 
+      child: Container(height: 40.0, width: double.infinity,
+      child:
+      Row(mainAxisAlignment: MainAxisAlignment.center ,children: <Widget>[
+      /// TODO; make timer
+
+      FlatButton(onPressed:() => timer.isActive ? stopWatch() :  startWatch() ,
+      child: timer.isActive ? Icon(Icons.stop): Icon(Icons.play_arrow)),
+
+      FlatButton(onPressed:() => resetWatch(),
+      child: Icon(Icons.restore)),
+
+      Expanded(child: Container(),),
+
+      FlatButton(onPressed:() => Navigator.pop(context),
+      child: Text('Done')),
+
+      ],)
+      )
+      ),
+
+  SizedBox(height: 160.0, width: double.infinity  ,child:
+  Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, crossAxisAlignment: CrossAxisAlignment.center,  
+  children: <Widget>[
+
+    /// Minutes picker
+    Row(children: <Widget>[
+      SizedBox(height: _pickerHeight, width: _pickerWidth ,
+      child: CupertinoPicker(
+        backgroundColor: Colors.transparent,
+        scrollController: _minuteController,
+        useMagnifier: true,
+        onSelectedItemChanged:
+          (value){
+            mins = value;
+            widget._setProfileItemValue(item.databaseId, ((mins * 60) + sec).toString());
+          }, 
+        itemExtent: _itemHeight,
+        children: _minutes
+        ),),
+        Text('m')
+    ],),
+
+    /// Seconds picker
+      Row(children: <Widget>[
+          SizedBox(height: _pickerHeight, width: _pickerWidth  ,
+      child: CupertinoPicker(
+        backgroundColor:  Colors.transparent,
+        scrollController: _secondController,
+        useMagnifier: true,
+        onSelectedItemChanged:
+          (value){
+            sec = value;
+            widget._setProfileItemValue(item.databaseId,  ((mins * 60) + sec).toString());
+
+          }, 
+        itemExtent: _itemHeight,
+        children: _seconds
+        ),),
+      Text('s'),
+
+          ],
+      )
+  ],))
+  ],) )
+  )
+  );}
+}
+  
+

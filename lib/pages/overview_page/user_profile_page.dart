@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dial_in_v1/widgets/custom_widgets.dart';
-import 'package:dial_in_v1/inherited_widgets.dart';
 import 'package:dial_in_v1/data/strings.dart';
 import 'package:dial_in_v1/data/mini_classes.dart';
 

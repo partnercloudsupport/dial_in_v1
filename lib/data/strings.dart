@@ -267,6 +267,7 @@ class  StringLabels {
   static const String sweet = "Sweet";
   static const String acidic = "Acidic";
   static const String balance = "Balance";
+  static const String weightG = "Weight(g)";
   static const String weight = "Weight";
   static const String texture = "Texture";
   static const String finish = "Finish";

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:dial_in_v1/pages/sign_up.dart';
 
-///TODO;
 class Routes{
 
   
@@ -27,7 +26,6 @@ Duration get transitionDuration => const Duration(milliseconds: 1000);
 
 @override
 Widget buildTransitions(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
-    // TODO: implement buildTransitions
     return super.buildTransitions(context, animation, secondaryAnimation, child);
   }
 
