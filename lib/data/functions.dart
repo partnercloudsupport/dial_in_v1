@@ -117,30 +117,27 @@ class Functions {
 
     /// Find matching values
     for (var i = 0; i < primeFactorList.length; i++) {
-          bool check = true;
 
      for (var x = 0; x < primeFactorList[i].length; x++){
 
        for (var y = 0; y < primeFactorList[i + 1].length; y++){
 
-        //  while (check == true){
           if(primeFactorList[i][x] == primeFactorList[i + 1][y]){
 
             commonFactors.add(primeFactorList[i][x]);
-            // check = false;
-          // }
          }
          y++;
        }
         x++;
-      //  check = true;
      }
      i++;
     }
 
-    int highestDemoniator = commonFactors.reduce((value, element) => value * element);
-
-    List<int> newNumbers =  new List<int>();
+    if (commonFactors.length > 0){
+      
+      int highestDemoniator = commonFactors.reduce((value, element) => value * element);
+    
+      List<int> newNumbers =  new List<int>();
 
      for (var x = 0; x < numbers.length; x++){
 
@@ -148,7 +145,11 @@ class Functions {
        newNumbers.add(number);
 
       }
-    print('New ratio $newNumbers');
+      print('New ratio $newNumbers');
+    }
+
+    else{ print('New ratio $numbers');}
+     
   }
   
 
