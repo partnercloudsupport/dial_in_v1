@@ -34,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
             } catch (e) {
               completion(false, e.message);
             }
-    }
+  }
 
   void loginButtonPressed(){ 
 
@@ -65,8 +65,8 @@ class _LoginPageState extends State<LoginPage> {
   });
   }
 
-    Color gradientStart = Colors.deepPurple[700]; //Change start gradient color here
-    Color gradientEnd = Colors.purple[500];
+  Color gradientStart = Colors.deepPurple[700]; //Change start gradient color here
+  Color gradientEnd = Colors.purple[500];
 
   void signUpButtonPressed() {print('signUp');}
 
@@ -114,11 +114,11 @@ class _LoginPageState extends State<LoginPage> {
           ),
           ),
        
-          new Center(
+           new ListView(
+            children: <Widget>[
             
             /// View components
-             
-            child: new Column(
+           new Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 
@@ -191,7 +191,7 @@ class _LoginPageState extends State<LoginPage> {
                         ])))
               ],
             ),
-          )
+            ])
         ],
       ),
     );

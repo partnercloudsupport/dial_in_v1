@@ -15,8 +15,6 @@ enum RouteOption{
 
 }
 
-
-
 class SlowerRoute extends MaterialPageRoute{
 
   SlowerRoute(WidgetBuilder builder) : super(builder:builder);
@@ -28,7 +26,6 @@ Duration get transitionDuration => const Duration(milliseconds: 1000);
 Widget buildTransitions(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
     return super.buildTransitions(context, animation, secondaryAnimation, child);
   }
-
 }
 
 /// Custom page transitions

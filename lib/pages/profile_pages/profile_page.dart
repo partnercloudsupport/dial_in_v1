@@ -70,6 +70,24 @@ class ProfilePageState extends State<ProfilePage> {
       super.initState();
   }
 
+
+  void saveFunction()async{
+    if(_isOldProfile ){ 
+      showDialog(barrierDismissible: false, context: context ,
+               builder: (context) => Center(child:CircularProgressIndicator()
+               )); 
+         await DatabaseFunctions.updateProfile(_profile);
+         Navigator.pop(context, _profile);
+         }else{
+            showDialog(barrierDismissible: false, context: context ,
+               builder: (context) => Center(child:CircularProgressIndicator()
+               )); 
+         var newProfile = await DatabaseFunctions.saveProfile(_profile);
+          Navigator.pop(context); 
+          Navigator.pop(context, newProfile); 
+    }
+  }
+
   /// UI Build
   @override
   Widget build(BuildContext context) {
@@ -98,26 +116,14 @@ class ProfilePageState extends State<ProfilePage> {
               DatabaseFunctions.deleteFireBaseStorageItem(_profile.image);
             },
           ),
+
         actions: <Widget>[
           
           _isEditing?  
            RawMaterialButton(
                   child: Icon(Icons.save_alt),
-                  onPressed: ()async{ if(_isOldProfile ) 
-                    {
-                    showDialog(barrierDismissible: false, context: context ,
-                          builder: (context) => Center(child:CircularProgressIndicator()
-                          )); 
-                    await DatabaseFunctions.updateProfile(_profile);
-                    Navigator.pop(context);
-                    }else{
-                       showDialog(barrierDismissible: false, context: context ,
-                          builder: (context) => Center(child:CircularProgressIndicator()
-                          )); 
-                    var newProfile = await DatabaseFunctions.saveProfile(_profile);
-                    Navigator.pop(context, newProfile);
-                    _model.add(_profile);}},)
-              : RawMaterialButton(
+                  onPressed: saveFunction)
+          : RawMaterialButton(
                   child: Icon(Icons.edit),
                   onPressed: () {
                     setState(() {
@@ -323,10 +329,12 @@ class ProfilePageState extends State<ProfilePage> {
     curve: Curves.easeIn);
   }
 
-  //// user defined function
-  void _showProfileList(ProfileType profileType) {
+  //// Show Profiles list
+  Future<dynamic>_showProfileList(ProfileType profileType)async{
     // flutter defined function
-    showDialog(
+    var result;
+
+    await showDialog(
       context: context,
       builder: (BuildContext context) {
         // return object of type Dialog
@@ -338,35 +346,19 @@ class ProfilePageState extends State<ProfilePage> {
           
           title: Text(Functions.convertDatabaseIdToTitle(Functions.getProfileTypeDatabaseId(profileType))),
           children: <Widget>[
+
+            /// Add profile button
             RaisedButton(
-              onPressed: ()async{
-                Profile _newProfile = await Functions.createBlankProfile(profileType);
-                Profile result = await Navigator.push(context,
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => ProfilePage(
-                      isOldProfile: false,
-                      isFromProfile: true,
-                      isCopying: false,
-                      isEditing: true,
-                      isNew: true,
-                      type: profileType,
-                      referance: '',
-                      profile: _newProfile,
-                    )
-                  )
-                );
-               if (result is bool){ if (result as bool != false){ 
-               Navigator.pop(context, result);             
-               setState(() 
-               {  _profile.setSubProfile(result); });}         
-              }},
+              onPressed: () => createNewProfilePage(profileType).then(handleProfileselectionResult),
               child: Text('Add new profile'),
             ),
+
+            /// Profiles list
               ProfileListDialog(
                 profileType,
-                (sentProfile){ setState((){
-                  _profile.setSubProfile(sentProfile);   
-                }); },
+                (sentProfile){ 
+                  return  _profile.setSubProfile(sentProfile);   
+                 },
               false,
             )
           ],
@@ -375,6 +367,50 @@ class ProfilePageState extends State<ProfilePage> {
       );
       }
     );
+    return result;
   }
-}
+
+  void handleProfileselectionResult(dynamic result){
+
+    if (result is bool){ 
+        if (result != false){ 
+            Navigator.pop(context, result);}
+
+    } else if (result is Profile){
+         _profile.setSubProfile(result);
+         Navigator.pop(context, result);
+    } else { throw('Wrong type in return');}
+  } 
+
+  Future<dynamic> createNewProfilePage(ProfileType profileType)async{
+
+    Profile _newProfile = await Functions.createBlankProfile(profileType);
+
+        /// Result to be passed back to 
+      var result = await Navigator.push(context,
+
+        MaterialPageRoute(
+          builder: (BuildContext context) => 
+        /// New Profile goes into Profile page
+          ProfilePage(
+            isOldProfile: false,
+            isFromProfile: true,
+            isCopying: false,
+            isEditing: true,
+            isNew: true,
+            type: profileType,
+            referance: '',
+            profile: _newProfile,
+          )
+        )
+      );
+      return result;
+    }
+  }
+
+
+
+
+
+
 

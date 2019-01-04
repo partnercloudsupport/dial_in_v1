@@ -17,10 +17,11 @@ class SignUpPage extends StatefulWidget{
   String _userImage = Images.userFirebase;
 
   TextEditingController _userNameController = new TextEditingController();
-
   TextEditingController _emailController = new TextEditingController();
-
   TextEditingController _passwordController = new TextEditingController();
+
+  Color gradientStart = Colors.deepPurple[700]; //Change start gradient color here
+  Color gradientEnd = Colors.purple[500];
  
   void signUpButton()async{  
 
@@ -56,16 +57,33 @@ class SignUpPage extends StatefulWidget{
           /// 
           //  Pagebackground(AssetImage('assets/images/cherriestwo.jpg')),
 
+        Container(
+          decoration: new BoxDecoration(
+            gradient: new LinearGradient(colors: [gradientStart, gradientEnd],
+                begin: const FractionalOffset(0.5, 0.0),
+                end: const FractionalOffset(0.0, 0.5),
+                stops: [0.0,1.0],
+                tileMode: TileMode.clamp
+            ),
+          ),
+          ),
+
           ///
           /// Back icon
           /// 
-          Container(  height: 30.0, width: 30.0, margin: EdgeInsets.fromLTRB(20.0, 40.0, 20.0, 20.0), padding: EdgeInsets.all(0.0),
-            child: RawMaterialButton( onPressed: () => Navigator.pop(context), 
-            child: Container(   decoration: BoxDecoration( image: DecorationImage( image: AssetImage('assets/images/back_icon.png'), fit: BoxFit.cover)),),),),
+          
          
-          new Center(
-            child: Column(  mainAxisAlignment: MainAxisAlignment.center, 
+          new ListView(
+            children: <Widget>[
+
+              SizedBox(width: double.infinity, height: 30.0, child:Container(  height: 30.0, width: 30.0, margin: EdgeInsets.fromLTRB(20.0, 40.0, 20.0, 20.0), padding: EdgeInsets.all(0.0),
+            child: RawMaterialButton( onPressed: () => Navigator.pop(context), 
+            child: Container(   decoration: BoxDecoration( image: DecorationImage( image: AssetImage('assets/images/back_icon.png'), fit: BoxFit.cover)),),),)),
+              
+               Column(  mainAxisAlignment: MainAxisAlignment.center, 
               children: <Widget>[
+
+                Padding(padding: EdgeInsets.all(20.0),),
               
                 /// New User text
                 Text(StringLabels.newUser,  style: TextStyle(color: Colors.black87, fontSize: 30.0),),
@@ -100,7 +118,7 @@ class SignUpPage extends StatefulWidget{
 
               ]
             ),
-          )
+            ])
         ]
       )
     );
