@@ -120,7 +120,10 @@ class _ProfileListDialogState extends State<ProfileListDialog>{
     Widget build(BuildContext context) {  
 
     return StreamBuilder(
-        stream: Firestore.instance.collection(Functions.getProfileTypeDatabaseId(widget._profilesType)).snapshots(),
+        stream: Firestore.instance
+                .collection(Functions.getProfileTypeDatabaseId(widget._profilesType))
+                .where(DatabaseIds.user, isEqualTo: ProfilesModel.of(context).userId)
+                .snapshots(),
         initialData: 5,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           switch (snapshot.connectionState) {
