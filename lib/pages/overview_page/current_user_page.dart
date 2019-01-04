@@ -19,7 +19,7 @@ class CurrentUserPage extends StatelessWidget{
 
     if (!snapshot.hasData) { return Center(child: CircularProgressIndicator(),);}
     
-    else{  return UserProfilePage(snapshot.data);}
+    else{  return UserProfilePage(snapshot.data, true);}
     }
     );
   }

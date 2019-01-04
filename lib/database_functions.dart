@@ -46,16 +46,15 @@ class DatabaseFunctions {
             await Firestore.instance.collection(DatabaseIds.User).document(user.uid).setData(data);
 
             completion(true, StringLabels.signedYouUp);})
-          .catchError((e) => completion(true, e.message));
+          .catchError((e) => completion(false, e.message));
     } catch (e) {
-      completion(true, e.message);
+      completion(false, e.message);
     }
   }
 
   /// Logout
-  static Future <void> logOut(Function signOutView)  async{
-    signOutView();
-    // await FirebaseAuth.instance.signOut();
+  static Future <void> logOut()async{
+    await FirebaseAuth.instance.signOut();
     print('Logged out');
   }
 

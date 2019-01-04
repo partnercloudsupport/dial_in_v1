@@ -62,6 +62,21 @@ class ProfilesModel extends Model{
     SocialFeedBloc _comminuty;
     SocialFeedBloc _followers;
     UserFeed _userFeed = new UserFeed(); 
+
+    ///Following commands
+    
+    bool userFollowing = true;
+
+    bool isUserFollowing(String userId){
+      return userFollowing;
+    }
+
+    void followOrUnfollow(String userId){
+
+      if(isUserFollowing(userId)){userFollowing = false;}
+      else{userFollowing = true;}
+
+    }
     
     /// Getters for profiles
     Stream<List<Profile>> get recipeProfiles => _recipeFeed.profiles;

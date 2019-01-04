@@ -12,6 +12,9 @@ import 'dart:async';
 import 'package:dial_in_v1/data/mini_classes.dart';
 import 'package:flutter/services.dart';
 import 'package:dial_in_v1/data/functions.dart';
+import 'package:dial_in_v1/inherited_widgets.dart';
+
+
 
 
 
@@ -1139,3 +1142,19 @@ class _TextfieldWithFixedValueState extends State<TextfieldWithFixedValue> {
 }   
 
 
+/// Follow  button
+class FollowButton extends StatefulWidget {
+  
+  final String userId;
+
+  FollowButton(this.userId);
+
+  _FollowButtonState createState() => _FollowButtonState();
+}
+class _FollowButtonState extends State<FollowButton> {
+  @override
+  Widget build(BuildContext context) {
+    return  MaterialButton(onPressed: () { ProfilesModel.of(context).followOrUnfollow(widget.userId);},
+    );
+  }
+}

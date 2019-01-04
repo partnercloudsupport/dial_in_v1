@@ -80,7 +80,7 @@ class OverviewPageState extends State<OverviewPage> with SingleTickerProviderSta
           FlatButton(
             child: Text('Yes'),
             onPressed: (){ 
-              DatabaseFunctions.logOut((){});
+              DatabaseFunctions.logOut();
               Navigator.pop(context, true);}               
           ),
 

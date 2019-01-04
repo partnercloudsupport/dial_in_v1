@@ -3,17 +3,27 @@ import 'package:flutter/material.dart';
 import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'package:dial_in_v1/data/strings.dart';
 import 'package:dial_in_v1/data/mini_classes.dart';
+import 'package:dial_in_v1/inherited_widgets.dart';
+import 'package:scoped_model/scoped_model.dart';
+
+
 
 class UserProfilePage extends StatelessWidget{
 
   final UserProfile _userProfile;
+  final bool isCurrentUser;
 
-  UserProfilePage(this._userProfile);
+  UserProfilePage(this._userProfile , this.isCurrentUser);
 
   /// UI Build
   @override
   Widget build(BuildContext context) {
-    return Container(child: 
+    return 
+    
+    ScopedModelDescendant<ProfilesModel>
+            ( rebuildOnChange: false, builder: (context, _ ,model) =>
+    
+    Container(child: 
 
     new Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center ,children:[
 
@@ -27,6 +37,13 @@ class UserProfilePage extends StatelessWidget{
 
       ///Spacer
       Container(height: 20.0,),
+      
+      // Following button Logic
+      isCurrentUser ?  Container(width: 0, height: 0) :
+      MaterialButton(onPressed: () { model.followOrUnfollow(_userProfile.userId);},
+        child: 
+        Text( model.isUserFollowing(_userProfile.userId) ? StringLabels.following : StringLabels.follow),),
+     
 
       Container(margin: EdgeInsets.all(20.0) , child:
       Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, crossAxisAlignment: CrossAxisAlignment.center,
@@ -56,11 +73,10 @@ class UserProfilePage extends StatelessWidget{
       ),),
       ]
     ,)
-    );
-    
+    )
+    ); 
   }
 }
-
 
 class CountBlock extends StatelessWidget {
 
@@ -80,4 +96,5 @@ class CountBlock extends StatelessWidget {
      );
   }
 }
+
 

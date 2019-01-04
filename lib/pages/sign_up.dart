@@ -95,14 +95,26 @@ class SignUpPage extends StatefulWidget{
           new ListView(
             children: <Widget>[
 
-              SizedBox(width: double.infinity, height: 30.0, child:Container(  height: 30.0, width: 30.0, margin: EdgeInsets.fromLTRB(20.0, 40.0, 20.0, 20.0), padding: EdgeInsets.all(0.0),
+            Padding(padding: EdgeInsets.all(5.0),),
+              
+            Row(  mainAxisAlignment: MainAxisAlignment.center, 
+              children: <Widget>[  
+
+            Padding(padding: EdgeInsets.all(5.0),),
+
+            SizedBox(height: 30.0, width: 30.0,
             child: RawMaterialButton( onPressed: () => Navigator.pop(context), 
-            child: Container(   decoration: BoxDecoration( image: DecorationImage( image: AssetImage('assets/images/back_icon.png'), fit: BoxFit.cover)),),),)),
+            child: Container(decoration: BoxDecoration( 
+              image: DecorationImage( 
+                image: AssetImage('assets/images/back_icon.png'),
+                 fit: BoxFit.fitHeight)),),),),
+
+              Expanded(child: Container(),)
+              ]),
               
                Column(  mainAxisAlignment: MainAxisAlignment.center, 
               children: <Widget>[
 
-                Padding(padding: EdgeInsets.all(20.0),),
               
                 /// New User text
                 Text(StringLabels.newUser,  style: TextStyle(color: Colors.black87, fontSize: 30.0),),

@@ -42,7 +42,7 @@ class _FeedListState extends State<FeedList>{
         RawMaterialButton( onPressed: () { },
          child: Text(StringLabels.follow))  ], ),
     
-      body: UserProfilePage(userProfile))));
+      body: UserProfilePage(userProfile, false))));
 
   }
 
