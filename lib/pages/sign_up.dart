@@ -5,6 +5,8 @@ import 'package:dial_in_v1/database_functions.dart';
 import 'package:dial_in_v1/data/images.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:dial_in_v1/data/functions.dart';
+import 'package:dial_in_v1/data/mini_classes.dart';
+
 
 class SignUpPage extends StatefulWidget{
 
@@ -23,13 +25,30 @@ class SignUpPage extends StatefulWidget{
   Color gradientStart = Colors.deepPurple[700]; //Change start gradient color here
   Color gradientEnd = Colors.purple[500];
  
-  void signUpButton()async{  
+  void signUpButton()async{
+
+    showDialog(barrierDismissible: false, context: context ,
+      builder: (context) => Center(child:CircularProgressIndicator()
+      ));    
 
     await DatabaseFunctions.signUp
-    (_userNameController.text, _emailController.text, _passwordController.text,
+    (_userNameController.text,
+    _emailController.text,
+    _passwordController.text,
+    _userImage,
+    
     (success, message) {
+
+      Navigator.pop(context);
+
       if(success){
-        Navigator.pop(context, true);
+
+        Map<String , dynamic> details ={
+        DatabaseIds.success: success,
+        DatabaseIds.email : _emailController.text,
+        DatabaseIds.password : _passwordController.text}; 
+
+        Navigator.pop(context, details);
       
       }else{
         PopUps.showAlert( 

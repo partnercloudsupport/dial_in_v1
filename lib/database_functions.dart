@@ -30,11 +30,23 @@ class DatabaseFunctions {
   }
 
   /// SignUp
-  static Future<void> signUp(String userName, String emailUser, String password, Function(bool, String) completion) async {
+  static Future<void> signUp(String userName, String emailUser, String password, String imageUrl, Function(bool, String) completion) async {
     try {
       FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: emailUser, password: password);
-      completion(true, StringLabels.signedYouUp);
+          .createUserWithEmailAndPassword(email: emailUser, password: password)
+          .then( (user)async{
+            Map<String, dynamic> data = {
+            DatabaseIds.userName : userName,
+            DatabaseIds.email : emailUser,
+            DatabaseIds.password : password,
+            DatabaseIds.image : imageUrl,
+            DatabaseIds.following : List<String>()
+            };           
+       
+            await Firestore.instance.collection(DatabaseIds.User).document(user.uid).setData(data);
+
+            completion(true, StringLabels.signedYouUp);})
+          .catchError((e) => completion(true, e.message));
     } catch (e) {
       completion(true, e.message);
     }
@@ -506,6 +518,7 @@ class Storage {
 
 class DatabaseIds{
 
+  static const String success = 'success';
   static const String community = 'communtiy';
   static const String following = 'following';
   static const String roasterName = 'roasterName';
@@ -524,7 +537,6 @@ class DatabaseIds{
   static const String email = 'email';
   static const String currentUser = 'currentUser';
   static const String password = 'password';
-  static const String username = 'username';
   static const String objectId = 'objectId';
   static const String brewWeight = 'brewWeight';
   static const String Barista = 'Barista';

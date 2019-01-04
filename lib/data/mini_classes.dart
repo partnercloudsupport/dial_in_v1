@@ -42,6 +42,9 @@ class UserProfile {
     String _userImage;
     String get userImage => _userImage;
 
+    List<String> _following;
+    List<String> get following => _following;
+
     Future<int> getRecipeCount()async{ 
       return await DatabaseFunctions.getCount(ProfileType.recipe, _userId);
     }

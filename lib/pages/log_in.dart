@@ -4,6 +4,7 @@ import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'package:dial_in_v1/pages/sign_up.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:dial_in_v1/pages/overview_page/overview_page.dart';
+import 'package:dial_in_v1/database_functions.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key, this.title}) : super(key: key);
@@ -44,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
 
     logIn(_email, _password, (success,error){  
 
-        Navigator.pop(context);
+      Navigator.pop(context);
     
     if (success){   
        setState(() {
@@ -68,7 +69,18 @@ class _LoginPageState extends State<LoginPage> {
   Color gradientStart = Colors.deepPurple[700]; //Change start gradient color here
   Color gradientEnd = Colors.purple[500];
 
-  void signUpButtonPressed() {print('signUp');}
+  void signUpButtonPressed() {
+    Navigator.push(context, 
+    MaterialPageRoute(builder: (BuildContext context) => SignUpPage()))
+     .then((details){
+       if (details[DatabaseIds.success]){
+
+         this._email = details[DatabaseIds.email];
+         this._password = details[DatabaseIds.password];
+
+         loginButtonPressed();}
+         });
+                               }
 
   void onEmailChange(){ _email =_emailController.text;}
 
@@ -122,6 +134,8 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 
+                Padding(padding: EdgeInsets.all(20.0),),
+
                 /// Logo
                 DialInLogo(),
 
@@ -183,10 +197,7 @@ class _LoginPageState extends State<LoginPage> {
                                       color: Colors.white70, fontSize: 10.0))),
 
                           // Sign up button
-                          SignUpButton(() => Navigator.push
-                              (context, MaterialPageRoute(builder: (BuildContext context)   
-                               => SignUpPage()))
-                               .then((success){if (success){loginButtonPressed();}}))
+                          SignUpButton(signUpButtonPressed)
 
                         ])))
               ],
@@ -229,12 +240,11 @@ SignUpButton(this._onPressed);
   Widget build(BuildContext context) {
     return new Container(
         margin: const EdgeInsets.all(0.0),
-        child: RaisedButton(
-            color: Colors.transparent,
+        child: MaterialButton(
             child: Text(StringLabels.signUp,
                 style: TextStyle(
-                    color: Colors.orange,
-                    fontSize: 20.0,
+                    color: Colors.deepOrangeAccent,
+                    fontSize: 30.0,
                     fontWeight: FontWeight.w300)),
                     onPressed:_onPressed ),
             );

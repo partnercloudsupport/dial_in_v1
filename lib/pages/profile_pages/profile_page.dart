@@ -330,7 +330,7 @@ class ProfilePageState extends State<ProfilePage> {
   }
 
   //// Show Profiles list
-  Future<dynamic>_showProfileList(ProfileType profileType)async{
+  void _showProfileList(ProfileType profileType)async{
     // flutter defined function
     var result;
 
@@ -357,7 +357,10 @@ class ProfilePageState extends State<ProfilePage> {
               ProfileListDialog(
                 profileType,
                 (sentProfile){ 
-                  return  _profile.setSubProfile(sentProfile);   
+
+                  setState(() {
+                    _profile.setSubProfile(sentProfile);
+                      });
                  },
               false,
             )
