@@ -471,7 +471,7 @@ class SocialProfileCard extends StatelessWidget {
 
          /// User picture
           Container(child:InkWell(onTap:() => _giveUserProfile(_profile.userProfile),
-              child: Hero(tag: _profile.userProfile.userId, child:CircularPicture(_profile.userImage , 60.0)))),
+              child: Hero(tag: _profile.userProfile.userId, child: CircularPicture(_profile.userImage , 60.0)))),
               
       
           Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
@@ -484,10 +484,10 @@ class SocialProfileCard extends StatelessWidget {
 
         ]),
         Expanded(child: Column(mainAxisAlignment: MainAxisAlignment.end, crossAxisAlignment: CrossAxisAlignment.end, children: [ 
-      
+          
+          ///Follow Button
           Container(margin: const EdgeInsets.all(15.0) ,
-          child: RaisedButton(color: Theme.of(context).accentColor,
-          child: Text('Follow'),onPressed: (){},),),
+          child: FollowButton(_profile.userProfile.userId),),
           ]) ,)
             
       ],),)),      
@@ -1156,13 +1156,16 @@ class _FollowButtonState extends State<FollowButton> {
      ScopedModelDescendant<ProfilesModel>
             ( rebuildOnChange: false, builder: (context, _ ,model) =>
     
-    MaterialButton(onPressed: () {setState(() {
+    RaisedButton(
+      color: Theme.of(context).accentColor,
+       onPressed: () {setState(() {
           ProfilesModel.of(context).followOrUnfollow(widget.userId);
         });},
         
-     child: Text( model.isUserFollowing(widget.userId) ? 
-     StringLabels.following :
-     StringLabels.follow),),
+     child: ScalableWidget( 
+       Text( model.isUserFollowing(widget.userId) ? 
+        StringLabels.following :
+        StringLabels.follow),)),
     );
   }
 }
