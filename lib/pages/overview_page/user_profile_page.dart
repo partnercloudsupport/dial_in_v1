@@ -40,11 +40,8 @@ class UserProfilePage extends StatelessWidget{
       
       // Following button Logic
       isCurrentUser ?  Container(width: 0, height: 0) :
-      MaterialButton(onPressed: () { model.followOrUnfollow(_userProfile.userId);},
-        child: 
-        Text( model.isUserFollowing(_userProfile.userId) ? StringLabels.following : StringLabels.follow),),
+      FollowButton(_userProfile.userId),
      
-
       Container(margin: EdgeInsets.all(20.0) , child:
       Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[

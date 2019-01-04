@@ -37,7 +37,7 @@ class _FeedListState extends State<FeedList>{
                 TextStyle( fontWeight: FontWeight.w700,),textAlign: TextAlign.center,),
                automaticallyImplyLeading: false,
       leading: FlatButton( onPressed: () {Navigator.pop(context);}, 
-      child: Icon(Icons.arrow_back),), 
+      child: Icon(Icons.edit),), 
       actions: <Widget>[ 
         RawMaterialButton( onPressed: () { },
          child: Text(StringLabels.follow))  ], ),

@@ -13,10 +13,7 @@ import 'package:dial_in_v1/data/mini_classes.dart';
 import 'package:flutter/services.dart';
 import 'package:dial_in_v1/data/functions.dart';
 import 'package:dial_in_v1/inherited_widgets.dart';
-
-
-
-
+import 'package:scoped_model/scoped_model.dart';
 
 
 /// Background
@@ -1154,7 +1151,18 @@ class FollowButton extends StatefulWidget {
 class _FollowButtonState extends State<FollowButton> {
   @override
   Widget build(BuildContext context) {
-    return  MaterialButton(onPressed: () { ProfilesModel.of(context).followOrUnfollow(widget.userId);},
+    return  
+    
+     ScopedModelDescendant<ProfilesModel>
+            ( rebuildOnChange: false, builder: (context, _ ,model) =>
+    
+    MaterialButton(onPressed: () {setState(() {
+          ProfilesModel.of(context).followOrUnfollow(widget.userId);
+        });},
+        
+     child: Text( model.isUserFollowing(widget.userId) ? 
+     StringLabels.following :
+     StringLabels.follow),),
     );
   }
 }
