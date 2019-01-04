@@ -874,7 +874,6 @@ class _DateInputCardState extends State<DateInputCard> {
   }
 }
 
-
 /// Date input card
 class DateTimeInputCard extends StatefulWidget {
   final double _padding = 10.0;
@@ -1137,7 +1136,6 @@ class _TextfieldWithFixedValueState extends State<TextfieldWithFixedValue> {
     )); 
   }
 }   
-
 
 /// Follow  button
 class FollowButton extends StatefulWidget {
