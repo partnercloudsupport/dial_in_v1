@@ -126,7 +126,8 @@ class DataPageState extends State<DataPage>with SingleTickerProviderStateMixin {
           
           ).then((value){setState((){});});
 
-        })));
+        }))
+    );
   }
 }
 

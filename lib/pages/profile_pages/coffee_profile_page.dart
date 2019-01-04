@@ -41,11 +41,11 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
   void showPickerMenu(Item item){
 
     List< Widget> _items = new List<Widget>();
-    double _itemHeight = 20.0; 
+    double _itemHeight = 40.0; 
    
     if (item.inputViewDataSet != null && item.inputViewDataSet.length > 0)
     {item.inputViewDataSet[0]
-    .forEach((itemText){_items.add(Text(itemText, style: Theme.of(context).textTheme.display2,));});
+    .forEach((itemText){_items.add(Center(child:Text(itemText, style: Theme.of(context).textTheme.display2,)));});
     }
 
      showModalBottomSheet(context: context, builder: (BuildContext context){
