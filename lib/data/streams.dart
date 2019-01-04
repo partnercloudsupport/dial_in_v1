@@ -151,6 +151,7 @@ class UserFeed {
   String get userImage => _userProfile.userImage;
   String get userId => _userProfile.userId;
   String get userName => _userProfile.userName;
+  List <String> get following => _userProfile.following;
 
   Stream<UserProfile> get userProfile => _outgoingController.stream;
   

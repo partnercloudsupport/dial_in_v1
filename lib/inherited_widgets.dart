@@ -64,7 +64,6 @@ class ProfilesModel extends Model{
     UserFeed _userFeed = new UserFeed(); 
 
     ///Following commands
-    
     bool userFollowing = true;
 
     bool isUserFollowing(String userId){
