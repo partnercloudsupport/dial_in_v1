@@ -66,22 +66,32 @@ class ProfilesModel extends Model{
     ///Following commands
     bool userFollowing = true;
 
+    /// Checks the current user agaist the userId
+    ///  to check if current is following
     bool isUserFollowing(String userId){
 
-      if (_userFeed.following != null) {
+      // if (_userFeed.following != null) {
 
-      return _userFeed.following.contains(userId) ? true : false; }
+      // return _userFeed.following.contains(userId) ? true : false; }
 
-      else{ return false; }
+      // else{ return false; }
+
+      /// test Button
+       return userFollowing;
 
     }
 
     bool followOrUnfollow(String otherUser){
 
-      if(isUserFollowing(otherUser))
-      {DatabaseFunctions.addFollower(userId, otherUser); return true;}
-      else{DatabaseFunctions.unFollow( userId ,otherUser);return false;}
+      
+      // if(isUserFollowing(otherUser))
+      // {DatabaseFunctions.addFollower(userId, otherUser); return true;}
+      // else{DatabaseFunctions.unFollow( userId ,otherUser);return false;}
 
+      /// Test
+      if(isUserFollowing(otherUser))
+      {userFollowing = false; return true;}
+      else{userFollowing = true; return false;}
     }
     
     /// Getters for profiles
