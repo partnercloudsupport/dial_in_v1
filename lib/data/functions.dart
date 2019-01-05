@@ -419,7 +419,6 @@ class Functions {
             image: Images.recipeSmallerFirebase,
             databaseId: DatabaseIds.recipe,
             type: ProfileType.recipe,
-            viewContollerId: ViewControllerIds.recipe,
             orderNumber: 0,
             properties: [
               createBlankItem(DatabaseIds.barista),
@@ -458,7 +457,6 @@ class Functions {
             image: Images.dropFirebase,
             databaseId: DatabaseIds.water,
             type: ProfileType.water,
-            viewContollerId: ViewControllerIds.water,
             orderNumber: 0,
             properties: [
               createBlankItem(DatabaseIds.waterID),
@@ -480,7 +478,6 @@ class Functions {
             image: Images.coffeeBeansFirebase,
             databaseId: DatabaseIds.coffee,
             type: ProfileType.coffee,
-            viewContollerId: ViewControllerIds.coffee,
             orderNumber: 0,
             properties: [
               createBlankItem(DatabaseIds.coffeeId),
@@ -513,7 +510,6 @@ class Functions {
           image: Images.aeropressSmaller512x512Firebase,
           databaseId: DatabaseIds.brewingEquipment,
           type: ProfileType.equipment,
-          viewContollerId: ViewControllerIds.brewingEquipment,
           orderNumber: 0,
           properties: [
             createBlankItem(DatabaseIds.equipmentId),
@@ -534,7 +530,6 @@ class Functions {
           image: Images.userFirebase,
           databaseId: DatabaseIds.feed,
           type: ProfileType.feed,
-          viewContollerId: ViewControllerIds.feed,
           orderNumber: 0,
           properties: [
             createBlankItem(DatabaseIds.type),
@@ -551,7 +546,6 @@ class Functions {
           image: Images.grinderFirebase,
           databaseId: DatabaseIds.grinder,
           type: ProfileType.grinder,
-          viewContollerId: ViewControllerIds.grinder,
           orderNumber: 0,
           properties: [
             createBlankItem(DatabaseIds.grinderId),
@@ -590,7 +584,6 @@ class Functions {
           image: Images.userFirebase,
           databaseId: DatabaseIds.Barista,
           type: ProfileType.barista,
-          viewContollerId: ViewControllerIds.barista,
           orderNumber: 0,
           properties: [
             createBlankItem(DatabaseIds.name),
@@ -1222,7 +1215,7 @@ class Functions {
   /// Create feed Profile from profile
   static Future<FeedProfileData> createFeedProfileFromProfile(Profile profile)async{
 
-    UserProfile userProfile = await DatabaseFunctions.getUserProfileFromFireStoreWithDocRef(profile.userID);
+    UserProfile userProfile = await DatabaseFunctions.getUserProfileFromFireStoreWithDocRef(profile.userId);
 
     return FeedProfileData(profile, userProfile);
   }

@@ -20,8 +20,6 @@ class Profile {
   @required
   ProfileType type;
   @required
-  String viewContollerId;
-  @required
   int referanceNumber;
   @required
   int orderNumber = 0;
@@ -39,7 +37,6 @@ class Profile {
       this.properties,
       this.image,
       this.databaseId,
-      this.viewContollerId,
       this.orderNumber,
       this.profiles,
       this.isPublic
@@ -73,8 +70,6 @@ class Profile {
         break;
     }
   }
-
-  String get userID => this.userId;
   
   //  Future<void> setDefaultPic()async{if (this.image == null){ this.image = await Functions.getFile(Images.recipeSmaller);}}
 
@@ -395,7 +390,6 @@ Future<String> getUserImage ()async{
             image: Images.recipeSmallerFirebase,
             databaseId: DatabaseIds.recipe,
             type: ProfileType.recipe,
-            viewContollerId: ViewControllerIds.recipe,
             orderNumber: 0,
             properties: [
               createBlankItem(DatabaseIds.barista),
@@ -433,7 +427,6 @@ Future<String> getUserImage ()async{
             image: Images.dropFirebase,
             databaseId: DatabaseIds.water,
             type: ProfileType.water,
-            viewContollerId: ViewControllerIds.water,
             orderNumber: 0,
             properties: [
               createBlankItem(DatabaseIds.waterID),
@@ -454,7 +447,6 @@ Future<String> getUserImage ()async{
             image: Images.coffeeBeansFirebase,
             databaseId: DatabaseIds.coffee,
             type: ProfileType.coffee,
-            viewContollerId: ViewControllerIds.coffee,
             orderNumber: 0,
             properties: [
               createBlankItem(DatabaseIds.coffeeId),
@@ -486,7 +478,6 @@ Future<String> getUserImage ()async{
           image: Images.aeropressSmaller512x512Firebase,
           databaseId: DatabaseIds.brewingEquipment,
           type: ProfileType.equipment,
-          viewContollerId: ViewControllerIds.brewingEquipment,
           orderNumber: 0,
           properties: [
             createBlankItem(DatabaseIds.equipmentId),
@@ -506,7 +497,6 @@ Future<String> getUserImage ()async{
           image: Images.userFirebase,
           databaseId: DatabaseIds.feed,
           type: ProfileType.feed,
-          viewContollerId: ViewControllerIds.feed,
           orderNumber: 0,
           properties: [
             createBlankItem(DatabaseIds.type),
@@ -522,7 +512,6 @@ Future<String> getUserImage ()async{
           image: Images.grinderFirebase,
           databaseId: DatabaseIds.grinder,
           type: ProfileType.grinder,
-          viewContollerId: ViewControllerIds.grinder,
           orderNumber: 0,
           properties: [
             createBlankItem(DatabaseIds.grinderId),
@@ -559,7 +548,6 @@ Future<String> getUserImage ()async{
           image: Images.userFirebase,
           databaseId: DatabaseIds.Barista,
           type: ProfileType.barista,
-          viewContollerId: ViewControllerIds.barista,
           orderNumber: 0,
           properties: [
             createBlankItem(DatabaseIds.name),

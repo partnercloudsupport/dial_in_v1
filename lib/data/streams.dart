@@ -113,9 +113,8 @@ class SocialFeedBloc{
       DatabaseFunctions.convertStreamToListOfProfiles(p, DatabaseIds.recipe)
       .then((profilesOut){ 
 
-        List<Profile> profiles = profilesOut;
-        // profiles.removeWhere((profile) => profile.userID == userId );
-
+        var profiles = new List<Profile>.from(profilesOut);
+        profiles.removeWhere((profile) => profile.userId == userId );
         convertProfilesToListOfFeedProfiles(profiles).then(
 
         (feedProfiles){_outgoingController.add(feedProfiles);}

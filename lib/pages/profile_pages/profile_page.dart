@@ -50,7 +50,6 @@ class ProfilePageState extends State<ProfilePage> {
   bool _isEditing;
   bool _isOldProfile;
   Profile _profile;
-  ProfilesModel _model;
   String _appBarTitle;
   ScrollController _scrollController;
 
@@ -60,7 +59,6 @@ class ProfilePageState extends State<ProfilePage> {
       _isEditing = widget.isEditing;
       _profile = widget.profile;
       _isOldProfile = widget.isOldProfile; 
-      _model = ProfilesModel.of(context);
       _scrollController = ScrollController();
       
     if (widget.isNew || widget.isCopying) { this._appBarTitle = StringLabels.newe + ' ' +Functions.getProfileTypeString(_profile.type) + ' ' + StringLabels.profile;
