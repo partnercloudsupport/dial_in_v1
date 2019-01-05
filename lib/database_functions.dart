@@ -143,6 +143,19 @@ class DatabaseFunctions {
       return await getValueFromFireStoreWithDocRef(DatabaseIds.User, userId, DatabaseIds.userName) ?? '';
 
   }
+  
+  static void updateUserProfile(String userName, String imageURL)async{
+
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+
+    UserUpdateInfo userUpdateInfo = UserUpdateInfo();
+    userUpdateInfo.displayName = userName;
+    userUpdateInfo.photoUrl = imageURL;
+  
+    user.updateProfile(userUpdateInfo);
+  }
+
+  
 
   // Get current User from firebase
   static Future<String> getCurrentUserId()async{
@@ -314,7 +327,7 @@ class DatabaseFunctions {
     completion(pic);
   }
 
-  /// Get profiles from fore store with doc referance
+  /// Get profiles from from store with doc referance
   static Future<Profile> getProfileFromFireStoreWithDocRef(String collectionDataBaseId, String docRefernace)async{
 
     Profile _profile;
@@ -340,10 +353,19 @@ class DatabaseFunctions {
     return await Future.wait(futureProfiles);
   }
 
-  /// Todo
+  /// Get stream with one argument
   static Stream<dynamic> getStreamFromFireStore(String collection, String whereKey, dynamic isEqualTo ){
     return Firestore.instance.collection(collection)
                               .where(whereKey, isEqualTo: isEqualTo)
+                              .snapshots();
+  }
+
+  /// Get stream with two arguments
+  static Stream<dynamic> getStreamFromFireStoreTwoArgs
+    (String collection, String whereKeyOne, dynamic isEqualToOne, String whereKeyTwo, dynamic isEqualToTwo ){
+    return Firestore.instance.collection(collection)
+                              .where(whereKeyOne, isEqualTo: isEqualToOne)
+                              .where(whereKeyTwo, isEqualTo: isEqualToTwo)
                               .snapshots();
   }
 

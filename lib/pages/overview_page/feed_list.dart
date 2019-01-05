@@ -60,7 +60,7 @@ class _FeedListState extends State<FeedList>{
   Widget build(BuildContext context) {
     return ScopedModelDescendant<ProfilesModel>
       (builder: (context, _ ,model) =>
-
+          ///Todo Starts building this before User profile is gotton
         StreamBuilder<List<FeedProfileData>>(
           stream:  model.communnityFeed,
           builder: (context, snapshot) {

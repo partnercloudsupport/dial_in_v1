@@ -15,12 +15,12 @@ class FeedBloc{
   String get databaseId => _databaseId;
   bool _initilised = false;
 
-  final _outgoingController = BehaviorSubject<List<Profile>>();
-  final _incomingController = StreamController<QuerySnapshot>.broadcast();
+  var _outgoingController = BehaviorSubject<List<Profile>>();
+  var _incomingController = StreamController<QuerySnapshot>.broadcast();
 
   void removeProfile(Profile profile){
     _profiles.removeWhere((p) => p.objectId == profile.objectId);
-        _outgoingController.add(_profiles);
+      _outgoingController.add(_profiles);
   }
 
   Stream<List<Profile>> get profiles => _outgoingController.stream;
@@ -44,8 +44,10 @@ class FeedBloc{
 
     if(!_initilised){
     _initilised = true;
-    String userID = await DatabaseFunctions.getCurrentUserId();
+    _incomingController = _incomingController = StreamController<QuerySnapshot>.broadcast();
+    _outgoingController = BehaviorSubject<List<Profile>>();
 
+    String userID = await DatabaseFunctions.getCurrentUserId();
     _incomingController.addStream
     (DatabaseFunctions.getStreamFromFireStore(_databaseId, DatabaseIds.user, userID));
 
@@ -70,6 +72,7 @@ class SocialFeedBloc{
   final String _databaseId;
   String get databaseId => _databaseId;
   bool _initilised = false;
+  Stream<UserProfile> _currentUser;
 
 
   final _outgoingController = BehaviorSubject<List<FeedProfileData>>();
@@ -78,7 +81,13 @@ class SocialFeedBloc{
   final _incomingController = StreamController<QuerySnapshot>.broadcast();
 
   /// Init of the class
-  SocialFeedBloc(this._databaseId);
+  SocialFeedBloc(this._databaseId, this._currentUser)
+  {_currentUser.listen((profile){
+
+    getProfiles(profile.userId);
+
+   });
+  }
 
   void deinit(){
     _initilised = false;
@@ -86,11 +95,10 @@ class SocialFeedBloc{
     _incomingController.close();
   }
 
-  Future getProfiles()async{
+  Future getProfiles(String userId)async{
   
    if(!_initilised){
 
-     
     _initilised = true;
     if(_databaseId == DatabaseIds.community)
     {_incomingController.addStream
@@ -103,7 +111,10 @@ class SocialFeedBloc{
 
     _incomingController.stream.listen((p){
       DatabaseFunctions.convertStreamToListOfProfiles(p, DatabaseIds.recipe)
-      .then((profiles){ 
+      .then((profilesOut){ 
+
+        List<Profile> profiles = profilesOut;
+        // profiles.removeWhere((profile) => profile.userID == userId );
 
         convertProfilesToListOfFeedProfiles(profiles).then(
 

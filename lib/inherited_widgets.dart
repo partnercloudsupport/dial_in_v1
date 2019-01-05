@@ -81,9 +81,9 @@ class ProfilesModel extends Model{
 
     }
 
+    /// Checks the following status then updates the record accordingly
     bool followOrUnfollow(String otherUser){
 
-      
       // if(isUserFollowing(otherUser))
       // {DatabaseFunctions.addFollower(userId, otherUser); return true;}
       // else{DatabaseFunctions.unFollow( userId ,otherUser);return false;}
@@ -107,10 +107,10 @@ class ProfilesModel extends Model{
     Stream<List<FeedProfileData>> get followingFeed => _followers.profiles;
 
     ProfilesModel(){
-        communityFeed = recipeProfiles;
-        followersFeed = recipeProfiles;
-        _comminuty = new SocialFeedBloc(DatabaseIds.community);
-        _followers = new SocialFeedBloc(DatabaseIds.following);
+      communityFeed = recipeProfiles;
+      followersFeed = recipeProfiles;
+      _comminuty = new SocialFeedBloc(DatabaseIds.community, userProfile);
+      _followers = new SocialFeedBloc(DatabaseIds.following, userProfile);
     }
 
     void logOut(){
@@ -121,15 +121,14 @@ class ProfilesModel extends Model{
 
     void init()async{
       await _userFeed.getProfile();
-      
+ 
       _recipeFeed.getProfiles();
       _coffeeFeed.getProfiles();
       _grinderFeed.getProfiles();
       _equipmentFeed.getProfiles();
       _waterFeed.getProfiles();
       _baristaFeed.getProfiles();
-      _comminuty.getProfiles();
-      _followers.getProfiles();
+      
     } 
 
     void deInit(){
