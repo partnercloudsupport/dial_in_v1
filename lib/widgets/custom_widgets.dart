@@ -477,7 +477,7 @@ class SocialProfileCard extends StatelessWidget {
           Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
 
             ///User Name
-            Container(margin: EdgeInsets.all(5.0), child: Text(_profile.userName,  maxLines: 1, style: Theme.of(context).textTheme.display1,),),
+            Container(margin: EdgeInsets.all(5.0), child: Text(_profile.userProfile.userName,  maxLines: 1, style: Theme.of(context).textTheme.display1,),),
 
             /// Date
             Container(margin: EdgeInsets.all(5.0), child: Text(_dateFormat.format(_profile.profile.getProfileItemValue(DatabaseIds.date)) ,  maxLines: 1), ),
@@ -488,6 +488,7 @@ class SocialProfileCard extends StatelessWidget {
           ///Follow Button
           Container(margin: const EdgeInsets.all(15.0) ,
           child: FollowButton(_profile.userProfile.userId),),
+
           ]) ,)
             
       ],),)),      
@@ -503,7 +504,8 @@ class SocialProfileCard extends StatelessWidget {
           Container(height: 20.0,),
 
         /// Coffee Name
-          Container(margin: EdgeInsets.all(5.0), child: Text(_profile.profile.getProfileProfileItemValue(ProfileType.coffee, DatabaseIds.coffeeId),  maxLines: 1, style: Theme.of(context).textTheme.title,),),
+        Container(margin: EdgeInsets.all(5.0), child: 
+          Text(_profile.profile.getProfileProfileItemValue(ProfileType.coffee, DatabaseIds.coffeeId),  maxLines: 1, style: Theme.of(context).textTheme.title,),),
 
           /// Notes
           Container(margin: EdgeInsets.all(5.0), child: Text(_profile.profile.getProfileItemValue(DatabaseIds.descriptors),  maxLines: 1), ),
@@ -799,7 +801,6 @@ class ProfileImage extends StatelessWidget {
                 )));
   }
 }
-
 
 /// Date input card
 class DateInputCard extends StatefulWidget {
@@ -1152,7 +1153,7 @@ class _FollowButtonState extends State<FollowButton> {
     return  
     
      ScopedModelDescendant<ProfilesModel>
-            ( rebuildOnChange: false, builder: (context, _ ,model) =>
+            ( rebuildOnChange: true, builder: (context, _ ,model) =>
     
     RaisedButton(
       color: Theme.of(context).accentColor,

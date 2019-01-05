@@ -82,7 +82,7 @@ class _FeedListState extends State<FeedList>{
                     itemExtent: 450,
                     itemCount: snapshot.data.length,
                     itemBuilder: (BuildContext context, int index) =>
-                        SocialProfileCard(snapshot.data[index], _dealWithProfileSelection, _handleUserSelection)
+                    SocialProfileCard(snapshot.data[index], _dealWithProfileSelection, _handleUserSelection)
                 );
               }
           }

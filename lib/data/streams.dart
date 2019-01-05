@@ -1,10 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 import 'package:dial_in_v1/data/profile.dart';
 import 'package:dial_in_v1/data/functions.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:dial_in_v1/database_functions.dart';
 import 'package:dial_in_v1/data/mini_classes.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 /// Making Profiles in Bloc in the Way of technical debt :)
 class FeedBloc{
@@ -12,7 +13,7 @@ class FeedBloc{
   ///Other Variables
   final String _databaseId;
   String get databaseId => _databaseId;
-  bool initilised = false;
+  bool _initilised = false;
 
   final _outgoingController = BehaviorSubject<List<Profile>>();
   final _incomingController = StreamController<QuerySnapshot>.broadcast();
@@ -32,23 +33,25 @@ class FeedBloc{
 
   /// Deinit
   void deinit(){
-
-    _outgoingController.close();
+    _initilised = false;
+    _outgoingController.drain();
     _incomingController.close();
   }
 
+  void add(Profile profile){}
+
   Future getProfiles({Profile profile})async{
 
-    if(!initilised){
-    initilised = true;
+    if(!_initilised){
+    _initilised = true;
     String userID = await DatabaseFunctions.getCurrentUserId();
 
     _incomingController.addStream
     (Firestore.instance.collection(_databaseId)
-    .where(DatabaseIds.user, isEqualTo: userID).snapshots());
+    (DatabaseFunctions.getStreamFromFireStore(_databaseId, DatabaseIds.user, userID));
 
     _incomingController.stream.listen((p){
-      convertStreamToListOfProfiles(p)
+      DatabaseFunctions.convertStreamToListOfProfiles(p,_databaseId)
       .then((profiles){ 
         _profiles = profiles;
         if (profile != null){profiles.add(profile);}
@@ -57,22 +60,6 @@ class FeedBloc{
       }
     );
     }
-  }
-
-  Future<List<Profile>> convertStreamToListOfProfiles(QuerySnapshot stream) async {
-
-    final futureProfiles = stream.documents.map((doc) => 
-        DatabaseFunctions.createProfileFromDocumentSnapshot(_databaseId, doc));
-           
-    return await Future.wait(futureProfiles);
-  }
-
-
-  void add(Profile profile){
-    // _profiles.add(profile);
-    // DatabaseFunctions.saveProfile(profile);
-    // _outgoingController.add(_profiles);
-
   }
 }  
 
@@ -83,7 +70,8 @@ class SocialFeedBloc{
   ///Other Variables
   final String _databaseId;
   String get databaseId => _databaseId;
-  bool initilised = false;
+  bool _initilised = false;
+
 
   final _outgoingController = BehaviorSubject<List<FeedProfileData>>();
   Stream<List<FeedProfileData>> get profiles => _outgoingController.stream;
@@ -93,20 +81,27 @@ class SocialFeedBloc{
   /// Init of the class
   SocialFeedBloc(this._databaseId);
 
+  void deinit(){
+    _initilised = false;
+    _outgoingController.drain();
+    _incomingController.close();
+  }
+
   Future getProfiles()async{
   
-   if(!initilised){
-    initilised = true;
+   if(!_initilised){
+    _initilised = true;
     if(_databaseId == DatabaseIds.community)
-    {_incomingController.addStream(Firestore.instance.collection(DatabaseIds.recipe)
-    .where(DatabaseIds.public, isEqualTo: true).snapshots());}
-
-    else
-    {_incomingController.addStream(Firestore.instance.collection(DatabaseIds.recipe)
-    .where(DatabaseIds.public, isEqualTo: true).snapshots());}
+    {_incomingController.addStream
+                        (DatabaseFunctions.getStreamFromFireStore(DatabaseIds.recipe, DatabaseIds.public, true));
+    
+    }else
+    {_incomingController.addStream( 
+      DatabaseFunctions.getStreamFromFireStore(DatabaseIds.recipe, DatabaseIds.public, true));
+      }
 
     _incomingController.stream.listen((p){
-      convertStreamToListOfProfiles(p)
+      DatabaseFunctions.convertStreamToListOfProfiles(p, DatabaseIds.recipe)
       .then((profiles){ 
 
         convertProfilesToListOfFeedProfiles(profiles).then(
@@ -120,13 +115,6 @@ class SocialFeedBloc{
    }
   }
 
-  Future<List<Profile>> convertStreamToListOfProfiles(QuerySnapshot stream) async {
-
-    final futureProfiles = stream.documents.map((doc) => 
-        DatabaseFunctions.createProfileFromDocumentSnapshot(DatabaseIds.recipe, doc));
-           
-    return await Future.wait(futureProfiles);
-  }
 
   Future<List<FeedProfileData>>convertProfilesToListOfFeedProfiles(List<Profile> stream) async {
       List<FeedProfileData> profiles = new List<FeedProfileData>();
@@ -136,17 +124,14 @@ class SocialFeedBloc{
               profiles.add(result);
       }
       return profiles;
+      // return wait Future.wait(profiles)
     }
-
 }
 
 class UserFeed {
    
   bool _initilised = false;
   UserProfile _userProfile;
-  String _userImage = '';
-  String _userId = '';
-  String _userName = '';
 
   String get userImage => _userProfile.userImage;
   String get userId => _userProfile.userId;
@@ -157,33 +142,27 @@ class UserFeed {
   
   final BehaviorSubject<UserProfile> _outgoingController = BehaviorSubject<UserProfile>();
 
+    void deinit(){
+    _initilised = false;
+    _outgoingController.drain();
+  }
+
    Future getProfile()async{
   
    if(!_initilised){
-      DatabaseFunctions.getUserImage()
-      .then((image)
-      {_userImage = image;
-      _makeUserProfile();});
+
+     _initilised= true;
 
       DatabaseFunctions.getCurrentUserId()
       .then((user)
-      {_userId = user;
-      _makeUserProfile();});
+      {DatabaseFunctions.getUserProfileFromFireStoreWithDocRef(user)
 
-      DatabaseFunctions.getUserName()
-      .then((name)
-      {_userName = name;
-      _makeUserProfile();});
-    }
-  }
+        .then((userProfile)
+          
+        {_userProfile = userProfile;
+         _outgoingController.add(_userProfile);});
 
-void _makeUserProfile()async{
-    
-    if (_userImage != null || _userId != null || _userName != null){
-
-      _userProfile = UserProfile(_userId, _userName, _userImage);
-
-      _outgoingController.add(_userProfile);
-    }
+      }).catchError((e) => print(e));
+   }
   }
 }

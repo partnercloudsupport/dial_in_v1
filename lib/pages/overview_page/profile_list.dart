@@ -75,7 +75,7 @@ void didUpdateWidget(dynamic oldWidget) {
                     itemExtent: 120,
                     itemCount: snapshot.data.length,
                     itemBuilder: (BuildContext context, int index) =>
-                      ProfileCard(_list[index], _dealWithProfileSelection, _deleteProfile)
+                    ProfileCard(_list[index], _dealWithProfileSelection, _deleteProfile)
                 );
             }
           }

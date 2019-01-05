@@ -11,9 +11,6 @@ import 'package:dial_in_v1/inherited_widgets.dart';
 import 'package:dial_in_v1/data/functions.dart';
 import 'package:dial_in_v1/pages/overview_page/current_user_page.dart';
 
-
-
-
 class OverviewPage extends StatefulWidget{
  @override
   OverviewPageState createState() => new OverviewPageState();
@@ -31,13 +28,6 @@ class OverviewPageState extends State<OverviewPage> with SingleTickerProviderSta
     controller = new TabController(vsync: this, length: _tabViews.tabs.length);
     super.initState();
   }
-
-  @override
-  void didChangeDependencies() {
-    ProfilesModel.of(context).init();
-      super.didChangeDependencies();
-    }
-  
 
   @override
   void dispose(){
@@ -80,8 +70,9 @@ class OverviewPageState extends State<OverviewPage> with SingleTickerProviderSta
           FlatButton(
             child: Text('Yes'),
             onPressed: (){ 
-              DatabaseFunctions.logOut();
-              Navigator.pop(context, true);}               
+              Navigator.pop(context, true);             
+              ProfilesModel.of(context).logOut();
+              }
           ),
 
           FlatButton(

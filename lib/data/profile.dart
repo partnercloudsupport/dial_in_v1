@@ -208,7 +208,7 @@ Future<String> getUserImage ()async{
   
   String imageUrl = await DatabaseFunctions.getValueFromFireStoreWithDocRef(DatabaseIds.User, this.userId, DatabaseIds.image);
 
-  return imageUrl;
+  return imageUrl ?? '';
 } 
 
  dynamic getProfileProfileItemValue(ProfileType profiletype, String itemDatabaseId) {
@@ -269,9 +269,9 @@ Future<String> getUserImage ()async{
 
  Future<String> getProfileUserName()async{
    
-  String userId = await DatabaseFunctions.getValueFromFireStoreWithDocRef(DatabaseIds.User, this.userId, DatabaseIds.userName);
+  String userName = await DatabaseFunctions.getValueFromFireStoreWithDocRef(DatabaseIds.User, this.userId, DatabaseIds.userName);
 
-  return userId;
+  return userName ?? 'Error: Could not find userName';
  }
 
   String getProfileProfileTitleValue({String profileDatabaseId}) {

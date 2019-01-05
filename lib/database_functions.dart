@@ -10,13 +10,80 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:dial_in_v1/data/strings.dart';
+import 'package:dial_in_v1/data/mini_classes.dart';
+import 'package:rxdart/rxdart.dart';
+
+
 
 
 class DatabaseFunctions {
 
-  Firestore fireStore;
+ static void addFollower(String currentUser, String follow)async{
 
-  DatabaseFunctions(){this.fireStore = new Firestore();}
+    var newDoc = await Firestore.instance.collection(DatabaseIds.User)
+      .document(currentUser).get().
+      catchError((e) => print(e));
+
+      if (newDoc.data.containsKey(DatabaseIds.following)){
+
+        List<dynamic> newFollowingList = new List<String>.from(newDoc.data[DatabaseIds.following]);
+        newFollowingList.add(follow);
+        Map<String, dynamic> data = { DatabaseIds.following : newFollowingList};
+
+          Firestore.instance
+          .collection(DatabaseIds.User)
+          .document(currentUser)
+          .updateData(data)
+          .whenComplete((){print('Successfully updated $currentUser follower');})
+          .catchError((error){print(error);});
+
+      }else{
+
+        newDoc.data[DatabaseIds.following] = { DatabaseIds.following : follow};
+
+        await Firestore.instance
+        .collection(DatabaseIds.User)
+        .document(currentUser)
+        .setData(newDoc.data[DatabaseIds.following])
+        .catchError((error){print(error);});
+      }
+  }
+
+  static void unFollow(String currentUser, String unFollow)async{
+
+      var newDoc = await Firestore.instance.collection(DatabaseIds.User)
+      .document(currentUser).get().
+      catchError((e) => print(e));
+
+      if (newDoc.data.containsKey(DatabaseIds.following)){
+
+        List<dynamic> newFollowingList = new List<String>.from(newDoc.data[DatabaseIds.following]);
+        newFollowingList.remove(unFollow);
+        Map<String, dynamic> data = { DatabaseIds.following : newFollowingList};
+
+
+          Firestore.instance
+          .collection(DatabaseIds.User)
+          .document(currentUser)
+          .updateData(data)
+          .whenComplete((){ print('Successfully removed $currentUser follower');})
+          .catchError((error){print(error);});
+
+      }else{
+
+        newDoc.data[DatabaseIds.following] = Map<String, dynamic>();
+
+        await Firestore.instance
+        .collection(DatabaseIds.User)
+        .document(currentUser)
+        .setData(newDoc.data[DatabaseIds.following])
+        .catchError((error){print(error);});
+      }
+  }
+
+  // Firestore fireStore;
+
+  // DatabaseFunctions(){this.fireStore = new Firestore();}
 
   ///Login
   static Future<void> logIn(String emailUser, String password,Function(bool, String) completion) async {
@@ -30,19 +97,21 @@ class DatabaseFunctions {
   }
 
   /// SignUp
-  static Future<void> signUp(String userName, String emailUser, String password, String imageUrl, Function(bool, String) completion) async {
+  static Future<void> signUp
+  (String userName, String emailUser, String password, String imageUrl, Function(bool, String) completion) async {
     try {
       FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: emailUser, password: password)
           .then( (user)async{
             Map<String, dynamic> data = {
+            DatabaseIds.userId : user.uid,
             DatabaseIds.userName : userName,
             DatabaseIds.email : emailUser,
             DatabaseIds.password : password,
             DatabaseIds.image : imageUrl,
             DatabaseIds.following : List<String>()
-            };           
-       
+            };
+
             await Firestore.instance.collection(DatabaseIds.User).document(user.uid).setData(data);
 
             completion(true, StringLabels.signedYouUp);})
@@ -72,9 +141,9 @@ class DatabaseFunctions {
     String userId = await getCurrentUserId();
 
       return await getValueFromFireStoreWithDocRef(DatabaseIds.User, userId, DatabaseIds.userName) ?? '';
-        
+
   }
-  
+
   // Get current User from firebase
   static Future<String> getCurrentUserId()async{
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
@@ -84,7 +153,7 @@ class DatabaseFunctions {
   /// Dowload file from Firebase
   static Future<File> downloadFile(String httpPath)async{
 
-    final RegExp regExpPng = RegExp('([^?/]*\.(png))');    
+    final RegExp regExpPng = RegExp('([^?/]*\.(png))');
     final RegExp regExpjpg = RegExp('([^?/]*\.(jpg))');
     String fileName;
 
@@ -98,7 +167,7 @@ class DatabaseFunctions {
     final File file = File('${tempDir.path}/$fileName');
     final StorageReference firebaseStorageReferance = FirebaseStorage.instance.ref().child(fileName);
     final StorageFileDownloadTask downloadTask = firebaseStorageReferance.writeToFile(file);
-    
+
     await downloadTask.future;
     return file;
 
@@ -112,14 +181,18 @@ class DatabaseFunctions {
 
     Map <String, dynamic> _documentProperties = await prepareProfileForFirebaseUpload(profile);
 
-    Firestore.instance.collection(profile.databaseId).document(profile.objectId).updateData(_documentProperties)
-    .whenComplete((){print('Successfully updated ${profile.objectId}');}).catchError((error){print(error);});
-    
+    Firestore.instance
+    .collection(profile.databaseId)
+    .document(profile.objectId)
+    .updateData(_documentProperties)
+    .whenComplete((){print('Successfully updated ${profile.objectId}');})
+    .catchError((error){print(error);});
+
   }
-   
+
   /// Upload file to Firebase
   static Future<String> upLoadFileReturnUrl(File file, List<String> folders, {Function(String)  errorHandler})async{
-    
+
    StorageReference ref;
     if(folders.length == 0){
        ref = FirebaseStorage.instance.ref().child(path.basename(file.path));
@@ -129,12 +202,12 @@ class DatabaseFunctions {
        ref = FirebaseStorage.instance.ref().child(folders[0]).child(folders[1]).child(path.basename(file.path));
     }else if(folders.length == 3){
         ref = FirebaseStorage.instance.ref().child(folders[0]).child(folders[1]).child(folders[2]).child(path.basename(file.path));
-    }else{   
+    }else{
        ref = FirebaseStorage.instance.ref().child(path.basename(file.path));
     }
 
     final StorageUploadTask uploadTask = ref.putFile(file);
-    
+
     return await (await uploadTask.onComplete).ref.getDownloadURL().catchError((error){errorHandler(error);});
   }
 
@@ -146,7 +219,7 @@ class DatabaseFunctions {
     //   String filePath = regExp.stringMatch(fileUrl.split('').reversed.join());
     //   // Create a reference to the file to delete
     //   StorageReference desertRef = FirebaseStorage.instance.ref().child(filePath);
-      
+
     //   // Delete the file
     //   desertRef.delete()
     //   .then((_) {})
@@ -167,7 +240,7 @@ class DatabaseFunctions {
         _properties[DatabaseIds.orderNumber] = profile.orderNumber;
         _properties[DatabaseIds.user] = userId;
         _properties[DatabaseIds.public] = profile.isPublic;
-      
+
       if (profile.type == ProfileType.recipe){
         _properties[DatabaseIds.coffeeId] = profile.getProfileProfileRefernace(profileDatabaseId: DatabaseIds.coffee);
         _properties[DatabaseIds.waterID] = profile.getProfileProfileRefernace(profileDatabaseId: DatabaseIds.water);
@@ -178,7 +251,7 @@ class DatabaseFunctions {
     return _properties;
 }
 
-  /// Delete profile 
+  /// Delete profile
   static Future<void> deleteProfile(Profile profile)async{
     Firestore.instance.collection(profile.databaseId).document(profile.objectId)
         .delete()
@@ -188,15 +261,15 @@ class DatabaseFunctions {
         .catchError((e){print(e);});
   }
 
-  /// Save profile 
+  /// Save profile
   static Future<Profile> saveProfile(Profile profile)async{
 
     Map <String, dynamic> _properties = new Map <String, dynamic>();
 
      for (var i = 0; i < profile.properties.length; i++) {
-          
+
         _properties[profile.properties[i].databaseId] = profile.properties[i].value;
-      
+
       }
 
     String userId = await DatabaseFunctions.getCurrentUserId();
@@ -205,17 +278,17 @@ class DatabaseFunctions {
         _properties[DatabaseIds.orderNumber] = profile.orderNumber;
         _properties[DatabaseIds.user] = userId;
         _properties[DatabaseIds.public] = profile.isPublic;
-      
+
       if (profile.type == ProfileType.recipe){
         _properties[DatabaseIds.coffeeId] = profile.getProfileProfileRefernace(profileDatabaseId: DatabaseIds.coffee);
         _properties[DatabaseIds.waterID] = profile.getProfileProfileRefernace(profileDatabaseId: DatabaseIds.water);
         _properties[DatabaseIds.grinderId] = profile.getProfileProfileRefernace(profileDatabaseId: DatabaseIds.grinder);
         _properties[DatabaseIds.barista] = profile.getProfileProfileRefernace(profileDatabaseId: DatabaseIds.Barista);
-        _properties[DatabaseIds.equipmentId] = profile.getProfileProfileRefernace(profileDatabaseId: DatabaseIds.brewingEquipment);}  
- 
+        _properties[DatabaseIds.equipmentId] = profile.getProfileProfileRefernace(profileDatabaseId: DatabaseIds.brewingEquipment);}
+
       DocumentReference documentReference = await Firestore.instance.collection(profile.databaseId).add(_properties).catchError((error){print(error);});
 
-      final String docId = documentReference.documentID; 
+      final String docId = documentReference.documentID;
 
       profile.objectId =  docId;
 
@@ -239,37 +312,112 @@ class DatabaseFunctions {
   static void getImageFromAssets(String id, Function completion(Image image)){
     Image pic = Image.asset(id);
     completion(pic);
-  } 
+  }
 
   /// Get profiles from fore store with doc referance
   static Future<Profile> getProfileFromFireStoreWithDocRef(String collectionDataBaseId, String docRefernace)async{
-    
+
     Profile _profile;
 
     if (docRefernace != ''){
 
     DocumentSnapshot doc = await Firestore.instance.collection(collectionDataBaseId).document(docRefernace).get();
-    
+
     if (doc.exists) {
           _profile = await DatabaseFunctions.createProfileFromDocumentSnapshot(collectionDataBaseId, doc);
       } else {_profile =  await Functions.createBlankProfile(Functions.getProfileDatabaseIdType(collectionDataBaseId));}
 
     }else{_profile =  await Functions.createBlankProfile(Functions.getProfileDatabaseIdType(collectionDataBaseId));}
-    
+
     return _profile;
+  }
+
+  static Future<List<Profile>> convertStreamToListOfProfiles(QuerySnapshot stream, String databaseId) async {
+
+    final futureProfiles = stream.documents.map((doc) =>
+        DatabaseFunctions.createProfileFromDocumentSnapshot(databaseId, doc));
+
+    return await Future.wait(futureProfiles);
+  }
+
+  /// Todo
+  static Stream<dynamic> getStreamFromFireStore(String collection, String whereKey, dynamic isEqualTo ){
+    return Firestore.instance.collection(collection)
+                              .where(whereKey, isEqualTo: isEqualTo)
+                              .snapshots();
+  }
+
+  /// TODO
+  static Stream<UserProfile> getUserProfileStreamFromFireStoreWithDocRef(String docRefernace){
+
+    Completer completer = new Completer();
+
+    Stream<DocumentSnapshot> userSnapshotStream = Firestore.instance.collection(DatabaseIds.User).document(docRefernace).snapshots();
+
+    final BehaviorSubject<UserProfile> _outgoingController = BehaviorSubject<UserProfile>();
+
+    UserProfile userProfile;
+
+    userSnapshotStream.listen((doc){
+
+      if (doc.exists){
+
+        userProfile = new UserProfile
+                            (doc.data[DatabaseIds.user], doc.data[DatabaseIds.userName], doc.data[DatabaseIds.image], doc.data[DatabaseIds.following]);
+
+        _outgoingController.add(userProfile);
+      }else{
+
+        completer.completeError('ERROR');
+
+      }
+    });
+    completer.completeError('ERROR');
+  }
+
+    /// Get profiles from fore store with doc referance //TODO;
+  static Future<UserProfile> getUserProfileFromFireStoreWithDocRef(String docRefernace)async{
+
+    Completer completer = new Completer();
+
+    UserProfile _userProfile;
+
+    if (docRefernace != ''){
+
+    DocumentSnapshot doc = await Firestore.instance.collection(DatabaseIds.User).document(docRefernace).get();
+
+    if (doc.exists) {
+          // List<String> following = doc.data[DatabaseIds.following].cast<String>();
+          List<String> following = ['asdsavsav','avdav'];
+          // TODO
+          // (doc.data[DatabaseIds.following] as List).forEach((follow){ following.add(follow);});
+
+          _userProfile = new UserProfile
+                            (docRefernace,
+                             doc.data[DatabaseIds.userName],
+                              doc.data[DatabaseIds.image],
+                               following);
+      }
+    }
+    completer.completeError('ERROR');
+
+    return _userProfile ?? new UserProfile
+                            ('error', 'error', 'error', ['error']);
   }
 
   /// Get value from collection with key
   static Future<dynamic> getValueFromFireStoreWithDocRef(String collectionDataBaseId, String docRefernace, String key)async{
-    
+
     dynamic _value;
 
     if (docRefernace != ''){
 
     DocumentSnapshot doc = await Firestore.instance.collection(collectionDataBaseId).document(docRefernace).get();
-    
+
     if (doc.exists) {
-          _value = doc.data[key];
+        if(doc.data.length > 0){_value = doc.data[key];}
+        else{ _value = '';}
+
       } else {
           throw Error();
       }
@@ -292,7 +440,7 @@ class DatabaseFunctions {
 
   /// Convert profile from document snapshot
   static Future<Profile> createProfileFromDocumentSnapshot(String databaseId, DocumentSnapshot document)async{
-    
+
       Profile newProfile =  await Profile.createBlankProfile(Functions.getProfileDatabaseIdType(databaseId));
 
       DateTime _updatedAt = document[DatabaseIds.updatedAt];
@@ -313,7 +461,7 @@ class DatabaseFunctions {
 
       if (databaseId == DatabaseIds.recipe){
 
-      if (document.data.containsKey(DatabaseIds.coffeeId) && document.data[DatabaseIds.coffeeId] != ""){ 
+      if (document.data.containsKey(DatabaseIds.coffeeId) && document.data[DatabaseIds.coffeeId] != ""){
         _coffee = await DatabaseFunctions.getProfileFromFireStoreWithDocRef(DatabaseIds.coffee , document.data[DatabaseIds.coffeeId]);}
         else{_coffee = await Functions.createBlankProfile(ProfileType.coffee);}
 
@@ -328,7 +476,7 @@ class DatabaseFunctions {
       if (document.data.containsKey(DatabaseIds.grinderId) && document.data[DatabaseIds.grinderId] != ""){
         _grinder = await DatabaseFunctions.getProfileFromFireStoreWithDocRef(DatabaseIds.grinder, document.data[DatabaseIds.grinderId]);}
         else{_grinder = await Functions.createBlankProfile(ProfileType.grinder);}
-      
+
       if (document.data.containsKey(DatabaseIds.waterID) && document.data[DatabaseIds.waterID] != ""){
         _water = await DatabaseFunctions.getProfileFromFireStoreWithDocRef(DatabaseIds.water, document.data[DatabaseIds.waterID]);}
         else{_water = await Functions.createBlankProfile(ProfileType.water);}
@@ -345,7 +493,7 @@ class DatabaseFunctions {
       if ( key != DatabaseIds.public){
 
       if ( key != DatabaseIds.user){
-  
+
         newProfile.properties.forEach((item){
 
           if (item.databaseId == key){
@@ -357,7 +505,7 @@ class DatabaseFunctions {
 
     switch(databaseId){
 
-      case DatabaseIds.recipe: 
+      case DatabaseIds.recipe:
 
       return  new Profile(
               userId: _user,
@@ -379,7 +527,7 @@ class DatabaseFunctions {
               );
       break;
 
-      case DatabaseIds.coffee:   
+      case DatabaseIds.coffee:
       return  new Profile(
               userId: _user,
               isPublic: _ispublic,
@@ -393,7 +541,7 @@ class DatabaseFunctions {
               );
       break;
 
-      case DatabaseIds.grinder:   
+      case DatabaseIds.grinder:
       return  new Profile(
               userId: _user,
               isPublic: _ispublic,
@@ -407,7 +555,7 @@ class DatabaseFunctions {
               );
       break;
 
-      case DatabaseIds.brewingEquipment:   
+      case DatabaseIds.brewingEquipment:
       return  new Profile(
         userId: _user,
         isPublic: _ispublic,
@@ -421,7 +569,7 @@ class DatabaseFunctions {
               );
       break;
 
-      case DatabaseIds.water:   
+      case DatabaseIds.water:
       return  new Profile(
         userId: _user,
         isPublic: _ispublic,
@@ -435,7 +583,7 @@ class DatabaseFunctions {
         );
       break;
 
-      case DatabaseIds.Barista:   
+      case DatabaseIds.Barista:
       return  new Profile(
         userId: _user,
         isPublic: _ispublic,
@@ -449,7 +597,7 @@ class DatabaseFunctions {
         );
       break;
 
-      default: 
+      default:
 
       return  new Profile(
               userId: _user,
@@ -465,7 +613,7 @@ class DatabaseFunctions {
       break;
     }
   }
-  
+
   /// Give user profile name and photo
   static Future<void> updateUserProfileWithNameAndPhoto(String displayName, String photoUrl,)async{
 
@@ -516,7 +664,7 @@ class Storage {
 }
 
 class DatabaseIds{
-
+  static const String userId = 'userId';
   static const String success = 'success';
   static const String community = 'communtiy';
   static const String following = 'following';

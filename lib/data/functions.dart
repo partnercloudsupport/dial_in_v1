@@ -1219,17 +1219,12 @@ class Functions {
       return _cardArray;
   }
   
-  /// Creat feed Profile from
+  /// Create feed Profile from profile
   static Future<FeedProfileData> createFeedProfileFromProfile(Profile profile)async{
 
-    String image =  await profile.getUserImage();
-    String username = await profile.getProfileUserName();
-    String userId = profile.userID;
-
-    UserProfile userProfile = new UserProfile(userId, username, image);
+    UserProfile userProfile = await DatabaseFunctions.getUserProfileFromFireStoreWithDocRef(profile.userID);
 
     return FeedProfileData(profile, userProfile);
-
   }
 
       // Method that return count of the given 

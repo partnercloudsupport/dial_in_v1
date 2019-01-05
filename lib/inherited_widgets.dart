@@ -53,27 +53,34 @@ class ProfilesModel extends Model{
     Stream<List<Profile>> communityFeed;
     Stream<List<Profile>> followersFeed;
 
-    FeedBloc _recipeFeed  = new FeedBloc(DatabaseIds.recipe);
-    FeedBloc _coffeeFeed  = new FeedBloc(DatabaseIds.coffee);
-    FeedBloc _grinderFeed  = new FeedBloc(DatabaseIds.grinder);
-    FeedBloc _equipmentFeed  = new FeedBloc(DatabaseIds.brewingEquipment);
-    FeedBloc _waterFeed  = new FeedBloc(DatabaseIds.water);
-    FeedBloc _baristaFeed  = new FeedBloc(DatabaseIds.Barista);
-    SocialFeedBloc _comminuty;
-    SocialFeedBloc _followers;
-    UserFeed _userFeed = new UserFeed(); 
+  FeedBloc _recipeFeed  = new FeedBloc(DatabaseIds.recipe);
+  FeedBloc _coffeeFeed  = new FeedBloc(DatabaseIds.coffee);
+  FeedBloc _grinderFeed  = new FeedBloc(DatabaseIds.grinder);
+  FeedBloc _equipmentFeed  = new FeedBloc(DatabaseIds.brewingEquipment);
+  FeedBloc _waterFeed  = new FeedBloc(DatabaseIds.water);
+  FeedBloc _baristaFeed  = new FeedBloc(DatabaseIds.Barista);
+  SocialFeedBloc _comminuty;
+  SocialFeedBloc _followers;
+  UserFeed _userFeed = new UserFeed(); 
 
     ///Following commands
     bool userFollowing = true;
 
     bool isUserFollowing(String userId){
-      return userFollowing;
+
+      if (_userFeed.following != null) {
+
+      return _userFeed.following.contains(userId) ? true : false; }
+
+      else{ return false; }
+
     }
 
-    void followOrUnfollow(String userId){
+    bool followOrUnfollow(String otherUser){
 
-      if(isUserFollowing(userId)){userFollowing = false;}
-      else{userFollowing = true;}
+      if(isUserFollowing(otherUser))
+      {DatabaseFunctions.addFollower(userId, otherUser); return true;}
+      else{DatabaseFunctions.unFollow( userId ,otherUser);return false;}
 
     }
     
@@ -96,7 +103,15 @@ class ProfilesModel extends Model{
         _followers = new SocialFeedBloc(DatabaseIds.following);
     }
 
-    void init(){
+    void logOut(){
+      DatabaseFunctions.logOut();
+      deInit();
+      }
+
+
+    void init()async{
+      await _userFeed.getProfile();
+      
       _recipeFeed.getProfiles();
       _coffeeFeed.getProfiles();
       _grinderFeed.getProfiles();
@@ -105,11 +120,18 @@ class ProfilesModel extends Model{
       _baristaFeed.getProfiles();
       _comminuty.getProfiles();
       _followers.getProfiles();
-      _userFeed.getProfile();
     } 
 
     void deInit(){
-      
+      _recipeFeed.deinit();
+      _coffeeFeed.deinit();
+      _grinderFeed.deinit();
+      _equipmentFeed.deinit();
+      _waterFeed.deinit();
+      _baristaFeed.deinit();
+      _comminuty.deinit();
+      _followers.deinit();
+      _userFeed.deinit();
     }
 
     static ProfilesModel of(BuildContext context) =>

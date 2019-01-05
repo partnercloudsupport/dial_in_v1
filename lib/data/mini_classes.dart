@@ -14,6 +14,7 @@ class FeedProfileData{
   UserProfile get userProfile => _userProfile;
   String get userName => _userProfile._userName;
   String get userImage => _userProfile._userImage;
+  List<String> get following => _userProfile._following;
 
 }
 
@@ -29,9 +30,9 @@ class NumericTextFormatter extends TextInputFormatter {
     }
 }
 
-class UserProfile {
+class  UserProfile {
 
-    UserProfile(this._userId,this._userName,this._userImage);
+    UserProfile(this._userId,this._userName,this._userImage, this._following);
 
     String _userId;
     String get userId => _userId;
@@ -42,7 +43,7 @@ class UserProfile {
     String _userImage;
     String get userImage => _userImage;
 
-    List<String> _following;
+    List<String> _following = new List<String>();
     List<String> get following => _following;
 
     Future<int> getRecipeCount()async{ 
