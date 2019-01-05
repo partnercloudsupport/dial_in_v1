@@ -16,7 +16,7 @@ class FeedBloc{
   bool _initilised = false;
 
   var _outgoingController = BehaviorSubject<List<Profile>>();
-  var _incomingController = StreamController<QuerySnapshot>.broadcast();
+  var _incomingController = StreamController<QuerySnapshot>.broadcast(sync: false);
 
   void removeProfile(Profile profile){
     _profiles.removeWhere((p) => p.objectId == profile.objectId);
@@ -34,8 +34,6 @@ class FeedBloc{
   /// Deinit
   void deinit(){
     _initilised = false;
-    _outgoingController.drain();
-    _incomingController.close();
   }
 
   void add(Profile profile){}
@@ -72,27 +70,24 @@ class SocialFeedBloc{
   final String _databaseId;
   String get databaseId => _databaseId;
   bool _initilised = false;
-  Stream<UserProfile> _currentUser;
+  Stream<UserProfile> _currentUserStream;
+  UserProfile _currentUser;
 
-
-  final _outgoingController = BehaviorSubject<List<FeedProfileData>>();
   Stream<List<FeedProfileData>> get profiles => _outgoingController.stream;
-
-  final _incomingController = StreamController<QuerySnapshot>.broadcast();
+  var _outgoingController = BehaviorSubject<List<FeedProfileData>>();
+  var _incomingController = StreamController<QuerySnapshot>.broadcast();
 
   /// Init of the class
-  SocialFeedBloc(this._databaseId, this._currentUser)
-  {_currentUser.listen((profile){
-
-    getProfiles(profile.userId);
+  SocialFeedBloc(this._databaseId, this._currentUserStream)
+  {_currentUserStream.listen((profile){
+    _currentUser = profile;
+    getProfiles(_currentUser.userId);
 
    });
   }
 
   void deinit(){
     _initilised = false;
-    _outgoingController.drain();
-    _incomingController.close();
   }
 
   Future getProfiles(String userId)async{
@@ -155,7 +150,6 @@ class UserFeed {
 
     void deinit(){
     _initilised = false;
-    _outgoingController.drain();
   }
 
    Future getProfile()async{
