@@ -47,7 +47,6 @@ class FeedBloc{
     String userID = await DatabaseFunctions.getCurrentUserId();
 
     _incomingController.addStream
-    (Firestore.instance.collection(_databaseId)
     (DatabaseFunctions.getStreamFromFireStore(_databaseId, DatabaseIds.user, userID));
 
     _incomingController.stream.listen((p){
