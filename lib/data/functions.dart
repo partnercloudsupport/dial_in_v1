@@ -284,7 +284,7 @@ class Functions {
         break;
 
       case ProfileType.equipment:
-        return StringLabels.brewingEquipment;
+        return StringLabels.method;
         break;
 
       case ProfileType.grinder:
@@ -326,7 +326,7 @@ class Functions {
         break;
 
       case ProfileType.equipment:
-        return DatabaseIds.brewingEquipment;
+        return DatabaseIds.method;
         break;
 
       case ProfileType.grinder:
@@ -390,7 +390,7 @@ class Functions {
         break;
 
       case DatabaseIds.brewingEquipment:
-        return StringLabels.brewingEquipment;
+        return StringLabels.method;
         break;
 
       case DatabaseIds.grinder:
@@ -629,7 +629,7 @@ class Functions {
 
       case DatabaseIds.brewingEquipment:
         _item = new Item(
-          title: StringLabels.brewingEquipment,
+          title: StringLabels.method,
           value: '',
           databaseId: DatabaseIds.equipmentId,
           placeHolderText: StringLabels.enterDescription,

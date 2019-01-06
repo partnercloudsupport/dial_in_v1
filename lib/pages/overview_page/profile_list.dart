@@ -146,7 +146,7 @@ class _ProfileListDialogState extends State<ProfileListDialog>{
               List<Profile> _list = new List<Profile>();
                 _reversedList.forEach((x){_list.add(x);});
               return new 
-               Container(height: 500, child: 
+               Container(height: 600, child: 
                 ListView.builder(
                     itemExtent: 120,
                     itemCount: _list.length,
