@@ -107,7 +107,6 @@ class DatabaseFunctions {
             DatabaseIds.userId : user.uid,
             DatabaseIds.userName : userName,
             DatabaseIds.email : emailUser,
-            DatabaseIds.password : password,
             DatabaseIds.image : imageUrl,
             DatabaseIds.following : List<String>()
             };
