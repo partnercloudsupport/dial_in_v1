@@ -84,6 +84,7 @@ class ProfilesModel extends Model{
     /// Checks the following status then updates the record accordingly
     bool followOrUnfollow(String otherUser){
 
+      DatabaseFunctions.addFollower(userId,otherUser);
       // if(isUserFollowing(otherUser))
       // {DatabaseFunctions.addFollower(userId, otherUser); return true;}
       // else{DatabaseFunctions.unFollow( userId ,otherUser);return false;}
@@ -299,26 +300,32 @@ class ProfilesModel extends Model{
       switch(type){
 
         case ProfileType.recipe:
+        _recipeFeed.getProfiles();
         return recipeProfiles;
         break;
 
         case ProfileType.coffee:
+        _coffeeFeed.getProfiles();
         return coffeeProfiles;
         break;
 
         case ProfileType.grinder:
+        _grinderFeed.getProfiles();
         return grinderProfiles;
         break;
 
         case ProfileType.equipment:
+        _equipmentFeed.getProfiles();
         return equipmentProfiles;
         break;
 
         case ProfileType.water:
+        _waterFeed.getProfiles();
         return waterProfiles;
         break;
 
         case ProfileType.barista:
+        _baristaFeed.getProfiles();
         return baristaProfiles;
         break;
 

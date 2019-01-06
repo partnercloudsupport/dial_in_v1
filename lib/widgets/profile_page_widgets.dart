@@ -34,7 +34,9 @@ class ScoreSliderState extends State<ScoreSlider> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return 
+    Container(margin: EdgeInsets.all(_margin), padding:EdgeInsets.all(_margin) , child: 
+    Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Container(
@@ -60,7 +62,9 @@ class ScoreSliderState extends State<ScoreSlider> {
             inactiveColor: Theme.of(context).sliderTheme.inactiveTrackColor,
             
           )
-        ]);
+        ]
+        )
+    );
   }
 }
 
@@ -158,10 +162,10 @@ class _ProfileInputCardWithAttributeState extends State<ProfileInputCardWithAttr
                         /// Spacer
                         Container(width: 10.0,),
 
+                      Expanded(flex:1 ,child:
                         Container(
-                          margin: EdgeInsets.all(5.0),
-                          width: widget._textFieldWidth,
-                          child: TextFormField(
+                          margin: EdgeInsets.all(5.0),child: 
+                          TextFormField(
                             textAlign: TextAlign.start,
                             keyboardType: widget.keyboardType,
                             decoration: new InputDecoration(
@@ -169,13 +173,14 @@ class _ProfileInputCardWithAttributeState extends State<ProfileInputCardWithAttr
                               hintText: StringLabels.selectProfile,),
                             focusNode: _textFocus,
                             controller: _profileTextController,)
-                      ),
+                      ),),
 
                       /// Spacer
                         Container(width: 20.0,),
 
-                        Expanded(
-                            child: TextFormField(
+                        Expanded(flex:1, child:
+                            Container(margin: EdgeInsets.all(10.0), child:
+                             TextFormField(
                               enabled: widget._isEditing,
                               textAlign: TextAlign.start,
                               keyboardType: widget.keyboardType,
@@ -183,10 +188,14 @@ class _ProfileInputCardWithAttributeState extends State<ProfileInputCardWithAttr
                                 labelText: widget.attributeTitle,
                                 hintText: widget.attributeHintText,),
                                 controller: _attributeController,
-                              ))
+                              )
+                            )
+                        )
                       ]
-            )));
-            }
+                )
+              )
+            );
+    }
 }
 
 
@@ -438,8 +447,10 @@ class ProfileInputWithDetailsCardState extends State<ProfileInputWithDetailsCard
                   Container(width: 10.0,),
                   
                   /// Attribute Value
+                  Expanded(child: 
+                  Container(margin: EdgeInsets.fromLTRB(0.0, 0.0, widget._margin, 0.0), child: 
                   ScalableWidget(
-                  TextfieldWithFixedValue(widget._detailTitle, _detailController.text))
+                  TextfieldWithFixedValue(widget._detailTitle, _detailController.text)))),
 
                 ]
             )

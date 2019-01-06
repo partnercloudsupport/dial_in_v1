@@ -148,11 +148,11 @@ class UserFeed {
   
   final BehaviorSubject<UserProfile> _outgoingController = BehaviorSubject<UserProfile>();
 
-    void deinit(){
+  void deinit(){
     _initilised = false;
   }
 
-   Future getProfile()async{
+  Future getProfile()async{
   
    if(!_initilised){
 

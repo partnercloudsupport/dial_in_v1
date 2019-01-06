@@ -1259,15 +1259,14 @@ class Functions {
     return ProfileCard(profile, giveprofile, deleteProfile);
   }
 
-  static Future<List<Widget>> buildProfileCardArrayFromAsyncSnapshot( BuildContext context, AsyncSnapshot documents, String databaseId, Function(Profile) giveProfile, Function(Profile) deleteProfile) async {
+  static Future<List<Widget>> buildProfileCardArrayFromAsyncSnapshot( BuildContext context, AsyncSnapshot<List<Widget>> snapshot, String databaseId, Function(Profile) giveProfile, Function(Profile) deleteProfile) async {
       
     List<Widget> _cardArray = new List<Widget>();
 
-     if (documents.data.documents != null || documents.data.documents.length != 0) {
+     if (snapshot.data != null || snapshot.data.length != 0) {
 
-        for(var document in documents.data.documents){  /// <<<<==== changed line
-            Widget result = await buildProfileCardFromDocument(document, databaseId ,giveProfile, deleteProfile);
-            _cardArray.add(result);
+        for(var document in snapshot.data){  /// <<<<==== changed line        
+            _cardArray.add(document);
         }
      }
       return _cardArray;

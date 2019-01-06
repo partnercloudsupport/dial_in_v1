@@ -6,7 +6,6 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:dial_in_v1/inherited_widgets.dart';
 import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'package:dial_in_v1/data/functions.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dial_in_v1/database_functions.dart';
 import 'package:dial_in_v1/routes.dart';
 
@@ -73,7 +72,7 @@ void didUpdateWidget(dynamic oldWidget) {
               return new 
                 ListView.builder(
                     itemExtent: 120,
-                    itemCount: snapshot.data.length,
+                    itemCount: _list.length,
                     itemBuilder: (BuildContext context, int index) =>
                     ProfileCard(_list[index], _dealWithProfileSelection, _deleteProfile)
                 );
@@ -119,13 +118,9 @@ class _ProfileListDialogState extends State<ProfileListDialog>{
     @override
     Widget build(BuildContext context) {  
 
-    return StreamBuilder(
-        stream: Firestore.instance
-                .collection(Functions.getProfileTypeDatabaseId(widget._profilesType))
-                .where(DatabaseIds.user, isEqualTo: ProfilesModel.of(context).userId)
-                .snapshots(),
-        initialData: 5,
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
+    return StreamBuilder<List<Profile>>(
+        stream: ProfilesModel.of(context).profiles(widget._profilesType),
+        builder: (BuildContext context, AsyncSnapshot<List<Profile>> snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.waiting:
             case ConnectionState.none:
@@ -142,45 +137,29 @@ class _ProfileListDialogState extends State<ProfileListDialog>{
                 print(snapshot.error.toString());
                 return  Center(child: Text('Error: ${snapshot.error}'));
 
-              } else if (snapshot.data.documents.length < 1) {
+              } else if (snapshot.data.length < 1) {
                 return const Center(child: Text('No data'));
 
               } else {
-                return new Container(
-                    height: 400.0,
-                    width: 200.0,
-                    child: new FutureBuilder(
-                        future: Functions.buildProfileCardArrayFromAsyncSnapshot(context, snapshot, Functions.getProfileTypeDatabaseId(widget._profilesType), _dealWithProfileSelection, _deleteProfile),
-                        builder: (BuildContext context, AsyncSnapshot futureSnapshot) {
-
-                          switch (futureSnapshot.connectionState) {
-
-                            case ConnectionState.none:
-                              return Text('Press button to start.');
-
-                            case ConnectionState.active:
-
-                            case ConnectionState.waiting:
-                              return Center(child:Text('Loading...'));
-
-                            case ConnectionState.done:
-                              if (futureSnapshot.hasError)
-                                return Text('Error: ${futureSnapshot.error}');
-
-                              return ListView.builder(
-                                  itemExtent: 100,
-                                  itemCount: futureSnapshot.data.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) =>
-                                          futureSnapshot.data[index]);
-                          }
-                          return null; // unreachable
-                        }));
+              
+              Iterable<Profile> _reversedList = snapshot.data.reversed;
+              List<Profile> _list = new List<Profile>();
+                _reversedList.forEach((x){_list.add(x);});
+              return new 
+               Container(height: 500, child: 
+                ListView.builder(
+                    itemExtent: 120,
+                    itemCount: _list.length,
+                    itemBuilder: (BuildContext context, int index) =>
+                    ProfileCard(_list[index], _dealWithProfileSelection, _deleteProfile)
+                )
+                );
               }
           }
-        });
-    }
+        }
+    );
+  }
 }
-          
+                         
 
   
