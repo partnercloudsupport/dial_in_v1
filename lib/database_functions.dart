@@ -20,12 +20,13 @@ class DatabaseFunctions {
 
  static void addFollower(String currentUser, String follow)async{
 
-    var newDoc = await Firestore.instance.collection(DatabaseIds.User)
+    DocumentSnapshot newDoc = await Firestore.instance.collection(DatabaseIds.User)
       .document(currentUser).get().
       catchError((e) => print(e));
 
       if (newDoc.data.containsKey(DatabaseIds.following)){
-
+        if (!((newDoc.data[DatabaseIds.following]) as List).contains(follow)){
+      
         List<dynamic> newFollowingList = new List<String>.from(newDoc.data[DatabaseIds.following]);
         newFollowingList.add(follow);
         Map<String, dynamic> data = { DatabaseIds.following : newFollowingList};
@@ -36,26 +37,29 @@ class DatabaseFunctions {
           .updateData(data)
           .whenComplete((){print('Successfully updated $currentUser follower');})
           .catchError((error){print(error);});
+        }
 
       }else{
 
         newDoc.data[DatabaseIds.following] = { DatabaseIds.following : follow};
 
         await Firestore.instance
-        .collection(DatabaseIds.User)
-        .document(currentUser)
-        .setData(newDoc.data[DatabaseIds.following])
-        .catchError((error){print(error);});
+                        .collection(DatabaseIds.User)
+                        .document(currentUser)
+                        .setData(newDoc.data[DatabaseIds.following])
+                        .catchError((error){print(error);});
       }
   }
 
   static void unFollow(String currentUser, String unFollow)async{
 
-      var newDoc = await Firestore.instance.collection(DatabaseIds.User)
-      .document(currentUser).get().
-      catchError((e) => print(e));
+      var newDoc = await Firestore.instance
+                                  .collection(DatabaseIds.User)
+                                  .document(currentUser).get()
+                                  .catchError((e) => print(e));
 
       if (newDoc.data.containsKey(DatabaseIds.following)){
+        if ((newDoc.data[DatabaseIds.following] as List).contains(unFollow)){
 
         List<dynamic> newFollowingList = new List<String>.from(newDoc.data[DatabaseIds.following]);
         newFollowingList.remove(unFollow);
@@ -68,6 +72,8 @@ class DatabaseFunctions {
           .updateData(data)
           .whenComplete((){ print('Successfully removed $currentUser follower');})
           .catchError((error){print(error);});
+
+        }
 
       }else{
 

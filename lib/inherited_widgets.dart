@@ -46,7 +46,7 @@ class ProfilesModel extends Model{
     String get userId => _userFeed.userId;
     String get userName => _userFeed.userName;
     String get userImage => _userFeed.userImage;
-
+    
     int get recipeProfilesCount => _recipeFeed.profilesCount ?? 0;
     int get coffeeProfilesCount => _coffeeFeed.profilesCount ?? 0;
 
@@ -68,26 +68,27 @@ class ProfilesModel extends Model{
 
     /// Checks the current user agaist the userId
     ///  to check if current is following
-    bool isUserFollowing(String userId){
+    bool isUserFollowing(String otherUser){
 
-      // if (_userFeed.following != null) {
+      if (_userFeed.following != null) {
 
-      // return _userFeed.following.contains(userId) ? true : false; }
+      return _userFeed.following.contains(otherUser) ? true : false; }
 
-      // else{ return false; }
+      else{ return false; }
 
       /// test Button
-       return userFollowing;
+      //  return userFollowing;
 
     }
 
     /// Checks the following status then updates the record accordingly
     bool followOrUnfollow(String otherUser){
 
-      DatabaseFunctions.addFollower(userId,otherUser);
-      // if(isUserFollowing(otherUser))
-      // {DatabaseFunctions.addFollower(userId, otherUser); return true;}
-      // else{DatabaseFunctions.unFollow( userId ,otherUser);return false;}
+      // DatabaseFunctions.addFollower(userId,otherUser);
+      if(isUserFollowing(otherUser))
+      {DatabaseFunctions.unFollow( userId ,otherUser);return false;}
+      else
+      {DatabaseFunctions.addFollower(userId, otherUser); return true;}
 
       /// Test
       if(isUserFollowing(otherUser))
