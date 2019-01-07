@@ -74,7 +74,7 @@ class _ProfileListState extends State<ProfileList>{
 
         StreamBuilder<List<Profile>>(
           stream:  model.profiles(widget._profilesType),
-          builder: (context, snapshot) {
+          builder: (BuildContext context, AsyncSnapshot<List<Profile>>snapshot) {
             if (!snapshot.hasData) { return  
               Center(child:
                 Column

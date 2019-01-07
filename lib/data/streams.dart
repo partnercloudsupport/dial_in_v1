@@ -153,6 +153,11 @@ class UserFeed {
     _initilised = false;
   }
 
+  void refresh(){
+    _initilised = false;
+    getProfile();
+  }
+
   Future getProfile()async{
   
    if(!_initilised){

@@ -1148,23 +1148,45 @@ class FollowButton extends StatefulWidget {
   _FollowButtonState createState() => _FollowButtonState();
 }
 class _FollowButtonState extends State<FollowButton> {
+
+  bool _following;
+  bool _initialised = false;
+
+  void initState() { 
+    super.initState();
+    
+  }
+
   @override
   Widget build(BuildContext context) {
+
+    if (!_initialised){
+    _following =  ProfilesModel.of(context).isUserFollowing(widget.userId);
+    _initialised = false;}
+
     return  
-    
+    ////TODO MAKE INTO STREAMBUILDER;  
+   
      ScopedModelDescendant<ProfilesModel>
-            ( rebuildOnChange: true, builder: (context, _ ,model) =>
-    
-    RaisedButton(
-      color: Theme.of(context).accentColor,
-       onPressed: () {setState(() {
-          ProfilesModel.of(context).followOrUnfollow(widget.userId);
-        });},
-        
-     child: ScalableWidget( 
-       Text( model.isUserFollowing(widget.userId) ? 
-        StringLabels.following :
-        StringLabels.follow),)),
+            (rebuildOnChange: true, builder: (context, _ ,model) =>
+
+        StreamBuilder<UserProfile>(
+          stream:  model.userProfile,
+          builder: (BuildContext context, AsyncSnapshot<UserProfile> snapshot) =>
+
+          RaisedButton(
+            color: Theme.of(context).accentColor,
+            onPressed: () {
+                ProfilesModel.of(context).followOrUnfollow(widget.userId, ((isFollowing){
+                  setState(() {_following = isFollowing;  });
+                }) );
+            },
+              
+          child: ScalableWidget( 
+            Text( model.isUserFollowing(widget.userId) ? 
+              StringLabels.unFollow :
+              StringLabels.follow),)),
+      )
     );
   }
 }

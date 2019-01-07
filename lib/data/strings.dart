@@ -1,6 +1,7 @@
 import 'package:dial_in_v1/data/functions.dart';
 
 class  StringLabels {
+  static const String unFollow = 'Unfollow';
   static const String following = 'Following';
   static const String follow = 'Follow';
   static const String userProfile = 'User Profile';

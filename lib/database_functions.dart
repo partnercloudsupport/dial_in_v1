@@ -18,7 +18,7 @@ import 'package:rxdart/rxdart.dart';
 
 class DatabaseFunctions {
 
- static void addFollower(String currentUser, String follow)async{
+ static void addFollower(String currentUser, String follow, Function(bool) completion)async{
 
     DocumentSnapshot newDoc = await Firestore.instance.collection(DatabaseIds.User)
       .document(currentUser).get().
@@ -35,7 +35,9 @@ class DatabaseFunctions {
           .collection(DatabaseIds.User)
           .document(currentUser)
           .updateData(data)
-          .whenComplete((){print('Successfully updated $currentUser follower');})
+          .whenComplete((){
+            completion(true);
+            print('Successfully updated $follow follower');})
           .catchError((error){print(error);});
         }
 
@@ -51,7 +53,7 @@ class DatabaseFunctions {
       }
   }
 
-  static void unFollow(String currentUser, String unFollow)async{
+  static void unFollow(String currentUser, String unFollow , Function(bool) completion)async{
 
       var newDoc = await Firestore.instance
                                   .collection(DatabaseIds.User)
@@ -70,7 +72,9 @@ class DatabaseFunctions {
           .collection(DatabaseIds.User)
           .document(currentUser)
           .updateData(data)
-          .whenComplete((){ print('Successfully removed $currentUser follower');})
+          .whenComplete((){
+            completion(true);
+            print('Successfully removed $unFollow follower');})
           .catchError((error){print(error);});
 
         }
@@ -414,16 +418,23 @@ class DatabaseFunctions {
     DocumentSnapshot doc = await Firestore.instance.collection(DatabaseIds.User).document(docRefernace).get();
 
     if (doc.exists) {
-          // List<String> following = doc.data[DatabaseIds.following].cast<String>();
-          List<String> following = ['asdsavsav','avdav'];
-          // TODO
-          // (doc.data[DatabaseIds.following] as List).forEach((follow){ following.add(follow);});
 
-          _userProfile = new UserProfile
-                            (docRefernace,
-                             doc.data[DatabaseIds.userName],
-                              doc.data[DatabaseIds.image],
-                               following);
+          List<dynamic> following = (doc.data[DatabaseIds.following]) as List<dynamic>;
+          
+          List<String> revisedList = new List<String>();
+
+          following.forEach((follow) 
+          { if(follow is String) {revisedList.add(follow);}; });
+           
+          // .map((follow){if (follow is String ){ return follow;}})
+          /// Test
+          // List<String> following = ['asdsavsav','avdav'];
+
+          _userProfile = new UserProfile(
+                            docRefernace,
+                            doc.data[DatabaseIds.userName],
+                            doc.data[DatabaseIds.image],
+                            revisedList);
       }
     }
     completer.completeError('ERROR');

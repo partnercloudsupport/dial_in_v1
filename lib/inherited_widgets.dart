@@ -72,7 +72,11 @@ class ProfilesModel extends Model{
 
       if (_userFeed.following != null) {
 
-      return _userFeed.following.contains(otherUser) ? true : false; }
+      bool result =   _userFeed.following.contains(otherUser) ? true : false; 
+
+      return result ?? false;
+      
+      }
 
       else{ return false; }
 
@@ -82,18 +86,24 @@ class ProfilesModel extends Model{
     }
 
     /// Checks the following status then updates the record accordingly
-    bool followOrUnfollow(String otherUser){
+    void followOrUnfollow(String otherUser, Function(bool) competionFollow){
 
       // DatabaseFunctions.addFollower(userId,otherUser);
       if(isUserFollowing(otherUser))
-      {DatabaseFunctions.unFollow( userId ,otherUser);return false;}
+      {DatabaseFunctions.unFollow( userId ,otherUser, (success){
+      _userFeed.refresh();
+      competionFollow(false);});}
       else
-      {DatabaseFunctions.addFollower(userId, otherUser); return true;}
-
+      {DatabaseFunctions.addFollower(userId, otherUser, (success){
+        _userFeed.refresh();
+       competionFollow(true);  
+      });
+      }
+    
       /// Test
-      if(isUserFollowing(otherUser))
-      {userFollowing = false; return true;}
-      else{userFollowing = true; return false;}
+      // if(isUserFollowing(otherUser))
+      // {userFollowing = false; return true;}
+      // else{userFollowing = true; return false;}
     }
     
     /// Getters for profiles
