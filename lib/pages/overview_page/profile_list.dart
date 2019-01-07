@@ -5,9 +5,10 @@ import 'package:dial_in_v1/pages/profile_pages/profile_page.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:dial_in_v1/inherited_widgets.dart';
 import 'package:dial_in_v1/widgets/custom_widgets.dart';
-import 'package:dial_in_v1/data/functions.dart';
 import 'package:dial_in_v1/database_functions.dart';
 import 'package:dial_in_v1/routes.dart';
+import "package:pull_to_refresh/pull_to_refresh.dart";
+
 
 /// Profile list
 class ProfileList extends StatefulWidget{
@@ -21,6 +22,8 @@ class ProfileList extends StatefulWidget{
  _ProfileListState createState() => new _ProfileListState();
 }
 class _ProfileListState extends State<ProfileList>{
+
+  RefreshController _refreshController = new RefreshController();
 
    void _dealWithProfileSelection(Profile profile){
 
@@ -42,10 +45,26 @@ class _ProfileListState extends State<ProfileList>{
   }
 
   @override
-void didUpdateWidget(dynamic oldWidget) {
+  void didUpdateWidget(dynamic oldWidget) {
     
     super.didUpdateWidget(oldWidget);
-}
+  }
+
+  void _onRefresh(bool up, ProfilesModel model)async{
+		if(up){
+
+		   //headerIndicator callback
+		   model.profiles(widget._profilesType); 
+       new Future.delayed(const Duration(seconds: 2))
+                               .then((val) {
+                                 _refreshController.sendBack(true, RefreshStatus.completed);
+                           }); 
+		}
+		else{
+			//footerIndicator Callback
+		}
+  }
+
 
 @override
     Widget build(BuildContext context) {  
@@ -56,7 +75,6 @@ void didUpdateWidget(dynamic oldWidget) {
         StreamBuilder<List<Profile>>(
           stream:  model.profiles(widget._profilesType),
           builder: (context, snapshot) {
-
             if (!snapshot.hasData) { return  
               Center(child:
                 Column
@@ -69,13 +87,20 @@ void didUpdateWidget(dynamic oldWidget) {
               Iterable<Profile> _reversedList = snapshot.data.reversed;
               List<Profile> _list = new List<Profile>();
                 _reversedList.forEach((x){_list.add(x);});
+                // _refreshController.sendBack(true, RefreshStatus.completed);
               return new 
+               SmartRefresher(
+                controller: _refreshController,
+                enablePullDown: true,
+                onRefresh: (up) => _onRefresh(up, model),
+                child: 
                 ListView.builder(
                     itemExtent: 120,
                     itemCount: _list.length,
                     itemBuilder: (BuildContext context, int index) =>
                     ProfileCard(_list[index], _dealWithProfileSelection, _deleteProfile)
-                );
+                )
+              );
             }
           }
         )

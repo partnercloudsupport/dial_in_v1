@@ -129,7 +129,8 @@ class ProfilesModel extends Model{
       _equipmentFeed.getProfiles();
       _waterFeed.getProfiles();
       _baristaFeed.getProfiles();
-      
+      _comminuty.getProfiles();
+      _followers.getProfiles();
     } 
 
     void deInit(){
@@ -276,15 +277,19 @@ class ProfilesModel extends Model{
     }
    
     /// Get social feeds with type
-    Stream<List<FeedProfileData>> socialFeed(ProfileType type){
+    Stream<List<FeedProfileData>> socialFeed(FeedType type){
+
+      _userFeed.getProfile();
 
       switch(type){
 
-        case ProfileType.recipe:
+        case FeedType.community:
+        _comminuty.getProfiles();
         return communnityFeed;
         break;
 
-        case ProfileType.coffee:
+        case FeedType.following:
+        _followers.getProfiles();
         return followingFeed;
         break;
 
@@ -296,6 +301,8 @@ class ProfilesModel extends Model{
 
     /// Get Profiles with type
     Stream<List<Profile>> profiles(ProfileType type){
+
+      _userFeed.getProfile();
 
       switch(type){
 
@@ -341,5 +348,8 @@ class ProfilesModel extends Model{
         return throw(type);
         break;
       }
+
+
     }
 }
+

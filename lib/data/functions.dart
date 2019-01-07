@@ -401,8 +401,12 @@ class Functions {
         return StringLabels.barista;
         break;
 
+      case DatabaseIds.method:
+        return StringLabels.method;
+        break;
+
       default:
-        return StringLabels.feed;
+        return 'Error';
         break;
     }
   }
@@ -614,9 +618,7 @@ class Functions {
 
     switch (databaseId) {
 
-      ///
       /// Recipe
-      ///
       case DatabaseIds.date:
         _item = new Item(
           title: StringLabels.date,

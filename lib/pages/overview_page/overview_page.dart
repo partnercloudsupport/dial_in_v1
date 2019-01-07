@@ -5,11 +5,11 @@ import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'package:dial_in_v1/theme/appColors.dart';
 import 'package:dial_in_v1/pages/overview_page/data.dart';
 import 'package:dial_in_v1/pages/overview_page/feed.dart';
-import 'package:dial_in_v1/database_functions.dart';
 import 'package:dial_in_v1/data/profile.dart';
 import 'package:dial_in_v1/inherited_widgets.dart';
 import 'package:dial_in_v1/data/functions.dart';
 import 'package:dial_in_v1/pages/overview_page/current_user_page.dart';
+
 
 class OverviewPage extends StatefulWidget{
  @override

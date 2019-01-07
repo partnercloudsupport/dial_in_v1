@@ -74,6 +74,7 @@ class SocialFeedBloc{
   UserProfile _currentUser;
 
   Stream<List<FeedProfileData>> get profiles => _outgoingController.stream;
+
   var _outgoingController = BehaviorSubject<List<FeedProfileData>>();
   var _incomingController = StreamController<QuerySnapshot>.broadcast();
 
@@ -81,8 +82,8 @@ class SocialFeedBloc{
   SocialFeedBloc(this._databaseId, this._currentUserStream)
   {_currentUserStream.listen((profile){
     _currentUser = profile;
-    getProfiles(_currentUser.userId);
-
+    getProfiles();
+    
    });
   }
 
@@ -90,7 +91,7 @@ class SocialFeedBloc{
     _initilised = false;
   }
 
-  Future getProfiles(String userId)async{
+  Future getProfiles()async{
   
    if(!_initilised){
 
@@ -109,7 +110,7 @@ class SocialFeedBloc{
       .then((profilesOut){ 
 
         var profiles = new List<Profile>.from(profilesOut);
-        profiles.removeWhere((profile) => profile.userId == userId );
+        profiles.removeWhere((profile) => profile.userId == _currentUser.userId );
         convertProfilesToListOfFeedProfiles(profiles).then(
 
         (feedProfiles){_outgoingController.add(feedProfiles);}

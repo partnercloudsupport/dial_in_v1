@@ -9,6 +9,8 @@ import 'package:dial_in_v1/pages/overview_page/profile_list.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:dial_in_v1/inherited_widgets.dart';
 import 'package:dial_in_v1/routes.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+
 
 
 /// Data page

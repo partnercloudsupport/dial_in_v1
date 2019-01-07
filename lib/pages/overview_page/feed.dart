@@ -4,6 +4,8 @@ import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'package:dial_in_v1/pages/overview_page/feed_list.dart';
 import 'package:dial_in_v1/theme/appColors.dart';
 import 'package:dial_in_v1/data/profile.dart';
+import 'package:dial_in_v1/data/mini_classes.dart';
+
 
 class FeedPage extends StatefulWidget {
 
@@ -25,11 +27,11 @@ void initState() {
   _lists = TabViewDataArray([
 
     TabViewData(
-      FeedList((profile){}, true), 
+      FeedList((profile){}, true, FeedType.community), 
       Tab(icon: Icon(Icons.public)), ProfileType.feed),
    
     TabViewData(
-      FeedList((profile){}, true),
+      FeedList((profile){}, true, FeedType.following),
       Tab(icon: Icon(Icons.verified_user)),ProfileType.feed),
 
     ]);

@@ -297,6 +297,8 @@ class _TimePickerState extends State<TimePicker> {
       timerIsActive = false;
       time = 0;
       timer.cancel();
+      _secondController.jumpToItem(0);
+      _minuteController.jumpToItem(0);
     });
   }
 
@@ -306,8 +308,7 @@ class _TimePickerState extends State<TimePicker> {
            time ++;
             mins = (time ~/ 60).toInt();
             sec = (time % 60);
-
-            
+   
             _minuteController.animateTo(
             mins * _itemHeight.toDouble(),
             duration: Duration(
@@ -389,9 +390,10 @@ class _TimePickerState extends State<TimePicker> {
         scrollController: _minuteController,
         useMagnifier: true,
         onSelectedItemChanged:
-          (value){
+          (value){ setState(() {
             mins = value;
             widget._setProfileItemValue(widget.item.databaseId, ((mins * 60) + sec).toString());
+            });
           }, 
         itemExtent: _itemHeight,
         children: _minutes
@@ -409,10 +411,10 @@ class _TimePickerState extends State<TimePicker> {
         scrollController: _secondController,
         useMagnifier: true,
         onSelectedItemChanged:
-          (value){
+          (value){setState(() {      
             sec = value;
             widget._setProfileItemValue(widget.item.databaseId,  ((mins * 60) + sec).toString());
-
+             });
           }, 
         itemExtent: _itemHeight,
         children: _seconds
