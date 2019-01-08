@@ -29,7 +29,7 @@ class _FeedListState extends State<FeedList>{
   RefreshController _refreshController = new RefreshController();
 
   
-  void _handleUserSelection(UserProfile userProfile){
+  void _handleUserSelection(UserProfile userProfile, int tag){
    
       Navigator.push(context, SlowerRoute((BuildContext context) =>
 
@@ -45,7 +45,7 @@ class _FeedListState extends State<FeedList>{
       child: Icon(Icons.arrow_back),), 
       ),
     
-      body: UserProfilePage(userProfile, false))));
+      body: UserProfilePage(userProfile, false, tag: tag))));
 
   }
 
@@ -106,7 +106,7 @@ class _FeedListState extends State<FeedList>{
                       itemExtent: 450,
                       itemCount: snapshot.data.length,
                       itemBuilder: (BuildContext context, int index) =>
-                      SocialProfileCard(snapshot.data[index], _dealWithProfileSelection, _handleUserSelection)
+                      SocialProfileCard(snapshot.data[index], _dealWithProfileSelection, _handleUserSelection, index)
                 ));
               }
           }

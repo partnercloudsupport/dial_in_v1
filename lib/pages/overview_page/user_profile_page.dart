@@ -12,8 +12,14 @@ class UserProfilePage extends StatelessWidget{
 
   final UserProfile _userProfile;
   final bool isCurrentUser;
+  final int tag;
+  String _heroRef;
 
-  UserProfilePage(this._userProfile , this.isCurrentUser);
+  UserProfilePage(this._userProfile , this.isCurrentUser, {this.tag}){
+
+    if(tag == null){ _heroRef = _userProfile.userId;}
+    else{_heroRef = _userProfile.userId + tag.toString();}
+  }
 
   /// UI Build
   @override
@@ -28,7 +34,7 @@ class UserProfilePage extends StatelessWidget{
     new Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center ,children:[
 
       Container(padding: EdgeInsets.all(10.0), margin: EdgeInsets.all(10.0),
-              child: Center(child: Hero(tag: _userProfile.userId ,
+              child: Center(child: Hero(tag: _heroRef ,
                   child: CircularPicture(
                       _userProfile.userImage, 150.0)))),
 

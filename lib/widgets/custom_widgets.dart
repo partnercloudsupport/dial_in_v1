@@ -451,12 +451,14 @@ void setWidgetUp(){
 ///Social card
 class SocialProfileCard extends StatelessWidget {
 
-  final Function(UserProfile) _giveUserProfile;
+  final Function(UserProfile, int) _giveUserProfile;
   final Function(Profile) _giveprofile;
   final FeedProfileData _profile;
   final _dateFormat = DateFormat.yMd();
+  final int _tag;
 
-  SocialProfileCard(this._profile, this._giveprofile, this._giveUserProfile);
+
+  SocialProfileCard(this._profile, this._giveprofile, this._giveUserProfile, this._tag);
 
   @override
   Widget build(BuildContext context) {
@@ -465,13 +467,13 @@ class SocialProfileCard extends StatelessWidget {
 
        Column(children: <Widget>[
 
-      InkWell(onTap:() => _giveUserProfile(_profile.userProfile),child:  
+      InkWell(onTap:() => _giveUserProfile(_profile.userProfile, _tag),child:  
       Material (color: Theme.of(context).dividerColor, 
       child: Row(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
 
          /// User picture
-          Container(child:InkWell(onTap:() => _giveUserProfile(_profile.userProfile),
-              child: Hero(tag: _profile.userProfile.userId, child: CircularPicture(_profile.userImage , 60.0)))),
+          Container(child:InkWell(onTap:() => _giveUserProfile(_profile.userProfile, _tag),
+              child: Hero(tag: _profile.userProfile.userId + _tag.toString(), child: CircularPicture(_profile.userImage , 60.0)))),
               
       
           Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
