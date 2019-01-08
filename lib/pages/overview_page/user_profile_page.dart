@@ -57,7 +57,7 @@ class UserProfilePage extends StatelessWidget{
         FutureBuilder(future: _userProfile.getcoffeeCount(),initialData: '' ,builder: (context, snapshot) =>
         CountBlock(
             snapshot.data.toString(),
-            StringLabels.brewCount,
+            StringLabels.beanStash,
         )),
 
         /// Followers

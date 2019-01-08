@@ -1084,6 +1084,7 @@ class Functions {
           databaseId: DatabaseIds.burrs,
           placeHolderText: StringLabels.enterDescription,
           keyboardType: TextInputType.text,
+          inputViewDataSet: StringDataArrays.burrTypes
         );
         break;
 

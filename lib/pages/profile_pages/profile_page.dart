@@ -4,6 +4,7 @@ import 'package:dial_in_v1/data/strings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:dial_in_v1/data/functions.dart';
 import 'package:dial_in_v1/pages/overview_page/profile_list.dart';
+import 'package:dial_in_v1/data/item.dart';
 import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 import 'package:image_picker/image_picker.dart';
@@ -220,29 +221,29 @@ class ProfilePageState extends State<ProfilePage> {
 
     switch(profile.type){
       case ProfileType.barista:
-      _structure = BaristaPage(_profile, _margin, (key, value){ _profile.setProfileItemValue( key,  value);}, _isEditing);
+      _structure = BaristaPage(_profile, _margin,  _profile.setProfileItemValue, _isEditing);
       break;
 
       case ProfileType.coffee:
-      _structure = CoffeeProfilePage(_profile, (key, value){ _profile.setProfileItemValue( key,  value);}, _isEditing);
+      _structure = CoffeeProfilePage(_profile, _profile.setProfileItemValue, _isEditing);
       break;
 
       case ProfileType.equipment:
-      _structure = EquipmentPage(_profile, _margin, (key, value){ _profile.setProfileItemValue( key,  value);}, _isEditing);
+      _structure = EquipmentPage(_profile, _margin,  _profile.setProfileItemValue, _isEditing);
       break;
 
       case ProfileType.feed:
       break;
 
       case ProfileType.grinder:
-      _structure = GrinderPage(_profile, _margin, (key, value){ _profile.setProfileItemValue( key,  value);}, _isEditing);
+      _structure = GrinderPage(_profile, _margin, _profile.setProfileItemValue, _isEditing, showPickerMenu);
       break;
 
       case ProfileType.none:
       break;
 
       case ProfileType.water:
-      _structure = WaterPage(_profile, (key, value){ _profile.setProfileItemValue( key,  value);}, _isEditing);
+      _structure = WaterPage(_profile, _profile.setProfileItemValue, _isEditing);
       break;
 
       case ProfileType.recipe:
@@ -254,6 +255,53 @@ class ProfilePageState extends State<ProfilePage> {
     }
 
     return _structure;
+  }
+
+    void showPickerMenu(Item item){
+
+      List< Widget> _items = new List<Widget>();
+      double _itemHeight = 40.0; 
+    
+      if (item.inputViewDataSet != null && item.inputViewDataSet.length > 0)
+      {item.inputViewDataSet[0]
+      .forEach((itemText){_items.add(Center(child:Text(itemText, style: Theme.of(context).textTheme.display2,)));});
+      }
+
+      showModalBottomSheet(context: context, builder: (BuildContext context){
+        
+        if (item.inputViewDataSet != null && item.inputViewDataSet.length < 1)
+        {return Center(child: Text('Error No Data for picker'),);  
+
+        }else{
+
+      int startItem = item.inputViewDataSet[0].indexWhere((value) => (value == item.value));
+
+      FixedExtentScrollController _scrollController = new FixedExtentScrollController(initialItem: startItem);
+    
+          return  
+          Container(child: SizedBox(height: 200.0, width: double.infinity, child: Column(children: <Widget>[
+
+                      Material(elevation: 5.0, shadowColor: Colors.black, color:Theme.of(context).accentColor, type:MaterialType.card, 
+                      child: Container(height: 40.0, width: double.infinity, alignment: Alignment(1, 0),
+                      child: FlatButton(onPressed:() => Navigator.pop(context),
+                      child: Text('Done')),)),
+
+                      SizedBox(height: 160.0, width: double.infinity  ,
+                      child: CupertinoPicker(
+                        scrollController: _scrollController,
+                        useMagnifier: true,
+                        onSelectedItemChanged:
+                          (value){setState(() {
+                            _profile.setProfileItemValue(item.databaseId, item.inputViewDataSet[0][value]);
+                          });}, 
+                        itemExtent: _itemHeight,
+                        children: _items
+                        ),)
+          ],) )
+        );
+        }
+        }
+      );
   }
 
   /// Get image for profile photo

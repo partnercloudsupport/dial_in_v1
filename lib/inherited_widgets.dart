@@ -50,8 +50,6 @@ class ProfilesModel extends Model{
     int get recipeProfilesCount => _recipeFeed.profilesCount ?? 0;
     int get coffeeProfilesCount => _coffeeFeed.profilesCount ?? 0;
 
-    Stream<List<Profile>> communityFeed;
-    Stream<List<Profile>> followersFeed;
 
   FeedBloc _recipeFeed  = new FeedBloc(DatabaseIds.recipe);
   FeedBloc _coffeeFeed  = new FeedBloc(DatabaseIds.coffee);
@@ -63,9 +61,6 @@ class ProfilesModel extends Model{
   SocialFeedBloc _followers;
   UserFeed _userFeed = new UserFeed(); 
 
-    ///Following commands
-    bool userFollowing = true;
-
     /// Checks the current user agaist the userId
     ///  to check if current is following
     bool isUserFollowing(String otherUser){
@@ -74,36 +69,26 @@ class ProfilesModel extends Model{
 
       bool result =   _userFeed.following.contains(otherUser) ? true : false; 
 
-      return result ?? false;
-      
-      }
+      return result ?? false;}
 
       else{ return false; }
-
-      /// test Button
-      //  return userFollowing;
-
     }
 
     /// Checks the following status then updates the record accordingly
     void followOrUnfollow(String otherUser, Function(bool) competionFollow){
 
-      // DatabaseFunctions.addFollower(userId,otherUser);
       if(isUserFollowing(otherUser))
       {DatabaseFunctions.unFollow( userId ,otherUser, (success){
       _userFeed.refresh();
       competionFollow(false);});}
+
       else
       {DatabaseFunctions.addFollower(userId, otherUser, (success){
         _userFeed.refresh();
        competionFollow(true);  
       });
       }
-    
-      /// Test
-      // if(isUserFollowing(otherUser))
-      // {userFollowing = false; return true;}
-      // else{userFollowing = true; return false;}
+      _followers.refresh();
     }
     
     /// Getters for profiles
@@ -119,10 +104,8 @@ class ProfilesModel extends Model{
     Stream<List<FeedProfileData>> get followingFeed => _followers.profiles;
 
     ProfilesModel(){
-      communityFeed = recipeProfiles;
-      followersFeed = recipeProfiles;
       _comminuty = new SocialFeedBloc(DatabaseIds.community, userProfile);
-      _followers = new SocialFeedBloc(DatabaseIds.following, userProfile);
+      _followers = new SocialFeedBloc(DatabaseIds.following, userProfile, isUserFollowing: isUserFollowing);
     }
 
     void logOut(){

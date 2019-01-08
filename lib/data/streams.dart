@@ -72,6 +72,7 @@ class SocialFeedBloc{
   bool _initilised = false;
   Stream<UserProfile> _currentUserStream;
   UserProfile _currentUser;
+  Function(String) isUserFollowing;
 
   Stream<List<FeedProfileData>> get profiles => _outgoingController.stream;
 
@@ -79,7 +80,7 @@ class SocialFeedBloc{
   var _incomingController = StreamController<QuerySnapshot>.broadcast();
 
   /// Init of the class
-  SocialFeedBloc(this._databaseId, this._currentUserStream)
+  SocialFeedBloc(this._databaseId, this._currentUserStream, {this.isUserFollowing} )
   {_currentUserStream.listen((profile){
     _currentUser = profile;
     getProfiles();
@@ -89,6 +90,11 @@ class SocialFeedBloc{
 
   void deinit(){
     _initilised = false;
+  }
+
+  void refresh(){
+   _initilised = false;
+    getProfiles();
   }
 
   Future getProfiles()async{
@@ -102,24 +108,72 @@ class SocialFeedBloc{
     
     }else
     {_incomingController.addStream( 
-      DatabaseFunctions.getStreamFromFireStore(DatabaseIds.recipe, DatabaseIds.public, true));
+                        DatabaseFunctions.getStreamFromFireStore(DatabaseIds.recipe, DatabaseIds.public, true));
       }
 
     _incomingController.stream.listen((p){
-      DatabaseFunctions.convertStreamToListOfProfiles(p, DatabaseIds.recipe)
-      .then((profilesOut){ 
 
-        var profiles = new List<Profile>.from(profilesOut);
-        profiles.removeWhere((profile) => profile.userId == _currentUser.userId );
-        convertProfilesToListOfFeedProfiles(profiles).then(
 
-        (feedProfiles){_outgoingController.add(feedProfiles);}
+      /// Process for sorting community profiles
+      if(_databaseId == DatabaseIds.community){
+        DatabaseFunctions.convertStreamToListOfProfiles(p, DatabaseIds.recipe)
+        .then((profilesOut){ 
+
+          var profiles = _returnListOfProfilesWithoutUserProfiles(profilesOut);
+
+          convertProfilesToListOfFeedProfiles(profiles).then(
+
+          (feedProfiles){_outgoingController.add(feedProfiles);}
+          );
+        });
+
+      /// For following only
+      }else{      
+         DatabaseFunctions.convertStreamToListOfProfiles(p, DatabaseIds.recipe)
+        .then((profilesOut){ 
+
+          var profiles = _returnListOfProfilesWithoutUserProfiles(profilesOut);
+
+          /// remove none followers
+          profiles.removeWhere((profile)  
+          {if (profile.userId != null){
+            if(!isUserFollowing(profile.userId)){ return true;}};
+
+          convertProfilesToListOfFeedProfiles(profiles)
+          
+          .then((List<FeedProfileData> feedListProfiles){ 
+
+            
+              _outgoingController.add(feedListProfiles);}
+          );
+        }
+        );
+        }
         );
       }
-      );
     }
-    );
-   }
+  );
+  }
+  }
+
+  List<Profile> _returnListOfProfilesWithoutUserProfiles(List<Profile> profilesIn){
+
+    var profiles = new List<Profile>.from(profilesIn);
+              /// Remove Current User profiles
+                profiles.removeWhere((profile) { 
+                   
+                if (profile.userId != null){
+
+                  String otherUserId = profile.userId;
+                  String currentUserId = _currentUser.userId;
+                    
+                    /// Remove the profile where the profile userId is eqaula to the currrent userId
+                    if (otherUserId == currentUserId){ 
+                      return true;}
+                    else{ return false;}
+    
+              }});
+    return profiles ?? NullThrownError();
   }
 
 

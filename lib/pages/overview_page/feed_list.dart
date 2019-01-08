@@ -81,7 +81,7 @@ class _FeedListState extends State<FeedList>{
       (builder: (context, _ ,model) =>
           ///Todo Starts building this before User profile is gotton
         StreamBuilder<List<FeedProfileData>>(
-          stream:  model.communnityFeed,
+          stream: widget._feedType == FeedType.community ? model.communnityFeed : model.followingFeed,
           builder: (context, snapshot) {
 
             if (!snapshot.hasData) { return  

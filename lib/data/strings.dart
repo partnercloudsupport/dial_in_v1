@@ -5,7 +5,7 @@ class  StringLabels {
   static const String following = 'Following';
   static const String follow = 'Follow';
   static const String userProfile = 'User Profile';
-   static const String brewTime = 'Brew Time';
+  static const String brewTime = 'Brew Time';
   static const String ey = 'Ext/y';
   static const String extractionYield = 'Extraction yield';
   static const String coldBrew = 'Cold brew';

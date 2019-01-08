@@ -11,11 +11,12 @@ class GrinderPage extends StatelessWidget {
   final double _margin;
   final Profile _profile;
   final bool _isEditing;
+  final Function(Item) _showPickerMenu;
 
 // Sets a String and Value in the Parent profie
   final Function(String, dynamic) _setProfileItemValue;
 
-  GrinderPage(this._profile, this._margin, this._setProfileItemValue, this._isEditing);
+  GrinderPage(this._profile, this._margin, this._setProfileItemValue, this._isEditing, this._showPickerMenu);
 
   ///
   /// UI Build
@@ -27,7 +28,7 @@ class GrinderPage extends StatelessWidget {
       /// Details
       GrinderDetailsCard(
         (name) {_setProfileItemValue(DatabaseIds.grinderId, name);},
-        (burrs) {_setProfileItemValue(DatabaseIds.burrs, burrs);},
+        _showPickerMenu,
         (make) {_setProfileItemValue(DatabaseIds.grinderMake, make);},
         (model) {_setProfileItemValue(DatabaseIds.grinderModel, model);},
         _profile.getProfileItem(DatabaseIds.grinderId),
@@ -51,7 +52,7 @@ class GrinderDetailsCard extends StatelessWidget {
   final double _margin = 5.0;
   final double _textFieldWidth = 140.0;
   final Function(String) _name;
-  final Function(String) _burrs;
+  final Function(Item) _burrs;
   final Function(String) _make;
   final Function(String) _model;
   final Item _nameValue;
@@ -87,7 +88,7 @@ class GrinderDetailsCard extends StatelessWidget {
               (value){ _name(value);}, _textFieldWidth, _isEditing),
 
               /// Burrs
-              TextFieldItemWithInitalValue(_burrsValue,
+              PickerTextField(_burrsValue,
               (value){_burrs(value);}, _textFieldWidth, _isEditing),
 
             ],
