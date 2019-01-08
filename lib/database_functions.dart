@@ -437,7 +437,6 @@ class DatabaseFunctions {
                             revisedList);
       }
     }
-    completer.completeError('ERROR');
 
     return _userProfile ?? new UserProfile
                             ('error', 'error', 'error', ['error']);

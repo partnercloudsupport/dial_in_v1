@@ -7,7 +7,6 @@ import 'package:dial_in_v1/data/mini_classes.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 
-/// Making Profiles in Bloc in the Way of technical debt :)
 class FeedBloc{
 
   ///Other Variables
@@ -132,9 +131,10 @@ class SocialFeedBloc{
   }
 
   void handleProfileList(List<Profile> profilesin){
+    
+      _currentFeedData = profilesin;
 
       var profiles = _returnListOfProfilesWithoutUserProfiles(profilesin);
-      _currentFeedData = profiles;
 
      if(_databaseId == DatabaseIds.community){
 
@@ -180,14 +180,6 @@ class SocialFeedBloc{
               _outgoingController.add(feedListProfiles);}
           );
         }
-
-
-
-
-
-
-
-
   }
 
   List<Profile> _returnListOfProfilesWithoutUserProfiles(List<Profile> profilesIn){

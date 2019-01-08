@@ -76,6 +76,7 @@ class ProfilePageState extends State<ProfilePage> {
                builder: (context) => Center(child:CircularProgressIndicator()
                )); 
          await DatabaseFunctions.updateProfile(_profile);
+         Navigator.pop(context);
          Navigator.pop(context, _profile);
          }else{
             showDialog(barrierDismissible: false, context: context ,
