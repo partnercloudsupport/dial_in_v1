@@ -54,6 +54,20 @@ class  UserProfile {
       return await DatabaseFunctions.getCount(ProfileType.coffee, _userId);
     }
 
+    bool isUserFollowing(String otherUser){
+
+      bool result;
+
+      if (following != null) {
+
+        List<String> followingList = following;
+
+         result =  followingList.contains(otherUser) ? true : false; 
+      }
+      return result;
+  }
+
+
 }
 
 enum FeedType {community, following}

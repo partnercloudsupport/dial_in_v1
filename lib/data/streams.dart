@@ -73,6 +73,7 @@ class SocialFeedBloc{
   Stream<UserProfile> _currentUserStream;
   UserProfile _currentUser;
   Function(String) isUserFollowing;
+  List<Profile> _currentFeedData;
 
   Stream<List<FeedProfileData>> get profiles => _outgoingController.stream;
 
@@ -83,8 +84,7 @@ class SocialFeedBloc{
   SocialFeedBloc(this._databaseId, this._currentUserStream, {this.isUserFollowing} )
   {_currentUserStream.listen((profile){
     _currentUser = profile;
-    getProfiles();
-    
+    _userStreamListenerFunction();
    });
   }
 
@@ -93,8 +93,9 @@ class SocialFeedBloc{
   }
 
   void refresh(){
-   _initilised = false;
+  //  _initilised = false;
     getProfiles();
+    // _outgoingController.add();
   }
 
   Future getProfiles()async{
@@ -102,58 +103,91 @@ class SocialFeedBloc{
    if(!_initilised){
 
     _initilised = true;
-    if(_databaseId == DatabaseIds.community)
-    {_incomingController.addStream
-                        (DatabaseFunctions.getStreamFromFireStore(DatabaseIds.recipe, DatabaseIds.public, true));
-    
-    }else
-    {_incomingController.addStream( 
+   
+    _incomingController.addStream( 
                         DatabaseFunctions.getStreamFromFireStore(DatabaseIds.recipe, DatabaseIds.public, true));
+      
+    _incomingController.stream.listen(_profileStreamListenerFunction);
+  }
+  }
+
+
+  void _userStreamListenerFunction(){
+    
+    if(_currentFeedData != null){
+    handleProfileList(_currentFeedData);}
+
+  }
+
+
+  void _profileStreamListenerFunction(QuerySnapshot p){
+
+     DatabaseFunctions.convertStreamToListOfProfiles(p, DatabaseIds.recipe)
+        .then((profilesOut){
+
+          handleProfileList(profilesOut);
+    
       }
+    ); 
+  }
 
-    _incomingController.stream.listen((p){
+  void handleProfileList(List<Profile> profilesin){
 
+      var profiles = _returnListOfProfilesWithoutUserProfiles(profilesin);
+      _currentFeedData = profiles;
 
-      /// Process for sorting community profiles
-      if(_databaseId == DatabaseIds.community){
-        DatabaseFunctions.convertStreamToListOfProfiles(p, DatabaseIds.recipe)
-        .then((profilesOut){ 
+     if(_databaseId == DatabaseIds.community){
 
-          var profiles = _returnListOfProfilesWithoutUserProfiles(profilesOut);
 
           convertProfilesToListOfFeedProfiles(profiles).then(
 
-          (feedProfiles){_outgoingController.add(feedProfiles);}
-          );
+          (feedProfiles){_outgoingController.add(feedProfiles);
+          
         });
 
       /// For following only
       }else{      
-         DatabaseFunctions.convertStreamToListOfProfiles(p, DatabaseIds.recipe)
-        .then((profilesOut){ 
-
-          var profiles = _returnListOfProfilesWithoutUserProfiles(profilesOut);
+        
 
           /// remove none followers
-          profiles.removeWhere((profile)  
+          profiles.removeWhere((profile) 
+
           {if (profile.userId != null){
-            if(!isUserFollowing(profile.userId)){ return true;}};
+
+            // bool following = isUserFollowing(profile.userId);
+            // bool following = _currentUser.isUserFollowing(profile.userId);
+
+             bool result;
+
+              if (_currentUser.following != null) {
+
+              List<String> followingList = _currentUser.following;
+
+               result =  followingList.contains(profile.userId); 
+              }    
+
+              bool returnValue = !result;
+
+              return returnValue;
+            // if(!following){ return true;}}
+
+          }});
 
           convertProfilesToListOfFeedProfiles(profiles)
           
           .then((List<FeedProfileData> feedListProfiles){ 
 
-            
               _outgoingController.add(feedListProfiles);}
           );
         }
-        );
-        }
-        );
-      }
-    }
-  );
-  }
+
+
+
+
+
+
+
+
   }
 
   List<Profile> _returnListOfProfilesWithoutUserProfiles(List<Profile> profilesIn){

@@ -65,14 +65,18 @@ class ProfilesModel extends Model{
     ///  to check if current is following
     bool isUserFollowing(String otherUser){
 
+      bool result;
+
       if (_userFeed.following != null) {
 
-      bool result =   _userFeed.following.contains(otherUser) ? true : false; 
+        List<String> followingList = _userFeed.following;
 
-      return result ?? false;}
-
-      else{ return false; }
+         result =  followingList.contains(otherUser) ? true : false; 
+      }
+      return result;
     }
+
+    
 
     /// Checks the following status then updates the record accordingly
     void followOrUnfollow(String otherUser, Function(bool) competionFollow){
@@ -89,6 +93,7 @@ class ProfilesModel extends Model{
       });
       }
       _followers.refresh();
+      
     }
     
     /// Getters for profiles
@@ -104,8 +109,10 @@ class ProfilesModel extends Model{
     Stream<List<FeedProfileData>> get followingFeed => _followers.profiles;
 
     ProfilesModel(){
-      _comminuty = new SocialFeedBloc(DatabaseIds.community, userProfile);
-      _followers = new SocialFeedBloc(DatabaseIds.following, userProfile, isUserFollowing: isUserFollowing);
+      _comminuty = new SocialFeedBloc
+                      (DatabaseIds.community, userProfile, );
+      _followers = new SocialFeedBloc
+                      (DatabaseIds.following, userProfile, isUserFollowing: isUserFollowing);
     }
 
     void logOut(){
@@ -116,7 +123,6 @@ class ProfilesModel extends Model{
 
     void init()async{
       await _userFeed.getProfile();
- 
       _recipeFeed.getProfiles();
       _coffeeFeed.getProfiles();
       _grinderFeed.getProfiles();
@@ -125,6 +131,7 @@ class ProfilesModel extends Model{
       _baristaFeed.getProfiles();
       _comminuty.getProfiles();
       _followers.getProfiles();
+     
     } 
 
     void deInit(){

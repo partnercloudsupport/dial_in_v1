@@ -347,9 +347,9 @@ class DatabaseFunctions {
 
     if (doc.exists) {
           _profile = await DatabaseFunctions.createProfileFromDocumentSnapshot(collectionDataBaseId, doc);
-      } else {_profile =  await Functions.createBlankProfile(Functions.getProfileDatabaseIdType(collectionDataBaseId));}
+      } else {_profile =  await Profile.createBlankProfile(Functions.getProfileDatabaseIdType(collectionDataBaseId));}
 
-    }else{_profile =  await Functions.createBlankProfile(Functions.getProfileDatabaseIdType(collectionDataBaseId));}
+    }else{_profile =  await Profile.createBlankProfile(Functions.getProfileDatabaseIdType(collectionDataBaseId));}
 
     return _profile;
   }
@@ -501,23 +501,23 @@ class DatabaseFunctions {
 
       if (document.data.containsKey(DatabaseIds.coffeeId) && document.data[DatabaseIds.coffeeId] != ""){
         _coffee = await DatabaseFunctions.getProfileFromFireStoreWithDocRef(DatabaseIds.coffee , document.data[DatabaseIds.coffeeId]);}
-        else{_coffee = await Functions.createBlankProfile(ProfileType.coffee);}
+        else{_coffee = await Profile.createBlankProfile(ProfileType.coffee);}
 
       if (document.data.containsKey(DatabaseIds.barista) && document.data[DatabaseIds.barista] != ""){
         _barista = await DatabaseFunctions.getProfileFromFireStoreWithDocRef(DatabaseIds.Barista, document.data[DatabaseIds.barista]);}
-        else{_barista = await Functions.createBlankProfile(ProfileType.barista);}
+        else{_barista = await Profile.createBlankProfile(ProfileType.barista);}
 
       if (document.data.containsKey(DatabaseIds.equipmentId) && document.data[DatabaseIds.Barista] != ""){
         _equipment = await DatabaseFunctions.getProfileFromFireStoreWithDocRef(DatabaseIds.brewingEquipment, document.data[DatabaseIds.equipmentId]);}
-        else{_equipment = await Functions.createBlankProfile(ProfileType.equipment);}
+        else{_equipment = await Profile.createBlankProfile(ProfileType.equipment);}
 
       if (document.data.containsKey(DatabaseIds.grinderId) && document.data[DatabaseIds.grinderId] != ""){
         _grinder = await DatabaseFunctions.getProfileFromFireStoreWithDocRef(DatabaseIds.grinder, document.data[DatabaseIds.grinderId]);}
-        else{_grinder = await Functions.createBlankProfile(ProfileType.grinder);}
+        else{_grinder = await Profile.createBlankProfile(ProfileType.grinder);}
 
       if (document.data.containsKey(DatabaseIds.waterID) && document.data[DatabaseIds.waterID] != ""){
         _water = await DatabaseFunctions.getProfileFromFireStoreWithDocRef(DatabaseIds.water, document.data[DatabaseIds.waterID]);}
-        else{_water = await Functions.createBlankProfile(ProfileType.water);}
+        else{_water = await Profile.createBlankProfile(ProfileType.water);}
       }
 
         document.data.forEach((key, value) {

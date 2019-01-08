@@ -433,7 +433,7 @@ class ProfilePageState extends State<ProfilePage> {
 
   Future<dynamic> createNewProfilePage(ProfileType profileType)async{
 
-    Profile _newProfile = await Functions.createBlankProfile(profileType);
+    Profile _newProfile = await Profile.createBlankProfile(profileType);
 
         /// Result to be passed back to 
       var result = await Navigator.push(context,

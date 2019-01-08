@@ -9,7 +9,6 @@ import 'package:dial_in_v1/pages/overview_page/profile_list.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:dial_in_v1/inherited_widgets.dart';
 import 'package:dial_in_v1/routes.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 
 
@@ -112,7 +111,7 @@ class DataPageState extends State<DataPage>with SingleTickerProviderStateMixin {
         floatingActionButton: ScopedModelDescendant<ProfilesModel>
             ( rebuildOnChange: false, builder: (context, _ ,model) => AddButton(()async{
 
-          Profile _profile = await Functions.createBlankProfile(_lists.ref[controller.index].type);
+          Profile _profile = await Profile.createBlankProfile(_lists.ref[controller.index].type);
 
           Navigator.push(context, SlowerRoute((BuildContext context) =>
 

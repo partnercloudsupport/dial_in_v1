@@ -379,11 +379,12 @@ Future<String> getUserImage ()async{
     }
   }
 
-  static Future<Profile> createBlankProfile(ProfileType profileType)async{
+   static Future<Profile> createBlankProfile(ProfileType profileType)async{
     switch (profileType) {
 
       case ProfileType.recipe:
         return new Profile(
+            userId: '',
             isPublic: true,
             updatedAt: DateTime.now(),
             objectId: '',
@@ -421,6 +422,7 @@ Future<String> getUserImage ()async{
 
       case ProfileType.water:
         return new Profile(
+            userId: '',
             isPublic: true,
             updatedAt: DateTime.now(),
             objectId: '',
@@ -441,6 +443,7 @@ Future<String> getUserImage ()async{
 
       case ProfileType.coffee:
         return new Profile(
+          userId: '',
             isPublic: true,
             updatedAt: DateTime.now(),
             objectId: '',
@@ -472,6 +475,7 @@ Future<String> getUserImage ()async{
 
       case ProfileType.equipment:
         return new Profile(
+          userId: '',
           isPublic: true,
           updatedAt: DateTime.now(),
           objectId: '',
@@ -491,6 +495,7 @@ Future<String> getUserImage ()async{
 
       case ProfileType.feed:
         return new Profile(
+          userId: '',
           isPublic: true,
           updatedAt: DateTime.now(),
           objectId: '',
@@ -506,6 +511,7 @@ Future<String> getUserImage ()async{
 
       case ProfileType.grinder:
         return new Profile(
+          userId: '',
           isPublic: true,
           updatedAt: DateTime.now(),
           objectId: '',
@@ -525,6 +531,7 @@ Future<String> getUserImage ()async{
 
       case ProfileType.none:
         return new Profile(
+          userId: '',
           isPublic: true,
           updatedAt: DateTime.now(),
           objectId: '',
@@ -542,6 +549,7 @@ Future<String> getUserImage ()async{
 
       case ProfileType.barista:
         return new Profile(
+          userId: '',
           isPublic: true,
           updatedAt: DateTime.now(),
           objectId: '',
@@ -573,14 +581,13 @@ Future<String> getUserImage ()async{
     }
   }
 
+  
   static Item createBlankItem(String databaseId) {
     Item _item;
 
     switch (databaseId) {
 
-      ///
       /// Recipe
-      ///
       case DatabaseIds.date:
         _item = new Item(
           title: StringLabels.date,
@@ -593,7 +600,7 @@ Future<String> getUserImage ()async{
 
       case DatabaseIds.brewingEquipment:
         _item = new Item(
-          title: StringLabels.brewingEquipment,
+          title: StringLabels.method,
           value: '',
           databaseId: DatabaseIds.equipmentId,
           placeHolderText: StringLabels.enterDescription,
@@ -673,7 +680,7 @@ Future<String> getUserImage ()async{
 
       case DatabaseIds.brewWeight:
         _item = new Item(
-          title: StringLabels.weight,
+          title: StringLabels.weightG,
           value: '',
           databaseId: DatabaseIds.brewWeight,
           placeHolderText: StringLabels.enterValue,
@@ -683,11 +690,12 @@ Future<String> getUserImage ()async{
 
       case DatabaseIds.time:
         _item = new Item(
-          title: StringLabels.time,
+          title: StringLabels.brewTime,
           value: '',
           databaseId: DatabaseIds.time,
           placeHolderText: StringLabels.enterValue,
           keyboardType: TextInputType.number,
+          inputViewDataSet: StringDataArrays.minutesAndSeconds
         );
         break;
 
@@ -714,7 +722,7 @@ Future<String> getUserImage ()async{
       case DatabaseIds.flavour:
         _item = new Item(
           title: StringLabels.flavour,
-          value: '0',
+          value: '0.0',
           databaseId: DatabaseIds.flavour,
           placeHolderText: StringLabels.flavour,
           keyboardType: TextInputType.number,
@@ -724,7 +732,7 @@ Future<String> getUserImage ()async{
       case DatabaseIds.body:
         _item = new Item(
           title: StringLabels.body,
-          value: '0',
+          value: '0.0',
           databaseId: DatabaseIds.body,
           placeHolderText: StringLabels.enterValue,
           keyboardType: TextInputType.number,
@@ -734,7 +742,7 @@ Future<String> getUserImage ()async{
       case DatabaseIds.balance:
         _item = new Item(
           title: StringLabels.balance,
-          value: '0',
+          value: '0.0',
           databaseId: DatabaseIds.balance,
           placeHolderText: StringLabels.enterValue,
           keyboardType: TextInputType.number,
@@ -744,7 +752,7 @@ Future<String> getUserImage ()async{
       case DatabaseIds.afterTaste:
         _item = new Item(
           title: StringLabels.afterTaste,
-          value: '0',
+          value: '0.0',
           databaseId: DatabaseIds.afterTaste,
           placeHolderText: StringLabels.enterDescription,
           keyboardType: TextInputType.text,
@@ -754,7 +762,7 @@ Future<String> getUserImage ()async{
       case DatabaseIds.strength:
         _item = new Item(
           title: StringLabels.strength,
-          value: '0',
+          value: '0.0',
           databaseId: DatabaseIds.strength,
           placeHolderText: StringLabels.enterDescription,
           keyboardType: TextInputType.text,
@@ -856,6 +864,7 @@ Future<String> getUserImage ()async{
           databaseId: DatabaseIds.country,
           placeHolderText: StringLabels.enterDescription,
           keyboardType: TextInputType.text,
+          inputViewDataSet: StringDataArrays.countrys
         );
         break;
 
@@ -938,6 +947,7 @@ Future<String> getUserImage ()async{
           databaseId: DatabaseIds.roastProfile,
           placeHolderText: StringLabels.enterDescription,
           keyboardType: TextInputType.text,
+          inputViewDataSet: StringDataArrays.roastTypes
         );
         break;
 
@@ -970,6 +980,7 @@ Future<String> getUserImage ()async{
             keyboardType: TextInputType.text,
             inputViewDataSet: StringDataArrays.beanType);
         break;
+
 
       case DatabaseIds.beanSize:
         _item = new Item(
@@ -1042,6 +1053,7 @@ Future<String> getUserImage ()async{
           databaseId: DatabaseIds.burrs,
           placeHolderText: StringLabels.enterDescription,
           keyboardType: TextInputType.text,
+          inputViewDataSet: StringDataArrays.burrTypes
         );
         break;
 
@@ -1156,7 +1168,6 @@ Future<String> getUserImage ()async{
 
     return _item;
   }
-
   static Item createItemWithData(Map<String, dynamic> item) {
     Item _item;
 
