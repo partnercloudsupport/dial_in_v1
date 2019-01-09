@@ -14,6 +14,7 @@ import 'package:flutter/services.dart';
 import 'package:dial_in_v1/data/functions.dart';
 import 'package:dial_in_v1/inherited_widgets.dart';
 import 'package:scoped_model/scoped_model.dart';
+import "package:pull_to_refresh/pull_to_refresh.dart";
 
 
 /// Background
@@ -1192,6 +1193,78 @@ class _FollowButtonState extends State<FollowButton> {
                 fontWeight: model.isUserFollowing(widget.userId) ? FontWeight.w600:FontWeight.w600,
                 color: model.isUserFollowing(widget.userId) ? Theme.of(context).accentColor : Colors.black,),),
               )),
+      )
+    );
+  }
+}
+
+class FeedRefresher extends StatelessWidget {
+
+  final RefreshController _refreshController = new RefreshController();
+  final Widget _child;
+  final FeedType _feedtype;
+  
+  FeedRefresher(this._child, this._feedtype);
+
+  void _onRefresh(bool up, ProfilesModel model)async{
+		if(up){
+		   //headerIndicator callback
+		   model.getSocialFeed(_feedtype); 
+       new Future.delayed(const Duration(seconds: 2))
+                               .then((val) {
+                                 _refreshController.sendBack(true, RefreshStatus.completed);
+                           }); 
+		}else{
+			//footerIndicator Callback
+		}
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    return ScopedModelDescendant<ProfilesModel>
+      (builder: (BuildContext context, _ ,ProfilesModel model) =>
+
+      SmartRefresher(
+        controller: _refreshController,
+        enablePullDown: true,
+        onRefresh: (up) => _onRefresh(up, model),
+        child:_child,
+      )
+    );
+  }
+}
+
+class ProfileRefresher extends StatelessWidget {
+
+  final RefreshController _refreshController = new RefreshController();
+  final Widget _child;
+  
+  ProfileRefresher(this._child);
+
+  void _onRefresh(bool up)async{
+		if(up){
+		   //headerIndicator callback
+       new Future.delayed(const Duration(seconds: 2))
+                               .then((val) {
+                                 _refreshController.sendBack(true, RefreshStatus.completed);
+                           }); 
+		}else{
+			//footerIndicator Callback
+		}
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    return ScopedModelDescendant<ProfilesModel>
+      (builder: (BuildContext context, _ ,ProfilesModel model) =>
+
+      SmartRefresher(
+        controller: _refreshController,
+        enablePullDown: true,
+        onRefresh: (up) => _onRefresh(up),
+        child:_child,
       )
     );
   }

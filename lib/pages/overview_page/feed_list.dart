@@ -1,15 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:dial_in_v1/data/profile.dart';
 import 'package:dial_in_v1/pages/profile_pages/profile_page.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:dial_in_v1/inherited_widgets.dart';
 import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'package:dial_in_v1/data/mini_classes.dart';
 import 'package:dial_in_v1/routes.dart';
+import 'package:dial_in_v1/data/mini_classes.dart';
 import 'package:dial_in_v1/pages/overview_page/user_profile_page.dart';
 import 'package:dial_in_v1/data/strings.dart';
 import "package:pull_to_refresh/pull_to_refresh.dart";
+
 
 
 class FeedList extends StatefulWidget{
@@ -81,7 +82,7 @@ class _FeedListState extends State<FeedList>{
                     
                     CircularProgressIndicator(),
                     Container(margin: EdgeInsets.all(20.0),child: Text('Loading...'),) ,],)),
-                    FeedRefresher(ListView(children: <Widget>[],), feedType)
+                    ProfileRefresher(ListView(children: <Widget>[],),)
             ],);
         break;
 
@@ -92,7 +93,7 @@ class _FeedListState extends State<FeedList>{
                   (mainAxisAlignment: MainAxisAlignment.center ,children: <Widget>[
                     Container(child: Icon(Icons.no_sim),),
                     Container(margin: EdgeInsets.all(20.0),child: Text('No Data',style: Theme.of(context).textTheme.display3,),) ,],)),
-                    FeedRefresher(ListView(children: <Widget>[],), feedType)
+                    ProfileRefresher(ListView(children: <Widget>[],), )
                   ],);
         break;
 
@@ -108,7 +109,7 @@ class _FeedListState extends State<FeedList>{
               (mainAxisAlignment: MainAxisAlignment.center ,children: <Widget>[
                 Container(child: Icon(Icons.no_sim),),
                 Container(margin: EdgeInsets.all(20.0),child: Text('No Data',style: Theme.of(context).textTheme.display3,),) ,],)),
-                FeedRefresher(ListView(children: <Widget>[],), feedType)
+                ProfileRefresher(ListView(children: <Widget>[],),)
           ],);
         
       }else{
@@ -119,13 +120,14 @@ class _FeedListState extends State<FeedList>{
   
         _returnWidget = 
         
-        FeedRefresher(ListView.builder(
-                      itemExtent: 450,
-                      itemCount: snapshot.data.length,
-                      itemBuilder: (BuildContext context, int index) =>
-                      SocialProfileCard(snapshot.data[index], _dealWithProfileSelection, _handleUserSelection, index)
-                      ), 
-                      feedType);
+        ProfileRefresher(
+          ListView.builder(
+            itemExtent: 450,
+            itemCount: snapshot.data.length,
+            itemBuilder: (BuildContext context, int index) =>
+            SocialProfileCard(snapshot.data[index], _dealWithProfileSelection, _handleUserSelection, index)
+            ), 
+            );
       }
       break;
 
@@ -137,7 +139,7 @@ class _FeedListState extends State<FeedList>{
                   (mainAxisAlignment: MainAxisAlignment.center ,children: <Widget>[
                     Container(child: Icon(Icons.warning),),
                     Container(margin: EdgeInsets.all(20.0),child: Text('Error',style: Theme.of(context).textTheme.display3,),) ,],)),
-                    FeedRefresher(ListView(children: <Widget>[],), feedType)
+                    ProfileRefresher(ListView(children: <Widget>[],),)
                   ],);
         break;
     }   
@@ -148,7 +150,7 @@ class _FeedListState extends State<FeedList>{
                                     (mainAxisAlignment: MainAxisAlignment.center ,children: <Widget>[
                                       Container(child: Icon(Icons.warning),),
                                       Container(margin: EdgeInsets.all(20.0),child: Text('Error',style: Theme.of(context).textTheme.display3,),) ,],)),
-                                      FeedRefresher(ListView(children: <Widget>[],), feedType)
+                                      ProfileRefresher(ListView(children: <Widget>[],),)
                                     ],);
   }
 
@@ -159,7 +161,7 @@ class _FeedListState extends State<FeedList>{
     return ScopedModelDescendant<ProfilesModel>
       (builder: (context, _ ,model) =>
 
-          ///Todo Starts building this before User profile is gotton
+        ///Todo Starts building this before User profile is gotton
         StreamBuilder<List<FeedProfileData>>(
           stream: widget._feedType == FeedType.community ? model.communnityFeed : model.followingFeed,
           builder: (BuildContext context,AsyncSnapshot<List<FeedProfileData>> snapshot) {
@@ -170,63 +172,24 @@ class _FeedListState extends State<FeedList>{
 
               switch (snapshot.hasData) {
                 case false: 
-                      switch(snapshot.connectionState){
-                        case ConnectionState.none: break;
-                        case ConnectionState.active: return setupWidgetView(SnapShotDataState.noData, snapshot, widget._feedType);
-                        case ConnectionState.waiting: return setupWidgetView(SnapShotDataState.waiting, snapshot, widget._feedType);
-                        case ConnectionState.done: break;
-                      }     
-                      break;       
+                  switch(snapshot.connectionState){
+                    case ConnectionState.none: break;
+                    case ConnectionState.active: return setupWidgetView(SnapShotDataState.noData, snapshot, widget._feedType);
+                    case ConnectionState.waiting: return setupWidgetView(SnapShotDataState.waiting, snapshot, widget._feedType);
+                    case ConnectionState.done: break;
+                  }     
+                  break;       
 
                 case true: return setupWidgetView(SnapShotDataState.hasdata, snapshot, widget._feedType); 
                   
                 default:
               }
-            }
           }
-        )
-      );
-  }
-}
-
-class FeedRefresher extends StatelessWidget {
-
-  final RefreshController _refreshController = new RefreshController();
-  final Widget _child;
-  final FeedType _feedtype;
-  
-  FeedRefresher(this._child, this._feedtype);
-
-  void _onRefresh(bool up, ProfilesModel model)async{
-		if(up){
-		   //headerIndicator callback
-		   model.getSocialFeed(_feedtype); 
-       new Future.delayed(const Duration(seconds: 2))
-                               .then((val) {
-                                 _refreshController.sendBack(true, RefreshStatus.completed);
-                           }); 
-		}
-		else{
-			//footerIndicator Callback
-		}
-  }
-
-  @override
-  Widget build(BuildContext context) {
-
-    return ScopedModelDescendant<ProfilesModel>
-      (builder: (BuildContext context, _ ,ProfilesModel model) =>
-
-      SmartRefresher(
-        controller: _refreshController,
-        enablePullDown: true,
-        onRefresh: (up) => _onRefresh(up, model),
-        child:_child,
+        }
       )
     );
   }
 }
 
-enum SnapShotDataState{
-  waiting, noData, hasdata, hasError
-}
+
+

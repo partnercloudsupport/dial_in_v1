@@ -82,7 +82,16 @@ class _ProfileListState extends State<ProfileList>{
                 Container(margin: EdgeInsets.all(20.0),child: Text('Loading...'),) ,],));
 
             } else if (snapshot.hasError) { return const Center(child: Text('Error'));  
-            } else if (snapshot.data.length < 1) {return const Center(child: Text('No data'));
+            } else if (snapshot.data.length < 1) {
+              return  Stack(children: <Widget>[ 
+                         Center(child:
+                           Column
+                           (mainAxisAlignment: MainAxisAlignment.center ,children: <Widget>[
+                             Container(child: Icon(Icons.no_sim),),
+                             Container(margin: EdgeInsets.all(20.0),child: Text('No Data',style: Theme.of(context).textTheme.display3,),) ,],)),
+                             ProfileRefresher(ListView(children: <Widget>[],))
+                       ],);
+
             } else {
               Iterable<Profile> _reversedList = snapshot.data.reversed;
               List<Profile> _list = new List<Profile>();
