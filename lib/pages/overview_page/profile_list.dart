@@ -15,9 +15,8 @@ class ProfileList extends StatefulWidget{
 
  final ProfileType _profilesType;
  final Function(Profile) _giveProfile;
- final bool _isOnOverviewScreen;
 
- ProfileList(this._profilesType, this._giveProfile, this._isOnOverviewScreen,);
+ ProfileList(this._profilesType, this._giveProfile);
 
  _ProfileListState createState() => new _ProfileListState();
 }
@@ -27,16 +26,10 @@ class _ProfileListState extends State<ProfileList>{
 
    void _dealWithProfileSelection(Profile profile){
 
-     if (widget._isOnOverviewScreen){
-
        Navigator.push(context, SlowerRoute((BuildContext context) =>
-        ProfilePage(isOldProfile: true, isCopying: false, isEditing: true, isNew: false, type: profile.type, referance: profile.objectId, profile: profile)));
+        ProfilePage(isFromUserFeed: false, isFromProfile: false ,isOldProfile: true, isCopying: false, isEditing: true, isNew: false, type: profile.type, referance: profile.objectId, profile: profile)));
 
-     }else{
 
-       widget._giveProfile(profile);
-       Navigator.pop(context);
-     }
   }
 
   void _deleteProfile(Profile profile){

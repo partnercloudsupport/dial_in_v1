@@ -59,7 +59,7 @@ class ProfilePageState extends State<ProfilePage> {
 
   /// init state
   void initState() {
-      assert( widget.isFromUserFeed != null, 'isFromUserFeed is null Null' );
+      assert( widget.isFromUserFeed != null, 'isFromUserFeed is null' );
       _isCopying = widget.isCopying;
       _isEditing = widget.isEditing;
       _profile = widget.profile;
