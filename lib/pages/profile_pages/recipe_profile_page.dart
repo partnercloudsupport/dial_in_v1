@@ -85,7 +85,8 @@ Widget build(BuildContext context) {
     Column(children: <Widget>[ 
 
 /// Date
-  DateTimeInputCard(StringLabels.date,
+  DateTimeInputCard(
+      StringLabels.date,
       widget._profile.getProfileItemValue( DatabaseIds.date),
       (dateTime)
       {if (dateTime != null){ widget._setProfileItemValue( DatabaseIds.date, dateTime);}},
@@ -93,6 +94,7 @@ Widget build(BuildContext context) {
 
 ///Coffee
   ProfileInputWithDetailsCard(
+    widget._isEditing,
     widget._profile.getProfileProfile(ProfileType.coffee),
     StringLabels.rested,
     widget._profile.getDaysRested().toString() + ' days',
@@ -100,11 +102,13 @@ Widget build(BuildContext context) {
 
 ///Barista
   ProfileInputCard(
+    widget._isEditing,
     widget._profile.getProfileProfile(ProfileType.barista),
     (){widget._showOptions(ProfileType.barista);},),
 
 /// Water
-  ProfileInputCardWithAttribute(widget._isEditing,
+  ProfileInputCardWithAttribute(
+      widget._isEditing,
       profile: widget._profile.getProfileProfile(ProfileType.water),
       keyboardType: TextInputType.number,
       onAttributeTextChange: (text) {
@@ -120,7 +124,8 @@ Widget build(BuildContext context) {
       ),
 
 /// Grinder
-  ProfileInputCardWithAttribute(widget._isEditing,
+  ProfileInputCardWithAttribute(
+      widget._isEditing,
       profile: widget._profile.getProfileProfile(ProfileType.grinder),
       onAttributeTextChange: (text) {
         widget._setProfileItemValue(DatabaseIds.grindSetting, text);
@@ -136,7 +141,8 @@ Widget build(BuildContext context) {
   ),
 
 /// Equipment
-  ProfileInputCardWithAttribute(widget._isEditing,
+  ProfileInputCardWithAttribute(
+      widget._isEditing,
       profile: widget._profile.getProfileProfile(ProfileType.equipment),
       onAttributeTextChange: (text) {
         widget._setProfileItemValue(DatabaseIds.preinfusion, text);

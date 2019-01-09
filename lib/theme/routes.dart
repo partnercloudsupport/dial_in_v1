@@ -6,7 +6,6 @@ class SecondPageRoute extends CupertinoPageRoute {
   SecondPageRoute()
       : super(builder: (BuildContext context) => new SignUpPage());
 
-
   // OPTIONAL IF YOU WISH TO HAVE SOME EXTRA ANIMATION WHILE ROUTING
   @override
   Widget buildPage(BuildContext context, Animation<double> animation,

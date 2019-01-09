@@ -115,8 +115,10 @@ class DataPageState extends State<DataPage>with SingleTickerProviderStateMixin {
 
           Navigator.push(context, SlowerRoute((BuildContext context) =>
 
-          ProfilePage    
-          (isOldProfile: false,
+          ProfilePage(
+          isFromUserFeed: false,
+          isFromProfile: false,
+          isOldProfile: false,
           isCopying: false,
           isEditing: true,
           isNew: true,

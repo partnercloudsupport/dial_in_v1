@@ -166,6 +166,7 @@ class _ProfileInputCardWithAttributeState extends State<ProfileInputCardWithAttr
                         Container(
                           margin: EdgeInsets.all(5.0),child: 
                           TextFormField(
+                            enabled: widget._isEditing,
                             textAlign: TextAlign.start,
                             keyboardType: widget.keyboardType,
                             decoration: new InputDecoration(
@@ -369,9 +370,10 @@ class ProfileInputWithDetailsCard extends StatefulWidget {
   final String _detailTitle;
   final String _detailValue;
   final Function _onProfileTextPressed;
+  final bool _isEditing;
 
   ProfileInputWithDetailsCard
-  (this._profile, this._detailTitle, this._detailValue, this._onProfileTextPressed,);
+  (this._isEditing, this._profile, this._detailTitle, this._detailValue, this._onProfileTextPressed,);
 
   ProfileInputWithDetailsCardState createState() => ProfileInputWithDetailsCardState();
 }
@@ -435,6 +437,7 @@ class ProfileInputWithDetailsCardState extends State<ProfileInputWithDetailsCard
                   Expanded(child: Container(
                           margin: EdgeInsets.fromLTRB(0.0, 0.0, widget._margin, 0.0),
                           child: TextFormField(
+                              enabled: widget._isEditing,
                               textAlign: TextAlign.start,
                               decoration: new InputDecoration(
                                 labelText: widget._profile.databaseId,
@@ -469,9 +472,10 @@ class ProfileInputCard extends StatefulWidget {
   final double _margin = 5.0;
   final Profile _profile;
   final Function _onProfileTextPressed;
+  final bool _isEditing;
 
 
-  ProfileInputCard(this._profile, this._onProfileTextPressed);
+  ProfileInputCard(this._isEditing ,this._profile, this._onProfileTextPressed);
 
   _ProfileInputCardState createState() => _ProfileInputCardState();
 }
@@ -529,6 +533,7 @@ class _ProfileInputCardState extends State<ProfileInputCard> {
                   Expanded(child:Container(
                     margin: EdgeInsets.all(widget._margin,),
                     child: TextFormField(
+                        enabled: widget._isEditing,
                         textAlign: TextAlign.start,
                         decoration: new InputDecoration(
                           labelText: widget._profile.databaseId,

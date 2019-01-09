@@ -27,11 +27,11 @@ void initState() {
   _lists = TabViewDataArray([
 
     TabViewData(
-      FeedList((profile){}, true, FeedType.community), 
+      FeedList(FeedType.community), 
       Tab(icon: Icon(Icons.public)), ProfileType.feed),
    
     TabViewData(
-      FeedList((profile){}, true, FeedType.following),
+      FeedList(FeedType.following),
       Tab(icon: Icon(Icons.verified_user)),ProfileType.feed),
 
     ]);

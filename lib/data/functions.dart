@@ -1,11 +1,9 @@
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:dial_in_v1/data/item.dart';
 import 'package:dial_in_v1/database_functions.dart';
 import 'package:dial_in_v1/data/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:dial_in_v1/data/profile.dart';
-import 'package:dial_in_v1/data/images.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'package:dial_in_v1/pages/profile_pages/profile_page.dart';
@@ -414,7 +412,7 @@ class Functions {
  
  
   static Future<List<Widget>> buildFeedCardArray(
-     BuildContext context, AsyncSnapshot documents, Function(Profile) giveProfile, Function(UserProfile, int) _giveUserProfile, int index) async {
+     BuildContext context, AsyncSnapshot documents, Function(FeedProfileData) giveProfile, Function(UserProfile, int) _giveUserProfile, int index) async {
 
     List<Widget> _cardArray = new List<Widget>();
 
@@ -453,7 +451,7 @@ class Functions {
 
 
   static Future<Widget> buildFeedCardFromProfile
-  (Profile profile, Function(Profile) giveprofile, Function(UserProfile, int) _giveUserProfile, int index) async {
+  (Profile profile, Function(FeedProfileData) giveprofile, Function(UserProfile, int) _giveUserProfile, int index) async {
     
     FeedProfileData feedProfile = await Functions.createFeedProfileFromProfile(profile);
 
@@ -461,7 +459,7 @@ class Functions {
   }
 
   static Future<Widget> buildFeedCardFromDocument
-  (BuildContext context, DocumentSnapshot document, Function(Profile) giveprofile, Function(UserProfile, int) _giveUserProfile, int index) async {
+  (BuildContext context, DocumentSnapshot document, Function(FeedProfileData) giveprofile, Function(UserProfile, int) _giveUserProfile, int index) async {
     
     Profile profile = await DatabaseFunctions.createProfileFromDocumentSnapshot(DatabaseIds.recipe, document);
     FeedProfileData feedProfile = await Functions.createFeedProfileFromProfile(profile);

@@ -22,6 +22,7 @@ import 'dart:io';
 import 'dart:async';
 
 class ProfilePage extends StatefulWidget {
+  final bool isFromUserFeed;
   @required
   final bool isCopying;
   @required
@@ -36,12 +37,11 @@ class ProfilePage extends StatefulWidget {
   final ProfileType type;
   @required
   final String referance;
-  final String appBarTitle;
   final Profile profile; 
 
   ProfilePage
-  ({this.isOldProfile, this.isCopying, this.isEditing, 
-  this.isNew, this.type, this.referance, this.profile, this.isFromProfile, this.appBarTitle}); 
+  ({this.isFromUserFeed, this.isOldProfile, this.isCopying, this.isEditing, 
+  this.isNew, this.type, this.referance, this.profile, this.isFromProfile,}); 
 
   ProfilePageState createState() => new ProfilePageState();
 }
@@ -53,41 +53,31 @@ class ProfilePageState extends State<ProfilePage> {
   Profile _profile;
   String _appBarTitle;
   ScrollController _scrollController;
+  List<Widget> _appBarActions = List<Widget>();
+  List<Widget> _pageBody = List<Widget>();
 
-
+  /// init state
   void initState() {
       _isCopying = widget.isCopying;
       _isEditing = widget.isEditing;
       _profile = widget.profile;
       _isOldProfile = widget.isOldProfile; 
       _scrollController = ScrollController();
-      
-    if (widget.isNew || widget.isCopying) { this._appBarTitle = StringLabels.newe + ' ' +Functions.getProfileTypeString(_profile.type) + ' ' + StringLabels.profile;
-    }else if (widget.isEditing){  this._appBarTitle =  StringLabels.editing + ' ' + Functions.getProfileTypeString(_profile.type) + ' ' + StringLabels.profile; }
-    else{ this._appBarTitle =  Functions.getProfileTypeString(_profile.type) + ' ' + StringLabels.profile; }
-  
-      super.initState();
-  }
 
-
-  void saveFunction()async{
-    if(_isOldProfile ){ 
-      showDialog(barrierDismissible: false, context: context ,
-               builder: (context) => Center(child:CircularProgressIndicator()
-               )); 
-         await DatabaseFunctions.updateProfile(_profile);
-         Navigator.pop(context);
-         Navigator.pop(context, _profile);
-         }else{
-            showDialog(barrierDismissible: false, context: context ,
-               builder: (context) => Center(child:CircularProgressIndicator()
-               )); 
-         var newProfile = await DatabaseFunctions.saveProfile(_profile);
-          Navigator.pop(context); 
-          Navigator.pop(context, newProfile); 
+    if (widget.isFromUserFeed && this.widget.referance != null)
+    { this._appBarTitle = "${this.widget.referance}'s Recipe"; } 
+    
+    else{
+    if (widget.isNew || widget.isCopying) { this._appBarTitle = StringLabels.newe + ' ' + Functions.getProfileTypeString(_profile.type);
+    }else if (widget.isEditing){  this._appBarTitle =  StringLabels.editing + ' ' + Functions.getProfileTypeString(_profile.type);}
     }
+    setupAppBarActions();
+    getBody();
+    super.initState();
   }
 
+
+ 
   /// UI Build
   @override
   Widget build(BuildContext context) {
@@ -116,54 +106,16 @@ class ProfilePageState extends State<ProfilePage> {
               DatabaseFunctions.deleteFireBaseStorageItem(_profile.image);
             },
           ),
-
-        actions: <Widget>[
-          
-          _isEditing?  
-           RawMaterialButton(
-                  child: Icon(Icons.save_alt),
-                  onPressed: saveFunction)
-          : RawMaterialButton(
-                  child: Icon(Icons.edit),
-                  onPressed: () {
-                    setState(() {
-                      _isEditing = true;
-                      print(_isEditing);
-                    });
-                  }),
-        ],
+        actions: _appBarActions,
       ),
+      
       body: 
-      
-      
       ListView(
         children: <Widget>[
           Column(
             children: <Widget>[
 
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-
-           /// Spacer 
-            Expanded(child: Container(),),
-
-          /// Profile Image
-          Container(padding: EdgeInsets.all(_margin),child: 
-            InkWell(child:Hero(tag: _profile.objectId ,child: SizedBox(width: 200.0, height: 200.0,
-            child: CircularPicture(_profile.image, 200.0)) ,),
-             onTap: _isEditing?()
-             {_getimage(
-               (image){ setState(() {_profile.image = image;});});
-             }:(){}),),
-           
-            ///Public profile switch
-            Expanded(child: 
-            Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment:CrossAxisAlignment.center
-             ,children: <Widget>[
-            Text(StringLabels.public), 
-            Switch(onChanged: (on){setState(() {_profile.isPublic = on;}); }, value: _profile.isPublic,),
-            ],),),
-            
-            ],),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: _pageBody),
 
             /// All below changes depending on profile
              _returnPageStructure(_profile),
@@ -175,6 +127,76 @@ class ProfilePageState extends State<ProfilePage> {
       bottomNavigationBar: _returnBottomBar()
       );
   }
+
+   /// Setup bottom bar
+  void setupAppBarActions(){
+    
+    if (!widget.isFromUserFeed){
+    _isEditing?  
+      _appBarActions.add(RawMaterialButton(
+                            child: Icon(Icons.save_alt),
+                            onPressed: saveFunction))   
+    : _appBarActions.add(RawMaterialButton(
+                            child: Icon(Icons.edit),
+                            onPressed: () {
+                              setState(() {
+                                _isEditing = true;
+                                print(_isEditing);
+                              });
+      }));}
+  }
+
+  /// save button function
+  void saveFunction()async{
+    if(_isOldProfile ){ 
+      showDialog(barrierDismissible: false, context: context ,
+               builder: (context) => Center(child:CircularProgressIndicator()
+               )); 
+         await DatabaseFunctions.updateProfile(_profile);
+         Navigator.pop(context);
+         Navigator.pop(context, _profile);
+         }else{
+            showDialog(barrierDismissible: false, context: context ,
+               builder: (context) => Center(child:CircularProgressIndicator()
+               )); 
+         var newProfile = await DatabaseFunctions.saveProfile(_profile);
+          Navigator.pop(context); 
+          Navigator.pop(context, newProfile); 
+    }
+  }
+
+
+
+
+  /// Setup the body of the profile page
+  void getBody(){
+
+   _pageBody = <Widget>[
+
+          /// Spacer 
+      Expanded(child: Container(),),
+
+      /// Profile Image
+      Container(padding: EdgeInsets.all(_margin),child: 
+        InkWell(child:Hero(tag: _profile.objectId ,child: SizedBox(width: 200.0, height: 200.0,
+        child: CircularPicture(_profile.image, 200.0)) ,),
+          onTap: _isEditing?()
+          {_getimage(
+            (image){ setState(() {_profile.image = image;});});
+          }:(){}),),
+
+      Expanded(child: Container(),),
+      ];
+
+    if(!widget.isFromUserFeed){
+
+      _pageBody[2] = PublicProfileSwitch(_profile.isPublic,
+                                        (String id , dynamic isPublic ){
+                                           _profile.setProfileItemValue ( id , isPublic);
+                                           });
+    }
+  }
+           
 
   /// Bottom bar
   Widget _returnBottomBar(){
@@ -282,22 +304,22 @@ class ProfilePageState extends State<ProfilePage> {
           return  
           Container(child: SizedBox(height: 200.0, width: double.infinity, child: Column(children: <Widget>[
 
-                      Material(elevation: 5.0, shadowColor: Colors.black, color:Theme.of(context).accentColor, type:MaterialType.card, 
-                      child: Container(height: 40.0, width: double.infinity, alignment: Alignment(1, 0),
-                      child: FlatButton(onPressed:() => Navigator.pop(context),
-                      child: Text('Done')),)),
-
-                      SizedBox(height: 160.0, width: double.infinity  ,
-                      child: CupertinoPicker(
-                        scrollController: _scrollController,
-                        useMagnifier: true,
-                        onSelectedItemChanged:
-                          (value){setState(() {
-                            _profile.setProfileItemValue(item.databaseId, item.inputViewDataSet[0][value]);
-                          });}, 
-                        itemExtent: _itemHeight,
-                        children: _items
-                        ),)
+            Material(elevation: 5.0, shadowColor: Colors.black, color:Theme.of(context).accentColor, type:MaterialType.card, 
+            child: Container(height: 40.0, width: double.infinity, alignment: Alignment(1, 0),
+            child: FlatButton(onPressed:() => Navigator.pop(context),
+            child: Text('Done')),)),
+            
+            SizedBox(height: 160.0, width: double.infinity  ,
+            child: CupertinoPicker(
+              scrollController: _scrollController,
+              useMagnifier: true,
+              onSelectedItemChanged:
+                (value){setState(() {
+                  _profile.setProfileItemValue(item.databaseId, item.inputViewDataSet[0][value]);
+                });}, 
+              itemExtent: _itemHeight,
+              children: _items
+              ),)
           ],) )
         );
         }
@@ -455,10 +477,42 @@ class ProfilePageState extends State<ProfilePage> {
         )
       );
       return result;
-    }
   }
+}
 
+class PublicProfileSwitch extends StatefulWidget {
+  final bool _ispublic;
+  final Function(String , dynamic) _setProfileValue;
 
+  PublicProfileSwitch(this._ispublic, this._setProfileValue);
+  _PublicProfileSwitchState createState() => _PublicProfileSwitchState();
+}
+
+class _PublicProfileSwitchState extends State<PublicProfileSwitch> {
+
+   bool _isPublic;
+
+   @override
+     void initState() {
+      _isPublic = widget._ispublic;
+       super.initState();
+     }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+       child:    ///Public profile switch
+          Expanded(child: 
+          Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment:CrossAxisAlignment.center
+           ,children: <Widget>[
+          Text(StringLabels.public),
+          Switch(onChanged: (on){setState(()
+           {_isPublic = on;  widget._setProfileValue(DatabaseIds.public, on);  }); }, 
+           value: _isPublic,),
+          ],),),
+    );
+  }
+}
 
 
 

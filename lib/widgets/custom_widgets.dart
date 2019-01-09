@@ -452,7 +452,7 @@ void setWidgetUp(){
 class SocialProfileCard extends StatelessWidget {
 
   final Function(UserProfile, int) _giveUserProfile;
-  final Function(Profile) _giveprofile;
+  final Function(FeedProfileData) _giveprofile;
   final FeedProfileData _profile;
   final _dateFormat = DateFormat.yMd();
   final int _tag;
@@ -495,7 +495,7 @@ class SocialProfileCard extends StatelessWidget {
             
       ],),)),      
 
-      InkWell(onTap:() => _giveprofile(_profile.profile),child: Column(children: <Widget>[
+      InkWell(onTap:() => _giveprofile(_profile),child: Column(children: <Widget>[
 
         /// Recipe picture
         Hero(tag: _profile.profile.objectId, child: SizedBox(width: double.infinity, height: 200.0, child:
@@ -1167,7 +1167,6 @@ class _FollowButtonState extends State<FollowButton> {
     _initialised = false;}
 
     return  
-    ////TODO MAKE INTO STREAMBUILDER;  
    
      ScopedModelDescendant<ProfilesModel>
             (rebuildOnChange: true, builder: (context, _ ,model) =>
@@ -1177,7 +1176,8 @@ class _FollowButtonState extends State<FollowButton> {
           builder: (BuildContext context, AsyncSnapshot<UserProfile> snapshot) =>
 
           RaisedButton(
-            color: Theme.of(context).accentColor,
+            color: model.isUserFollowing(widget.userId) ? Colors.black : Theme.of(context).accentColor,
+            shape:  RoundedRectangleBorder(borderRadius: new BorderRadius.circular(20.0)),
             onPressed: () {
                 ProfilesModel.of(context).followOrUnfollow(widget.userId, ((isFollowing){
                   setState(() {_following = isFollowing;  });
@@ -1187,7 +1187,11 @@ class _FollowButtonState extends State<FollowButton> {
           child: ScalableWidget( 
             Text( model.isUserFollowing(widget.userId) ? 
               StringLabels.unFollow :
-              StringLabels.follow),)),
+              StringLabels.follow,
+              style: TextStyle(
+                fontWeight: model.isUserFollowing(widget.userId) ? FontWeight.w600:FontWeight.w600,
+                color: model.isUserFollowing(widget.userId) ? Theme.of(context).accentColor : Colors.black,),),
+              )),
       )
     );
   }
