@@ -1032,19 +1032,23 @@ TextFieldItemWithInitalValue
 }
 class _TextFieldItemWithInitialValueState extends State<TextFieldItemWithInitalValue> {
 
-TextEditingController _controller;
-Item _item;
+  TextEditingController _controller;
 
-@override
-  void initState() {
-    _controller = new TextEditingController(text: widget._item.value);
-    _item = widget._item;
-  super.initState();
-  }
+  @override
+    void initState() {
+      _controller = new TextEditingController(text: widget._item.value);
+    super.initState();
+    }
+
+  @override
+    void didUpdateWidget(TextFieldItemWithInitalValue oldWidget) {
+      _controller = new TextEditingController(text: widget._item.value);
+      super.didUpdateWidget(oldWidget);
+    }
 
 
 
-@override
+  @override
   Widget build(BuildContext context) {
     return
     Expanded(
