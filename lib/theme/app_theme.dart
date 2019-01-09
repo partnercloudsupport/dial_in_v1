@@ -10,8 +10,11 @@ ThemeData buildThemeData(){
     ///Colors
     // primarySwatch: AppColors.getColor(ColorType.toolBar),
     // primaryColorDark: AppColors.getColor(ColorType.toolBar),
-    // primaryColorLight: AppColors.getColor(ColorType.toolBar),
+    scaffoldBackgroundColor: Color.fromARGB(250, 71, 74, 77),
+    primaryColorLight: Color.fromARGB(255, 180, 184, 171),
     primaryColor: AppColors.getColor(ColorType.primarySwatch),
+    buttonColor: AppColors.getColor(ColorType.primarySwatch),
+    textSelectionColor: AppColors.getColor(ColorType.primarySwatch),
     // backgroundColor: AppColors.getColor(ColorType.background),
     // buttonColor: AppColors.getColor(ColorType.button),
     bottomAppBarColor: AppColors.getColor(ColorType.white),

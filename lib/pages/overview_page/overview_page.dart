@@ -7,9 +7,8 @@ import 'package:dial_in_v1/pages/overview_page/data.dart';
 import 'package:dial_in_v1/pages/overview_page/feed.dart';
 import 'package:dial_in_v1/data/profile.dart';
 import 'package:dial_in_v1/inherited_widgets.dart';
-import 'package:dial_in_v1/data/functions.dart';
 import 'package:dial_in_v1/pages/overview_page/current_user_page.dart';
-
+import 'package:dial_in_v1/theme/theme_test_page.dart';
 
 class OverviewPage extends StatefulWidget{
  @override
@@ -20,6 +19,7 @@ class OverviewPageState extends State<OverviewPage> with SingleTickerProviderSta
 
   TabController controller;
   TabViewDataArray _tabViews;
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   
   @override
   void initState() { 
@@ -47,7 +47,6 @@ class OverviewPageState extends State<OverviewPage> with SingleTickerProviderSta
       }
     });
   }
-  
 
   Future<bool> showLogOutWarning
         (BuildContext context) async {
@@ -88,21 +87,53 @@ class OverviewPageState extends State<OverviewPage> with SingleTickerProviderSta
 
   /// UI Build  
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
 
     return  Scaffold(
        
+      key: _scaffoldKey,
+
       /// App bar 
-      appBar: AppBar
-              (title: Text
-              (StringLabels.overview, style: TextStyle( fontWeight: FontWeight.w700),),
-               automaticallyImplyLeading: false,
-      leading: RawMaterialButton( onPressed: () {logOut(context);}, 
-      child: Icon(Icons.exit_to_app),), 
-      actions: <Widget>[ 
-        RawMaterialButton( onPressed: () { Functions.getRatio([30000,20000]);},
-         child: Icon(Icons.menu))  ], ),
+      appBar: AppBar(
+                title: Text(StringLabels.overview, style: TextStyle( fontWeight: FontWeight.w700),),
+                automaticallyImplyLeading: false,
+                leading: RawMaterialButton( onPressed: () {logOut(context);}, 
+                  child: Icon(Icons.exit_to_app),),
+                actions: <Widget>[ 
+                  RawMaterialButton( onPressed: () => _scaffoldKey.currentState.openDrawer(),
+                  child: Icon(Icons.menu))  ], ),
     
+        drawer:  Drawer(
+                // Add a ListView to the drawer. This ensures the user can scroll
+                // through the options in the Drawer if there isn't enough vertical
+                // space to fit everything.
+                child: ListView(
+                  // Important: Remove any padding from the ListView.
+                  padding: EdgeInsets.zero,
+                  children: <Widget>[
+                    DrawerHeader(
+                      child: Text('Options', style:Theme.of(context).textTheme.title),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                    ListTile(
+                      title: Text('Theme'),
+                      onTap: () {
+                        Navigator.push(context,MaterialPageRoute(builder: (BuildContext context) => ThemeTestPage()));
+                        // Navigator.pop(context);
+                      },
+                    ),
+                    ListTile(
+                      title: Text('Edit user profile'),
+                      onTap: () {
+                            Navigator.pop(context);
+                      },
+                    ),
+                  ],
+                ),
+              ),// We'll populate the Drawer in the next step!
+
       body: TabBarView(
         controller: controller,
         children: <Widget>[
@@ -132,7 +163,7 @@ class TabViewDataArray{
 
   List<TabViewData> tabs;
 
- TabViewDataArray(BuildContext context){ 
+  TabViewDataArray(BuildContext context){ 
    
     this.tabs = [
 
@@ -151,5 +182,5 @@ class TabViewDataArray{
       Tab(icon: Icon(Icons.portrait),text: "User"),
       ProfileType.none),
     ];
- }
+  }
 }

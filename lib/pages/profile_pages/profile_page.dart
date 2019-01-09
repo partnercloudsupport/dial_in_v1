@@ -331,7 +331,7 @@ class ProfilePageState extends State<ProfilePage> {
 
   /// Get image for profile photo
   Future  _getimage(Function(String) then)async{
-
+    
     String url = '';
 
     await showDialog(context: context, builder: (BuildContext context){

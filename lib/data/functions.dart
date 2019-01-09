@@ -215,6 +215,8 @@ class Functions {
             File image = await ImagePicker.pickImage
                               (maxWidth: 640.0, maxHeight: 480.0, source: ImageSource.camera);
             url = await DatabaseFunctions.upLoadFileReturnUrl(image, [DatabaseIds.image]);
+            Navigator.of(context);
+            Navigator.of(context).pop(then(url));
             Navigator.of(context).pop(then(url));
           }
       ),
@@ -226,7 +228,9 @@ class Functions {
             File image = await ImagePicker.pickImage
                               (maxWidth: 640.0, maxHeight: 480.0, source: ImageSource.gallery);
             url = await DatabaseFunctions.upLoadFileReturnUrl(image, [DatabaseIds.image]);
+            Navigator.of(context);
             Navigator.of(context).pop(then(url));
+            Navigator.of(context).pop(then(url));;
           }
       ),
     ],));
