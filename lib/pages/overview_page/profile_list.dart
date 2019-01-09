@@ -114,9 +114,8 @@ class ProfileListDialog extends StatefulWidget{
 
  final ProfileType _profilesType;
  final Function(Profile) _giveProfile;
- final bool _isOnOverviewScreen;
 
- ProfileListDialog(this._profilesType, this._giveProfile, this._isOnOverviewScreen,);
+ ProfileListDialog(this._profilesType, this._giveProfile, );
 
  _ProfileListDialogState createState() => new _ProfileListDialogState();
 }
@@ -124,16 +123,8 @@ class _ProfileListDialogState extends State<ProfileListDialog>{
 
    void _dealWithProfileSelection(Profile profile){
 
-     if (widget._isOnOverviewScreen){
-
-       Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
-        ProfilePage(isOldProfile: true, isCopying: false, isEditing: true, isNew: false, type: profile.type, referance: profile.objectId, profile: profile)));
-
-     }else{
-
        widget._giveProfile(profile);
        Navigator.pop(context);
-     }
   }
 
    void _deleteProfile(Profile profile){DatabaseFunctions.deleteProfile(profile)

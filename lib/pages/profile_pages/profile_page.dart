@@ -46,6 +46,7 @@ class ProfilePage extends StatefulWidget {
   ProfilePageState createState() => new ProfilePageState();
 }
 class ProfilePageState extends State<ProfilePage> {
+
   double _margin = 10.0;
   bool _isCopying;
   bool _isEditing;
@@ -58,6 +59,7 @@ class ProfilePageState extends State<ProfilePage> {
 
   /// init state
   void initState() {
+      assert( widget.isFromUserFeed != null, 'isFromUserFeed is null Null' );
       _isCopying = widget.isCopying;
       _isEditing = widget.isEditing;
       _profile = widget.profile;
@@ -431,8 +433,7 @@ class ProfilePageState extends State<ProfilePage> {
                     _profile.setSubProfile(sentProfile);
                       });
                  },
-              false,
-            )
+              )
           ],
         )
         )
@@ -465,6 +466,7 @@ class ProfilePageState extends State<ProfilePage> {
           builder: (BuildContext context) => 
         /// New Profile goes into Profile page
           ProfilePage(
+            isFromUserFeed: false,
             isOldProfile: false,
             isFromProfile: true,
             isCopying: false,

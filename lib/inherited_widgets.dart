@@ -278,7 +278,7 @@ class ProfilesModel extends Model{
     }
    
     /// Get social feeds with type
-    Stream<List<FeedProfileData>> socialFeed(FeedType type){
+    Stream<List<FeedProfileData>> getSocialFeed(FeedType type){
 
       _userFeed.getProfile();
 
