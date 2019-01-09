@@ -112,7 +112,7 @@ class OverviewPageState extends State<OverviewPage> with SingleTickerProviderSta
                   padding: EdgeInsets.zero,
                   children: <Widget>[
                     DrawerHeader(
-                      child: Text('Options', style:Theme.of(context).textTheme.title),
+                      child: Container(alignment:Alignment(0, 0),child:Text('Options', style:Theme.of(context).textTheme.title)),
                       decoration: BoxDecoration(
                         color: Theme.of(context).primaryColor,
                       ),
@@ -120,7 +120,8 @@ class OverviewPageState extends State<OverviewPage> with SingleTickerProviderSta
                     ListTile(
                       title: Text('Theme'),
                       onTap: () {
-                        Navigator.push(context,MaterialPageRoute(builder: (BuildContext context) => ThemeTestPage()));
+                        Navigator.push(context,MaterialPageRoute(builder: (BuildContext context) => ThemeTestPage()))
+                        .then((_)=>Navigator.pop(context));
                         // Navigator.pop(context);
                       },
                     ),

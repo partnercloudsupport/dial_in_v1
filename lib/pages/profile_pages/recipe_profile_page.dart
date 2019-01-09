@@ -75,6 +75,21 @@ class _RecipePageState extends State<RecipePage> {
     );
   }
 
+  void _estimateBrewRatio(BrewRatioType type){
+    if(type == BrewRatioType.doseYield){
+      int dose = Functions.getIntValue(widget._profile.getProfileItemValue(DatabaseIds.brewingDose));
+      int brewWeight = Functions.getIntValue(widget._profile.getProfileItemValue(DatabaseIds.brewWeight));
+      int result = brewWeight - dose;
+      widget._profile.setProfileItemValue(DatabaseIds.yielde, result.toString());
+      
+    }else{
+      int dose = Functions.getIntValue(widget._profile.getProfileItemValue(DatabaseIds.brewingDose));
+      int yielde = Functions.getIntValue(widget._profile.getProfileItemValue(DatabaseIds.yielde));
+      int result = dose + yielde;
+      widget._profile.setProfileItemValue(DatabaseIds.brewWeight, result.toString());
+    }
+  }
+
 
   ///
   /// UI Build
@@ -162,7 +177,9 @@ Widget build(BuildContext context) {
     (dose) {widget._setProfileItemValue( DatabaseIds.brewingDose, dose);},  
     (yielde) {widget._setProfileItemValue( DatabaseIds.yielde, yielde);},
     (brewWeight) { widget._setProfileItemValue( DatabaseIds.brewWeight, brewWeight);},
-    widget._isEditing),
+    widget._isEditing,
+    (BrewRatioType type){ _estimateBrewRatio(type);}
+    ),
 
   /// Time
   Card(child: Container(margin: EdgeInsets.all(10.0), child: Row(children: <Widget>[

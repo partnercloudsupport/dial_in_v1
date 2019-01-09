@@ -9,8 +9,8 @@ ThemeData buildThemeData(){
      
     ///Colors
     // primarySwatch: AppColors.getColor(ColorType.toolBar),
-    // primaryColorDark: AppColors.getColor(ColorType.toolBar),
-    scaffoldBackgroundColor: Color.fromARGB(250, 71, 74, 77),
+    primaryColorDark: Color.fromARGB(255, 240, 240, 250),
+    scaffoldBackgroundColor: Color.fromARGB(255, 71, 74, 77),
     primaryColorLight: Color.fromARGB(255, 180, 184, 171),
     primaryColor: AppColors.getColor(ColorType.primarySwatch),
     buttonColor: AppColors.getColor(ColorType.primarySwatch),

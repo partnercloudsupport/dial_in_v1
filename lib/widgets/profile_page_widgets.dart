@@ -9,6 +9,7 @@ import 'package:dial_in_v1/data/profile.dart';
 import 'package:dial_in_v1/database_functions.dart';
 import 'package:flutter/services.dart';
 import 'package:dial_in_v1/data/functions.dart';
+import 'package:flutter/cupertino.dart';
 
 class ScoreSlider extends StatefulWidget {
   final double _value;
@@ -45,6 +46,7 @@ class ScoreSliderState extends State<ScoreSlider> {
             child: Text(widget._label),
           ),
           Slider(
+          
             value: _value,
             onChanged: widget._isEditing? (value){
               setState(() {
@@ -627,23 +629,28 @@ class RatioCard extends StatefulWidget {
   final double _margin = 5.0;
   final double _textFieldWidth = 80.0;
   final bool _isEditing;
-
+  
   final Profile _profile;
 
   final Function(String) _doseChanged;
   final Function(String) _yieldChanged;
   final Function(String) _brewWeightChanged;
+  final Function(BrewRatioType) _estimateValue;
 
   RatioCard(
     this._profile,
     this._doseChanged,
     this._yieldChanged,
     this._brewWeightChanged,
-    this._isEditing
+    this._isEditing,
+    this._estimateValue
   );
   _RatioCardState createState() => _RatioCardState();
 }
 class _RatioCardState extends State<RatioCard> {
+
+
+  BrewRatioType _brewRatioType = BrewRatioType.doseYield;
 
   @override
   Widget build(BuildContext context) {
@@ -656,34 +663,50 @@ class _RatioCardState extends State<RatioCard> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
 
-         
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+
+              RaisedButton(
+                child: Text('Estimate Yield'),
+                onPressed: () => widget._estimateValue(BrewRatioType.doseYield,)),
+
+              RaisedButton(
+                child: Text('Estimate Brew Weight'),
+                onPressed:  () => widget._estimateValue(BrewRatioType.doseBrewWeight))
+
+            ]),
+        
 
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
 
-
               /// Dose
               TextFieldItemWithInitalValue(
                 widget._profile.getProfileItem(DatabaseIds.brewingDose), 
                 (value){widget._doseChanged(value);}, 
                 widget._textFieldWidth, 
-                widget._isEditing),
+                widget._isEditing,
+                ),
 
               /// Yield
               TextFieldItemWithInitalValue(
                 widget._profile.getProfileItem(DatabaseIds.yielde), 
                 (value){widget._yieldChanged(value);}, 
                 widget._textFieldWidth, 
-                widget._isEditing), 
+                widget._isEditing,
+                ), 
               
               /// Brew wieght
               TextFieldItemWithInitalValue(
                 widget._profile.getProfileItem(DatabaseIds.brewWeight), 
                 (value){widget._brewWeightChanged(value);}, 
                 widget._textFieldWidth, 
-                widget._isEditing), 
+                widget._isEditing,  
+                ), 
               
 
             ],
@@ -691,20 +714,27 @@ class _RatioCardState extends State<RatioCard> {
 
           Padding(padding: EdgeInsets.all(widget._margin)),
 
-          Container(
+          DoseYieldBrewControl((value){  setState(() {
+                      _brewRatioType = value;
+                    });  }),
 
+          Padding(padding: EdgeInsets.all(widget._margin)),
+
+          Container(
           child:Text
           (Functions.getTwoNumberRatio(
           Functions.getIntValue(widget._profile.getProfileItemValue(DatabaseIds.brewingDose)),
-          Functions.getIntValue(widget._profile.getProfileItemValue(DatabaseIds.yielde))),
+          _brewRatioType == BrewRatioType.doseYield ?
+           Functions.getIntValue(widget._profile.getProfileItemValue(DatabaseIds.yielde)) :
+           Functions.getIntValue(widget._profile.getProfileItemValue(DatabaseIds.brewWeight))),
           style: Theme.of(context).textTheme.display3,),),
 
-          Container(
-            child: Text(
-              'Dose : Yield',
-              style: Theme.of(context).textTheme.caption,
-            ),
-          ),
+          // Container(
+          //   child: Text(
+          //     _brewRatioType == _brewRatioType ? 'Dose : Yield' : 'Dose : Brew Weight',
+          //     style: Theme.of(context).textTheme.caption,
+          //   ),
+          // ),
 
           Padding(padding: EdgeInsets.all(widget._margin)),
 
@@ -786,6 +816,46 @@ class _TwoTextfieldCardState extends State<TwoTextfieldCard> {
               ),
             ]),
       ),
+    );
+  }
+}
+
+class DoseYieldBrewControl extends StatefulWidget {
+
+  final Function(BrewRatioType) _brewRatioTypeFunction;
+
+  DoseYieldBrewControl(this._brewRatioTypeFunction);
+
+  @override
+  _DoseYieldBrewControlState createState() => _DoseYieldBrewControlState();
+}
+enum BrewRatioType{doseYield, doseBrewWeight}
+class _DoseYieldBrewControlState extends State<DoseYieldBrewControl> {
+
+  int _groupValue = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return  
+      CupertinoSegmentedControl(
+            groupValue: _groupValue,
+            selectedColor: Theme.of(context).primaryColor,
+            unselectedColor:  Theme.of(context).primaryColorLight,
+            borderColor:  Theme.of(context).primaryColorDark,
+            onValueChanged: (intValue){ setState((){
+              assert(intValue < 2, 'INt value is too hight' );
+              _groupValue = intValue;
+              switch (intValue) {
+                case 0: widget._brewRatioTypeFunction(BrewRatioType.doseYield); break;
+                case 1: widget._brewRatioTypeFunction(BrewRatioType.doseBrewWeight); break;
+                default: Error();
+              }
+            });}
+              ,
+      children:{
+          0 : Container(padding: EdgeInsets.all(5.0),child:Text('Dose/Yield',style: Theme.of(context).textTheme.body2,),),
+          1 : Container(padding: EdgeInsets.all(5.0),child:Text('Dose/Brew Weight',style: Theme.of(context).textTheme.body2,))
+      }
     );
   }
 }

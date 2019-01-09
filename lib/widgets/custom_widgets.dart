@@ -1022,9 +1022,11 @@ final Function(dynamic) _giveValue;
 final Item _item;
 final bool _isEditing;
 final List<TextInputFormatter> textInputFormatters;
+final TextAlign textAlign;
+
 
 TextFieldItemWithInitalValue
-(this._item, this._giveValue, this._textFieldWidth, this._isEditing,{this.textInputFormatters});
+(this._item, this._giveValue, this._textFieldWidth, this._isEditing,{this.textInputFormatters, this.textAlign = TextAlign.start,});
 
  _TextFieldItemWithInitialValueState createState() => _TextFieldItemWithInitialValueState();
 }
@@ -1048,7 +1050,7 @@ TextEditingController _controller;
           inputFormatters: widget.textInputFormatters ?? <TextInputFormatter>[],
           enabled: widget._isEditing,
           controller: _controller ,
-          textAlign: TextAlign.start,
+          textAlign: widget.textAlign,
           keyboardType: widget._item.keyboardType,
           decoration: 
             new InputDecoration(

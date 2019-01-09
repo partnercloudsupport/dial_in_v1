@@ -54,7 +54,7 @@ class ProfilePageState extends State<ProfilePage> {
   Profile _profile;
   String _appBarTitle;
   ScrollController _scrollController;
-  List<Widget> _appBarActions = List<Widget>();
+  List<Widget> _appBarActions = [ Container()];
   List<Widget> _pageBody = List<Widget>();
 
   /// init state
@@ -73,17 +73,14 @@ class ProfilePageState extends State<ProfilePage> {
     if (widget.isNew || widget.isCopying) { this._appBarTitle = StringLabels.newe + ' ' + Functions.getProfileTypeString(_profile.type);
     }else if (widget.isEditing){  this._appBarTitle =  StringLabels.editing + ' ' + Functions.getProfileTypeString(_profile.type);}
     }
-    setupAppBarActions();
     getBody();
     super.initState();
   }
-
-
  
   /// UI Build
   @override
   Widget build(BuildContext context) {
-    
+    setupAppBarActions();
     return  new Scaffold(
        appBar: AppBar(
         centerTitle: true,
@@ -134,18 +131,23 @@ class ProfilePageState extends State<ProfilePage> {
   void setupAppBarActions(){
     
     if (!widget.isFromUserFeed){
-    _isEditing?  
-      _appBarActions.add(RawMaterialButton(
+    _isEditing? 
+
+      _profile.isPublic? 
+        _appBarActions[0] = RawMaterialButton(
+                            child: Icon(Icons.share),
+                            onPressed: saveFunction) :     
+         _appBarActions[0] = RawMaterialButton(
                             child: Icon(Icons.save_alt),
-                            onPressed: saveFunction))   
-    : _appBarActions.add(RawMaterialButton(
+                            onPressed: saveFunction)   
+    : _appBarActions[0] = RawMaterialButton(
                             child: Icon(Icons.edit),
                             onPressed: () {
                               setState(() {
                                 _isEditing = true;
                                 print(_isEditing);
                               });
-      }));}
+      });}
   }
 
   /// save button function
@@ -166,9 +168,6 @@ class ProfilePageState extends State<ProfilePage> {
           Navigator.pop(context, newProfile); 
     }
   }
-
-
-
 
   /// Setup the body of the profile page
   void getBody(){
@@ -193,12 +192,12 @@ class ProfilePageState extends State<ProfilePage> {
     if(!widget.isFromUserFeed){
 
       _pageBody[2] = PublicProfileSwitch(_profile.isPublic,
-                                        (String id , dynamic isPublic ){
-                                           _profile.setProfileItemValue ( id , isPublic);
+                                        (String id , dynamic isPublic ){setState(() {
+                                               _profile.setProfileItemValue ( id , isPublic);                                   
+                                                                                });
                                            });
     }
-  }
-           
+  }   
 
   /// Bottom bar
   Widget _returnBottomBar(){
@@ -219,14 +218,15 @@ class ProfilePageState extends State<ProfilePage> {
                     onPressed: ()async{  
                       Profile _newProfile = _profile;
                       Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
-                      ProfilePage
-                      (isOldProfile: false,
-                       isCopying: true, 
-                       isEditing: true, 
-                       isNew: true, 
-                       type: _profile.type, 
-                       referance: '',
-                       profile: _newProfile ,)));}),
+                      ProfilePage(
+                        isFromUserFeed: false,
+                        isOldProfile: false,
+                        isCopying: true, 
+                        isEditing: true, 
+                        isNew: true, 
+                        type: _profile.type, 
+                        referance: '',
+                        profile: _newProfile ,)));}),
 
                   RawMaterialButton(
                     child: Icon(Icons.delete),
@@ -508,8 +508,10 @@ class _PublicProfileSwitchState extends State<PublicProfileSwitch> {
           Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment:CrossAxisAlignment.center
            ,children: <Widget>[
           Text(StringLabels.public),
-          Switch(onChanged: (on){setState(()
-           {_isPublic = on;  widget._setProfileValue(DatabaseIds.public, on);  }); }, 
+          Switch(onChanged: (on){ setState(() {
+                   _isPublic = on;  widget._setProfileValue(DatabaseIds.public, on);   
+                    });
+              }, 
            value: _isPublic,),
           ],),),
     );
