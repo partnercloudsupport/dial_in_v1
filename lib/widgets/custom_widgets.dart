@@ -1033,12 +1033,16 @@ TextFieldItemWithInitalValue
 class _TextFieldItemWithInitialValueState extends State<TextFieldItemWithInitalValue> {
 
 TextEditingController _controller;
+Item _item;
 
 @override
   void initState() {
     _controller = new TextEditingController(text: widget._item.value);
+    _item = widget._item;
   super.initState();
   }
+
+
 
 @override
   Widget build(BuildContext context) {

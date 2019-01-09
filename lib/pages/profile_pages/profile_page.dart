@@ -132,12 +132,8 @@ class ProfilePageState extends State<ProfilePage> {
     
     if (!widget.isFromUserFeed){
     _isEditing? 
-
-      _profile.isPublic? 
-        _appBarActions[0] = RawMaterialButton(
-                            child: Icon(Icons.share),
-                            onPressed: saveFunction) :     
-         _appBarActions[0] = RawMaterialButton(
+      
+      _appBarActions[0] = RawMaterialButton(
                             child: Icon(Icons.save_alt),
                             onPressed: saveFunction)   
     : _appBarActions[0] = RawMaterialButton(
@@ -282,7 +278,7 @@ class ProfilePageState extends State<ProfilePage> {
     return _structure;
   }
 
-    void showPickerMenu(Item item){
+  void showPickerMenu(Item item){
 
       List< Widget> _items = new List<Widget>();
       double _itemHeight = 40.0; 
@@ -489,7 +485,6 @@ class PublicProfileSwitch extends StatefulWidget {
   PublicProfileSwitch(this._ispublic, this._setProfileValue);
   _PublicProfileSwitchState createState() => _PublicProfileSwitchState();
 }
-
 class _PublicProfileSwitchState extends State<PublicProfileSwitch> {
 
    bool _isPublic;
@@ -509,7 +504,8 @@ class _PublicProfileSwitchState extends State<PublicProfileSwitch> {
            ,children: <Widget>[
           Text(StringLabels.public),
           Switch(onChanged: (on){ setState(() {
-                   _isPublic = on;  widget._setProfileValue(DatabaseIds.public, on);   
+                   _isPublic = on; 
+                  widget._setProfileValue(DatabaseIds.public, on);   
                     });
               }, 
            value: _isPublic,),

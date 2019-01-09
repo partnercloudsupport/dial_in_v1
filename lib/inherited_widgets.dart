@@ -76,8 +76,6 @@ class ProfilesModel extends Model{
       return result;
     }
 
-    
-
     /// Checks the following status then updates the record accordingly
     void followOrUnfollow(String otherUser, Function(bool) competionFollow){
 
@@ -353,4 +351,14 @@ class ProfilesModel extends Model{
 
     }
 }
+
+class ProfileModel extends Model{
+
+  Profile _profile;
+
+
+  ProfileModel(_profile);
+
+}
+
 

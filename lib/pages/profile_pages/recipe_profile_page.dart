@@ -76,18 +76,20 @@ class _RecipePageState extends State<RecipePage> {
   }
 
   void _estimateBrewRatio(BrewRatioType type){
+    setState(() {  
     if(type == BrewRatioType.doseYield){
       int dose = Functions.getIntValue(widget._profile.getProfileItemValue(DatabaseIds.brewingDose));
       int brewWeight = Functions.getIntValue(widget._profile.getProfileItemValue(DatabaseIds.brewWeight));
       int result = brewWeight - dose;
-      widget._profile.setProfileItemValue(DatabaseIds.yielde, result.toString());
+      widget._setProfileItemValue(DatabaseIds.yielde, result.toString());
       
     }else{
       int dose = Functions.getIntValue(widget._profile.getProfileItemValue(DatabaseIds.brewingDose));
       int yielde = Functions.getIntValue(widget._profile.getProfileItemValue(DatabaseIds.yielde));
       int result = dose + yielde;
-      widget._profile.setProfileItemValue(DatabaseIds.brewWeight, result.toString());
+      widget._setProfileItemValue(DatabaseIds.brewWeight, result.toString());
     }
+     });
   }
 
 

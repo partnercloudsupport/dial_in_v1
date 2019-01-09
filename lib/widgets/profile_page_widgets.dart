@@ -669,12 +669,13 @@ class _RatioCardState extends State<RatioCard> {
             children: <Widget>[
 
               RaisedButton(
+                
                 child: Text('Estimate Yield'),
-                onPressed: () => widget._estimateValue(BrewRatioType.doseYield,)),
+                onPressed: () => setState(() => widget._estimateValue(BrewRatioType.doseYield,))),
 
               RaisedButton(
                 child: Text('Estimate Brew Weight'),
-                onPressed:  () => widget._estimateValue(BrewRatioType.doseBrewWeight))
+                onPressed:  () => setState(() => widget._estimateValue(BrewRatioType.doseBrewWeight)))
 
             ]),
         
@@ -729,12 +730,11 @@ class _RatioCardState extends State<RatioCard> {
            Functions.getIntValue(widget._profile.getProfileItemValue(DatabaseIds.brewWeight))),
           style: Theme.of(context).textTheme.display3,),),
 
-          // Container(
-          //   child: Text(
-          //     _brewRatioType == _brewRatioType ? 'Dose : Yield' : 'Dose : Brew Weight',
-          //     style: Theme.of(context).textTheme.caption,
-          //   ),
-          // ),
+          Container(
+            child:  _brewRatioType == BrewRatioType.doseYield ? 
+            Text('Dose : Yield',style: Theme.of(context).textTheme.caption, ):
+            Text('Dose : Brew Weight',style: Theme.of(context).textTheme.caption, )            ,
+          ),
 
           Padding(padding: EdgeInsets.all(widget._margin)),
 
