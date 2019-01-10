@@ -665,17 +665,20 @@ class _RatioCardState extends State<RatioCard> {
 
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
+              
+              Container(width: 130.0, child:
+              RaisedButton( 
+                shape:  RoundedRectangleBorder(borderRadius: new BorderRadius.circular(20.0)),
+                child: Text('Calc Yield',softWrap: true, textAlign: TextAlign.center,),
+                onPressed: () => setState(() => widget._estimateValue(BrewRatioType.doseYield,)))),
 
+              Container(width: 130.0, child:
               RaisedButton(
-                
-                child: Text('Estimate Yield'),
-                onPressed: () => setState(() => widget._estimateValue(BrewRatioType.doseYield,))),
-
-              RaisedButton(
-                child: Text('Estimate Brew Weight'),
-                onPressed:  () => setState(() => widget._estimateValue(BrewRatioType.doseBrewWeight)))
+                shape:  RoundedRectangleBorder(borderRadius: new BorderRadius.circular(20.0)),
+                child: Text('Calc Brew Weight', softWrap: true, textAlign: TextAlign.center),
+                onPressed:  () => setState(() => widget._estimateValue(BrewRatioType.doseBrewWeight)))),
 
             ]),
         

@@ -264,7 +264,7 @@ class UserCard extends StatelessWidget {
 class ProfileCard extends StatefulWidget {
   
   final Function(Profile) _giveprofile;
-  final Function(Profile) _deleteProfile;
+  final Function(Profile, BuildContext) _deleteProfile;
   final Profile _profile;
   final _dateFormat = DateFormat.yMd();
 
@@ -377,12 +377,9 @@ void setWidgetUp(){
     // what to do after an item has been swiped away.
     onDismissed: (direction) {
       // Remove the item from our data source.
-      widget._deleteProfile(widget._profile);
+      widget._deleteProfile(widget._profile, context);
 
-    // Show a snackbar! This snackbar could also contain "Undo" actions.
-    Scaffold
-        .of(context)
-        .showSnackBar(SnackBar(content: Text("Profile deleted")));
+   
   },
   child: 
     Card(child: Container(padding: EdgeInsets.all(5.0),child:
@@ -765,6 +762,39 @@ static Future<void> showAlert
     },
   );
   }
+
+
+ static Future<void> yesOrNoDioLog(BuildContext context,String title, String message, Function returnYes) async {
+
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        
+        title: Text(title),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text(message),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('Yes'),
+            onPressed: () => returnYes(true)
+          ),
+
+          FlatButton(
+            child: Text('No'),
+            onPressed: () => returnYes(false)
+          )
+        ],
+      );
+    },
+  );
+}
 }
 
 class ProfileImage extends StatelessWidget {

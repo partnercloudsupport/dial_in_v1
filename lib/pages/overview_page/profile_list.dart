@@ -32,9 +32,22 @@ class _ProfileListState extends State<ProfileList>{
 
   }
 
-  void _deleteProfile(Profile profile){
-    
-    setState((){ProfilesModel.of(context).delete(profile);});
+  void _deleteProfile(Profile profile, BuildContext context){
+
+    PopUps.yesOrNoDioLog(context, 
+      'Warning', 
+      'Are you sure you want to delete this profile?', 
+      (isYes) => setState((){ 
+      
+        if(isYes) {       Navigator.pop(context);
+                          ProfilesModel.of(context).delete(profile); 
+                          Navigator.pop(context);
+                           Scaffold
+                          .of(context)
+                          .showSnackBar(SnackBar(content: Text("Profile deleted"),duration: Duration(seconds: 2),));}
+        else{Navigator.pop(context);}
+    })
+    );   
   }
 
   @override
@@ -129,8 +142,22 @@ class _ProfileListDialogState extends State<ProfileListDialog>{
        Navigator.pop(context);
   }
 
-   void _deleteProfile(Profile profile){DatabaseFunctions.deleteProfile(profile)
-   .then(setState);}
+  void _deleteProfile(Profile profile, BuildContext context){
+
+    PopUps.yesOrNoDioLog(context, 
+      'Warning', 
+      'Are you sure you want to delete this profile?', 
+      (isYes) => setState((){ 
+      
+        if(isYes) {
+          Navigator.pop(context);
+          ProfilesModel.of(context).delete(profile); 
+                          Navigator.pop(context);}
+        else{Navigator.pop(context);}
+    
+      })
+    ); 
+  }
   
 
     @override

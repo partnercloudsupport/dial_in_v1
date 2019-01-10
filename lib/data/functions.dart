@@ -470,7 +470,7 @@ class Functions {
     return SocialProfileCard(feedProfile, giveprofile, _giveUserProfile, index);
   }
   
-  static Future<Widget> buildProfileCardFromDocument(DocumentSnapshot document, String databaseId, Function(Profile) giveprofile, Function(Profile) deleteProfile) async {
+  static Future<Widget> buildProfileCardFromDocument(DocumentSnapshot document, String databaseId, Function(Profile) giveprofile, Function(Profile, BuildContext) deleteProfile) async {
     
     Profile profile = await DatabaseFunctions.createProfileFromDocumentSnapshot(databaseId, document);
 
@@ -490,7 +490,7 @@ class Functions {
       return _cardArray;
   }
 
-  static Future<List<Widget>> buildProfileCardArrayFromProfileList(List<Profile> profileList, String databaseId, Function(Profile) giveProfile, Function(Profile) deleteProfile) async {
+  static Future<List<Widget>> buildProfileCardArrayFromProfileList(List<Profile> profileList, String databaseId, Function(Profile) giveProfile, Function(Profile, BuildContext) deleteProfile) async {
 
     List<Widget> _cardArray = new List<Widget>();
 
