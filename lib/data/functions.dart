@@ -26,7 +26,9 @@ class Functions {
     
     if (item == null){value = 0;}
     else if (item is String && item == ''){value = 0;}
-    else if (item is String && item != ''){value = int.parse(item);}
+    else if (item is String && item != '')
+    { double trans = double.parse(item);
+      value = trans.toInt();}
     else if (item is double){value = item.round().toInt();}
     else if (item is !int){value = 0;}
     else{value = item.value;}

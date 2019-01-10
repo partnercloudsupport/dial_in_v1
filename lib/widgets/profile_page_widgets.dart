@@ -649,7 +649,17 @@ class RatioCard extends StatefulWidget {
 class _RatioCardState extends State<RatioCard> {
 
   BrewRatioType _brewRatioType = BrewRatioType.doseYield;
-  BlacklistingTextInputFormatter _blacklistingTextInputFormatter = BlacklistingTextInputFormatter(RegExp(','),replacementString: '.');
+  RegExp _filter = RegExp('\.\s');
+  BlacklistingTextInputFormatter _spaceBlacklistingTextInputFormatter = BlacklistingTextInputFormatter(RegExp(' '),replacementString: '');
+  BlacklistingTextInputFormatter _commaBlacklistingTextInputFormatter = BlacklistingTextInputFormatter(RegExp(','),replacementString: '.');
+  WhitelistingTextInputFormatter _whitelistingTextInputFormatter = WhitelistingTextInputFormatter(RegExp('[0-9,.]'));
+  List<TextInputFormatter> _inpuFormatters = List<TextInputFormatter>();
+
+  @override
+    void initState() {
+      _inpuFormatters = [_commaBlacklistingTextInputFormatter,_spaceBlacklistingTextInputFormatter,_whitelistingTextInputFormatter];
+      super.initState();
+    }
 
   @override
   Widget build(BuildContext context) {
@@ -689,10 +699,11 @@ class _RatioCardState extends State<RatioCard> {
               /// Dose
               TextFieldItemWithInitalValue(
                 widget._profile.getProfileItem(DatabaseIds.brewingDose), 
-                (value){widget._doseChanged(value);}, 
+                (value){  if(!_filter.hasMatch(value)){
+                  widget._doseChanged(value);}}, 
                 widget._textFieldWidth, 
                 widget._isEditing,
-                textInputFormatters: [_blacklistingTextInputFormatter],
+                textInputFormatters: _inpuFormatters,
                 ),
 
               /// Yield
@@ -701,7 +712,7 @@ class _RatioCardState extends State<RatioCard> {
                 (value){widget._yieldChanged(value);}, 
                 widget._textFieldWidth, 
                 widget._isEditing,
-                textInputFormatters: [_blacklistingTextInputFormatter],
+                textInputFormatters: _inpuFormatters,
                 ), 
               
               /// Brew wieght
@@ -710,7 +721,7 @@ class _RatioCardState extends State<RatioCard> {
                 (value){widget._brewWeightChanged(value);}, 
                 widget._textFieldWidth, 
                 widget._isEditing,
-                textInputFormatters: [_blacklistingTextInputFormatter],
+                textInputFormatters: _inpuFormatters,
               ),  
             ],
           ),

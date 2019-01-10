@@ -99,17 +99,16 @@ class SocialFeedBloc{
 
   Future getProfiles()async{
   
-   if(!_initilised){
+    if(!_initilised){
 
-    _initilised = true;
-   
-    _incomingController.addStream( 
-                        DatabaseFunctions.getStreamFromFireStore(DatabaseIds.recipe, DatabaseIds.public, true));
-      
-    _incomingController.stream.listen(_profileStreamListenerFunction);
+      _initilised = true;
+    
+      _incomingController.addStream( 
+                          DatabaseFunctions.getStreamFromFireStore(DatabaseIds.recipe, DatabaseIds.public, true));
+        
+      _incomingController.stream.listen(_profileStreamListenerFunction);
+    }
   }
-  }
-
 
   void _userStreamListenerFunction(){
     
@@ -118,9 +117,7 @@ class SocialFeedBloc{
     else{
       getProfiles();
     }
-
   }
-
 
   void _profileStreamListenerFunction(QuerySnapshot p){
 
@@ -128,7 +125,6 @@ class SocialFeedBloc{
         .then((profilesOut){
 
           handleProfileList(profilesOut);
-    
       }
     ); 
   }
