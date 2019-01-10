@@ -39,13 +39,13 @@ class _ProfileListState extends State<ProfileList>{
       'Are you sure you want to delete this profile?', 
       (isYes) => setState((){ 
       
-        if(isYes) {       Navigator.pop(context);
-                          ProfilesModel.of(context).delete(profile); 
-                          Navigator.pop(context);
-                           Scaffold
-                          .of(context)
-                          .showSnackBar(SnackBar(content: Text("Profile deleted"),duration: Duration(seconds: 2),));}
-        else{Navigator.pop(context);}
+        if(isYes) { Navigator.pop(context);
+                    ProfilesModel.of(context).delete(profile); 
+                    Navigator.pop(context);
+                     Scaffold
+                    .of(context)
+                    .showSnackBar(SnackBar(content: Text("Profile deleted"),duration: Duration(seconds: 2),));}
+        else{ Navigator.pop(context);}
     })
     );   
   }

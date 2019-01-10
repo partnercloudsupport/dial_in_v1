@@ -9,7 +9,6 @@ import 'package:dial_in_v1/data/profile.dart';
 import 'package:dial_in_v1/database_functions.dart';
 import 'package:flutter/services.dart';
 import 'package:dial_in_v1/data/functions.dart';
-import 'package:flutter/cupertino.dart';
 
 class ScoreSlider extends StatefulWidget {
   final double _value;

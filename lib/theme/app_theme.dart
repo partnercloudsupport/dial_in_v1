@@ -15,7 +15,7 @@ ThemeData buildThemeData(){
     primaryColor: AppColors.getColor(ColorType.primarySwatch),
     buttonColor: AppColors.getColor(ColorType.primarySwatch),
     textSelectionColor: AppColors.getColor(ColorType.primarySwatch),
-    // backgroundColor: AppColors.getColor(ColorType.background),
+    backgroundColor: Color.fromARGB(255, 240, 240, 250),
     // buttonColor: AppColors.getColor(ColorType.button),
     bottomAppBarColor: AppColors.getColor(ColorType.white),
     accentColor: AppColors.getColor(ColorType.tint),

@@ -945,6 +945,7 @@ class _DateTimeInputCardState extends State<DateTimeInputCard> {
         if (_focus.hasFocus){
         DateTime date = await getDateTimeInput(context, widget._dateTime, TimeOfDay.fromDateTime(widget._dateTime));
         setState(() {
+        _controller.text = widget._dateFormat.format(date);
         widget.onDateChanged(date);
                   _focus.unfocus(); 
                 });
@@ -1072,11 +1073,9 @@ class _TextFieldItemWithInitialValueState extends State<TextFieldItemWithInitalV
 
   @override
     void didUpdateWidget(TextFieldItemWithInitalValue oldWidget) {
-      _controller = new TextEditingController(text: widget._item.value);
+      _controller.text = widget._item.value;
       super.didUpdateWidget(oldWidget);
     }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -1096,7 +1095,7 @@ class _TextFieldItemWithInitialValueState extends State<TextFieldItemWithInitalV
             labelText: widget._item.title,
             hintText: widget._item.placeHolderText,
               ),
-              onChanged: widget._giveValue,
+              onChanged: (value) => setState(()=> widget._giveValue(value)),
             )
           )); 
         }

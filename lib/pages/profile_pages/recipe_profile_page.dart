@@ -11,15 +11,9 @@ import 'package:dial_in_v1/data/item.dart';
 import 'package:dial_in_v1/data/functions.dart';
 import 'dart:async';
 
-
-
-
-
-
 class RecipePage extends StatefulWidget {
 
   _RecipePageState createState() => _RecipePageState();
-
 
   final double _margin; 
   final Function(ProfileType) _showOptions;
