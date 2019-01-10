@@ -15,6 +15,10 @@ import 'package:dial_in_v1/data/functions.dart';
 import 'package:dial_in_v1/inherited_widgets.dart';
 import 'package:scoped_model/scoped_model.dart';
 import "package:pull_to_refresh/pull_to_refresh.dart";
+import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
+import 'package:dial_in_v1/routes.dart';
+
 
 
 /// Background
@@ -1073,7 +1077,15 @@ class _TextFieldItemWithInitialValueState extends State<TextFieldItemWithInitalV
 
   @override
     void didUpdateWidget(TextFieldItemWithInitalValue oldWidget) {
-      _controller.text = widget._item.value;
+      
+      if (
+      widget._item.databaseId == DatabaseIds.brewingDose ||
+      widget._item.databaseId == DatabaseIds.yielde ||
+      widget._item.databaseId == DatabaseIds.brewWeight){
+        if(((widget._item.value)as String).length > 1){
+        _controller.text =((widget._item.value) as String).split('').reversed.join();}
+      }else{ _controller.text = widget._item.value;}
+
       super.didUpdateWidget(oldWidget);
     }
 
@@ -1084,6 +1096,7 @@ class _TextFieldItemWithInitialValueState extends State<TextFieldItemWithInitalV
       flex: 5,
       child: Container(padding: EdgeInsets.all(5.0), margin: EdgeInsets.all(5.0), 
         child: TextField(
+          autofocus: false,
           inputFormatters: widget.textInputFormatters ?? <TextInputFormatter>[],
           enabled: widget._isEditing,
           controller: _controller ,
@@ -1095,7 +1108,13 @@ class _TextFieldItemWithInitialValueState extends State<TextFieldItemWithInitalV
             labelText: widget._item.title,
             hintText: widget._item.placeHolderText,
               ),
-              onChanged: (value) => setState(()=> widget._giveValue(value)),
+              onChanged: (value) => setState( () {
+                if (
+                        widget._item.databaseId == DatabaseIds.brewingDose ||
+                        widget._item.databaseId == DatabaseIds.yielde ||
+                        widget._item.databaseId == DatabaseIds.brewWeight){
+                          widget._giveValue(value.split('').reversed.join());
+                }else{ _controller.text = widget._item.value;}}),
             )
           )); 
         }
@@ -1191,7 +1210,6 @@ class FollowButton extends StatefulWidget {
 }
 class _FollowButtonState extends State<FollowButton> {
 
-  bool _following;
   bool _initialised = false;
 
   void initState() { 
@@ -1203,7 +1221,6 @@ class _FollowButtonState extends State<FollowButton> {
   Widget build(BuildContext context) {
 
     if (!_initialised){
-    _following =  ProfilesModel.of(context).isUserFollowing(widget.userId);
     _initialised = false;}
 
     return  
@@ -1219,9 +1236,7 @@ class _FollowButtonState extends State<FollowButton> {
             color: model.isUserFollowing(widget.userId) ? Colors.black : Theme.of(context).accentColor,
             shape:  RoundedRectangleBorder(borderRadius: new BorderRadius.circular(20.0)),
             onPressed: () {
-                ProfilesModel.of(context).followOrUnfollow(widget.userId, ((isFollowing){
-                  setState(() {_following = isFollowing;  });
-                }) );
+                ProfilesModel.of(context).followOrUnfollow(widget.userId, ((isFollowing){ }) );
             },
               
           child: ScalableWidget( 
@@ -1308,3 +1323,7 @@ class ProfileRefresher extends StatelessWidget {
     );
   }
 }
+
+
+
+

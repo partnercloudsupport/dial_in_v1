@@ -115,6 +115,9 @@ class SocialFeedBloc{
     
     if(_currentFeedData != null){
     handleProfileList(_currentFeedData);}
+    else{
+      getProfiles();
+    }
 
   }
 

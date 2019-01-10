@@ -110,6 +110,7 @@ class ProfilePageState extends State<ProfilePage> {
       
       body: 
       ListView(
+        controller: _scrollController,
         children: <Widget>[
           Column(
             children: <Widget>[
@@ -246,7 +247,7 @@ class ProfilePageState extends State<ProfilePage> {
       break;
 
       case ProfileType.coffee:
-      _structure = CoffeeProfilePage(_profile, _profile.setProfileItemValue, _isEditing);
+      _structure = CoffeeProfilePage(_profile, _profile.setProfileItemValue, _isEditing, showPickerMenu);
       break;
 
       case ProfileType.equipment:
@@ -268,7 +269,7 @@ class ProfilePageState extends State<ProfilePage> {
       break;
 
       case ProfileType.recipe:
-      _structure = RecipePage(_profile, _margin, (key, value){_profile.setProfileItemValue( key,  value);}, _showProfileList, _isEditing);
+      _structure = RecipePage(_profile, _margin, (key, value){setState(()=> _profile.setProfileItemValue( key,  value));}, _showProfileList, _isEditing , _scrollController);
       break;
 
       default:
@@ -276,7 +277,9 @@ class ProfilePageState extends State<ProfilePage> {
     }
 
     return _structure;
+
   }
+
 
   void showPickerMenu(Item item){
 
@@ -289,7 +292,10 @@ class ProfilePageState extends State<ProfilePage> {
       }
 
       showModalBottomSheet(context: context, builder: (BuildContext context){
-        
+        print('at start ${_scrollController.position.pixels}');
+
+        // _scrollController.animateTo(_scrollController.position.pixels - 300,curve: Curves.easeInOut, duration: Duration(seconds: 1) );
+
         if (item.inputViewDataSet != null && item.inputViewDataSet.length < 1)
         {return Center(child: Text('Error No Data for picker'),);  
 
@@ -321,8 +327,12 @@ class ProfilePageState extends State<ProfilePage> {
           ],) )
         );
         }
-        }
-      );
+      }
+    ).then((nul) {  print('at finish ${_scrollController.position.pixels}');
+
+      // _scrollController
+      // .animateTo(_scrollController.position.pixels + 1000.0 ,curve: Curves.easeInOut, duration: Duration(seconds: 1));
+      });
   }
 
   /// Get image for profile photo

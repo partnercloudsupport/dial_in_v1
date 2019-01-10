@@ -19,11 +19,12 @@ class RecipePage extends StatefulWidget {
   final Function(ProfileType) _showOptions;
   final Profile _profile;
   final bool _isEditing;
+  final ScrollController _scrollController;
 
   // Sets a String and Value in the Parent profie
   final Function(String , dynamic) _setProfileItemValue;
 
-  RecipePage(this._profile, this._margin, this._setProfileItemValue, this._showOptions, this._isEditing);
+  RecipePage(this._profile, this._margin, this._setProfileItemValue, this._showOptions, this._isEditing, this._scrollController);
 }
 
 class _RecipePageState extends State<RecipePage> {
@@ -63,10 +64,12 @@ class _RecipePageState extends State<RecipePage> {
   void showPickerMenu(Item item, BuildContext context){
 
     showModalBottomSheet(context: context, builder: (BuildContext context){
-
+      // widget._scrollController.animateTo(widget._scrollController.position.pixels - 300,curve: Curves.easeInOut, duration: Duration(seconds: 1) );
       return TimePicker(item, widget._setProfileItemValue);
       }
     );
+    // .then((v){ widget._scrollController.animateTo(widget._scrollController.position.pixels + 300,curve: Curves.easeInOut, duration: Duration(seconds: 1) );
+    // });
   }
 
   void _estimateBrewRatio(BrewRatioType type){

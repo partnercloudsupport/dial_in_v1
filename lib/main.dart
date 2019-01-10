@@ -6,8 +6,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:dial_in_v1/inherited_widgets.dart';
 import 'package:dial_in_v1/routes.dart';
+import 'package:flutter/scheduler.dart' show timeDilation;
+
 
 void main() {
+  ///Slow down animations
+  timeDilation = 3.0;
   runApp(new MyApp());
   }
  

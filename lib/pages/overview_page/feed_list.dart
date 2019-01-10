@@ -6,10 +6,8 @@ import 'package:dial_in_v1/inherited_widgets.dart';
 import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'package:dial_in_v1/data/mini_classes.dart';
 import 'package:dial_in_v1/routes.dart';
-import 'package:dial_in_v1/data/mini_classes.dart';
 import 'package:dial_in_v1/pages/overview_page/user_profile_page.dart';
 import 'package:dial_in_v1/data/strings.dart';
-import "package:pull_to_refresh/pull_to_refresh.dart";
 
 
 
@@ -24,8 +22,6 @@ class FeedList extends StatefulWidget{
 
 
 class _FeedListState extends State<FeedList>{
-
-  RefreshController _refreshController = new RefreshController();
   
   void _handleUserSelection(UserProfile userProfile, int tag){
    
@@ -49,20 +45,6 @@ class _FeedListState extends State<FeedList>{
 
   }
 
-  void _onRefresh(bool up, ProfilesModel model)async{
-		if(up){
-		   //headerIndicator callback
-		   model.getSocialFeed(widget._feedType); 
-       new Future.delayed(const Duration(seconds: 2))
-                               .then((val) {
-                                 _refreshController.sendBack(true, RefreshStatus.completed);
-                           }); 
-		}
-		else{
-			//footerIndicator Callback
-		}
-  }
-
   void _dealWithProfileSelection(FeedProfileData userProfile){
 
       Navigator.push(context, SlowerRoute((BuildContext context) =>
@@ -82,7 +64,7 @@ class _FeedListState extends State<FeedList>{
                     
                     CircularProgressIndicator(),
                     Container(margin: EdgeInsets.all(20.0),child: Text('Loading...'),) ,],)),
-                    ProfileRefresher(ListView(children: <Widget>[],),)
+                    FeedRefresher(ListView(children: <Widget>[],),feedType)
             ],);
         break;
 
@@ -93,7 +75,7 @@ class _FeedListState extends State<FeedList>{
                   (mainAxisAlignment: MainAxisAlignment.center ,children: <Widget>[
                     Container(child: Icon(Icons.no_sim),),
                     Container(margin: EdgeInsets.all(20.0),child: Text('No Data',style: Theme.of(context).textTheme.display3,),) ,],)),
-                    ProfileRefresher(ListView(children: <Widget>[],), )
+                    FeedRefresher(ListView(children: <Widget>[],),feedType )
                   ],);
         break;
 
@@ -109,7 +91,7 @@ class _FeedListState extends State<FeedList>{
               (mainAxisAlignment: MainAxisAlignment.center ,children: <Widget>[
                 Container(child: Icon(Icons.no_sim),),
                 Container(margin: EdgeInsets.all(20.0),child: Text('No Data',style: Theme.of(context).textTheme.display3,),) ,],)),
-                ProfileRefresher(ListView(children: <Widget>[],),)
+                FeedRefresher(ListView(children: <Widget>[],),feedType)
           ],);
         
       }else{
@@ -120,13 +102,13 @@ class _FeedListState extends State<FeedList>{
   
         _returnWidget = 
         
-        ProfileRefresher(
+        FeedRefresher(
           ListView.builder(
             itemExtent: 450,
             itemCount: snapshot.data.length,
             itemBuilder: (BuildContext context, int index) =>
             SocialProfileCard(snapshot.data[index], _dealWithProfileSelection, _handleUserSelection, index)
-            ), 
+            ),feedType 
             );
       }
       break;
@@ -139,7 +121,7 @@ class _FeedListState extends State<FeedList>{
                   (mainAxisAlignment: MainAxisAlignment.center ,children: <Widget>[
                     Container(child: Icon(Icons.warning),),
                     Container(margin: EdgeInsets.all(20.0),child: Text('Error',style: Theme.of(context).textTheme.display3,),) ,],)),
-                    ProfileRefresher(ListView(children: <Widget>[],),)
+                    FeedRefresher(ListView(children: <Widget>[],),feedType)
                   ],);
         break;
     }   
@@ -150,7 +132,7 @@ class _FeedListState extends State<FeedList>{
                                     (mainAxisAlignment: MainAxisAlignment.center ,children: <Widget>[
                                       Container(child: Icon(Icons.warning),),
                                       Container(margin: EdgeInsets.all(20.0),child: Text('Error',style: Theme.of(context).textTheme.display3,),) ,],)),
-                                      ProfileRefresher(ListView(children: <Widget>[],),)
+                                      FeedRefresher(ListView(children: <Widget>[],),feedType)
                                     ],);
   }
 

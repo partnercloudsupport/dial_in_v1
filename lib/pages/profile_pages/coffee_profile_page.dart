@@ -11,12 +11,13 @@ import 'package:dial_in_v1/data/item.dart';
 class CoffeeProfilePage extends StatefulWidget {
   final Profile _profile;
   final _isEditing;
+  final Function(Item) _showPickerMenu;
  
 
 // Sets a String and Value in the Parent profile
   final Function(String, dynamic) _setProfileItemValue;
 
-  CoffeeProfilePage(this._profile, this._setProfileItemValue, this._isEditing);
+  CoffeeProfilePage(this._profile, this._setProfileItemValue, this._isEditing, this._showPickerMenu);
 
   _CoffeeProfilePageState createState() => new _CoffeeProfilePageState();
 }
@@ -31,60 +32,12 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
         super.initState();
   }
 
-  @override
+   @override
   void didChangeDependencies() {
     _profile = widget._profile; 
     super.didChangeDependencies();
     }
 
-
-    void showPickerMenu(Item item){
-
-      List< Widget> _items = new List<Widget>();
-      double _itemHeight = 40.0; 
-    
-      if (item.inputViewDataSet != null && item.inputViewDataSet.length > 0)
-      {item.inputViewDataSet[0]
-      .forEach((itemText){_items.add(Center(child:Text(itemText, style: Theme.of(context).textTheme.display2,)));});
-      }
-
-      showModalBottomSheet(context: context, builder: (BuildContext context){
-        
-        if (item.inputViewDataSet != null && item.inputViewDataSet.length < 1)
-        {return Center(child: Text('Error No Data for picker'),);  
-
-        }else{
-
-      int startItem = item.inputViewDataSet[0].indexWhere((value) => (value == item.value));
-
-      FixedExtentScrollController _scrollController = new FixedExtentScrollController(initialItem: startItem);
-    
-          return  
-          Container(child: SizedBox(height: 200.0, width: double.infinity, child: Column(children: <Widget>[
-
-                      Material(elevation: 5.0, shadowColor: Colors.black, color:Theme.of(context).accentColor, type:MaterialType.card, 
-                      child: Container(height: 40.0, width: double.infinity, alignment: Alignment(1, 0),
-                      child: FlatButton(onPressed:() => Navigator.pop(context),
-                      child: Text('Done')),)),
-
-                      SizedBox(height: 160.0, width: double.infinity  ,
-                      child: CupertinoPicker(
-                        scrollController: _scrollController,
-                        useMagnifier: true,
-                        onSelectedItemChanged:
-                          (value){setState(() {
-                            widget._setProfileItemValue(item.databaseId, item.inputViewDataSet[0][value]);
-                            _profile.setProfileItemValue(item.databaseId, item.inputViewDataSet[0][value]);
-                          });}, 
-                        itemExtent: _itemHeight,
-                        children: _items
-                        ),)
-          ],) )
-        );
-        }
-        }
-      );
-  }
 
   /// UI Build
   @override
@@ -104,7 +57,7 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
                 _profile.getProfileItem( DatabaseIds.roasterName),
                 _profile.getProfileItemValue( DatabaseIds.roastDate), 
               /// Functions
-                showPickerMenu,
+                widget._showPickerMenu,
                 (roasteryName){widget._setProfileItemValue( DatabaseIds.roasteryName,  roasteryName);}, 
                 (roasterName){widget._setProfileItemValue( DatabaseIds.roasterName,  roasterName);}, 
                 (roastDate){widget._setProfileItemValue( DatabaseIds.roastDate,  roastDate);},
@@ -117,7 +70,7 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
                 (producer){widget._setProfileItemValue( DatabaseIds.producer,  producer);},
                 (farm){widget._setProfileItemValue( DatabaseIds.farm,  farm);},
                 (region){widget._setProfileItemValue( DatabaseIds.region,  region);},
-                showPickerMenu,
+                widget._showPickerMenu,
                 _profile.getProfileItem(DatabaseIds.region),
                 _profile.getProfileItem(DatabaseIds.farm) ,
                 _profile.getProfileItem(DatabaseIds.producer) ,
@@ -128,9 +81,9 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
 
               /// Green details
               GreenDetailsCard(
-                showPickerMenu,
-                showPickerMenu,
-                showPickerMenu,
+                widget._showPickerMenu,
+                widget._showPickerMenu,
+                widget._showPickerMenu,
                 (density){widget._setProfileItemValue( DatabaseIds.density,  density );},
                 (aw){widget._setProfileItemValue( DatabaseIds.aW,  aw );},
                 (moi){widget._setProfileItemValue( DatabaseIds.moisture,  moi );}, 

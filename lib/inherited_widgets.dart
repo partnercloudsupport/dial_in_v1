@@ -278,17 +278,15 @@ class ProfilesModel extends Model{
     /// Get social feeds with type
     Stream<List<FeedProfileData>> getSocialFeed(FeedType type){
 
-      _userFeed.getProfile();
+      _userFeed.refresh();
 
       switch(type){
 
         case FeedType.community:
-        _comminuty.getProfiles();
         return communnityFeed;
         break;
 
         case FeedType.following:
-        _followers.getProfiles();
         return followingFeed;
         break;
 

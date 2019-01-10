@@ -648,8 +648,8 @@ class RatioCard extends StatefulWidget {
 }
 class _RatioCardState extends State<RatioCard> {
 
-
   BrewRatioType _brewRatioType = BrewRatioType.doseYield;
+  BlacklistingTextInputFormatter _blacklistingTextInputFormatter = BlacklistingTextInputFormatter(RegExp(','),replacementString: '.');
 
   @override
   Widget build(BuildContext context) {
@@ -676,11 +676,10 @@ class _RatioCardState extends State<RatioCard> {
               Container(width: 130.0, child:
               RaisedButton(
                 shape:  RoundedRectangleBorder(borderRadius: new BorderRadius.circular(20.0)),
-                child: Text('Calc Brew Weight', softWrap: true, textAlign: TextAlign.center),
+                child: Text('Calc Weight', softWrap: true, textAlign: TextAlign.center),
                 onPressed:  () => setState(() => widget._estimateValue(BrewRatioType.doseBrewWeight)))),
 
             ]),
-        
 
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -693,6 +692,7 @@ class _RatioCardState extends State<RatioCard> {
                 (value){widget._doseChanged(value);}, 
                 widget._textFieldWidth, 
                 widget._isEditing,
+                textInputFormatters: [_blacklistingTextInputFormatter],
                 ),
 
               /// Yield
@@ -701,6 +701,7 @@ class _RatioCardState extends State<RatioCard> {
                 (value){widget._yieldChanged(value);}, 
                 widget._textFieldWidth, 
                 widget._isEditing,
+                textInputFormatters: [_blacklistingTextInputFormatter],
                 ), 
               
               /// Brew wieght
@@ -708,10 +709,9 @@ class _RatioCardState extends State<RatioCard> {
                 widget._profile.getProfileItem(DatabaseIds.brewWeight), 
                 (value){widget._brewWeightChanged(value);}, 
                 widget._textFieldWidth, 
-                widget._isEditing,  
-                ), 
-              
-
+                widget._isEditing,
+                textInputFormatters: [_blacklistingTextInputFormatter],
+              ),  
             ],
           ),
 
