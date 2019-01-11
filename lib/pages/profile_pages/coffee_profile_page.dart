@@ -46,9 +46,11 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
           Column(
             children: <Widget>[
 
-              Container(padding: EdgeInsets.all(20.0), child:TextFieldWithInitalValue(TextInputType.text, StringLabels.name, StringLabels.enterNickname,
+              Card(child:
+                Container(padding: EdgeInsets.all(20.0), alignment: Alignment(0, 1),
+                  child:TextFieldWithInitalValue(TextInputType.text, StringLabels.name, StringLabels.enterNickname,
                _profile.getProfileItemValue( DatabaseIds.coffeeId),
-                (name){ widget._setProfileItemValue(DatabaseIds.coffeeId,name);}, double.infinity, widget._isEditing),),
+                (name){ widget._setProfileItemValue(DatabaseIds.coffeeId,name);}, double.infinity, widget._isEditing),)),
 
               RoastingDetailsCard(
               ///Values
@@ -214,7 +216,9 @@ class RoastingDetailsCardState extends State<RoastingDetailsCard> {
 
  @override
   Widget build(BuildContext context) {
-    return Card(child: Container(padding: EdgeInsets.all( _margin), margin: EdgeInsets.all( _margin), child: Column(children: <Widget>[
+    return Card(child:
+    
+     Container(padding: EdgeInsets.all( _margin), margin: EdgeInsets.all( _margin), child: Column(children: <Widget>[
 
         /// Title
         Container(padding: EdgeInsets.all( _margin), margin: EdgeInsets.all( _margin), child: 
@@ -381,7 +385,10 @@ class GreenDetailsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(child: Container(padding: EdgeInsets.all(_padding), margin: EdgeInsets.all( _margin), child: Column(children: <Widget>[
 
+
+        /// Name
         Text(StringLabels.greenCoffeeDetails, style: Theme.of(context).textTheme.title,),
+
         ///Row 1
         Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: <Widget>[
           ///BeanType
@@ -410,7 +417,16 @@ class GreenDetailsCard extends StatelessWidget {
         ///Row 4
         Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: <Widget>[
           ///Harvest
-          TextFieldItemWithInitalValue(_harvestItem,(value){_harvest(value);}, _textFieldWidth, _isEditing)
+          TextFieldItemWithInitalValue(_harvestItem,(value){_harvest(value);}, _textFieldWidth, _isEditing),
+
+        /// Harvest to implement TODO
+        // DateTimeInputCard(
+        //   StringLabels.harvest,
+        //   DateTime.now(),
+        //   (dateTime)
+        //   {},
+        //   _isEditing
+        // ),
                      
         ],),
 
