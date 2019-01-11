@@ -817,13 +817,11 @@ class _TwoTextfieldCardState extends State<TwoTextfieldCard> {
                     BlacklistingTextInputFormatter
                       (new RegExp('[\\,]'), replacementString: '.',)]),
 
-
-                Container(  margin: EdgeInsets.all(widget._padding),
-                width: 140,child: 
+      
                 TextfieldWithFixedValue
-                (StringLabels.extractionYield, 
+                (StringLabels.extraction, 
                 widget._extractionYield.toString()+'%',
-                width: 140.0,),),
+                width: 100.0,),
 
                 Padding(padding: EdgeInsets.all(widget._padding/2)),
                 ],

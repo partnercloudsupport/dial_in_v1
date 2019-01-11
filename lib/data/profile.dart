@@ -79,9 +79,7 @@ class Profile {
     0.0:
     double.parse(this.getProfileItemValue(DatabaseIds.tds));
 
-    dynamic method = this.getProfileItemValue(DatabaseIds.equipmentType) == '' ? 
-    StringLabels.filter:
-    double.parse(this.getProfileItemValue(DatabaseIds.equipmentType));
+    dynamic method = this.getProfileProfileItemValue(ProfileType.equipment, DatabaseIds.type);
 
     dynamic dose = this.getProfileItemValue(DatabaseIds.brewingDose) == '' ? 
     0.0:

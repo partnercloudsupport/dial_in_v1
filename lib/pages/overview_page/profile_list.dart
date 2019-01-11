@@ -28,8 +28,6 @@ class _ProfileListState extends State<ProfileList>{
 
        Navigator.push(context, SlowerRoute((BuildContext context) =>
         ProfilePage(isFromUserFeed: false, isFromProfile: false ,isOldProfile: true, isCopying: false, isEditing: true, isNew: false, type: profile.type, referance: profile.objectId, profile: profile)));
-
-
   }
 
   void _deleteProfile(Profile profile, BuildContext context){
@@ -193,7 +191,7 @@ class _ProfileListDialogState extends State<ProfileListDialog>{
               return new 
                Container(height: 600, child: 
                 ListView.builder(
-                    itemExtent: 80,
+                    itemExtent: 100,
                     itemCount: _list.length,
                     itemBuilder: (BuildContext context, int index) =>
                     ProfileCard(_list[index], _dealWithProfileSelection, _deleteProfile)
