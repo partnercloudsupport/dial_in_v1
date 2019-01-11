@@ -757,7 +757,7 @@ class _RatioCardState extends State<RatioCard> {
 ///Two textFieldcard
 class TwoTextfieldCard extends StatefulWidget {
   final double _padding = 10.0;
-  final Item _itemRight;
+  final Item _itemLeft;
   final bool _isEditing;
   final double _extractionYield;
   
@@ -765,7 +765,7 @@ class TwoTextfieldCard extends StatefulWidget {
 
   TwoTextfieldCard(
       this._onRightTextChanged,
-      this._itemRight,
+      this._itemLeft,
       this._isEditing,
       this._extractionYield
      );
@@ -778,7 +778,7 @@ class _TwoTextfieldCardState extends State<TwoTextfieldCard> {
 
   @override
     void initState() {
-        _rightController.text = widget._itemRight.value;     
+        _rightController.text = widget._itemLeft.value;     
         super.initState();
     }
   @override
@@ -795,9 +795,9 @@ class _TwoTextfieldCardState extends State<TwoTextfieldCard> {
 
                 Padding(padding: EdgeInsets.all(widget._padding/2)),
 
-                // Right
+                // Left
                 TextFieldItemWithInitalValue(
-                  widget._itemRight,
+                  widget._itemLeft,
                   (value){
                      if (Functions.countChacters(value,'.')>1)
                               {PopUps.showAlert(StringLabels.error,
@@ -813,6 +813,7 @@ class _TwoTextfieldCardState extends State<TwoTextfieldCard> {
                   textInputFormatters: [
                     BlacklistingTextInputFormatter
                       (new RegExp('[\\,]'), replacementString: '.',)]),
+
 
                 Container(  margin: EdgeInsets.all(widget._padding),
                 width: 140,child: 

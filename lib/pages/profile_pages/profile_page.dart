@@ -531,7 +531,9 @@ class _PublicProfileSwitchState extends State<PublicProfileSwitch> {
                     });
               }, 
            value: _isPublic,),
-          ],),),
+          ],
+          ),
+        ),
     );
   }
 }

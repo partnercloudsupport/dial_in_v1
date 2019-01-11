@@ -181,13 +181,13 @@ class _RecipePageState extends State<RecipePage> {
       ),
 
       /// Ratio card
-        RatioCard(
+      RatioCard(
         widget._profile,
         (dose) {widget._setProfileItemValue( DatabaseIds.brewingDose, dose);},  
         (yielde) {widget._setProfileItemValue( DatabaseIds.yielde, yielde);},
         (brewWeight) { widget._setProfileItemValue( DatabaseIds.brewWeight, brewWeight);},
         widget._isEditing,
-        ),
+      ),
 
       /// Time
       Card(child: Container(margin: EdgeInsets.all(10.0), child: Row(children: <Widget>[
