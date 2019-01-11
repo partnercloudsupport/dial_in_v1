@@ -20,6 +20,8 @@ import 'package:dial_in_v1/inherited_widgets.dart';
 import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'dart:io';
 import 'dart:async';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:dial_in_v1/inherited_widgets.dart';
 
 class ProfilePage extends StatefulWidget {
   final bool isFromUserFeed;
@@ -56,6 +58,7 @@ class ProfilePageState extends State<ProfilePage> {
   ScrollController _scrollController;
   List<Widget> _appBarActions = [ Container()];
   List<Widget> _pageBody = List<Widget>();
+  RatioModel _ratioModel;
 
   /// init state
   void initState() {
@@ -74,6 +77,9 @@ class ProfilePageState extends State<ProfilePage> {
     }else if (widget.isEditing){  this._appBarTitle =  StringLabels.editing + ' ' + Functions.getProfileTypeString(_profile.type);}
     }
     getBody();
+    _ratioModel = RatioModel(Functions.getIntValue(_profile.getProfileItemValue(DatabaseIds.brewingDose)),
+                        Functions.getIntValue(_profile.getProfileItemValue(DatabaseIds.yielde)),
+                        Functions.getIntValue(_profile.getProfileItemValue(DatabaseIds.brewWeight)));
     super.initState();
   }
  
@@ -81,7 +87,12 @@ class ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     setupAppBarActions();
-    return  new Scaffold(
+    return  new 
+    
+    ScopedModel(
+      model: _ratioModel,
+      child:
+    Scaffold(
        appBar: AppBar(
         centerTitle: true,
         title: Text(
@@ -125,7 +136,8 @@ class ProfilePageState extends State<ProfilePage> {
         ],
       ),
       bottomNavigationBar: _returnBottomBar()
-      );
+      )
+    );
   }
 
    /// Setup bottom bar

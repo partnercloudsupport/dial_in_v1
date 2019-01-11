@@ -9,6 +9,8 @@ import 'package:dial_in_v1/data/profile.dart';
 import 'package:dial_in_v1/database_functions.dart';
 import 'package:flutter/services.dart';
 import 'package:dial_in_v1/data/functions.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:dial_in_v1/inherited_widgets.dart';
 
 class ScoreSlider extends StatefulWidget {
   final double _value;
@@ -634,7 +636,6 @@ class RatioCard extends StatefulWidget {
   final Function(String) _doseChanged;
   final Function(String) _yieldChanged;
   final Function(String) _brewWeightChanged;
-  final Function(BrewRatioType) _estimateValue;
 
   RatioCard(
     this._profile,
@@ -642,7 +643,6 @@ class RatioCard extends StatefulWidget {
     this._yieldChanged,
     this._brewWeightChanged,
     this._isEditing,
-    this._estimateValue
   );
   _RatioCardState createState() => _RatioCardState();
 }
@@ -665,6 +665,9 @@ class _RatioCardState extends State<RatioCard> {
   Widget build(BuildContext context) {
     return 
     
+    ScopedModelDescendant<RatioModel>
+            ( rebuildOnChange: false, builder: (context, _ ,model) =>
+
     Card(child:Container(
       margin: EdgeInsets.all(widget._margin),
       padding: EdgeInsets.all(widget._margin),
@@ -681,13 +684,13 @@ class _RatioCardState extends State<RatioCard> {
               RaisedButton( 
                 shape:  RoundedRectangleBorder(borderRadius: new BorderRadius.circular(20.0)),
                 child: Text('Calc Yield',softWrap: true, textAlign: TextAlign.center,),
-                onPressed: () => setState(() => widget._estimateValue(BrewRatioType.doseYield,)))),
+                onPressed: () => widget._yieldChanged(model.estimateBrewRatio(BrewRatioType.doseYield,)))),
 
               Container(width: 130.0, child:
               RaisedButton(
                 shape:  RoundedRectangleBorder(borderRadius: new BorderRadius.circular(20.0)),
                 child: Text('Calc Weight', softWrap: true, textAlign: TextAlign.center),
-                onPressed:  () => setState(() => widget._estimateValue(BrewRatioType.doseBrewWeight)))),
+                onPressed: () =>  widget._brewWeightChanged(model.estimateBrewRatio(BrewRatioType.doseBrewWeight)))),
 
             ]),
 
@@ -697,31 +700,25 @@ class _RatioCardState extends State<RatioCard> {
             children: <Widget>[
 
               /// Dose
-              TextFieldItemWithInitalValue(
+              RatioTextFieldItemWithInitalValue(
                 widget._profile.getProfileItem(DatabaseIds.brewingDose), 
                 (value){  if(!_filter.hasMatch(value)){
-                  widget._doseChanged(value);}}, 
-                widget._textFieldWidth, 
+                widget._doseChanged(value);}}, 
                 widget._isEditing,
-                textInputFormatters: _inpuFormatters,
                 ),
 
               /// Yield
-              TextFieldItemWithInitalValue(
+              RatioTextFieldItemWithInitalValue(
                 widget._profile.getProfileItem(DatabaseIds.yielde), 
                 (value){widget._yieldChanged(value);}, 
-                widget._textFieldWidth, 
                 widget._isEditing,
-                textInputFormatters: _inpuFormatters,
                 ), 
               
               /// Brew wieght
-              TextFieldItemWithInitalValue(
+              RatioTextFieldItemWithInitalValue(
                 widget._profile.getProfileItem(DatabaseIds.brewWeight), 
                 (value){widget._brewWeightChanged(value);}, 
-                widget._textFieldWidth, 
                 widget._isEditing,
-                textInputFormatters: _inpuFormatters,
               ),  
             ],
           ),
@@ -753,7 +750,7 @@ class _RatioCardState extends State<RatioCard> {
 
         ],
       ),
-    ));
+    )));
   }
 }
 

@@ -10,6 +10,8 @@ import 'package:flutter/services.dart';
 import 'package:dial_in_v1/data/item.dart';
 import 'package:dial_in_v1/data/functions.dart';
 import 'dart:async';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:dial_in_v1/inherited_widgets.dart';
 
 class RecipePage extends StatefulWidget {
 
@@ -72,194 +74,202 @@ class _RecipePageState extends State<RecipePage> {
     // });
   }
 
-  void _estimateBrewRatio(BrewRatioType type){
-    setState(() {  
-    if(type == BrewRatioType.doseYield){
-      int dose = Functions.getIntValue(widget._profile.getProfileItemValue(DatabaseIds.brewingDose));
-      int brewWeight = Functions.getIntValue(widget._profile.getProfileItemValue(DatabaseIds.brewWeight));
-      int result = brewWeight - dose;
-      widget._setProfileItemValue(DatabaseIds.yielde, result.toString());
+/// TODO
+  // void _estimateBrewRatio(BrewRatioType type){
+  //   setState(() {  
+  //   if(type == BrewRatioType.doseYield){
+  //     int dose = Functions.getIntValue(widget._profile.getProfileItemValue(DatabaseIds.brewingDose));
+  //     int brewWeight = Functions.getIntValue(widget._profile.getProfileItemValue(DatabaseIds.brewWeight));
+  //     int result = brewWeight - dose;
+  //     widget._setProfileItemValue(DatabaseIds.yielde, result.toString());
       
-    }else{
-      int dose = Functions.getIntValue(widget._profile.getProfileItemValue(DatabaseIds.brewingDose));
-      int yielde = Functions.getIntValue(widget._profile.getProfileItemValue(DatabaseIds.yielde));
-      int result = dose + yielde;
-      widget._setProfileItemValue(DatabaseIds.brewWeight, result.toString());
-    }
-     });
-  }
+  //   }else{
+  //     int dose = Functions.getIntValue(widget._profile.getProfileItemValue(DatabaseIds.brewingDose));
+  //     int yielde = Functions.getIntValue(widget._profile.getProfileItemValue(DatabaseIds.yielde));
+  //     int result = dose + yielde;
+  //     widget._setProfileItemValue(DatabaseIds.brewWeight, result.toString());
+  //   }
+  //    });
+  // }
 
 
   ///
   /// UI Build
   ///
-@override
-Widget build(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
     return  
+
+    ScopedModelDescendant<RatioModel>
+              ( rebuildOnChange: true, builder: (BuildContext context, _ ,RatioModel model) {
+    
+    model.updateValues(widget._profile);
+
+    return
     Column(children: <Widget>[ 
 
-/// Date
-  DateTimeInputCard(
-      StringLabels.date,
-      widget._profile.getProfileItemValue( DatabaseIds.date),
-      (dateTime)
-      {if (dateTime != null){ widget._setProfileItemValue( DatabaseIds.date, dateTime);}},
-        widget._isEditing),
+    /// Date
+      DateTimeInputCard(
+          StringLabels.date,
+          widget._profile.getProfileItemValue( DatabaseIds.date),
+          (dateTime)
+          {if (dateTime != null){ widget._setProfileItemValue( DatabaseIds.date, dateTime);}},
+            widget._isEditing),
 
-///Coffee
-  ProfileInputWithDetailsCard(
-    widget._isEditing,
-    widget._profile.getProfileProfile(ProfileType.coffee),
-    StringLabels.rested,
-    widget._profile.getDaysRested().toString() + ' days',
-    (){widget._showOptions(ProfileType.coffee);},),
+    ///Coffee
+      ProfileInputWithDetailsCard(
+        widget._isEditing,
+        widget._profile.getProfileProfile(ProfileType.coffee),
+        StringLabels.rested,
+        widget._profile.getDaysRested().toString() + ' days',
+        (){widget._showOptions(ProfileType.coffee);},),
 
-///Barista
-  ProfileInputCard(
-    widget._isEditing,
-    widget._profile.getProfileProfile(ProfileType.barista),
-    (){widget._showOptions(ProfileType.barista);},),
+    ///Barista
+      ProfileInputCard(
+        widget._isEditing,
+        widget._profile.getProfileProfile(ProfileType.barista),
+        (){widget._showOptions(ProfileType.barista);},),
 
-/// Water
-  ProfileInputCardWithAttribute(
-      widget._isEditing,
-      profile: widget._profile.getProfileProfile(ProfileType.water),
-      keyboardType: TextInputType.number,
-      onAttributeTextChange: (text) {
-        widget._setProfileItemValue( DatabaseIds.temparature, text);
-      },
-      onProfileTextPressed: () {
-        widget._showOptions(ProfileType.water);
-      },
-      attributeTextfieldText: widget._profile.getProfileItemValue(
-            DatabaseIds.temparature),
-      attributeHintText: StringLabels.enterValue,
-      attributeTitle: StringLabels.degreeC,
+    /// Water
+      ProfileInputCardWithAttribute(
+          widget._isEditing,
+          profile: widget._profile.getProfileProfile(ProfileType.water),
+          keyboardType: TextInputType.number,
+          onAttributeTextChange: (text) {
+            widget._setProfileItemValue( DatabaseIds.temparature, text);
+          },
+          onProfileTextPressed: () {
+            widget._showOptions(ProfileType.water);
+          },
+          attributeTextfieldText: widget._profile.getProfileItemValue(
+                DatabaseIds.temparature),
+          attributeHintText: StringLabels.enterValue,
+          attributeTitle: StringLabels.degreeC,
+          ),
+
+    /// Grinder
+      ProfileInputCardWithAttribute(
+          widget._isEditing,
+          profile: widget._profile.getProfileProfile(ProfileType.grinder),
+          onAttributeTextChange: (text) {
+            widget._setProfileItemValue(DatabaseIds.grindSetting, text);
+          },
+          onProfileTextPressed: () {
+            widget._showOptions(ProfileType.grinder);
+          },
+          attributeTextfieldText: widget._profile.getProfileItemValue(
+                DatabaseIds.grindSetting),
+          attributeHintText: StringLabels.enterValue,
+          attributeTitle: StringLabels.setting,
+          keyboardType: TextInputType.number,
       ),
 
-/// Grinder
-  ProfileInputCardWithAttribute(
-      widget._isEditing,
-      profile: widget._profile.getProfileProfile(ProfileType.grinder),
-      onAttributeTextChange: (text) {
-        widget._setProfileItemValue(DatabaseIds.grindSetting, text);
-      },
-      onProfileTextPressed: () {
-        widget._showOptions(ProfileType.grinder);
-      },
-      attributeTextfieldText: widget._profile.getProfileItemValue(
-            DatabaseIds.grindSetting),
-      attributeHintText: StringLabels.enterValue,
-      attributeTitle: StringLabels.setting,
-      keyboardType: TextInputType.number,
-  ),
+    /// Equipment
+      ProfileInputCardWithAttribute(
+          widget._isEditing,
+          profile: widget._profile.getProfileProfile(ProfileType.equipment),
+          onAttributeTextChange: (text) {
+            widget._setProfileItemValue(DatabaseIds.preinfusion, text);
+          },
+          onProfileTextPressed: () {
+            widget._showOptions(ProfileType.equipment);
+          },
+          attributeTextfieldText: widget._profile.getProfileItemValue(
+                DatabaseIds.preinfusion),
+          attributeHintText: StringLabels.enterValue,
+          attributeTitle: StringLabels.preinfusion,
+      ),
 
-/// Equipment
-  ProfileInputCardWithAttribute(
-      widget._isEditing,
-      profile: widget._profile.getProfileProfile(ProfileType.equipment),
-      onAttributeTextChange: (text) {
-        widget._setProfileItemValue(DatabaseIds.preinfusion, text);
-      },
-      onProfileTextPressed: () {
-        widget._showOptions(ProfileType.equipment);
-      },
-      attributeTextfieldText: widget._profile.getProfileItemValue(
-            DatabaseIds.preinfusion),
-      attributeHintText: StringLabels.enterValue,
-      attributeTitle: StringLabels.preinfusion,
-  ),
-
-  /// Ratio card
-    RatioCard(
-    widget._profile,
-    (dose) {widget._setProfileItemValue( DatabaseIds.brewingDose, dose);},  
-    (yielde) {widget._setProfileItemValue( DatabaseIds.yielde, yielde);},
-    (brewWeight) { widget._setProfileItemValue( DatabaseIds.brewWeight, brewWeight);},
-    widget._isEditing,
-    (BrewRatioType type){ _estimateBrewRatio(type);}
-    ),
-
-  /// Time
-  Card(child: Container(margin: EdgeInsets.all(10.0), child: Row(children: <Widget>[
-    
-      TimePickerTextField(
-      widget._profile.getProfileItem(DatabaseIds.time),
-      (item) => showPickerMenu(item, context),
-      100.0, 
-      widget._isEditing)
-
-      ],)),),
-
-  /// Extraction and TDS
-  TwoTextfieldCard(
-    (tds) { widget._setProfileItemValue( DatabaseIds.tds, tds);},
-    widget._profile.getProfileItem(DatabaseIds.tds),
-    widget._isEditing,
-    widget._profile.getExtractionYield() 
-  ),
-
-  /// Notes
-  NotesCard(
-      StringLabels.notes,
-      widget._profile.getProfileItemValue(
-            DatabaseIds.notes),
-      (notes) {widget._setProfileItemValue( DatabaseIds.notes, notes);},
-      widget._isEditing),
-
-  ///Score Section
-  Card(
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        Container(
-          margin: EdgeInsets.all(widget._margin),
-          padding: EdgeInsets.all(widget._margin),
-          child: Text(
-            StringLabels.score,
-            style: Theme.of(context).textTheme.title,
-          ),
+      /// Ratio card
+        RatioCard(
+        widget._profile,
+        (dose) {widget._setProfileItemValue( DatabaseIds.brewingDose, dose);},  
+        (yielde) {widget._setProfileItemValue( DatabaseIds.yielde, yielde);},
+        (brewWeight) { widget._setProfileItemValue( DatabaseIds.brewWeight, brewWeight);},
+        widget._isEditing,
         ),
-        Column(
+
+      /// Time
+      Card(child: Container(margin: EdgeInsets.all(10.0), child: Row(children: <Widget>[
+        
+          TimePickerTextField(
+          widget._profile.getProfileItem(DatabaseIds.time),
+          (item) => showPickerMenu(item, context),
+          100.0, 
+          widget._isEditing)
+
+          ],)),),
+
+      /// Extraction and TDS
+      TwoTextfieldCard(
+        (tds) { widget._setProfileItemValue( DatabaseIds.tds, tds);},
+        widget._profile.getProfileItem(DatabaseIds.tds),
+        widget._isEditing,
+        widget._profile.getExtractionYield() 
+      ),
+
+      /// Notes
+      NotesCard(
+          StringLabels.notes,
+          widget._profile.getProfileItemValue(
+                DatabaseIds.notes),
+          (notes) {widget._setProfileItemValue( DatabaseIds.notes, notes);},
+          widget._isEditing),
+
+      ///Score Section
+      Card(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            ScoreSlider(StringLabels.strength, 0.0,
-              (value) { widget._setProfileItemValue( DatabaseIds.strength, value.toString());},
-              widget._isEditing),
+            Container(
+              margin: EdgeInsets.all(widget._margin),
+              padding: EdgeInsets.all(widget._margin),
+              child: Text(
+                StringLabels.score,
+                style: Theme.of(context).textTheme.title,
+              ),
+            ),
+            Column(
+              children: <Widget>[
+                ScoreSlider(StringLabels.strength, 0.0,
+                  (value) { widget._setProfileItemValue( DatabaseIds.strength, value.toString());},
+                  widget._isEditing),
 
-            ScoreSlider(StringLabels.balance, 0.0,
-              (value) { widget._setProfileItemValue( DatabaseIds.balance, value.toString());},
-              widget._isEditing),
+                ScoreSlider(StringLabels.balance, 0.0,
+                  (value) { widget._setProfileItemValue( DatabaseIds.balance, value.toString());},
+                  widget._isEditing),
 
-            ScoreSlider(StringLabels.flavour, 0.0,
-              (value) { widget._setProfileItemValue( DatabaseIds.flavour, value.toString());},
-              widget._isEditing),
+                ScoreSlider(StringLabels.flavour, 0.0,
+                  (value) { widget._setProfileItemValue( DatabaseIds.flavour, value.toString());},
+                  widget._isEditing),
 
-            ScoreSlider(StringLabels.body, 0.0,
-              (value) {widget._setProfileItemValue( DatabaseIds.body, value.toString());},
-              widget._isEditing),
+                ScoreSlider(StringLabels.body, 0.0,
+                  (value) {widget._setProfileItemValue( DatabaseIds.body, value.toString());},
+                  widget._isEditing),
 
-            ScoreSlider(StringLabels.afterTaste, 0.0,
-              (value) {widget._setProfileItemValue( DatabaseIds.afterTaste, value.toString());},
-              widget._isEditing),
+                ScoreSlider(StringLabels.afterTaste, 0.0,
+                  (value) {widget._setProfileItemValue( DatabaseIds.afterTaste, value.toString());},
+                  widget._isEditing),
 
-            /// End of score   
-            
+                /// End of score   
+                
+              ],
+            )
           ],
-        )
-      ],
-    ),
-  ),
-    NotesCard(
-            StringLabels.descriptors,
-            widget._profile.getProfileItemValue(
-                  DatabaseIds.descriptors),
-            (text) {widget._setProfileItemValue( DatabaseIds.descriptors, text);},
-            widget._isEditing),
-          ],
-    );
+        ),
+      ),
+        NotesCard(
+                StringLabels.descriptors,
+                widget._profile.getProfileItemValue(
+                      DatabaseIds.descriptors),
+                (text) {widget._setProfileItemValue( DatabaseIds.descriptors, text);},
+                widget._isEditing),
+              ],
+        );
+    }
+  );
   }
 }
-
 
 
 class TimePicker extends StatefulWidget {

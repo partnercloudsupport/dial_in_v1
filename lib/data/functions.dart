@@ -30,7 +30,7 @@ class Functions {
     { double trans = double.parse(item);
       value = trans.toInt();}
     else if (item is double){value = item.round().toInt();}
-    else if (item is !int){value = 0;}
+    else if (item is !int || item is !double){value = 0;}
     else{value = item.value;}
 
     return value;

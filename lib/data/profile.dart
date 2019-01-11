@@ -125,6 +125,8 @@ class Profile {
     }  
   }
 
+
+
   dynamic getProfileItemValue(String itemDatabaseId) {
     
     dynamic value;
@@ -921,7 +923,7 @@ Future<String> getUserImage ()async{
           value: '',
           databaseId: DatabaseIds.altitude,
           placeHolderText: StringLabels.enterDescription,
-          keyboardType: TextInputType.text,
+          keyboardType: TextInputType.number,
         );
         break;
 
