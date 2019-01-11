@@ -194,7 +194,6 @@ class RoastingDetailsCard extends StatefulWidget {
 }
 
 class RoastingDetailsCardState extends State<RoastingDetailsCard> {
-  final double _padding = 5.0;
   final double _margin = 5.0;
   final double _textFieldWidth = 150.0;
   Item _roastProfileItem;
@@ -215,10 +214,11 @@ class RoastingDetailsCardState extends State<RoastingDetailsCard> {
 
  @override
   Widget build(BuildContext context) {
-    return Card(child: Container(padding: EdgeInsets.all(_padding), margin: EdgeInsets.all( _margin), child: Column(children: <Widget>[
+    return Card(child: Container(padding: EdgeInsets.all( _margin), margin: EdgeInsets.all( _margin), child: Column(children: <Widget>[
 
         /// Title
-        Text(StringLabels.roastedCoffeeDetails, style: Theme.of(context).textTheme.title,),
+        Container(padding: EdgeInsets.all( _margin), margin: EdgeInsets.all( _margin), child: 
+        Text(StringLabels.roastedCoffeeDetails, style: Theme.of(context).textTheme.title,),),
 
         ///Row 1
         Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: <Widget>[
