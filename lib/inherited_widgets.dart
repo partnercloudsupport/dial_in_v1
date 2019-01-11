@@ -422,12 +422,12 @@ class RatioModel extends Model{
 
     if(type == BrewRatioType.doseYield){
 
-      result = _brew - _dose;
+      result = _brew - (_dose.roundToDouble() * 1.9).toInt();
       _yielde = result;
       return result.toString();
       
     }else{
-      result = _dose + _yielde;
+      result = (_dose.roundToDouble() * 1.9).toInt() + _yielde;
        _brew = result;
       return result.toString();
     }

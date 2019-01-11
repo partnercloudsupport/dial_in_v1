@@ -93,7 +93,9 @@ class Profile {
 
     if (method == StringLabels.immersion || method == StringLabels.coldBrew){
 
-        double coffeeInCoffee = tds * (yielde + dose);
+        // double liquidRetainedInDose = dose * 2.1;
+
+        double coffeeInCoffee = tds * (yielde + (dose * 2.1));
         extractionYield = coffeeInCoffee / dose;
 
     }else{
