@@ -67,7 +67,7 @@ class _RecipePageState extends State<RecipePage> {
 
     showModalBottomSheet(context: context, builder: (BuildContext context){
       // widget._scrollController.animateTo(widget._scrollController.position.pixels - 300,curve: Curves.easeInOut, duration: Duration(seconds: 1) );
-      return TimePicker(item, widget._setProfileItemValue);
+      return TimePicker(item,  widget._setProfileItemValue);
       }
     );
     // .then((v){ widget._scrollController.animateTo(widget._scrollController.position.pixels + 300,curve: Curves.easeInOut, duration: Duration(seconds: 1) );
@@ -294,7 +294,7 @@ class _TimePickerState extends State<TimePicker> {
   List< Widget> _seconds = new List<Widget>();
 
   Stopwatch stopwatch = new Stopwatch();
-  Timer timer = Timer(Duration(milliseconds:1000), (){},);
+  Timer timer;
   int time = 0;
   int mins;
   int sec;
@@ -337,23 +337,24 @@ class _TimePickerState extends State<TimePicker> {
   void updateTime(Timer timer){
        
       setState(() {
-           time ++;
-            mins = (time ~/ 60).toInt();
-            sec = (time % 60);
-   
-            _minuteController.animateTo(
-            mins * _itemHeight.toDouble(),
-            duration: Duration(
-            seconds: 1), curve: Curves.linear);
+        time ++;
+        mins = (time ~/ 60).toInt();
+        sec = (time % 60);
 
-          if (time % 60 == 0){ _secondController.jumpToItem(mins);}
-            else{
-                _secondController.animateTo(
-                sec * _itemHeight.toDouble(),
-                duration: Duration(
-                      seconds: 1), curve: Curves.linear);}
+        _minuteController.animateTo(
+        mins * _itemHeight.toDouble(),
+        duration: Duration(
+        seconds: 1), curve: Curves.linear);
+
+        if (time % 60 == 0){ _secondController.jumpToItem(mins);}
+        else{
+            _secondController.animateTo(
+            sec * _itemHeight.toDouble(),
+            duration: Duration(
+                  seconds: 1), curve: Curves.linear);
+        }
       }
-      );
+    );
   }
 
   @override

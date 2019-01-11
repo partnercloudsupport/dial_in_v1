@@ -281,7 +281,7 @@ class ProfilePageState extends State<ProfilePage> {
       break;
 
       case ProfileType.recipe:
-      _structure = RecipePage(_profile, _margin, (key, value){setState(()=> _profile.setProfileItemValue( key,  value));}, _showProfileList, _isEditing , _scrollController);
+      _structure = RecipePage(_profile, _margin, (key, value){setState(()=> _profile.setProfileItemValue( key, value));}, _showProfileList, _isEditing , _scrollController);
       break;
 
       default:
@@ -291,7 +291,6 @@ class ProfilePageState extends State<ProfilePage> {
     return _structure;
 
   }
-
 
   void showPickerMenu(Item item){
 
@@ -341,7 +340,7 @@ class ProfilePageState extends State<ProfilePage> {
         }
       }
     ).then((nul) {  print('at finish ${_scrollController.position.pixels}');
-
+      // TODO
       // _scrollController
       // .animateTo(_scrollController.position.pixels + 1000.0 ,curve: Curves.easeInOut, duration: Duration(seconds: 1));
       });
