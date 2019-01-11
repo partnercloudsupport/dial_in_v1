@@ -27,32 +27,32 @@ class DataPageState extends State<DataPage>with SingleTickerProviderStateMixin {
   void initState() {
     _lists = TabViewDataArray([
       TabViewData(
-        DataList(ProfileType.recipe,(profile){},),
+        DataList(ProfileType.recipe,),
         Tab(icon: Icon(Icons.list),),
         ProfileType.recipe
       ),
       TabViewData(
-          DataList(ProfileType.coffee,(profile){},),
+          DataList(ProfileType.coffee,),
           Tab(icon: Icon(Icons.rounded_corner)),
           ProfileType.coffee
       ),
       TabViewData(
-        DataList(ProfileType.grinder,(profile){},),
+        DataList(ProfileType.grinder,),
         Tab(icon: Icon(Icons.cloud_off)),
         ProfileType.grinder
       ),
       TabViewData(
-        DataList( ProfileType.equipment,(profile){},),
+        DataList( ProfileType.equipment,),
         Tab(icon: Icon(Icons.watch_later)),
         ProfileType.equipment
       ),
       TabViewData(
-        DataList( ProfileType.water,(profile){},),
+        DataList( ProfileType.water,),
         Tab(icon: Icon(Icons.branding_watermark)),
         ProfileType.water
       ),
       TabViewData(
-        DataList( ProfileType.barista,(profile){}, ),
+        DataList( ProfileType.barista,),
         Tab(icon: Icon(Icons.people)),
         ProfileType.barista
       ),
@@ -137,17 +137,20 @@ class DataPageState extends State<DataPage>with SingleTickerProviderStateMixin {
 ///Data list         
 class DataList extends StatelessWidget {
   final ProfileType _profileType;
-  final Function(Profile) _giveProfile;
+  
 
-  DataList(this._profileType, this._giveProfile);
+  DataList(this._profileType);
 
   @override
   Widget build(BuildContext context) {
     return 
     Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.stretch,children:[
-          Material(color: Theme.of(context).primaryColorLight ,child: Container(padding: EdgeInsets.all(15.0),
+
+          Material(color: Theme.of(context).primaryColorLight ,child: 
+          Container(padding: EdgeInsets.all(15.0),
           child: Text(Functions.getProfileTypeString(_profileType)+"s", style: Theme.of(context).textTheme.subtitle,), alignment: Alignment.center,),),
-          Expanded(child:ProfileList(_profileType, _giveProfile),)]);
+
+          Expanded(child:ProfileList(_profileType,),)]);
           }
 }
  

@@ -75,6 +75,7 @@ class ProfilePageState extends State<ProfilePage> {
     else{
     if (widget.isNew || widget.isCopying) { this._appBarTitle = StringLabels.newe + ' ' + Functions.getProfileTypeString(_profile.type);
     }else if (widget.isEditing){  this._appBarTitle =  StringLabels.editing + ' ' + Functions.getProfileTypeString(_profile.type);}
+    else{this._appBarTitle =  Functions.getProfileTypeString(_profile.type);}
     }
     getBody();
     _ratioModel = RatioModel(Functions.getIntValue(_profile.getProfileItemValue(DatabaseIds.brewingDose)),
@@ -82,13 +83,21 @@ class ProfilePageState extends State<ProfilePage> {
                         Functions.getIntValue(_profile.getProfileItemValue(DatabaseIds.brewWeight)));
     super.initState();
   }
+
+  @override
+    void didUpdateWidget(ProfilePage oldWidget) {
+      
+     if (widget.isEditing){  this._appBarTitle =  StringLabels.editing + ' ' + Functions.getProfileTypeString(_profile.type);}
+      super.didUpdateWidget(oldWidget);
+    }
  
   /// UI Build
   @override
   Widget build(BuildContext context) {
     setupAppBarActions();
+    assert(_appBarTitle != null, '_appBarTitle is null');
     return  new 
-    
+
     ScopedModel(
       model: _ratioModel,
       child:
