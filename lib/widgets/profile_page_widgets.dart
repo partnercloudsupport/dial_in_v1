@@ -393,6 +393,8 @@ class ProfileInputWithDetailsCardState extends State<ProfileInputWithDetailsCard
             _focus.addListener(handleLeftProfileTextfieldFocus);
             _controller = new TextEditingController();
             _detailController = new TextEditingController();
+            _controller.text = widget._profile.getProfileTitleValue();
+            _detailController.text =  widget._detailValue;
             super.initState();
       }
 
