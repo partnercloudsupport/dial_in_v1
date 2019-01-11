@@ -17,7 +17,7 @@ class RecipePage extends StatefulWidget {
 
   _RecipePageState createState() => _RecipePageState();
 
-  final double _margin; 
+  
   final Function(ProfileType) _showOptions;
   final Profile _profile;
   final bool _isEditing;
@@ -26,7 +26,7 @@ class RecipePage extends StatefulWidget {
   // Sets a String and Value in the Parent profie
   final Function(String , dynamic) _setProfileItemValue;
 
-  RecipePage(this._profile, this._margin, this._setProfileItemValue, this._showOptions, this._isEditing, this._scrollController);
+  RecipePage(this._profile, this._setProfileItemValue, this._showOptions, this._isEditing, this._scrollController);
 }
 
 class _RecipePageState extends State<RecipePage> {
@@ -217,45 +217,55 @@ class _RecipePageState extends State<RecipePage> {
           widget._isEditing),
 
       ///Score Section
-      Card(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              margin: EdgeInsets.all(widget._margin),
-              padding: EdgeInsets.all(widget._margin),
-              child: Text(
-                StringLabels.score,
-                style: Theme.of(context).textTheme.title,
-              ),
-            ),
-            Column(
-              children: <Widget>[
-                ScoreSlider(StringLabels.strength, 0.0,
-                  (value) { widget._setProfileItemValue( DatabaseIds.strength, value.toString());},
-                  widget._isEditing),
+      Card( child: Container(
+              
+              padding: EdgeInsets.all(50.0),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+        
+                    Text(
+                      StringLabels.score,
+                      style: Theme.of(context).textTheme.title,
+                      ),
+                  
+                      ScoreSlider(
+                        StringLabels.strength,
+                        double.parse(widget._profile.getProfileItemValue(DatabaseIds.strength)),
+                        (value) { widget._setProfileItemValue( DatabaseIds.strength, value.toString());},
+                        widget._isEditing),
 
-                ScoreSlider(StringLabels.balance, 0.0,
-                  (value) { widget._setProfileItemValue( DatabaseIds.balance, value.toString());},
-                  widget._isEditing),
+                      ScoreSlider(
+                        StringLabels.balance,
+                        double.parse(widget._profile.getProfileItemValue(DatabaseIds.balance)),
+                        (value) { widget._setProfileItemValue( DatabaseIds.balance, value.toString());},
+                        widget._isEditing),
 
-                ScoreSlider(StringLabels.flavour, 0.0,
-                  (value) { widget._setProfileItemValue( DatabaseIds.flavour, value.toString());},
-                  widget._isEditing),
+                      ScoreSlider(
+                        StringLabels.flavour,
+                        double.parse(widget._profile.getProfileItemValue(DatabaseIds.flavour)),
+                        (value) { widget._setProfileItemValue( DatabaseIds.flavour, value.toString());},
+                        widget._isEditing),
 
-                ScoreSlider(StringLabels.body, 0.0,
-                  (value) {widget._setProfileItemValue( DatabaseIds.body, value.toString());},
-                  widget._isEditing),
+                      ScoreSlider(
+                        StringLabels.body,
+                        double.parse(widget._profile.getProfileItemValue(DatabaseIds.body)),
+                        (value) {widget._setProfileItemValue( DatabaseIds.body, value.toString());},
+                        widget._isEditing),
 
-                ScoreSlider(StringLabels.afterTaste, 0.0,
-                  (value) {widget._setProfileItemValue( DatabaseIds.afterTaste, value.toString());},
-                  widget._isEditing),
+                      ScoreSlider(
+                        StringLabels.afterTaste,
+                        double.parse(widget._profile.getProfileItemValue(DatabaseIds.afterTaste)),
+                        (value) {widget._setProfileItemValue( DatabaseIds.afterTaste, value.toString());},
+                        widget._isEditing),
 
-                /// End of score   
-                
-              ],
-            )
+                      Padding(padding: EdgeInsets.all(20.0)),
+
+                      Text('Total score ${widget._profile.getTotalScore().toInt().toString()} / 50', style: Theme.of(context).textTheme.display2)
+                      /// End of score   
+                  
           ],
+        ),
         ),
       ),
         NotesCard(

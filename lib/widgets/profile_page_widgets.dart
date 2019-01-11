@@ -12,6 +12,7 @@ import 'package:dial_in_v1/data/functions.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:dial_in_v1/inherited_widgets.dart';
 
+
 class ScoreSlider extends StatefulWidget {
   final double _value;
   final String _label;
@@ -23,9 +24,10 @@ class ScoreSlider extends StatefulWidget {
   ScoreSliderState createState() => new ScoreSliderState();
 }
 class ScoreSliderState extends State<ScoreSlider> {
+ 
   double _value;
   String _label;
-  double _margin = 10.0;
+  double _margin = 5.0;
 
   @override
   void initState() {
@@ -36,36 +38,43 @@ class ScoreSliderState extends State<ScoreSlider> {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     return 
-    Container(margin: EdgeInsets.all(_margin), padding:EdgeInsets.all(_margin) , child: 
+    Container(width:double.infinity, margin: EdgeInsets.all(_margin), padding:EdgeInsets.all(_margin) , child: 
     Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
+
           Container(
             margin: EdgeInsets.all(_margin),
             padding: EdgeInsets.all(_margin),
-            child: Text(widget._label),
+            child: Text('${widget._label} ', style: Theme.of(context).textTheme.subtitle),
           ),
-          Slider(
-          
-            value: _value,
-            onChanged: widget._isEditing? (value){
-              setState(() {
-                _value = value;
-              });}: null,
-            onChangeEnd:  (value) {
-              
-              widget._sliderValue(value);
-            },
-            min: 0,
-            max: 10,
-            divisions: 10,
-            label: _value.toInt().toString(),
-            activeColor: Theme.of(context).sliderTheme.inactiveTrackColor,
-            inactiveColor: Theme.of(context).sliderTheme.inactiveTrackColor,
-            
-          )
-        ]
+
+            Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+
+              Text('${_value.toInt()}/10' , style: Theme.of(context).textTheme.display2),
+
+              CupertinoSlider(
+                  value: _value,
+                  onChanged: widget._isEditing? (value){
+                    setState(() {
+                      _value = value;
+                    });}: null,
+                  onChangeEnd:  (value) {
+                    
+                    widget._sliderValue(value);
+                  },
+                  min: 0,
+                  max: 10,
+                  divisions: 10,
+                  // label: _value.toInt().toString(),
+                  activeColor: Theme.of(context).sliderTheme.activeTrackColor,) ,
+                  // inactiveColor: Theme.of(context).sliderTheme.inactiveTrackColor,
+              ],
+            )      
+          ]
         )
     );
   }

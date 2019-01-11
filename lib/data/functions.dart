@@ -35,7 +35,6 @@ class Functions {
 
     return value;
    }
-   
 
   static String convertSecsToMinsAndSec(int timeInput){
         
