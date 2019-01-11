@@ -263,7 +263,7 @@ class ProfilePageState extends State<ProfilePage> {
       break;
 
       case ProfileType.equipment:
-      _structure = EquipmentPage(_profile, _margin,  _profile.setProfileItemValue, _isEditing);
+      _structure = EquipmentPage(_profile, _margin,  _profile.setProfileItemValue, _isEditing, showPickerMenu);
       break;
 
       case ProfileType.feed:

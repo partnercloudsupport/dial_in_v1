@@ -158,8 +158,9 @@ class _ProfileInputCardWithAttributeState extends State<ProfileInputCardWithAttr
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
 
+                  Padding(padding: EdgeInsets.all(5.0),),
+
                   /// Left profile selection
-             
                        CircularPicture(widget.profile.image, 40.0),
 
                         /// Spacer
@@ -180,21 +181,23 @@ class _ProfileInputCardWithAttributeState extends State<ProfileInputCardWithAttr
                       ),),
 
                       /// Spacer
-                        Container(width: 20.0,),
+                        Container(width: 10.0,),
 
-                        Expanded(flex:1, child:
-                            Container(margin: EdgeInsets.all(10.0), child:
+                            Container(margin: EdgeInsets.all(10.0), width: 60.0, child:
                              TextFormField(
                               enabled: widget._isEditing,
                               textAlign: TextAlign.start,
                               keyboardType: widget.keyboardType,
                               decoration: new InputDecoration(
+                                labelStyle: widget.attributeTitle == StringLabels.preinfusion ?
+                                                                      TextStyle(fontSize:8.0) :
+                                                                      Theme.of(context).textTheme.caption,
                                 labelText: widget.attributeTitle,
                                 hintText: widget.attributeHintText,),
                                 controller: _attributeController,
                               )
                             )
-                        )
+                        
                       ]
                 )
               )
@@ -365,7 +368,7 @@ class _DoubleProfileInputCardState extends State<DoubleProfileInputCard> {
 
 ///Profile details card
 class ProfileInputWithDetailsCard extends StatefulWidget {
-  final double _padding = 5.0;
+  final double _padding = 10.0;
   final double _margin = 5.0;
   final double _cornerRadius = 20.0;
   final double _textFieldWidth = 150.0;
@@ -427,9 +430,9 @@ class ProfileInputWithDetailsCardState extends State<ProfileInputWithDetailsCard
        child: Card(
         margin: EdgeInsets.all(widget._margin),
           child: Container(
-            padding: EdgeInsets.fromLTRB(5.0,widget._padding,widget._padding,widget._padding),
+            padding: EdgeInsets.all(widget._padding),
             child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                textBaseline: TextBaseline.ideographic,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
 
@@ -451,14 +454,12 @@ class ProfileInputWithDetailsCardState extends State<ProfileInputWithDetailsCard
                               controller: _controller,
                           ))),
 
-                  /// Spacer        
+                  // /// Spacer        
                   Container(width: 10.0,),
                   
                   /// Attribute Value
-                  Expanded(child: 
-                  Container(margin: EdgeInsets.fromLTRB(0.0, 0.0, widget._margin, 0.0), child: 
-                  ScalableWidget(
-                  TextfieldWithFixedValue(widget._detailTitle, _detailController.text)))),
+                  Container( width: 60, child: 
+                  TextfieldWithFixedValue(widget._detailTitle, _detailController.text)),
 
                 ]
             )
@@ -473,7 +474,7 @@ class ProfileInputWithDetailsCardState extends State<ProfileInputWithDetailsCard
 
 //Single profile card
 class ProfileInputCard extends StatefulWidget {
-  final double _padding = 5.0;
+  final double _padding = 10.0;
   final double _margin = 5.0;
   final Profile _profile;
   final Function _onProfileTextPressed;

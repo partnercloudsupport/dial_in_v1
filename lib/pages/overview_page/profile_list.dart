@@ -193,7 +193,7 @@ class _ProfileListDialogState extends State<ProfileListDialog>{
               return new 
                Container(height: 600, child: 
                 ListView.builder(
-                    itemExtent: 120,
+                    itemExtent: 80,
                     itemCount: _list.length,
                     itemBuilder: (BuildContext context, int index) =>
                     ProfileCard(_list[index], _dealWithProfileSelection, _deleteProfile)

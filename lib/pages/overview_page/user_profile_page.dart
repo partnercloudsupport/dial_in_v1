@@ -29,7 +29,7 @@ class UserProfilePage extends StatelessWidget{
     ScopedModelDescendant<ProfilesModel>
             ( rebuildOnChange: false, builder: (context, _ ,model) =>
     
-    Container(child: 
+    Container(child: Card(child: 
 
     new Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center ,children:[
 
@@ -77,7 +77,8 @@ class UserProfilePage extends StatelessWidget{
       ]
     ,)
     )
-    ); 
+    ) 
+    );
   }
 }
 

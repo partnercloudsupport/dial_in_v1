@@ -12,11 +12,12 @@ class EquipmentPage extends StatelessWidget {
   final double _margin;
   final Profile _profile;
   final bool _isEditing;
+  final Function(Item) _showPicker;
 
 // Sets a String and Value in the Parent profie
   final Function(String, dynamic) _setProfileItemValue;
 
-  EquipmentPage(this._profile, this._margin, this._setProfileItemValue, this._isEditing);
+  EquipmentPage(this._profile, this._margin, this._setProfileItemValue, this._isEditing, this._showPicker);
 
   ///
   /// UI Build
@@ -28,7 +29,7 @@ class EquipmentPage extends StatelessWidget {
       /// Details
       EquipmentDetailsCard(
         (name) {_setProfileItemValue(DatabaseIds.equipmentId, name);},
-        (type) {_setProfileItemValue(DatabaseIds.type, type);},
+        _showPicker,
         (make) {_setProfileItemValue(DatabaseIds.equipmentMake, make);},
         (model) {_setProfileItemValue(DatabaseIds.equipmentModel, model);},
         _profile.getProfileItem(DatabaseIds.equipmentId),
@@ -52,7 +53,7 @@ class EquipmentDetailsCard extends StatelessWidget {
   final double _margin = 5.0;
   final double _textFieldWidth = 140.0;
   final Function(String) _name;
-  final Function(String) _type;
+  final Function(Item) _type;
   final Function(String) _make;
   final Function(String) _model;
   final Item _nameValue;
@@ -90,7 +91,7 @@ class EquipmentDetailsCard extends StatelessWidget {
                _nameValue, (value){ _name(value);}, _textFieldWidth, _isEditing), 
 
               /// Type
-              TextFieldItemWithInitalValue(
+              PickerTextField(
                _typeValue, (value){ _type(value);}, _textFieldWidth, _isEditing), 
 
             ],

@@ -1106,6 +1106,7 @@ Future<String> getUserImage ()async{
           databaseId: DatabaseIds.type,
           placeHolderText: StringLabels.enterDescription,
           keyboardType: TextInputType.text,
+          inputViewDataSet: StringDataArrays.equipmentTypes
         );
         break;
 
