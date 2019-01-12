@@ -413,15 +413,15 @@ void setWidgetUp(){
         ///
         Expanded(
             child: Container(
-                padding: EdgeInsets.all(0.0),
+                padding: EdgeInsets.all(10.0),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Container(
-                          margin: EdgeInsets.all(10.0), child:ScalableWidget(Text(_topLeft, maxLines: 2,
-                           overflow: TextOverflow.clip, style: Theme.of(context).textTheme.display1,))),
+                          child:Text(_topLeft, maxLines: 2, softWrap: true,
+                           overflow: TextOverflow.clip, style: Theme.of(context).textTheme.display1,)),
                       Container(
-                        margin: EdgeInsets.all(10.0),
+                        
                               child: widget._profile.type == ProfileType.recipe ? 
                               ScalableWidget(FiveStarRating(widget._profile.getTotalScore().toInt()))  :
                               Text(_bottomleft, maxLines: 1)
@@ -436,7 +436,7 @@ void setWidgetUp(){
         ///
         Expanded(
             child: Container(
-                padding: EdgeInsets.all(0.0),
+                padding: EdgeInsets.all(10.0),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end, mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[

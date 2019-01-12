@@ -191,6 +191,7 @@ class _ProfileListDialogState extends State<ProfileListDialog>{
               return new 
                Container(height: 600, child: 
                 ListView.builder(
+                    physics: ScrollPhysics(),
                     itemExtent: 100,
                     itemCount: _list.length,
                     itemBuilder: (BuildContext context, int index) =>
