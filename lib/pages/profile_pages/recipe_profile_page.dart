@@ -74,23 +74,6 @@ class _RecipePageState extends State<RecipePage> {
     // });
   }
 
-/// TODO
-  // void _estimateBrewRatio(BrewRatioType type){
-  //   setState(() {  
-  //   if(type == BrewRatioType.doseYield){
-  //     int dose = Functions.getIntValue(widget._profile.getProfileItemValue(DatabaseIds.brewingDose));
-  //     int brewWeight = Functions.getIntValue(widget._profile.getProfileItemValue(DatabaseIds.brewWeight));
-  //     int result = brewWeight - dose;
-  //     widget._setProfileItemValue(DatabaseIds.yielde, result.toString());
-      
-  //   }else{
-  //     int dose = Functions.getIntValue(widget._profile.getProfileItemValue(DatabaseIds.brewingDose));
-  //     int yielde = Functions.getIntValue(widget._profile.getProfileItemValue(DatabaseIds.yielde));
-  //     int result = dose + yielde;
-  //     widget._setProfileItemValue(DatabaseIds.brewWeight, result.toString());
-  //   }
-  //    });
-  // }
 
 
   ///
@@ -323,7 +306,7 @@ class _TimePickerState extends State<TimePicker> {
   void startWatch() {
       setState(() {
         timerIsActive = true;
-        timer = Timer.periodic(Duration(seconds:1),(Timer t) => updateTime(t));
+        timer = Timer.periodic(Duration(seconds:1),(Timer t) => setState(()=>updateTime(t)));
             });
   }
 
