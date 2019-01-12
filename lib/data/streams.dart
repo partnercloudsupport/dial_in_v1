@@ -176,6 +176,10 @@ class SocialFeedBloc{
           
           .then((List<FeedProfileData> feedListProfiles){ 
 
+            assert(feedListProfiles.reversed is! List<FeedProfileData>, 'feed list is not of correct type');
+            
+            List<FeedProfileData> feedListProfilesReversed = feedListProfiles.reversed;
+
               _outgoingController.add(feedListProfiles);}
           );
         }

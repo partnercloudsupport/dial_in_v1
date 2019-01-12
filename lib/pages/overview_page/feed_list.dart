@@ -106,7 +106,7 @@ class _FeedListState extends State<FeedList>{
           ListView.builder(
             itemCount: snapshot.data.length,
             itemBuilder: (BuildContext context, int index) =>
-            SocialProfileCard(snapshot.data[index], _dealWithProfileSelection, _handleUserSelection, index)
+            SocialProfileCard(_list[index], _dealWithProfileSelection, _handleUserSelection, index)
             ),feedType 
             );
       }
