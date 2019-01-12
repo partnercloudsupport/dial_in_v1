@@ -243,19 +243,19 @@ class DatabaseFunctions {
                       RegExp(r'https://firebasestorage.googleapis.com/v0/b/dial-in-21c50.appspot.com/o/'), '');
     // String firebaseRef = FirebaseStorage.instance.ref().path;
 
-    FirebaseStorage.instance.ref().child(filePath).delete().then((_) => print('Successfullt deleted $filePath storage item' ));
+    // FirebaseStorage.instance.ref().child(filePath).delete().then((_) => print('Successfullt deleted $filePath storage item' ));
 
 
     // final RegExp regExp = RegExp(r"(?<=https:\/\/firebasestorage.googleapis.com\/v0\/b\/dial-in-21c50.appspot.com\/o\/).*");
 
     //   String filePath = regExp.stringMatch(fileUrl.split('').reversed.join());
     //   // Create a reference to the file to delete
-      StorageReference desertRef = FirebaseStorage.instance.ref().child(filePath);
+      // StorageReference desertRef = FirebaseStorage.instance.ref().child(filePath);
 
       // Delete the file
-      desertRef.delete()
-      .then((_) {})
-      .catchError((e){print(e);});
+      // desertRef.delete()
+      // .then((_) {})
+      // .catchError((e){print(e);});
 
       
   }

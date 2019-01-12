@@ -1176,19 +1176,6 @@ class _TextFieldItemWithInitialValueState extends State<TextFieldItemWithInitalV
     super.initState();
     }
 
-  @override
-    void didUpdateWidget(TextFieldItemWithInitalValue oldWidget) {
-      
-      if (
-      widget._item.databaseId == DatabaseIds.brewingDose ||
-      widget._item.databaseId == DatabaseIds.yielde ||
-      widget._item.databaseId == DatabaseIds.brewWeight){
-        if(((widget._item.value)as String).length > 1){
-        _controller.text =((widget._item.value) as String).split('').reversed.join();}
-      }else{ _controller.text = widget._item.value;}
-
-      super.didUpdateWidget(oldWidget);
-    }
 
   @override
   Widget build(BuildContext context) {
@@ -1215,7 +1202,7 @@ class _TextFieldItemWithInitialValueState extends State<TextFieldItemWithInitalV
                         widget._item.databaseId == DatabaseIds.yielde ||
                         widget._item.databaseId == DatabaseIds.brewWeight){
                           widget._giveValue(value.split('').reversed.join());
-                }else{ _controller.text = widget._item.value;}}),
+                }else{ widget._giveValue(value);}}),
             )
           )); 
         }

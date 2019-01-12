@@ -244,13 +244,13 @@ class RoastingDetailsCardState extends State<RoastingDetailsCard> {
           ///Roastery Name
           TextFieldItemWithInitalValue(_roasteryNameItem,
                 (value){
-                  _roasteryNameItem = value;
+                  _roasteryNameItem.value = value as String;
                   setState(widget._roasteryName(value));}, _textFieldWidth, widget._isEditing) ,    
           
           /// Roaster name
           TextFieldItemWithInitalValue(_roasterNameItem,
                 (value){
-                  _roasterNameItem = value;
+                  _roasterNameItem.value = value as String;
                   setState(widget._roasterName(value));}, _textFieldWidth, widget._isEditing),                                  
         ],)
     ],))

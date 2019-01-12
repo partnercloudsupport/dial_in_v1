@@ -122,7 +122,7 @@ class ProfilePageState extends State<ProfilePage> {
             child: Icon(Icons.arrow_back),
             onPressed: () {
               Navigator.pop(context, false);
-              DatabaseFunctions.deleteFireBaseStorageItem(_profile.image);
+              if(!_isOldProfile){ DatabaseFunctions.deleteFireBaseStorageItem(_profile.image);}
             },
           ),
         actions: _appBarActions,
