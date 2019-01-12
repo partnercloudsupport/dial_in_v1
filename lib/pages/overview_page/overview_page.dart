@@ -208,7 +208,7 @@ class UserEditingTable extends StatelessWidget {
       (builder: (context, _ ,model) =>
     
     Dialog(insetAnimationCurve: Curves.easeInOut, insetAnimationDuration: Duration(seconds: 1), child:
-            Container(width: 200.0, height: 300,child: 
+            Container(width: 200.0, height: 250,child: 
               Card(child: 
                 Column(children: <Widget>[
 
