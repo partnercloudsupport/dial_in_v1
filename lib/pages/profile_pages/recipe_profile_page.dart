@@ -21,12 +21,12 @@ class RecipePage extends StatefulWidget {
   final Function(ProfileType) _showOptions;
   final Profile _profile;
   final bool _isEditing;
-  final ScrollController _scrollController;
+  // final ScrollController _scrollController;
 
   // Sets a String and Value in the Parent profie
   final Function(String , dynamic) _setProfileItemValue;
 
-  RecipePage(this._profile, this._setProfileItemValue, this._showOptions, this._isEditing, this._scrollController);
+  RecipePage(this._profile, this._setProfileItemValue, this._showOptions, this._isEditing, );
 }
 
 class _RecipePageState extends State<RecipePage> {

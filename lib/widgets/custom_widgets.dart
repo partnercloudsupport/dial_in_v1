@@ -394,7 +394,7 @@ void setWidgetUp(){
   ],
   child:
       
-    Card(child: Container(padding: EdgeInsets.all(5.0),child:
+   Card(child: Container(padding: EdgeInsets.all(5.0),child: 
       InkWell(onTap:() => widget._giveprofile(widget._profile)
        
       ,child: 
@@ -418,8 +418,8 @@ void setWidgetUp(){
                     crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Container(
-                          margin: EdgeInsets.all(10.0), child: Text(_topLeft, maxLines: 1,
-                           overflow: TextOverflow.clip, style: Theme.of(context).textTheme.display1,)),
+                          margin: EdgeInsets.all(10.0), child:ScalableWidget(Text(_topLeft, maxLines: 2,
+                           overflow: TextOverflow.clip, style: Theme.of(context).textTheme.display1,))),
                       Container(
                         margin: EdgeInsets.all(10.0),
                               child: widget._profile.type == ProfileType.recipe ? 
@@ -449,8 +449,10 @@ void setWidgetUp(){
                     ])))
       ]))
     ]),
-    )))
-  );
+    )
+    )
+    )
+    );
   }
 }
 

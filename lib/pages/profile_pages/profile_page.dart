@@ -55,7 +55,7 @@ class ProfilePageState extends State<ProfilePage> {
   bool _isOldProfile;
   Profile _profile;
   String _appBarTitle;
-  ScrollController _scrollController;
+  // ScrollController _scrollController;
   List<Widget> _appBarActions = [ Container()];
   List<Widget> _pageBody = List<Widget>();
   RatioModel _ratioModel;
@@ -67,7 +67,7 @@ class ProfilePageState extends State<ProfilePage> {
       _isEditing = widget.isEditing;
       _profile = widget.profile;
       _isOldProfile = widget.isOldProfile; 
-      _scrollController = ScrollController();
+      // _scrollController = ScrollController();
 
     if (widget.isFromUserFeed && this.widget.referance != null)
     { this._appBarTitle = "${this.widget.referance}'s Recipe"; } 
@@ -95,6 +95,7 @@ class ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     setupAppBarActions();
+    getBody();
     assert(_appBarTitle != null, '_appBarTitle is null');
     return  new 
 
@@ -130,7 +131,7 @@ class ProfilePageState extends State<ProfilePage> {
       
       body: 
       ListView(
-        controller: _scrollController,
+        // controller: _scrollController,
         children: <Widget>[
           Column(
             children: <Widget>[
@@ -290,7 +291,7 @@ class ProfilePageState extends State<ProfilePage> {
       break;
 
       case ProfileType.recipe:
-      _structure = RecipePage(_profile, (key, value){setState(()=> _profile.setProfileItemValue( key, value));}, _showProfileList, _isEditing , _scrollController);
+      _structure = RecipePage(_profile, (key, value){setState(()=> _profile.setProfileItemValue( key, value));}, _showProfileList, _isEditing );
       break;
 
       default:
@@ -312,7 +313,6 @@ class ProfilePageState extends State<ProfilePage> {
       }
 
       showModalBottomSheet(context: context, builder: (BuildContext context){
-        print('at start ${_scrollController.position.pixels}');
 
         // _scrollController.animateTo(_scrollController.position.pixels - 300,curve: Curves.easeInOut, duration: Duration(seconds: 1) );
 
@@ -348,7 +348,7 @@ class ProfilePageState extends State<ProfilePage> {
         );
         }
       }
-    ).then((nul) {  print('at finish ${_scrollController.position.pixels}');
+    ).then((nul) { 
       // TODO
       // _scrollController
       // .animateTo(_scrollController.position.pixels + 1000.0 ,curve: Curves.easeInOut, duration: Duration(seconds: 1));
@@ -367,7 +367,7 @@ class ProfilePageState extends State<ProfilePage> {
           actions: <Widget>[
 
       new CupertinoDialogAction(
-          child: const Text(StringLabels.camera),
+          child:  Text(StringLabels.camera, style: Theme.of(context).textTheme.display1),
           isDestructiveAction: false,
           onPressed: ()async{
             showDialog(barrierDismissible: false, context: context ,
@@ -391,7 +391,7 @@ class ProfilePageState extends State<ProfilePage> {
       ),
     
       new  CupertinoDialogAction(
-          child: const Text(StringLabels.photoLibrary),
+          child: Text(StringLabels.photoLibrary, style: Theme.of(context).textTheme.display1,),
           isDestructiveAction: false,
           onPressed: ()async{ 
             showDialog(barrierDismissible: false, context: context ,
@@ -415,15 +415,15 @@ class ProfilePageState extends State<ProfilePage> {
       ),
     ],)));
     }
-    );
+    ).then((url) => setState(()=> _profile.setProfileItemValue(DatabaseIds.image, url)));
   }
 
 /// TODO;
   void _moveScreenForBottomSheet(){
-    _scrollController.animateTo
-    (_scrollController.position.pixels + 190.0, 
-    duration: Duration(milliseconds: 500),
-    curve: Curves.easeIn);
+    // _scrollController.animateTo
+    // (_scrollController.position.pixels + 190.0, 
+    // duration: Duration(milliseconds: 500),
+    // curve: Curves.easeIn);
   }
 
   //// Show Profiles list

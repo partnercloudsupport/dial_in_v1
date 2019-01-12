@@ -864,7 +864,7 @@ class _DoseYieldBrewControlState extends State<DoseYieldBrewControl> {
             unselectedColor:  Theme.of(context).primaryColorLight,
             borderColor:  Theme.of(context).primaryColorDark,
             onValueChanged: (intValue){ setState((){
-              assert(intValue < 2, 'INt value is too hight' );
+              assert(intValue < 2, 'Int value is too hight' );
               _groupValue = intValue;
               switch (intValue) {
                 case 0: widget._brewRatioTypeFunction(BrewRatioType.doseYield); break;
