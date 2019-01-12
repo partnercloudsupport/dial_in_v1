@@ -119,6 +119,8 @@ class SignUpPage extends StatefulWidget{
                 /// New User text
                 Text(StringLabels.newUser,  style: TextStyle(color: Colors.black87, fontSize: 30.0),),
 
+                Padding(padding: EdgeInsets.all(5.0),),
+
                 ///User Picture
                  InkWell(
                    child: Container( decoration: BoxDecoration(shape: BoxShape.circle),margin: EdgeInsets.fromLTRB(25.0, 0.0, 25.0, 25.0) , 

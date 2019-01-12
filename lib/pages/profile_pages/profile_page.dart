@@ -210,11 +210,14 @@ class ProfilePageState extends State<ProfilePage> {
 
     if(!widget.isFromUserFeed){
 
+      if(_isEditing){
+
       _pageBody[2] = PublicProfileSwitch(_profile.isPublic,
                                         (String id , dynamic isPublic ){setState(() {
-                                               _profile.setProfileItemValue ( id , isPublic);                                   
+                                               _profile.isPublic = isPublic;                                   
                                                                                 });
-                                           });
+                                           },);
+      }
     }
   }   
 

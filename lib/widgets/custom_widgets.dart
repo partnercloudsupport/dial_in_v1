@@ -665,13 +665,22 @@ class SocialProfileCard extends StatelessWidget {
   final _dateFormat = DateFormat.yMd();
   final int _tag;
 
-
   SocialProfileCard(this._profile, this._giveprofile, this._giveUserProfile, this._tag);
 
   @override
   Widget build(BuildContext context) {
+
+    Widget _description;
+
+    if((_profile.profile.getProfileItemValue(DatabaseIds.descriptors) == '' || null) && (_profile.profile.getProfileItemValue(DatabaseIds.notes) == '' || null)){
+      _description = Container(width: 0.0, height: 0.0,);
+    }
+    else{
+          _description =Container(margin: EdgeInsets.all(5.0), child: Text('Notes of ' + _profile.profile.getProfileItemValue(DatabaseIds.descriptors) + 'Info' + _profile.profile.getProfileItemValue(DatabaseIds.notes),  maxLines: 10), );
+      }
+
     return 
-    Card(child: 
+    Card(child: Container(padding: EdgeInsets.all(5.0), child:
 
        Column(children: <Widget>[
 
@@ -681,7 +690,7 @@ class SocialProfileCard extends StatelessWidget {
 
          /// User picture
           Container(child:InkWell(onTap:() => _giveUserProfile(_profile.userProfile, _tag),
-              child: Hero(tag: _profile.userProfile.userId + _tag.toString(), child: CircularPicture(_profile.userImage , 60.0)))),
+              child: Hero(tag: _profile.userProfile.userId + _tag.toString(), child: CircularPicture(_profile.userImage , 40.0)))),
               
       
           Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
@@ -696,7 +705,7 @@ class SocialProfileCard extends StatelessWidget {
         Expanded(child: Column(mainAxisAlignment: MainAxisAlignment.end, crossAxisAlignment: CrossAxisAlignment.end, children: [ 
           
           ///Follow Button
-          Container(margin: const EdgeInsets.all(15.0) ,
+          Container(margin: const EdgeInsets.all(5.0) ,
           child: FollowButton(_profile.userProfile.userId),),
 
           ]) ,)
@@ -715,16 +724,16 @@ class SocialProfileCard extends StatelessWidget {
 
         /// Coffee Name
         Container(margin: EdgeInsets.all(5.0), child: 
-          Text(_profile.profile.getProfileProfileItemValue(ProfileType.coffee, DatabaseIds.coffeeId),  maxLines: 1, style: Theme.of(context).textTheme.title,),),
+          Text(_profile.profile.getProfileProfileItemValue(ProfileType.coffee, DatabaseIds.coffeeId),  maxLines: 3, style: Theme.of(context).textTheme.display3,),),
 
           /// Notes
-          Container(margin: EdgeInsets.all(5.0), child: Text(_profile.profile.getProfileItemValue(DatabaseIds.descriptors),  maxLines: 1), ),
+          _description,
 
           ///Score
           FiveStarRating(_profile.profile.getTotalScore().toInt())  
         ],))      
       ]),
-    );
+    ));
   }
 }
 

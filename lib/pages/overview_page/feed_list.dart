@@ -104,7 +104,6 @@ class _FeedListState extends State<FeedList>{
         
         FeedRefresher(
           ListView.builder(
-            itemExtent: 450,
             itemCount: snapshot.data.length,
             itemBuilder: (BuildContext context, int index) =>
             SocialProfileCard(snapshot.data[index], _dealWithProfileSelection, _handleUserSelection, index)
