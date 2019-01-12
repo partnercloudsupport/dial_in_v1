@@ -108,7 +108,7 @@ class _ProfileListState extends State<ProfileList>{
                 onRefresh: (up) => _onRefresh(up, model),
                 child: 
                 ListView.builder(
-                    itemExtent: 120,
+                    itemExtent: 100,
                     itemCount: _list.length,
                     itemBuilder: (BuildContext context, int index) =>
                     ProfileCard(_list[index], _dealWithProfileSelection, _deleteProfile)

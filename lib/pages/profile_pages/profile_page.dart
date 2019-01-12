@@ -454,7 +454,6 @@ class ProfilePageState extends State<ProfilePage> {
               ProfileListDialog(
                 profileType,
                 (sentProfile){ 
-
                   setState(() {
                     _profile.setSubProfile(sentProfile);
                       });

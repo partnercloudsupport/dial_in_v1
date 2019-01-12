@@ -114,7 +114,7 @@ class CircularPicture extends StatelessWidget {
         ),
         height:_size,
         width: _size,
-        margin: const EdgeInsets.all(15.0),
+        margin: const EdgeInsets.all(5.0),
         child: ClipRRect(
           borderRadius: new BorderRadius.circular(_size),
           child: 
@@ -266,6 +266,197 @@ class UserCard extends StatelessWidget {
   }
 }
 
+// class ProfileDialogCard extends StatefulWidget {
+  
+//   final Function(Profile) _giveprofile;
+//   final Function(Profile, BuildContext) _deleteProfile;
+//   final Profile _profile;
+//   final _dateFormat = DateFormat.yMd();
+
+//   ProfileDialogCard(this._profile, this._giveprofile, this._deleteProfile);
+
+
+//     _ProfileDialogCardState createState() => _ProfileDialogCardState();
+// }
+// class _ProfileDialogCardState extends State<ProfileDialogCard> {
+
+//   String _topLeft = 'error';
+//   String _topRight = 'error';
+//   String _bottomRight = 'error';
+//   String _bottomleft = 'error';
+//   double _score;
+
+//   @override
+//   void initState() {
+ 
+//   setWidgetUp();
+//    super.initState();
+//   }
+
+//   @override
+//     void didUpdateWidget(dynamic oldWidget) {
+//     setWidgetUp();
+//     super.didUpdateWidget(oldWidget);
+//     }
+
+// void setWidgetUp(){
+
+//    switch(widget._profile.type){
+      
+//       case ProfileType.recipe: 
+      
+//       _topLeft = widget._profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.coffee);
+//       _topRight = widget._dateFormat.format(widget._profile.getProfileItemValue(DatabaseIds.date));
+//       _bottomRight = widget._profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.brewingEquipment);
+//       _bottomleft = 'widget._profile.getTotalScore()';
+//       _score = widget._profile.getTotalScore();
+//       break;
+
+//       case ProfileType.coffee:  
+//       _topLeft = widget._profile.getProfileItemValue( DatabaseIds.coffeeId);
+//       _topRight = widget._profile.getProfileItemValue( DatabaseIds.processingMethod);
+//       _bottomRight = widget._dateFormat.format(widget._profile.getProfileItemValue(DatabaseIds.roastDate));
+//       _bottomleft = widget._profile.getProfileItemValue( DatabaseIds.country);
+//       break;
+
+//       case ProfileType.water:   
+//       _topLeft = widget._profile.getProfileItemValue( DatabaseIds.waterID);
+//       _topRight = widget._profile.getProfileItemValue( DatabaseIds.ppm);
+//       _bottomRight = widget._profile.getProfileItemValue( DatabaseIds.kh);
+//       _bottomleft = widget._profile.getProfileItemValue( DatabaseIds.gh);
+//       break;
+
+//       case ProfileType.equipment:   
+//       _topLeft = widget._profile.getProfileItemValue( DatabaseIds.equipmentId);
+//       _topRight = widget._profile.getProfileItemValue( DatabaseIds.type);
+//       _bottomRight = widget._profile.getProfileItemValue( DatabaseIds.method);
+//       _bottomleft = widget._profile.getProfileItemValue( DatabaseIds.equipmentModel); 
+//       break;
+
+//       case ProfileType.grinder:   
+//       _topLeft = widget._profile.getProfileItemValue( DatabaseIds.grinderId);
+//       _topRight = widget._profile.getProfileItemValue( DatabaseIds.burrs);
+//       _bottomRight = widget._profile.getProfileItemValue( DatabaseIds.grinderMake);
+//       _bottomleft = widget._profile.getProfileItemValue( DatabaseIds.grinderModel);      
+//       break;
+
+//       case ProfileType.barista:   
+//       _topLeft = widget._profile.getProfileItemValue( DatabaseIds.name);
+//       _topRight = widget._profile.getProfileItemValue( DatabaseIds.level);
+//       _bottomleft = widget._profile.getProfileItemValue( DatabaseIds.notes);
+//       _bottomRight = widget._profile.getProfileItemValue( DatabaseIds.age);       
+//       break;
+
+//       case ProfileType.none:  
+//       _topLeft = 'error none';
+//       _topRight = 'error none';
+//       _bottomRight = 'error none';
+//       _bottomleft = 'error none';       
+//       break;  
+
+//       case ProfileType.feed:   
+//       _topLeft = 'error feed';
+//       _topRight = 'error feed';
+//       _bottomRight = 'error feed';
+//       _bottomleft = 'error feed';       
+//       break;  
+
+//       default: 
+//       _topLeft = 'error default';
+//       _topRight = 'error default';
+//       _bottomRight = 'error default';
+//       _bottomleft = 'error default';              
+//       break;
+//     }
+// }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return 
+//     Slidable(
+//   delegate: new SlidableDrawerDelegate(),
+//   actionExtentRatio: 0.25,
+//   secondaryActions: <Widget>[
+//     new IconSlideAction(
+//       caption: 'Delete',
+//       color: Colors.red,
+//       icon: Icons.delete,
+//       onTap: () => widget._deleteProfile(widget._profile, context)
+// ,
+//     ),
+//     new IconSlideAction(
+//       caption: 'Edit',
+//       color: Colors.yellow,
+//       icon: Icons.edit,
+//       onTap: () => widget._giveprofile(widget._profile),
+//     ),
+//   ],
+//   child:
+      
+//    Card(child: Container(padding: EdgeInsets.all(5.0),child: 
+//       InkWell(onTap:() => widget._giveprofile(widget._profile)
+       
+//       ,child: 
+        
+//       Row(children: <Widget>[
+//       ///
+//       /// Profile picture
+//       ///
+//       Hero(tag: widget._profile.objectId , child: Container(
+//           child: CircularPicture(widget._profile.image, 60.0)),),
+          
+//       Expanded(
+//           child: Row(children: <Widget>[
+//         ///
+//         /// Main name and secondnary details
+//         ///
+//         Expanded(
+//             child: Container(
+//                 padding: EdgeInsets.all(5.0),
+//                 child: Column(
+//                     crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                     children: <Widget>[
+//                       Container(
+//                           child:Text(_topLeft, maxLines: 2, softWrap: true,
+//                            overflow: TextOverflow.clip, style: Theme.of(context).textTheme.body2,)),
+//                       Container(
+                        
+//                               child: widget._profile.type == ProfileType.recipe ? 
+//                               ScalableWidget(FiveStarRating(widget._profile.getTotalScore().toInt()))  :
+//                               Text(_bottomleft, maxLines: 1)
+//                       )
+//                     ]
+//                 )
+//             )
+//         ),
+
+//         ///
+//         /// Third and fourth details
+//         ///
+//         Expanded(
+//             child: Container(
+//                 padding: EdgeInsets.all(5.0),
+//                 child: Column(
+//                     crossAxisAlignment: CrossAxisAlignment.end, mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                     children: <Widget>[
+//                       Container(
+//                           margin: EdgeInsets.all(5.0), child: Text(_topRight, maxLines: 1)),
+//                       Container(
+//                         margin: EdgeInsets.all(5.0),
+//                         child: Text(_bottomRight, maxLines: 1),
+//                       )
+//                     ])))
+//       ]))
+//     ]),
+//     )
+//     )
+//     )
+//     );
+//   }
+// }
+
+
+
 ///Profile card
 class ProfileCard extends StatefulWidget {
   
@@ -394,7 +585,7 @@ void setWidgetUp(){
   ],
   child:
       
-   Card(child: Container(padding: EdgeInsets.all(5.0),child: 
+   Card(child: Container(padding: EdgeInsets.all(10.0),child: 
       InkWell(onTap:() => widget._giveprofile(widget._profile)
        
       ,child: 
@@ -403,8 +594,10 @@ void setWidgetUp(){
       ///
       /// Profile picture
       ///
-      Hero(tag: widget._profile.objectId , child: Container(
-          child: CircularPicture(widget._profile.image, 60.0)),),
+      ScalableWidget(Hero(tag: widget._profile.objectId , child: Container (
+          child: CircularPicture(widget._profile.image, 60.0)),)),
+
+      Padding(padding: EdgeInsets.all(5.0)),
           
       Expanded(
           child: Row(children: <Widget>[
@@ -412,14 +605,15 @@ void setWidgetUp(){
         /// Main name and secondnary details
         ///
         Expanded(
+            flex: 8,
             child: Container(
-                padding: EdgeInsets.all(10.0),
+                // padding: EdgeInsets.all(5.0),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Container(
                           child:Text(_topLeft, maxLines: 2, softWrap: true,
-                           overflow: TextOverflow.clip, style: Theme.of(context).textTheme.display1,)),
+                           overflow: TextOverflow.ellipsis, style: Theme.of(context).textTheme.display1,)),
                       Container(
                         
                               child: widget._profile.type == ProfileType.recipe ? 
@@ -435,15 +629,17 @@ void setWidgetUp(){
         /// Third and fourth details
         ///
         Expanded(
+            flex:6,
             child: Container(
-                padding: EdgeInsets.all(10.0),
+                padding: EdgeInsets.all(5.0),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end, mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Container(
-                          margin: EdgeInsets.all(10.0), child: Text(_topRight, maxLines: 1)),
+                          // margin: EdgeInsets.all(5.0), 
+                          child: Text(_topRight, maxLines: 1)),
                       Container(
-                        margin: EdgeInsets.all(10.0),
+                        margin: EdgeInsets.all(5.0),
                         child: Text(_bottomRight, maxLines: 1),
                       )
                     ])))
