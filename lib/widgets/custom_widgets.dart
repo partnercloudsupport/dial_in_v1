@@ -18,6 +18,8 @@ import "package:pull_to_refresh/pull_to_refresh.dart";
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:dial_in_v1/routes.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+
 
 
 
@@ -372,20 +374,26 @@ void setWidgetUp(){
   @override
   Widget build(BuildContext context) {
     return 
-    Dismissible(
-    // Each Dismissible must contain a Key. Keys allow Flutter to
-    // uniquely identify Widgets.
-    background: Container(color: Colors.red),
-    key: Key(widget._profile.objectId),
-    // We also need to provide a function that will tell our app
-    // what to do after an item has been swiped away.
-    onDismissed: (direction) {
-      // Remove the item from our data source.
-      widget._deleteProfile(widget._profile, context);
-
-   
-  },
-  child: 
+    Slidable(
+  delegate: new SlidableDrawerDelegate(),
+  actionExtentRatio: 0.25,
+  secondaryActions: <Widget>[
+    new IconSlideAction(
+      caption: 'Delete',
+      color: Colors.red,
+      icon: Icons.delete,
+      onTap: () => widget._deleteProfile(widget._profile, context)
+,
+    ),
+    new IconSlideAction(
+      caption: 'Edit',
+      color: Colors.yellow,
+      icon: Icons.edit,
+      onTap: () => widget._giveprofile(widget._profile),
+    ),
+  ],
+  child:
+      
     Card(child: Container(padding: EdgeInsets.all(5.0),child:
       InkWell(onTap:() => widget._giveprofile(widget._profile)
        
@@ -521,6 +529,99 @@ class SocialProfileCard extends StatelessWidget {
     );
   }
 }
+
+///RatioTextField Item input
+class RatioTextFieldItemWithInitalValue extends StatefulWidget {
+
+  final Function(dynamic) _giveValue;
+  final Item _item;
+  final bool _isEditing;
+  final TextAlign textAlign;
+
+RatioTextFieldItemWithInitalValue
+(this._item, this._giveValue,this._isEditing,{this.textAlign = TextAlign.center});
+
+ _RatioTextFieldItemWithInitalValueState createState() => _RatioTextFieldItemWithInitalValueState();
+}
+class _RatioTextFieldItemWithInitalValueState extends State<RatioTextFieldItemWithInitalValue> {
+
+  /// Maybe TODO to format text
+  RegExp _filter = RegExp('\.\s');
+  BlacklistingTextInputFormatter _spaceBlacklistingTextInputFormatter = BlacklistingTextInputFormatter(RegExp(' '),replacementString: '');
+  BlacklistingTextInputFormatter _commaBlacklistingTextInputFormatter = BlacklistingTextInputFormatter(RegExp(','),replacementString: '.');
+  WhitelistingTextInputFormatter _whitelistingTextInputFormatter = WhitelistingTextInputFormatter(RegExp('[0-9,.]'));
+  List<TextInputFormatter> _inputFormatters = List<TextInputFormatter>();
+  TextEditingController _controller;
+  FocusNode _focusNode = new FocusNode();
+  final double _textFieldWidth = 30.0;
+
+
+  @override
+    void initState() {
+      _inputFormatters = [_commaBlacklistingTextInputFormatter,_spaceBlacklistingTextInputFormatter,_whitelistingTextInputFormatter];
+      _controller = new TextEditingController(text: widget._item.value);
+      _focusNode.addListener(_focusNodeListenerFunction);
+    super.initState();
+    }
+
+  void _focusNodeListenerFunction(){
+
+    if (!_focusNode.hasFocus){
+
+      _controller.text = widget._item.value.toString();
+
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+ 
+    return    
+    ScopedModelDescendant<RatioModel>
+            ( rebuildOnChange: true, builder: (BuildContext context, _ ,RatioModel model) {
+
+      return
+      StreamBuilder(
+      stream: model.getStream(widget._item.databaseId),
+      builder: (BuildContext context, AsyncSnapshot<int> snapShot){
+
+        if(model.isCalculating){
+          _controller.text = snapShot.data.toString();
+          model.isCalculating = false;}
+        
+        _focusNodeListenerFunction();
+
+        return
+        Expanded(
+          flex: 5,
+          child: Container(width: _textFieldWidth, padding: EdgeInsets.all(5.0), margin: EdgeInsets.all(5.0), 
+            child: TextField(
+              focusNode: _focusNode,
+              inputFormatters: _inputFormatters ?? <TextInputFormatter>[],
+              enabled: widget._isEditing,
+              controller: _controller ,
+              textAlign: widget.textAlign,
+              keyboardType: widget._item.keyboardType,
+              decoration: 
+                new InputDecoration(
+                
+                prefixIcon: widget._item.icon ?? null,
+                labelText: widget._item.title,
+                hintText: widget._item.placeHolderText,
+                  ),
+                  onChanged: (value) {
+                    model.updateValue(widget._item.databaseId,value);
+                    widget._giveValue(value);
+                  }
+                )
+              )
+            );
+          }
+        );
+      }
+    ); 
+  }
+}       
 
 /// Five star rating
 class FiveStarRating extends StatelessWidget {

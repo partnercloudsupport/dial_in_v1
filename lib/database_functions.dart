@@ -12,6 +12,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:dial_in_v1/data/strings.dart';
 import 'package:dial_in_v1/data/mini_classes.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:firebase_core/firebase_core.dart';
+
 
 
 
