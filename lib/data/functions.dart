@@ -203,13 +203,16 @@ class Functions {
   return returnFile;      
  } 
 
-  static Future getimageFromCameraOrGallery(BuildContext context, Function(String) then)async{
+  static Future<String> getimageFromCameraOrGallery(BuildContext context, Function(String) then)async{
     String url = '';
 
     await showDialog(context: context, builder: (BuildContext context){
       return Center(child: Container( width:200, child:
       
-       CupertinoActionSheet(actions: <Widget>[
+       CupertinoActionSheet(
+         
+         title: Text(StringLabels.photoSource, style: Theme.of(context).textTheme.subtitle,),
+         actions: <Widget>[
 
       new CupertinoDialogAction(
           child: Text(StringLabels.camera, style: Theme.of(context).textTheme.display1),
@@ -221,11 +224,12 @@ class Functions {
             Navigator.of(context);
             Navigator.of(context).pop(then(url));
             Navigator.of(context).pop(then(url));
+            then(url);
           }
       ),
     
       new  CupertinoDialogAction(
-          child: Text(StringLabels.camera, style: Theme.of(context).textTheme.display1),
+          child: Text(StringLabels.photoLibrary, style: Theme.of(context).textTheme.display1),
           isDestructiveAction: false,
           onPressed: ()async{ 
             File image = await ImagePicker.pickImage
@@ -234,6 +238,7 @@ class Functions {
             Navigator.of(context);
             Navigator.of(context).pop(then(url));
             Navigator.of(context).pop(then(url));
+            then(url);
           }
       ),
     ],)));

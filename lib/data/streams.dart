@@ -175,11 +175,7 @@ class SocialFeedBloc{
           convertProfilesToListOfFeedProfiles(profiles)
           
           .then((List<FeedProfileData> feedListProfiles){ 
-
-            assert(feedListProfiles.reversed is! List<FeedProfileData>, 'feed list is not of correct type');
             
-            List<FeedProfileData> feedListProfilesReversed = feedListProfiles.reversed;
-
               _outgoingController.add(feedListProfiles);}
           );
         }
@@ -223,10 +219,10 @@ class UserFeed {
   bool _initilised = false;
   UserProfile _userProfile;
 
-  String get userImage => _userProfile.userImage;
-  String get userId => _userProfile.userId;
-  String get userName => _userProfile.userName;
-  List <String> get following => _userProfile.following;
+  String get userImage => _userProfile.userImage ?? '';
+  String get userId => _userProfile.userId ?? '';
+  String get userName => _userProfile.userName ?? '';
+  List <String> get following => _userProfile.following ?? [''] ;
 
   Stream<UserProfile> get userProfile => _outgoingController.stream;
   

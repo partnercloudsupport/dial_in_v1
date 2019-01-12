@@ -125,6 +125,10 @@ class ProfilesModel extends Model{
       deInit();
       }
 
+    void refreshUser(){
+      _userFeed.refresh();
+    }
+
 
     void init()async{
       await _userFeed.getProfile();

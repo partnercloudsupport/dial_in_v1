@@ -680,13 +680,14 @@ class SocialProfileCard extends StatelessWidget {
       }
 
     return 
-    Card(child: Container(padding: EdgeInsets.all(5.0), child:
+    Card(child: Container(child:
 
-       Column(children: <Widget>[
+      Column(children: <Widget>[
 
-      InkWell(onTap:() => _giveUserProfile(_profile.userProfile, _tag),child:  
+      InkWell(onTap:() => _giveUserProfile(_profile.userProfile, _tag), 
+      child:  
       Material (color: Theme.of(context).dividerColor, 
-      child: Row(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
+      child: Container(padding: EdgeInsets.all(10.0), child: Row(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
 
          /// User picture
           Container(child:InkWell(onTap:() => _giveUserProfile(_profile.userProfile, _tag),
@@ -696,10 +697,20 @@ class SocialProfileCard extends StatelessWidget {
           Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
 
             ///User Name
-            Container(margin: EdgeInsets.all(5.0), child: Text(_profile.userProfile.userName,  maxLines: 1, style: Theme.of(context).textTheme.display1,),),
+            Container(margin: EdgeInsets.all(5.0), 
+            child:  Text(
+                      _profile.userProfile.userName ?? '',  
+                      maxLines: 1, 
+                      style: Theme.of(context).textTheme.display1, 
+                      softWrap: true,overflow: 
+                      TextOverflow.ellipsis,),),
 
             /// Date
-            Container(margin: EdgeInsets.all(5.0), child: Text(_dateFormat.format(_profile.profile.getProfileItemValue(DatabaseIds.date)) ,  maxLines: 1), ),
+            Container(
+              margin: EdgeInsets.all(5.0), 
+              child: Text(
+                      _dateFormat.format(_profile.profile.getProfileItemValue(DatabaseIds.date)) ,  
+                      maxLines: 1), ),
 
         ]),
         Expanded(child: Column(mainAxisAlignment: MainAxisAlignment.end, crossAxisAlignment: CrossAxisAlignment.end, children: [ 
@@ -710,7 +721,7 @@ class SocialProfileCard extends StatelessWidget {
 
           ]) ,)
             
-      ],),)),      
+      ],),))),      
 
       InkWell(onTap:() => _giveprofile(_profile),child: Column(children: <Widget>[
 

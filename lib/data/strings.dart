@@ -1,6 +1,7 @@
 import 'package:dial_in_v1/data/functions.dart';
 
 class  StringLabels {
+  static const String userPhoto = 'User photo';
   static const String extraction = 'Extraction';
   static const String unFollow = 'Unfollow';
   static const String following = 'Following';

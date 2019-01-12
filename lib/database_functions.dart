@@ -155,7 +155,7 @@ class DatabaseFunctions {
 
   }
   
-  static void updateUserProfile(String userName, String imageURL)async{
+  static Future updateUserProfile(String userName, String imageURL)async{
 
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
 
@@ -163,7 +163,20 @@ class DatabaseFunctions {
     userUpdateInfo.displayName = userName;
     userUpdateInfo.photoUrl = imageURL;
   
-    user.updateProfile(userUpdateInfo);
+    user.updateProfile(userUpdateInfo)
+
+      .then( (_)async{
+            Map<String, dynamic> data = {
+            DatabaseIds.userId : user.uid,
+            DatabaseIds.userName : userName,
+            DatabaseIds.email : user.email,
+            DatabaseIds.image : imageURL,
+            DatabaseIds.following : List<String>()
+            };
+            Firestore.instance.collection(DatabaseIds.User).document(user.uid).updateData(data)
+            .then((_) => print('sucessfully updated user'))
+            .catchError((e) => print('Error updating user'));
+      });
   }
 
   

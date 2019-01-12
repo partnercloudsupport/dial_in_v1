@@ -9,6 +9,10 @@ import 'package:dial_in_v1/data/profile.dart';
 import 'package:dial_in_v1/inherited_widgets.dart';
 import 'package:dial_in_v1/pages/overview_page/current_user_page.dart';
 import 'package:dial_in_v1/theme/theme_test_page.dart';
+import 'package:dial_in_v1/data/functions.dart';
+import 'package:dial_in_v1/database_functions.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:dial_in_v1/inherited_widgets.dart';
 
 class OverviewPage extends StatefulWidget{
  @override
@@ -128,7 +132,15 @@ class OverviewPageState extends State<OverviewPage> with SingleTickerProviderSta
                     ListTile(
                       title: Text('Edit user profile'),
                       onTap: () {
-                            Navigator.pop(context);
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false, // user must tap button!
+                          builder: (BuildContext context) {
+
+                            return UserEditingTable();
+                           
+                          },
+                        );
                       },
                     ),
                   ],
@@ -185,3 +197,67 @@ class TabViewDataArray{
     ];
   }
 }
+
+class UserEditingTable extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    return  
+    
+     ScopedModelDescendant<ProfilesModel>
+      (builder: (context, _ ,model) =>
+    
+    Dialog(insetAnimationCurve: Curves.easeInOut, insetAnimationDuration: Duration(seconds: 1), child:
+            Container(width: 200.0, height: 300,child: 
+              Card(child: 
+                Column(children: <Widget>[
+
+                Table(
+                defaultColumnWidth: FlexColumnWidth(3.0),
+                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                children: [
+
+                  TableRow(children: [
+
+                    TableCell(verticalAlignment: TableCellVerticalAlignment.middle ,child: Center(child: Text(StringLabels.userName))),
+
+                    TableCell(verticalAlignment: TableCellVerticalAlignment.middle ,child: Center(child: TextFormField(
+                      initialValue: model.userName,
+                      onFieldSubmitted:(name) => DatabaseFunctions.updateUserProfile(name, model.userImage).then((_) => model.refreshUser()),
+                    ))),
+                  ]),
+
+                  TableRow(children: [
+
+                    TableCell(verticalAlignment: TableCellVerticalAlignment.middle ,child: Center(child: Text(StringLabels.userPhoto))),
+
+                    TableCell(verticalAlignment: TableCellVerticalAlignment.middle, 
+                    child: Container( padding: EdgeInsets.all(30.0), alignment: Alignment(0, 0),
+                            child: 
+                            InkWell(
+                              onTap:(){ Functions.getimageFromCameraOrGallery(context,
+                              (image) { DatabaseFunctions.updateUserProfile(model.userName, image);}).then((_) => model.refreshUser());},
+                              child: Container(width: 80.0, height: 80.0, 
+                              decoration: BoxDecoration(shape: BoxShape.circle, border: Border()), 
+                              child:ClipRRect(
+                                borderRadius: new BorderRadius.circular(40),
+                                child: Image.network(model.userImage, fit: BoxFit.cover))
+                              ))
+                        )
+                      ),
+                    ] 
+                  ),
+                ]
+            ),
+          MaterialButton(child: Text('Done'), onPressed: () => Navigator.pop(context),)
+          ],
+        )
+      )
+      )
+    )
+    );
+  }
+}
+
+
+
