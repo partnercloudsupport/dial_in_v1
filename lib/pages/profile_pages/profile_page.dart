@@ -90,6 +90,12 @@ class ProfilePageState extends State<ProfilePage> {
      if (widget.isEditing){  this._appBarTitle =  StringLabels.editing + ' ' + Functions.getProfileTypeString(_profile.type);}
       super.didUpdateWidget(oldWidget);
     }
+
+@override
+  void dispose() {
+    _ratioModel.dispose();
+    super.dispose();
+  }
  
   /// UI Build
   @override

@@ -1023,7 +1023,7 @@ class _PickerTextFieldState extends State<PickerTextField> {
           enabled: widget._isEditing,
            textAlign: TextAlign.start,
            decoration: new InputDecoration(
-             prefixIcon: Icon(Icons.tonality),
+             prefixIcon: widget._item.icon ?? null,
              labelText: widget._item.title,
            ),
            focusNode: _focus,
@@ -1402,6 +1402,7 @@ class _TextFieldItemWithInitialValueState extends State<TextFieldItemWithInitalV
       flex: 5,
       child: Container(padding: EdgeInsets.all(5.0), margin: EdgeInsets.all(5.0), 
         child: TextField(
+          
           autofocus: false,
           inputFormatters: widget.textInputFormatters ?? <TextInputFormatter>[],
           enabled: widget._isEditing,

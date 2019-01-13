@@ -6,386 +6,366 @@ import 'package:dial_in_v1/data/profile.dart';
 import 'package:dial_in_v1/data/functions.dart';
 import 'package:dial_in_v1/data/mini_classes.dart';
 import 'package:dial_in_v1/widgets/profile_page_widgets.dart';
-import 'package:dial_in_v1/data/mini_classes.dart';
-import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'dart:async';
-import 'dart:math';
 import 'package:rxdart/rxdart.dart';
 
-
 class CameraWidget extends InheritedWidget {
+  CameraWidget({Key key, Widget child}) : super(key: key, child: child);
 
-  CameraWidget({Key key ,Widget child}): super(key:key, child: child);
-  
   @override
   bool updateShouldNotify(CameraWidget oldWidget) => true;
 
-  static CameraWidget of (BuildContext context) =>
-    context.inheritFromWidgetOfExactType(CameraWidget) as CameraWidget;
+  static CameraWidget of(BuildContext context) =>
+      context.inheritFromWidgetOfExactType(CameraWidget) as CameraWidget;
 }
 
 class DateWidget extends InheritedWidget {
+  DateWidget({Key key, Widget child}) : super(key: key, child: child);
 
-  DateWidget({Key key ,Widget child}): super(key:key, child: child);
-  
   @override
   bool updateShouldNotify(DateWidget oldWidget) => true;
 
-  static DateWidget of (BuildContext context) =>
-    context.inheritFromWidgetOfExactType(DateWidget) as DateWidget;
+  static DateWidget of(BuildContext context) =>
+      context.inheritFromWidgetOfExactType(DateWidget) as DateWidget;
 }
 
 class ProfilesInheritedWidget extends InheritedWidget {
+  ProfilesInheritedWidget({Key key, Widget child})
+      : super(key: key, child: child);
 
-  ProfilesInheritedWidget({Key key ,Widget child}): super(key:key, child: child);
-  
   @override
   bool updateShouldNotify(DateWidget oldWidget) => true;
 
-  static DateWidget of (BuildContext context) =>
-    context.inheritFromWidgetOfExactType(DateWidget) as DateWidget;
+  static DateWidget of(BuildContext context) =>
+      context.inheritFromWidgetOfExactType(DateWidget) as DateWidget;
 }
 
 /// Profiles scoped model
-class ProfilesModel extends Model{
+class ProfilesModel extends Model {
+  Stream<UserProfile> get userProfile => _userFeed.userProfile;
+  String get userId => _userFeed.userId;
+  String get userName => _userFeed.userName;
+  String get userImage => _userFeed.userImage;
+  String get userEmail => _userFeed.userEmail;
 
-    Stream<UserProfile> get userProfile => _userFeed.userProfile;
-    String get userId => _userFeed.userId;
-    String get userName => _userFeed.userName;
-    String get userImage => _userFeed.userImage;
-    
-    int get recipeProfilesCount => _recipeFeed.profilesCount ?? 0;
-    int get coffeeProfilesCount => _coffeeFeed.profilesCount ?? 0;
+  int get recipeProfilesCount => _recipeFeed.profilesCount ?? 0;
+  int get coffeeProfilesCount => _coffeeFeed.profilesCount ?? 0;
 
-
-  FeedBloc _recipeFeed  = new FeedBloc(DatabaseIds.recipe);
-  FeedBloc _coffeeFeed  = new FeedBloc(DatabaseIds.coffee);
-  FeedBloc _grinderFeed  = new FeedBloc(DatabaseIds.grinder);
-  FeedBloc _equipmentFeed  = new FeedBloc(DatabaseIds.brewingEquipment);
-  FeedBloc _waterFeed  = new FeedBloc(DatabaseIds.water);
-  FeedBloc _baristaFeed  = new FeedBloc(DatabaseIds.Barista);
+  FeedBloc _recipeFeed = new FeedBloc(DatabaseIds.recipe);
+  FeedBloc _coffeeFeed = new FeedBloc(DatabaseIds.coffee);
+  FeedBloc _grinderFeed = new FeedBloc(DatabaseIds.grinder);
+  FeedBloc _equipmentFeed = new FeedBloc(DatabaseIds.brewingEquipment);
+  FeedBloc _waterFeed = new FeedBloc(DatabaseIds.water);
+  FeedBloc _baristaFeed = new FeedBloc(DatabaseIds.Barista);
   SocialFeedBloc _comminuty;
   SocialFeedBloc _followers;
-  UserFeed _userFeed = new UserFeed(); 
+  UserFeed _userFeed = new UserFeed();
 
-    /// Checks the current user agaist the userId
-    ///  to check if current is following
-    bool isUserFollowing(String otherUser){
+  /// Checks the current user agaist the userId
+  ///  to check if current is following
+  bool isUserFollowing(String otherUser) {
+    bool result;
 
-      bool result;
+    if (_userFeed.following != null) {
+      List<String> followingList = _userFeed.following;
 
-      if (_userFeed.following != null) {
-
-        List<String> followingList = _userFeed.following;
-
-         result =  followingList.contains(otherUser) ? true : false; 
-      }
-      return result;
+      result = followingList.contains(otherUser) ? true : false;
     }
+    return result;
+  }
 
-    /// Checks the following status then updates the record accordingly
-    void followOrUnfollow(String otherUser, Function(bool) competionFollow){
-
-      if(isUserFollowing(otherUser))
-      {DatabaseFunctions.unFollow( userId ,otherUser, (success){
-      _userFeed.refresh();
-      competionFollow(false);});}
-
-      else
-      {DatabaseFunctions.addFollower(userId, otherUser, (success){
+  /// Checks the following status then updates the record accordingly
+  void followOrUnfollow(String otherUser, Function(bool) competionFollow) {
+    if (isUserFollowing(otherUser)) {
+      DatabaseFunctions.unFollow(userId, otherUser, (success) {
         _userFeed.refresh();
-       competionFollow(true);  
+        competionFollow(false);
       });
-      }
-      _followers.refresh();
-      
+    } else {
+      DatabaseFunctions.addFollower(userId, otherUser, (success) {
+        _userFeed.refresh();
+        competionFollow(true);
+      });
     }
-    
-    /// Getters for profiles
-    Stream<List<Profile>> get recipeProfiles => _recipeFeed.profiles;
-    Stream<List<Profile>> get coffeeProfiles => _coffeeFeed.profiles;
-    Stream<List<Profile>> get grinderProfiles => _grinderFeed.profiles;
-    Stream<List<Profile>> get equipmentProfiles => _equipmentFeed.profiles;
-    Stream<List<Profile>> get waterProfiles => _waterFeed.profiles;
-    Stream<List<Profile>> get baristaProfiles => _baristaFeed.profiles;
+    _followers.refresh();
+  }
 
-    /// Getters for social feeds
-    Stream<List<FeedProfileData>> get communnityFeed => _comminuty.profiles;
-    Stream<List<FeedProfileData>> get followingFeed => _followers.profiles;
+  /// Getters for profiles
+  Stream<List<Profile>> get recipeProfiles => _recipeFeed.profiles;
+  Stream<List<Profile>> get coffeeProfiles => _coffeeFeed.profiles;
+  Stream<List<Profile>> get grinderProfiles => _grinderFeed.profiles;
+  Stream<List<Profile>> get equipmentProfiles => _equipmentFeed.profiles;
+  Stream<List<Profile>> get waterProfiles => _waterFeed.profiles;
+  Stream<List<Profile>> get baristaProfiles => _baristaFeed.profiles;
 
-    ProfilesModel(){
-      _comminuty = new SocialFeedBloc
-                      (DatabaseIds.community, userProfile, );
-      _followers = new SocialFeedBloc
-                      (DatabaseIds.following, userProfile, isUserFollowing: isUserFollowing);
-    }
+  /// Getters for social feeds
+  Stream<List<FeedProfileData>> get communnityFeed => _comminuty.profiles;
+  Stream<List<FeedProfileData>> get followingFeed => _followers.profiles;
 
-    void logOut(){
-      DatabaseFunctions.logOut();
-      deInit();
-      }
+  ProfilesModel() {
+    _comminuty = new SocialFeedBloc(
+      DatabaseIds.community,
+      userProfile,
+    );
+    _followers = new SocialFeedBloc(DatabaseIds.following, userProfile,
+        isUserFollowing: isUserFollowing);
+  }
 
-    void refreshUser(){
-      _userFeed.refresh();
-    }
+  void logOut() {
+    DatabaseFunctions.logOut();
+    deInit();
+  }
 
+  void refreshUser() {
+    _userFeed.refresh();
+  }
 
-    void init()async{
-      await _userFeed.getProfile();
-      _recipeFeed.getProfiles();
-      _coffeeFeed.getProfiles();
-      _grinderFeed.getProfiles();
-      _equipmentFeed.getProfiles();
-      _waterFeed.getProfiles();
-      _baristaFeed.getProfiles();
-      _comminuty.getProfiles();
-      _followers.getProfiles();
-     
-    } 
+  void init() async {
+    await _userFeed.getProfile();
+    _recipeFeed.getProfiles();
+    _coffeeFeed.getProfiles();
+    _grinderFeed.getProfiles();
+    _equipmentFeed.getProfiles();
+    _waterFeed.getProfiles();
+    _baristaFeed.getProfiles();
+    _comminuty.getProfiles();
+    _followers.getProfiles();
+  }
 
-    void deInit(){
-      _recipeFeed.deinit();
-      _coffeeFeed.deinit();
-      _grinderFeed.deinit();
-      _equipmentFeed.deinit();
-      _waterFeed.deinit();
-      _baristaFeed.deinit();
-      _userFeed.deinit();
-    }
+  void deInit() {
+    _recipeFeed.deinit();
+    _coffeeFeed.deinit();
+    _grinderFeed.deinit();
+    _equipmentFeed.deinit();
+    _waterFeed.deinit();
+    _baristaFeed.deinit();
+    _userFeed.deinit();
+  }
 
-    static ProfilesModel of(BuildContext context) =>
+  static ProfilesModel of(BuildContext context) =>
       ScopedModel.of<ProfilesModel>(context);
 
-    void add(Profile profile){
-
-      switch (profile.type){
-
-        case ProfileType.recipe:
-         _recipeFeed.add(profile);
+  void add(Profile profile) {
+    switch (profile.type) {
+      case ProfileType.recipe:
+        _recipeFeed.add(profile);
         break;
 
-        case ProfileType.coffee:
-         _coffeeFeed.add(profile);
+      case ProfileType.coffee:
+        _coffeeFeed.add(profile);
         break;
 
-        case ProfileType.grinder:
-         _grinderFeed.add(profile);
+      case ProfileType.grinder:
+        _grinderFeed.add(profile);
         break;
 
-        case ProfileType.equipment:
-         _equipmentFeed.add(profile);
+      case ProfileType.equipment:
+        _equipmentFeed.add(profile);
         break;
 
-        case ProfileType.water:
-         _waterFeed.add(profile);
+      case ProfileType.water:
+        _waterFeed.add(profile);
         break;
 
-        case ProfileType.barista:
-         _baristaFeed.add(profile);
+      case ProfileType.barista:
+        _baristaFeed.add(profile);
         break;
 
-        case ProfileType.none:
-         throw(profile.type);
+      case ProfileType.none:
+        throw (profile.type);
         break;
 
-        case ProfileType.feed:
-         throw(profile.type);
+      case ProfileType.feed:
+        throw (profile.type);
         break;
 
-        default:
-         throw(profile.type);
+      default:
+        throw (profile.type);
         break;
-      }
     }
+  }
 
-    void update(Profile profile){
-      DatabaseFunctions.updateProfile(profile);
-      // switch (profile.type){
+  void update(Profile profile) {
+    DatabaseFunctions.updateProfile(profile);
+    // switch (profile.type){
 
-      //   case ProfileType.recipe:
-      //    _recipeFeed.add(profile);
-      //   break;
+    //   case ProfileType.recipe:
+    //    _recipeFeed.add(profile);
+    //   break;
 
-      //   case ProfileType.coffee:
-      //    _coffeeFeed.add(profile);
-      //   break;
+    //   case ProfileType.coffee:
+    //    _coffeeFeed.add(profile);
+    //   break;
 
-      //   case ProfileType.grinder:
-      //    _grinderFeed.add(profile);
-      //   break;
+    //   case ProfileType.grinder:
+    //    _grinderFeed.add(profile);
+    //   break;
 
-      //   case ProfileType.equipment:
-      //    _equipmentFeed.add(profile);
-      //   break;
+    //   case ProfileType.equipment:
+    //    _equipmentFeed.add(profile);
+    //   break;
 
-      //   case ProfileType.water:
-      //    _waterFeed.add(profile);
-      //   break;
+    //   case ProfileType.water:
+    //    _waterFeed.add(profile);
+    //   break;
 
-      //   case ProfileType.barista:
-      //    _baristaFeed.add(profile);
-      //   break;
+    //   case ProfileType.barista:
+    //    _baristaFeed.add(profile);
+    //   break;
 
-      //   case ProfileType.none:
-      //    throw(profile.type);
-      //   break;
+    //   case ProfileType.none:
+    //    throw(profile.type);
+    //   break;
 
-      //   case ProfileType.feed:
-      //    throw(profile.type);
-      //   break;
+    //   case ProfileType.feed:
+    //    throw(profile.type);
+    //   break;
 
-      //   default:
-      //    throw(profile.type);
-      //   break;
-      // }
+    //   default:
+    //    throw(profile.type);
+    //   break;
+    // }
+  }
+
+  void delete(Profile profile) {
+    DatabaseFunctions.deleteProfile(profile);
+
+    switch (profile.type) {
+      case ProfileType.recipe:
+        _recipeFeed.removeProfile(profile);
+        break;
+
+      case ProfileType.coffee:
+        _coffeeFeed.removeProfile(profile);
+        break;
+
+      case ProfileType.grinder:
+        _grinderFeed.removeProfile(profile);
+        break;
+
+      case ProfileType.equipment:
+        _equipmentFeed.removeProfile(profile);
+        break;
+
+      case ProfileType.water:
+        _waterFeed.removeProfile(profile);
+        break;
+
+      case ProfileType.barista:
+        _baristaFeed.removeProfile(profile);
+        break;
+
+      case ProfileType.none:
+        throw (profile.type);
+        break;
+
+      case ProfileType.feed:
+        throw (profile.type);
+        break;
+
+      default:
+        throw (profile.type);
+        break;
     }
-    
-    void delete(Profile profile){
+  }
 
-      DatabaseFunctions.deleteProfile(profile);
+  /// Get social feeds with type
+  Stream<List<FeedProfileData>> getSocialFeed(FeedType type) {
+    _userFeed.refresh();
 
-      switch (profile.type){
-
-        case ProfileType.recipe:
-         _recipeFeed.removeProfile(profile);
-        break;
-
-        case ProfileType.coffee:
-         _coffeeFeed.removeProfile(profile);
-        break;
-
-        case ProfileType.grinder:
-         _grinderFeed.removeProfile(profile);
-        break;
-
-        case ProfileType.equipment:
-         _equipmentFeed.removeProfile(profile);
-        break;
-
-        case ProfileType.water:
-         _waterFeed.removeProfile(profile);
-        break;
-
-        case ProfileType.barista:
-         _baristaFeed.removeProfile(profile);
-        break;
-
-        case ProfileType.none:
-         throw(profile.type);
-        break;
-
-        case ProfileType.feed:
-         throw(profile.type);
-        break;
-
-        default:
-         throw(profile.type);
-        break;
-      }
-    }
-   
-    /// Get social feeds with type
-    Stream<List<FeedProfileData>> getSocialFeed(FeedType type){
-
-      _userFeed.refresh();
-
-      switch(type){
-
-        case FeedType.community:
+    switch (type) {
+      case FeedType.community:
         return communnityFeed;
         break;
 
-        case FeedType.following:
+      case FeedType.following:
         return followingFeed;
         break;
 
-        default:
-        return throw(type);
+      default:
+        return throw (type);
         break;
-      }
     }
+  }
 
-    /// Get Profiles with type
-    Stream<List<Profile>> profiles(ProfileType type){
+  /// Get Profiles with type
+  Stream<List<Profile>> profiles(ProfileType type) {
+    _userFeed.getProfile();
 
-      _userFeed.getProfile();
-
-      switch(type){
-
-        case ProfileType.recipe:
+    switch (type) {
+      case ProfileType.recipe:
         _recipeFeed.getProfiles();
         return recipeProfiles;
         break;
 
-        case ProfileType.coffee:
+      case ProfileType.coffee:
         _coffeeFeed.getProfiles();
         return coffeeProfiles;
         break;
 
-        case ProfileType.grinder:
+      case ProfileType.grinder:
         _grinderFeed.getProfiles();
         return grinderProfiles;
         break;
 
-        case ProfileType.equipment:
+      case ProfileType.equipment:
         _equipmentFeed.getProfiles();
         return equipmentProfiles;
         break;
 
-        case ProfileType.water:
+      case ProfileType.water:
         _waterFeed.getProfiles();
         return waterProfiles;
         break;
 
-        case ProfileType.barista:
+      case ProfileType.barista:
         _baristaFeed.getProfiles();
         return baristaProfiles;
         break;
 
-        case ProfileType.none:
-        return throw(type);
+      case ProfileType.none:
+        return throw (type);
         break;
 
-        case ProfileType.feed:
-        return throw(type);
+      case ProfileType.feed:
+        return throw (type);
         break;
 
-        default:
-        return throw(type);
+      default:
+        return throw (type);
         break;
-      }
-
-
     }
+  }
 }
 
-class ProfileModel extends Model{
-
+class ProfileModel extends Model {
   Profile _profile;
 
-
   ProfileModel(_profile);
-
 }
 
-
-class RatioModel extends Model{
-
-  RatioModel(this._dose, this._yielde, this._brew){
-
+class RatioModel extends Model {
+  RatioModel(this._dose, this._yielde, this._brew) {
     _doseStreamController.add(_dose);
     _yieldStreamController.add(_yielde);
     _brewWWeightStreamController.add(_brew);
-    _doseStreamController.listen((value){ _dose = value; });
-    _yieldStreamController.listen((value){ _yielde = value; });
-    _brewWWeightStreamController.listen((value){ _brew = value; });  
+    _doseStreamController.listen((value) {
+      _dose = value;
+    });
+    _yieldStreamController.listen((value) {
+      _yielde = value;
+    });
+    _brewWWeightStreamController.listen((value) {
+      _brew = value;
+    });
   }
 
   ///TODO
   BehaviorSubject<int> _doseStreamController = new BehaviorSubject<int>();
   BehaviorSubject<int> _yieldStreamController = new BehaviorSubject<int>();
-  BehaviorSubject<int> _brewWWeightStreamController = new BehaviorSubject<int>();
-  
+  BehaviorSubject<int> _brewWWeightStreamController =
+      new BehaviorSubject<int>();
+
   bool isCalculating = false;
 
   /// not used yet TODO
@@ -393,85 +373,102 @@ class RatioModel extends Model{
   int _yielde = 0;
   int _brew = 0;
 
-  Stream<int> getStream(String type){
-
+  Stream<int> getStream(String type) {
     Stream<int> result;
 
-    switch(type){
-      case DatabaseIds.brewingDose:  result = _doseStreamController.stream; break;
-      case DatabaseIds.yielde:  result = _yieldStreamController.stream; break;
-      case DatabaseIds.brewWeight:  result = _brewWWeightStreamController.stream; break;
+    switch (type) {
+      case DatabaseIds.brewingDose:
+        result = _doseStreamController.stream;
+        break;
+      case DatabaseIds.yielde:
+        result = _yieldStreamController.stream;
+        break;
+      case DatabaseIds.brewWeight:
+        result = _brewWWeightStreamController.stream;
+        break;
     }
     assert(result != null, 'no stream allocated');
     return result;
   }
 
-  int getValue(String type){
-
+  int getValue(String type) {
     int result;
 
-    switch(type){
-      case DatabaseIds.brewingDose:  result = _dose; break;
-      case DatabaseIds.yielde:  result = _yielde; break;
-      case DatabaseIds.brewWeight:  result = _brew; break;
+    switch (type) {
+      case DatabaseIds.brewingDose:
+        result = _dose;
+        break;
+      case DatabaseIds.yielde:
+        result = _yielde;
+        break;
+      case DatabaseIds.brewWeight:
+        result = _brew;
+        break;
     }
     return result ?? 0;
   }
 
- String estimateBrewRatio(BrewRatioType type){
+  void dispose() {
+    _doseStreamController.close();
+    _yieldStreamController.close();
+    _brewWWeightStreamController.close();
+  }
 
+  String estimateBrewRatio(BrewRatioType type) {
     isCalculating = true;
-    
+
     int result;
 
-    if(type == BrewRatioType.doseYield){
-
+    if (type == BrewRatioType.doseYield) {
       result = _brew - (_dose.roundToDouble() * 1.9).toInt();
       _yielde = result;
       return result.toString();
-      
-    }else{
+    } else {
       result = (_dose.roundToDouble() * 1.9).toInt() + _yielde;
-       _brew = result;
+      _brew = result;
       return result.toString();
     }
   }
 
-  void updateValue(String databaseId, String value){
-
-    switch(databaseId){
-
-      case DatabaseIds.brewingDose: _dose = int.parse(value); break;
-      case DatabaseIds.yielde: _yielde = int.parse(value); break;
-      case DatabaseIds.brewWeight: _brew = int.parse(value); break;
+  void updateValue(String databaseId, String value) {
+    switch (databaseId) {
+      case DatabaseIds.brewingDose:
+        _dose = int.parse(value);
+        break;
+      case DatabaseIds.yielde:
+        _yielde = int.parse(value);
+        break;
+      case DatabaseIds.brewWeight:
+        _brew = int.parse(value);
+        break;
     }
   }
 
-  void updateValues(Profile profile){
-
-    _doseStreamController.add(Functions.getIntValue(profile.getProfileItemValue(DatabaseIds.brewingDose)));
-    _yieldStreamController.add(Functions.getIntValue(profile.getProfileItemValue(DatabaseIds.yielde)));
-    _brewWWeightStreamController.add(Functions.getIntValue(profile.getProfileItemValue(DatabaseIds.brewWeight)));
-    _dose = Functions.getIntValue(profile.getProfileItem(DatabaseIds.brewingDose));
+  void updateValues(Profile profile) {
+    _doseStreamController.add(Functions.getIntValue(
+        profile.getProfileItemValue(DatabaseIds.brewingDose)));
+    _yieldStreamController.add(
+        Functions.getIntValue(profile.getProfileItemValue(DatabaseIds.yielde)));
+    _brewWWeightStreamController.add(Functions.getIntValue(
+        profile.getProfileItemValue(DatabaseIds.brewWeight)));
+    _dose =
+        Functions.getIntValue(profile.getProfileItem(DatabaseIds.brewingDose));
     _yielde = Functions.getIntValue(profile.getProfileItem(DatabaseIds.yielde));
-    _brew = Functions.getIntValue(profile.getProfileItem(DatabaseIds.brewWeight));
-
+    _brew =
+        Functions.getIntValue(profile.getProfileItem(DatabaseIds.brewWeight));
   }
 
-  String getBrewRatioFromYielde(int yieldIn,){
-
-          int result = _brew - _dose;
-          return result.toString();
+  String getBrewRatioFromYielde(
+    int yieldIn,
+  ) {
+    int result = _brew - _dose;
+    return result.toString();
   }
 
-  String getBrewRatioFromBrewWeight(int brewIn,){
+  String getBrewRatioFromBrewWeight(
+    int brewIn,
+  ) {}
 
-  }
-
-      static RatioModel of(BuildContext context) =>
-        ScopedModel.of<RatioModel>(context);
-  }
-
-
-
-
+  static RatioModel of(BuildContext context) =>
+      ScopedModel.of<RatioModel>(context);
+}

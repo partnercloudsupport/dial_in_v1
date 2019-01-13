@@ -35,6 +35,11 @@ class FeedBloc{
     _initilised = false;
   }
 
+  void dispose() { 
+    _outgoingController.close();
+    _incomingController.close();
+  }
+
   void add(Profile profile){}
 
   Future getProfiles({Profile profile})async{
@@ -89,6 +94,12 @@ class SocialFeedBloc{
 
   void deinit(){
     _initilised = false;
+  }
+
+  
+  void dispose() { 
+    _outgoingController.close();
+    _incomingController.close();
   }
 
   void refresh(){
@@ -218,6 +229,8 @@ class UserFeed {
    
   bool _initilised = false;
   UserProfile _userProfile;
+  String _userEmail = '';
+  String get userEmail =>_userEmail ?? '';
 
   String get userImage => _userProfile.userImage ?? '';
   String get userId => _userProfile.userId ?? '';
@@ -230,6 +243,12 @@ class UserFeed {
 
   void deinit(){
     _initilised = false;
+    _userEmail = '';
+
+  }
+
+  void dispose() { 
+    _outgoingController.close();
   }
 
   void refresh(){
@@ -242,6 +261,7 @@ class UserFeed {
    if(!_initilised){
 
      _initilised= true;
+      DatabaseFunctions.getCurrentUserEmail().then((userEmail) => _userEmail = userEmail);
 
       DatabaseFunctions.getCurrentUserId()
       .then((user)

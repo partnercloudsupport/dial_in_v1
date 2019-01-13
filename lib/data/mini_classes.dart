@@ -32,7 +32,7 @@ class NumericTextFormatter extends TextInputFormatter {
 
 class  UserProfile {
 
-    UserProfile(this._userId,this._userName,this._userImage, this._following);
+    UserProfile(this._userId,this._userName,this._userImage, this._following, this._followers);
 
     String _userId;
     String get userId => _userId;
@@ -42,6 +42,9 @@ class  UserProfile {
 
     String _userImage;
     String get userImage => _userImage;
+
+    List<String> _followers = new List<String>();
+    List<String> get followers => _followers;
 
     List<String> _following = new List<String>();
     List<String> get following => _following;
@@ -66,9 +69,20 @@ class  UserProfile {
       }
       return result;
   }
-
-
 }
+
+class UserDetails{
+
+    String _userId;
+    String get userId => _userId;
+
+    String _userName;
+    String get userName => _userName;
+
+    String _userImage;
+    String get userImage => _userImage;
+}
+
 
 enum FeedType {community, following}
 enum SnapShotDataState{

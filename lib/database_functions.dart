@@ -14,18 +14,18 @@ import 'package:dial_in_v1/data/mini_classes.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-
-
-
-
 class DatabaseFunctions {
 
  static void addFollower(String currentUser, String follow, Function(bool) completion)async{
 
+   /// Add following
     DocumentSnapshot newDoc = await Firestore.instance.collection(DatabaseIds.User)
-      .document(currentUser).get().
-      catchError((e) => print(e));
-
+      .document(currentUser).get()
+      .then((newDoc){ 
+        
+      if(newDoc.exists){
+      /// Add following
+       
       if (newDoc.data.containsKey(DatabaseIds.following)){
         if (!((newDoc.data[DatabaseIds.following]) as List).contains(follow)){
       
@@ -45,15 +45,55 @@ class DatabaseFunctions {
 
       }else{
 
-        newDoc.data[DatabaseIds.following] = { DatabaseIds.following : follow};
+        List<String> newFollwingList = [follow];
 
-        await Firestore.instance
+        newDoc.data[DatabaseIds.following] = { DatabaseIds.following : newFollwingList};
+
+        Firestore.instance
                         .collection(DatabaseIds.User)
                         .document(currentUser)
-                        .setData(newDoc.data[DatabaseIds.following])
+                        .updateData(newDoc.data[DatabaseIds.following])
                         .catchError((error){print(error);});
       }
+
+    /// Add followers
+      if (newDoc.data.containsKey(DatabaseIds.followers)){
+         if (!((newDoc.data[DatabaseIds.followers]) as List).contains(currentUser)){
+      
+        List<dynamic> newFollowersList = new List<String>.from(newDoc.data[DatabaseIds.followers]);
+        newFollowersList.add(currentUser);
+        Map<String, dynamic> data = { DatabaseIds.following : newFollowersList};
+
+          Firestore.instance
+          .collection(DatabaseIds.User)
+          .document(follow)
+          .updateData(data)
+          .whenComplete((){
+            completion(true);
+            print('Successfully updated $follow follower');})
+          .catchError((error){print(error);});
+        }
+
+      }else{
+
+        List<String> newFollwersList = [currentUser];
+
+        newDoc.data[DatabaseIds.followers] = { DatabaseIds.followers : newFollwersList};
+
+        Firestore.instance
+                        .collection(DatabaseIds.User)
+                        .document(follow)
+                        .updateData(newDoc.data[DatabaseIds.followers])
+                        .catchError((error){print(error);});
+      }
+    }else{print('No document found with ID $currentUser');}
+    }
+    )
+      .catchError((e) => print(e)); 
   }
+
+  static void upDateFirebaseData(){}
+  
 
   static void unFollow(String currentUser, String unFollow , Function(bool) completion)async{
 
@@ -132,6 +172,23 @@ class DatabaseFunctions {
     }
   }
 
+  static Future<String> getCurrentUserEmail()async{
+
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    String email = user.email;
+    return email;
+  }
+
+  void deleteCurrectUser()async{
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    user.delete()
+    .then((_){print('User deleted');return true;})
+    .catchError((e){ print(e);return false;});
+
+  }
+
+
+
   /// Logout
   static Future <void> logOut()async{
     await FirebaseAuth.instance.signOut();
@@ -155,23 +212,22 @@ class DatabaseFunctions {
 
   }
   
-  static Future updateUserProfile(String userName, String imageURL)async{
+  static Future updateUserProfile(String userName, String imageUrl,String email, String password) async{
 
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
 
     UserUpdateInfo userUpdateInfo = UserUpdateInfo();
     userUpdateInfo.displayName = userName;
-    userUpdateInfo.photoUrl = imageURL;
-  
+    userUpdateInfo.photoUrl = imageUrl;
+    if (password != null || password != ''){
+    user.updatePassword(password);}
+    user.updateEmail(email);
     user.updateProfile(userUpdateInfo)
-
       .then( (_)async{
             Map<String, dynamic> data = {
             DatabaseIds.userId : user.uid,
             DatabaseIds.userName : userName,
-            DatabaseIds.email : user.email,
-            DatabaseIds.image : imageURL,
-            DatabaseIds.following : List<String>()
+            DatabaseIds.image : imageUrl,
             };
             Firestore.instance.collection(DatabaseIds.User).document(user.uid).updateData(data)
             .then((_) => print('sucessfully updated user'))
@@ -404,7 +460,7 @@ class DatabaseFunctions {
   }
 
   /// TODO
-  static Stream<UserProfile> getUserProfileStreamFromFireStoreWithDocRef(String docRefernace){
+  static void  getUserProfileStreamFromFireStoreWithDocRef(String docRefernace){
 
     Completer completer = new Completer();
 
@@ -412,14 +468,20 @@ class DatabaseFunctions {
 
     final BehaviorSubject<UserProfile> _outgoingController = BehaviorSubject<UserProfile>();
 
+
+
     UserProfile userProfile;
 
     userSnapshotStream.listen((doc){
 
       if (doc.exists){
 
-        userProfile = new UserProfile
-                            (doc.data[DatabaseIds.user], doc.data[DatabaseIds.userName], doc.data[DatabaseIds.image], doc.data[DatabaseIds.following]);
+        userProfile = new UserProfile(
+                              doc.data[DatabaseIds.user]?? '',
+                              doc.data[DatabaseIds.userName]?? '',
+                              doc.data[DatabaseIds.image]?? '',
+                              doc.data[DatabaseIds.following]?? [''], 
+                              doc.data[DatabaseIds.followers]?? ['']);
 
         _outgoingController.add(userProfile);
       }else{
@@ -434,8 +496,6 @@ class DatabaseFunctions {
     /// Get profiles from fore store with doc referance //TODO;
   static Future<UserProfile> getUserProfileFromFireStoreWithDocRef(String docRefernace)async{
 
-    Completer completer = new Completer();
-
     UserProfile _userProfile;
 
     if (docRefernace != ''){
@@ -444,27 +504,35 @@ class DatabaseFunctions {
 
     if (doc.exists) {
 
-          List<dynamic> following = (doc.data[DatabaseIds.following]) as List<dynamic>;
-          
-          List<String> revisedList = new List<String>();
+          /// For following
+          List<dynamic> following = (doc.data[DatabaseIds.following]) as List<dynamic>?? List<dynamic>();
+        
+          List<String> followingRevisedList = new List<String>();
 
           following.forEach((follow) 
-          { if(follow is String) {revisedList.add(follow);}; });
+          { if(follow is String) {followingRevisedList.add(follow);}});
            
-          // .map((follow){if (follow is String ){ return follow;}})
-          /// Test
-          // List<String> following = ['asdsavsav','avdav'];
+          /// For followers
+          List<dynamic> followers = (doc.data[DatabaseIds.followers]) as List<dynamic> ?? List<dynamic>();
+          
+          List<String> followersRevisedList = new List<String>();
+
+          followers.forEach((follow) 
+          { if(follow is String) {followersRevisedList.add(follow);}});
+
 
           _userProfile = new UserProfile(
                             docRefernace,
                             doc.data[DatabaseIds.userName],
                             doc.data[DatabaseIds.image],
-                            revisedList);
+                            followingRevisedList ?? List<String>(),
+                            followersRevisedList ?? List<String>()
+                            );
       }
     }
 
     return _userProfile ?? new UserProfile
-                            ('error', 'error', 'error', ['error']);
+                            ('error', 'error', 'error', ['error'], ['error'],);
   }
 
   /// Get value from collection with key
@@ -693,7 +761,6 @@ class DatabaseFunctions {
       print(error);
     });
   }
-
 }
 
 class Storage {
@@ -726,6 +793,7 @@ class Storage {
 }
 
 class DatabaseIds{
+  static const String followers = 'followers';
   static const String userId = 'userId';
   static const String success = 'success';
   static const String community = 'communtiy';

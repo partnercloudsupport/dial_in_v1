@@ -223,7 +223,6 @@ class Functions {
             url = await DatabaseFunctions.upLoadFileReturnUrl(image, [DatabaseIds.image]);
             Navigator.of(context);
             Navigator.of(context).pop(then(url));
-            Navigator.of(context).pop(then(url));
             then(url);
           }
       ),
@@ -236,7 +235,6 @@ class Functions {
                               (maxWidth: 640.0, maxHeight: 480.0, source: ImageSource.gallery);
             url = await DatabaseFunctions.upLoadFileReturnUrl(image, [DatabaseIds.image]);
             Navigator.of(context);
-            Navigator.of(context).pop(then(url));
             Navigator.of(context).pop(then(url));
             then(url);
           }
@@ -443,6 +441,8 @@ class Functions {
   static Future<FeedProfileData> createFeedProfileFromProfile(Profile profile)async{
 
     UserProfile userProfile = await DatabaseFunctions.getUserProfileFromFireStoreWithDocRef(profile.userId);
+
+    assert(userProfile != null , 'UserProfile is null');
 
     return FeedProfileData(profile, userProfile);
   }
