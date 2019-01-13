@@ -310,12 +310,13 @@ class DatabaseFunctions {
     String filePath = 'https://firebasestorage.googleapis.com/v0/b/dial-in-21c50.appspot.com/o/default_images%2Fuser.png?alt=media&token=c2ccceec-8d24-42fe-b5c0-c987733ac8ae'
                       .replaceAll(new 
                       RegExp(r'https://firebasestorage.googleapis.com/v0/b/dial-in-21c50.appspot.com/o/'), '');
+
+    FirebaseStorage.instance.ref().child(filePath).delete().then((_) => print('Successfully deleted $filePath storage item' ));
+
+  }
+
+  // final RegExp regExp = RegExp(r"(?<=https:\/\/firebasestorage.googleapis.com\/v0\/b\/dial-in-21c50.appspot.com\/o\/).*");
     // String firebaseRef = FirebaseStorage.instance.ref().path;
-
-    // FirebaseStorage.instance.ref().child(filePath).delete().then((_) => print('Successfullt deleted $filePath storage item' ));
-
-
-    // final RegExp regExp = RegExp(r"(?<=https:\/\/firebasestorage.googleapis.com\/v0\/b\/dial-in-21c50.appspot.com\/o\/).*");
 
     //   String filePath = regExp.stringMatch(fileUrl.split('').reversed.join());
     //   // Create a reference to the file to delete
@@ -325,9 +326,6 @@ class DatabaseFunctions {
       // desertRef.delete()
       // .then((_) {})
       // .catchError((e){print(e);});
-
-      
-  }
 
   /// Prepare Profile for FirebaseUpload or Update
   static Future<Map <String, dynamic>> prepareProfileForFirebaseUpload(Profile profile)async{

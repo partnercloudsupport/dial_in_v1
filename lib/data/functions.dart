@@ -217,11 +217,14 @@ class Functions {
       new CupertinoDialogAction(
           child: Text(StringLabels.camera, style: Theme.of(context).textTheme.display1),
           isDestructiveAction: false,
-          onPressed: ()async{ 
+          onPressed: ()async{
+            showDialog(barrierDismissible: false, context: context ,
+            builder: (context) => Center(child:CircularProgressIndicator()));
             File image = await ImagePicker.pickImage
                               (maxWidth: 640.0, maxHeight: 480.0, source: ImageSource.camera);
             url = await DatabaseFunctions.upLoadFileReturnUrl(image, [DatabaseIds.image]);
             Navigator.of(context);
+            Navigator.of(context).pop(then(url));
             Navigator.of(context).pop(then(url));
             then(url);
           }
@@ -230,18 +233,25 @@ class Functions {
       new  CupertinoDialogAction(
           child: Text(StringLabels.photoLibrary, style: Theme.of(context).textTheme.display1),
           isDestructiveAction: false,
-          onPressed: ()async{ 
+          onPressed: ()async{
+            showDialog(barrierDismissible: false, context: context ,
+            builder: (context) => Center(child:CircularProgressIndicator())); 
             File image = await ImagePicker.pickImage
                               (maxWidth: 640.0, maxHeight: 480.0, source: ImageSource.gallery);
             url = await DatabaseFunctions.upLoadFileReturnUrl(image, [DatabaseIds.image]);
             Navigator.of(context);
             Navigator.of(context).pop(then(url));
+            Navigator.of(context).pop(then(url));
             then(url);
           }
       ),
-    ],)));
+    ],
+    )
+    )
+    );
     }
     );
+
     return url;
   }
   

@@ -19,6 +19,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:dial_in_v1/routes.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:dial_in_v1/pages/profile_pages/profile_page.dart';
 
 
 
@@ -561,7 +562,10 @@ void setWidgetUp(){
       break;
     }
 }
-
+  void _editProfile(){
+   Navigator.push(context, SlowerRoute((BuildContext context) =>
+          ProfilePage(isFromUserFeed: false, isFromProfile: false ,isOldProfile: true, isCopying: false, isEditing: true, isNew: false, type: widget._profile.type, referance: widget._profile.objectId, profile: widget._profile)));
+  }
   @override
   Widget build(BuildContext context) {
     return 
@@ -580,7 +584,7 @@ void setWidgetUp(){
       caption: 'Edit',
       color: Colors.yellow,
       icon: Icons.edit,
-      onTap: () => widget._giveprofile(widget._profile),
+      onTap: _editProfile,
     ),
   ],
   child:

@@ -32,7 +32,7 @@ void initState() {
    
     TabViewData(
       FeedList(FeedType.following),
-      Tab(icon: Icon(Icons.verified_user)),ProfileType.feed),
+      Tab(icon: Icon(Icons.people)),ProfileType.feed),
 
     ]);
   controller = new TabController( vsync: this, length: _lists.ref.length);
