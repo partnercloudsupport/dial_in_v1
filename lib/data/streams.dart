@@ -103,7 +103,7 @@ class SocialFeedBloc{
   }
 
   void refresh(){
-  //  _initilised = false;
+   _initilised = false;
     getProfiles();
     // _outgoingController.add();
   }
@@ -126,7 +126,7 @@ class SocialFeedBloc{
     if(_currentFeedData != null){
     handleProfileList(_currentFeedData);}
     else{
-      getProfiles();
+      refresh();
     }
   }
 
@@ -200,8 +200,8 @@ class SocialFeedBloc{
                    
                 if (profile.userId != null){
 
-                  String otherUserId = profile.userId;
-                  String currentUserId = _currentUser.userId;
+                  String otherUserId = profile.userId ?? '';
+                  String currentUserId = _currentUser.userId ?? '';
                     
                     /// Remove the profile where the profile userId is eqaula to the currrent userId
                     if (otherUserId == currentUserId){ 

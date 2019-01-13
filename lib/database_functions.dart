@@ -498,7 +498,8 @@ class DatabaseFunctions {
 
     if (docRefernace != ''){
 
-    DocumentSnapshot doc = await Firestore.instance.collection(DatabaseIds.User).document(docRefernace).get();
+    DocumentSnapshot doc = await Firestore.instance.collection(DatabaseIds.User)
+                                                    .document(docRefernace).get();
 
     if (doc.exists) {
 
