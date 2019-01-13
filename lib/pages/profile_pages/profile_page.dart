@@ -91,7 +91,7 @@ class ProfilePageState extends State<ProfilePage> {
       super.didUpdateWidget(oldWidget);
     }
 
-@override
+  @override
   void dispose() {
     _ratioModel.dispose();
     super.dispose();
@@ -232,7 +232,7 @@ class ProfilePageState extends State<ProfilePage> {
 
     Widget _bottomBar;
 
-    if (this._isCopying || this._isOldProfile){
+    if (this._isOldProfile){
 
     _bottomBar = Material(child: 
             Material( color: AppColors.getColor(ColorType.toolBar), child:
@@ -254,7 +254,10 @@ class ProfilePageState extends State<ProfilePage> {
                         isNew: true, 
                         type: _profile.type, 
                         referance: '',
-                        profile: _newProfile ,)));}),
+                        profile: _newProfile ,)
+                        )
+                        ).then((_) => Navigator.pop(context))
+                        ;}),
 
                   RawMaterialButton(
                     child: Icon(Icons.delete),

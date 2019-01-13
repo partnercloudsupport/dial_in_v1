@@ -38,7 +38,6 @@ class ScoreSliderState extends State<ScoreSlider> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
     return 
     Container(width:double.infinity, margin: EdgeInsets.all(_margin), padding:EdgeInsets.all(_margin) , child: 
     Column(
@@ -51,12 +50,9 @@ class ScoreSliderState extends State<ScoreSlider> {
             child: Text('${widget._label} ', style: Theme.of(context).textTheme.subtitle),
           ),
 
-            Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
+              Text('${_value.toInt()}/10' , style: Theme.of(context).textTheme.display3),
 
-              Text('${_value.toInt()}/10' , style: Theme.of(context).textTheme.display2),
-
-              CupertinoSlider(
+              widget._isEditing ? CupertinoSlider(
                   value: _value,
                   onChanged: widget._isEditing? (value){
                     setState(() {
@@ -70,10 +66,9 @@ class ScoreSliderState extends State<ScoreSlider> {
                   max: 10,
                   divisions: 10,
                   // label: _value.toInt().toString(),
-                  activeColor: Theme.of(context).sliderTheme.activeTrackColor,) ,
+                  activeColor: Theme.of(context).sliderTheme.activeTrackColor,): Container(width: 0.0,height: 0.0,) ,
                   // inactiveColor: Theme.of(context).sliderTheme.inactiveTrackColor,
-              ],
-            )      
+                
           ]
         )
     );

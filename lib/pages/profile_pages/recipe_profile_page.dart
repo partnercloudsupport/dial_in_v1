@@ -218,11 +218,16 @@ class _RecipePageState extends State<RecipePage> {
                         (value) { widget._setProfileItemValue( DatabaseIds.strength, value.toString());},
                         widget._isEditing),
 
+                        Divider(),
+
                       ScoreSlider(
                         StringLabels.balance,
                         double.parse(widget._profile.getProfileItemValue(DatabaseIds.balance)),
                         (value) { widget._setProfileItemValue( DatabaseIds.balance, value.toString());},
                         widget._isEditing),
+
+                                                Divider(),
+
 
                       ScoreSlider(
                         StringLabels.flavour,
@@ -230,11 +235,17 @@ class _RecipePageState extends State<RecipePage> {
                         (value) { widget._setProfileItemValue( DatabaseIds.flavour, value.toString());},
                         widget._isEditing),
 
+                                                Divider(),
+
+
                       ScoreSlider(
                         StringLabels.body,
                         double.parse(widget._profile.getProfileItemValue(DatabaseIds.body)),
                         (value) {widget._setProfileItemValue( DatabaseIds.body, value.toString());},
                         widget._isEditing),
+
+                                                Divider(),
+
 
                       ScoreSlider(
                         StringLabels.afterTaste,
@@ -244,7 +255,7 @@ class _RecipePageState extends State<RecipePage> {
 
                       Padding(padding: EdgeInsets.all(20.0)),
 
-                      Text('Total score ${widget._profile.getTotalScore().toInt().toString()} / 50', style: Theme.of(context).textTheme.display2)
+                      Text('Total score ${widget._profile.getTotalScore().toInt().toString()} / 50', style: Theme.of(context).textTheme.display4)
                       /// End of score   
                   
           ],

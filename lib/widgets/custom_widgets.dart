@@ -1491,7 +1491,7 @@ class _TextfieldWithFixedValueState extends State<TextfieldWithFixedValue> {
   @override
   Widget build(BuildContext context) {
     return
-    ScalableWidget(
+    
     Container(
         width: widget.width ?? 100.0,
         child: TextFormField(
@@ -1499,10 +1499,11 @@ class _TextfieldWithFixedValueState extends State<TextfieldWithFixedValue> {
         enabled: false,
         textAlign: TextAlign.center,
         decoration: new InputDecoration(
-        labelText: widget._titleLabel, 
+          labelText: widget._titleLabel, 
+          labelStyle: TextStyle(fontSize: 10.0)
         ),
       )
-    )); 
+    ); 
   }
 }   
 
