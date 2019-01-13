@@ -307,11 +307,11 @@ class DatabaseFunctions {
   /// Delete Firebase Storage Item //TODO
   static void deleteFireBaseStorageItem(String fileUrl){
 
-    String filePath = 'https://firebasestorage.googleapis.com/v0/b/dial-in-21c50.appspot.com/o/default_images%2Fuser.png?alt=media&token=c2ccceec-8d24-42fe-b5c0-c987733ac8ae'
-                      .replaceAll(new 
-                      RegExp(r'https://firebasestorage.googleapis.com/v0/b/dial-in-21c50.appspot.com/o/'), '');
+    // String filePath = 'https://firebasestorage.googleapis.com/v0/b/dial-in-21c50.appspot.com/o/default_images%2Fuser.png?alt=media&token=c2ccceec-8d24-42fe-b5c0-c987733ac8ae'
+    //                   .replaceAll(new 
+    //                   RegExp(r'https://firebasestorage.googleapis.com/v0/b/dial-in-21c50.appspot.com/o/'), '');
 
-    FirebaseStorage.instance.ref().child(filePath).delete().then((_) => print('Successfully deleted $filePath storage item' ));
+    // FirebaseStorage.instance.ref().child(filePath).delete().then((_) => print('Successfully deleted $filePath storage item' ));
 
   }
 
