@@ -10,19 +10,13 @@ class UserProfilePage extends StatelessWidget {
   final UserProfile _userProfile;
   final bool isCurrentUser;
   final int tag;
-  String _heroRef;
 
-  UserProfilePage(this._userProfile, this.isCurrentUser, {this.tag}) {
-    if (tag == null) {
-      _heroRef = _userProfile.userId;
-    } else {
-      _heroRef = _userProfile.userId + tag.toString();
-    }
-  }
+  UserProfilePage(this._userProfile, this.isCurrentUser, {this.tag});
 
   /// UI Build
   @override
   Widget build(BuildContext context) {
+
     return ScopedModelDescendant<ProfilesModel>(
         rebuildOnChange: false,
         builder: (context, _, model) => Container(
@@ -36,7 +30,7 @@ class UserProfilePage extends StatelessWidget {
                     margin: EdgeInsets.all(10.0),
                     child: Center(
                         child: Hero(
-                            tag: _heroRef,
+                            tag: tag == null ?  _userProfile.userId : _userProfile.userId + tag.toString(),
                             child: CircularPicture(
                                 _userProfile.userImage, 150.0)))),
 
@@ -56,9 +50,14 @@ class UserProfilePage extends StatelessWidget {
                     ? Container(width: 0, height: 0)
                     : FollowButton(_userProfile.userId),
 
-                Counts(_userProfile)
+                Counts(_userProfile),
+
+                Padding(padding: EdgeInsets.all(20.0)),
 
                 //TODO bio
+                Text('Bio')
+
+                
               ],
             ))));
   }
@@ -135,7 +134,7 @@ class Counts extends StatelessWidget {
             ],
           ),
 
-          Text('Bio')
+         
         ],
       ),
     );

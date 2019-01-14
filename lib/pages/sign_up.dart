@@ -58,7 +58,12 @@ class SignUpPage extends StatefulWidget{
         (){Navigator.of(context).pop();},
         context);
       }
-    });              
+    }).catchError((message) => PopUps.showAlert( 
+        StringLabels.warning,
+        message,
+        StringLabels.ok ,
+        (){Navigator.of(context).pop();},
+        context));              
   }
 
 
@@ -126,8 +131,11 @@ class SignUpPage extends StatefulWidget{
                    child: Container( decoration: BoxDecoration(shape: BoxShape.circle),margin: EdgeInsets.fromLTRB(25.0, 0.0, 25.0, 25.0) , 
                     child:CircularPicture(_userImage, 150.0)
                     ),
-                   onTap:(){ Functions.getimageFromCameraOrGallery(context,
-                    (image){ setState(() {_userImage = image;});});}
+                   onTap:(){ 
+                    Functions.getimageFromCameraOrGallery(
+                      context,
+                      (String image){ setState(() {_userImage = image;});});
+                   }
                  ),
                 
 

@@ -19,8 +19,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+
+    ProfilesModel _profilesModel = ProfilesModel();
+
     return ScopedModel(
-      model: ProfilesModel(),
+      model: _profilesModel,
       child:
 
     new MaterialApp(
@@ -28,10 +31,13 @@ class MyApp extends StatelessWidget {
       theme: buildThemeData(),
       home: LoginPage(),
 
-      // debugPaintSizeEnabled = true;
-      /// Debugging options
-      // checkerboardOffscreenLayers: true,
-      // showPerformanceOverlay: true,
+    /// Debugger
+     showPerformanceOverlay: false, 
+     checkerboardRasterCacheImages: false, 
+     checkerboardOffscreenLayers: false, 
+     showSemanticsDebugger: false, 
+     debugShowCheckedModeBanner: true,
+     
 
       onGenerateRoute: (RouteSettings settings) {
         print(settings.name);

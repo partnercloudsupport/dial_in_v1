@@ -13,10 +13,20 @@ import 'package:dial_in_v1/data/strings.dart';
 import 'package:dial_in_v1/data/mini_classes.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class DatabaseFunctions {
 
- static void addFollower(String currentUser, String follow, Function(bool) completion)async{
+  // void initFireStore(){
+
+  //        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+  //         FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+  //                                                 .setTimestampsInSnapshotsEnabled(true)
+  //                                                 .build();
+  //                                                 firestore.setFirestoreSettings(settings);
+  // }
+
+ static Future addFollower(String currentUser, String follow, Function(bool) completion)async{
 
    /// Add following
     DocumentSnapshot newDoc = await Firestore.instance.collection(DatabaseIds.User)
@@ -83,7 +93,7 @@ class DatabaseFunctions {
         Firestore.instance
                         .collection(DatabaseIds.User)
                         .document(follow)
-                        .updateData(newDoc.data[DatabaseIds.followers])
+                        .setData(newDoc.data[DatabaseIds.followers])
                         .catchError((error){print(error);});
       }
     }else{print('No document found with ID $currentUser');}
@@ -92,15 +102,17 @@ class DatabaseFunctions {
       .catchError((e) => print(e)); 
   }
 
+  //TODO
   static void upDateFirebaseData(){}
   
 
-  static void unFollow(String currentUser, String unFollow , Function(bool) completion)async{
+  static Future unFollow(String currentUser, String unFollow , Function(bool) completion)async{
 
-      var newDoc = await Firestore.instance
-                                  .collection(DatabaseIds.User)
-                                  .document(currentUser).get()
-                                  .catchError((e) => print(e));
+      Firestore.instance
+              .collection(DatabaseIds.User)
+              .document(currentUser).get()
+              .then((newDoc){
+      if(newDoc.exists){
 
       if (newDoc.data.containsKey(DatabaseIds.following)){
         if ((newDoc.data[DatabaseIds.following] as List).contains(unFollow)){
@@ -125,12 +137,17 @@ class DatabaseFunctions {
 
         newDoc.data[DatabaseIds.following] = Map<String, dynamic>();
 
-        await Firestore.instance
+        Firestore.instance
         .collection(DatabaseIds.User)
         .document(currentUser)
         .setData(newDoc.data[DatabaseIds.following])
+        .then((_){
+            completion(true);
+            print('Successfully updated $currentUser follower');})
         .catchError((error){print(error);});
       }
+      }else{print('No document found with ID $currentUser');}
+      })..catchError((e) => print(e));
   }
 
   // Firestore fireStore;
@@ -174,12 +191,12 @@ class DatabaseFunctions {
 
   static Future<String> getCurrentUserEmail()async{
 
-    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    FirebaseUser user = await FirebaseAuth.instance.currentUser().catchError((error) => print(error));
     String email = user.email;
     return email;
   }
 
-  void deleteCurrectUser()async{
+  Future deleteCurrectUser()async{
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
     user.delete()
     .then((_){print('User deleted');return true;})
@@ -206,22 +223,39 @@ class DatabaseFunctions {
   /// Get User Name
   static Future <String> getUserName()async{
 
-    String userId = await getCurrentUserId();
+    Future<String> username;
 
-      return await getValueFromFireStoreWithDocRef(DatabaseIds.User, userId, DatabaseIds.userName) ?? '';
+     getCurrentUserId().then((String userId){
 
+      getValueFromFireStoreWithDocRef(DatabaseIds.User, userId, DatabaseIds.userName)
+                                        .then((userName){  
+                                          username = userName; 
+                                        })
+            .catchError((error) => print(error));
+      }
+    )
+    .catchError((error) => print(error));
+
+    Future.wait([username]);
+    assert(username != null, 'username is null'); 
+
+    return username;
   }
+    
   
   static Future updateUserProfile(String userName, String imageUrl,String email, String password) async{
 
-    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    FirebaseUser user = await FirebaseAuth.instance.currentUser().catchError((error) => print(error));
 
     UserUpdateInfo userUpdateInfo = UserUpdateInfo();
     userUpdateInfo.displayName = userName;
     userUpdateInfo.photoUrl = imageUrl;
-    if (password != null || password != ''){
+
+    if (password != null || password != ""){
     user.updatePassword(password);}
-    user.updateEmail(email);
+     if (email != null || email != ""){
+    user.updateEmail(email);}
+
     user.updateProfile(userUpdateInfo)
       .then( (_)async{
             Map<String, dynamic> data = {
@@ -229,19 +263,38 @@ class DatabaseFunctions {
             DatabaseIds.userName : userName,
             DatabaseIds.image : imageUrl,
             };
-            Firestore.instance.collection(DatabaseIds.User).document(user.uid).updateData(data)
-            .then((_) => print('sucessfully updated user'))
-            .catchError((e) => print('Error updating user'));
-      });
+
+            Firestore.instance.collection(DatabaseIds.User).document(user.uid).get().then((doc){
+
+              if(doc.exists){ 
+                Firestore.instance.collection(DatabaseIds.User).document(user.uid).updateData(data)
+                          .then((_) => print('sucessfully updated user'))
+                          .catchError((e) => print('Error updating user $e'));
+              }else{
+                Firestore.instance.collection(DatabaseIds.User).document(user.uid).setData(data)
+                          .then((_) => print('sucessfully updated user '))
+                          .catchError((e) => print('Error updating user $e'));
+              }
+            });
+      }).catchError((error) => print(error));
   }
 
   
 
   // Get current User from firebase
   static Future<String> getCurrentUserId()async{
-    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+  
+    FirebaseUser user = await FirebaseAuth.instance.currentUser()
+                                    .catchError((error) => print(error));
     return user.uid.toString();
   }
+
+  static Future<FirebaseUser> getCurrentUser()async{
+    FirebaseUser user = await FirebaseAuth.instance.currentUser()
+                                    .catchError((error) => print(error));
+    return user;
+  }
+  
 
   /// Dowload file from Firebase
   static Future<File> downloadFile(String httpPath)async{
@@ -307,11 +360,13 @@ class DatabaseFunctions {
   /// Delete Firebase Storage Item //TODO
   static void deleteFireBaseStorageItem(String fileUrl){
 
-    // String filePath = 'https://firebasestorage.googleapis.com/v0/b/dial-in-21c50.appspot.com/o/default_images%2Fuser.png?alt=media&token=c2ccceec-8d24-42fe-b5c0-c987733ac8ae'
-    //                   .replaceAll(new 
-    //                   RegExp(r'https://firebasestorage.googleapis.com/v0/b/dial-in-21c50.appspot.com/o/'), '');
+    String filePath = 'https://firebasestorage.googleapis.com/v0/b/dial-in-21c50.appspot.com/o/default_images%2Fuser.png?alt=media&token=c2ccceec-8d24-42fe-b5c0-c987733ac8ae'
+                      .replaceAll(new 
+                      RegExp(r'https://firebasestorage.googleapis.com/v0/b/dial-in-21c50.appspot.com/o/'), '');
+    
+    StorageReference storageReferance = FirebaseStorage.instance.ref();
 
-    // FirebaseStorage.instance.ref().child(filePath).delete().then((_) => print('Successfully deleted $filePath storage item' ));
+    storageReferance.child(filePath).delete().then((_) => print('Successfully deleted $filePath storage item' ));
 
   }
 
@@ -379,6 +434,8 @@ class DatabaseFunctions {
         _properties[DatabaseIds.orderNumber] = profile.orderNumber;
         _properties[DatabaseIds.user] = userId;
         _properties[DatabaseIds.public] = profile.isPublic;
+        _properties[DatabaseIds.likes] = profile.likes;
+        _properties[DatabaseIds.comments] = profile.comments;
 
       if (profile.type == ProfileType.recipe){
         _properties[DatabaseIds.coffeeId] = profile.getProfileProfileRefernace(profileDatabaseId: DatabaseIds.coffee);
@@ -465,8 +522,6 @@ class DatabaseFunctions {
     Stream<DocumentSnapshot> userSnapshotStream = Firestore.instance.collection(DatabaseIds.User).document(docRefernace).snapshots();
 
     final BehaviorSubject<UserProfile> _outgoingController = BehaviorSubject<UserProfile>();
-
-
 
     UserProfile userProfile;
 
@@ -572,12 +627,14 @@ class DatabaseFunctions {
 
       Profile newProfile =  await Profile.createBlankProfile(Functions.getProfileDatabaseIdType(databaseId));
 
-      DateTime _updatedAt = document[DatabaseIds.updatedAt];
-      String _user = document[DatabaseIds.user];
-      String _objectId = document.documentID;
-      int _orderNumber = document[DatabaseIds.orderNumber];
-      String _image = document[DatabaseIds.image];
-      bool _ispublic = document.data[DatabaseIds.public];
+      DateTime _updatedAt = document[DatabaseIds.updatedAt]?? DateTime.now();
+      String _user = document[DatabaseIds.user] ?? '';
+      String _objectId = document.documentID ?? '';
+      int _orderNumber = document[DatabaseIds.orderNumber] ?? 0;
+      String _image = document[DatabaseIds.image] ?? '';
+      bool _ispublic = document.data[DatabaseIds.public] ?? false;
+      List<String> likes = document.data[DatabaseIds.likes] ?? List<String>();
+      List<Map<String,String>> comments = document.data[DatabaseIds.comments] ?? List<Map<String,String>>();
 
       Profile _coffee;
       Profile _barista;
@@ -637,6 +694,8 @@ class DatabaseFunctions {
       case DatabaseIds.recipe:
 
       return  new Profile(
+              comments: comments,
+              likes: likes,
               userId: _user,
               isPublic: _ispublic,
               updatedAt: _updatedAt,
@@ -658,6 +717,8 @@ class DatabaseFunctions {
 
       case DatabaseIds.coffee:
       return  new Profile(
+              comments: comments,
+              likes: likes,
               userId: _user,
               isPublic: _ispublic,
               updatedAt: DateTime.now(),
@@ -672,6 +733,8 @@ class DatabaseFunctions {
 
       case DatabaseIds.grinder:
       return  new Profile(
+              comments: comments,
+              likes: likes,
               userId: _user,
               isPublic: _ispublic,
               updatedAt: DateTime.now(),
@@ -686,6 +749,8 @@ class DatabaseFunctions {
 
       case DatabaseIds.brewingEquipment:
       return  new Profile(
+        comments: comments,
+        likes: likes,
         userId: _user,
         isPublic: _ispublic,
         updatedAt: DateTime.now(),
@@ -700,6 +765,8 @@ class DatabaseFunctions {
 
       case DatabaseIds.water:
       return  new Profile(
+        comments: comments,
+        likes: likes,
         userId: _user,
         isPublic: _ispublic,
         updatedAt: DateTime.now(),
@@ -714,6 +781,8 @@ class DatabaseFunctions {
 
       case DatabaseIds.Barista:
       return  new Profile(
+        comments: comments,
+        likes: likes,
         userId: _user,
         isPublic: _ispublic,
         updatedAt: DateTime.now(),
@@ -727,18 +796,7 @@ class DatabaseFunctions {
       break;
 
       default:
-
-      return  new Profile(
-              userId: _user,
-              isPublic: _ispublic,
-              updatedAt: DateTime.now(),
-              objectId: _objectId,
-              type: ProfileType.barista,
-              image: _image,
-              databaseId: databaseId,
-              orderNumber: 0,
-              properties: newProfile.properties
-              );
+      Error();
       break;
     }
   }
@@ -792,6 +850,8 @@ class Storage {
 }
 
 class DatabaseIds{
+  static const String comments = 'comments';
+  static const String likes = 'likes';
   static const String followers = 'followers';
   static const String userId = 'userId';
   static const String success = 'success';

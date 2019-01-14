@@ -80,14 +80,17 @@ class ProfilesModel extends Model {
       DatabaseFunctions.unFollow(userId, otherUser, (success) {
         _userFeed.refresh();
         competionFollow(false);
-      });
+      })
+      .catchError((error){print(error); Error();});
     } else {
       DatabaseFunctions.addFollower(userId, otherUser, (success) {
         _userFeed.refresh();
         competionFollow(true);
-      });
+      })
+      .catchError((error){print(error); Error();});
+;
     }
-    _followers.refresh();
+    // _followers.refresh();
   }
 
   /// Getters for profiles
@@ -102,7 +105,9 @@ class ProfilesModel extends Model {
   Stream<List<FeedProfileData>> get communnityFeed => _comminuty.profiles;
   Stream<List<FeedProfileData>> get followingFeed => _followers.profiles;
 
+  /// init
   ProfilesModel() {
+
     _comminuty = new SocialFeedBloc(
       DatabaseIds.community,
       userProfile,
@@ -112,7 +117,7 @@ class ProfilesModel extends Model {
   }
 
   void logOut() {
-    DatabaseFunctions.logOut();
+    DatabaseFunctions.logOut().catchError((error) => print(error));
     deInit();
   }
 

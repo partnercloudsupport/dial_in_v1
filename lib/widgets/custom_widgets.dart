@@ -20,7 +20,24 @@ import 'package:flutter/widgets.dart';
 import 'package:dial_in_v1/routes.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:dial_in_v1/pages/profile_pages/profile_page.dart';
-
+import 'package:flutter/cupertino.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:dial_in_v1/database_functions.dart';
+import 'package:dial_in_v1/data/strings.dart';
+import 'package:flutter/material.dart';
+import 'package:dial_in_v1/data/profile.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dial_in_v1/widgets/custom_widgets.dart';
+import 'package:dial_in_v1/pages/profile_pages/profile_page.dart';
+import 'dart:math' as math;
+import 'dart:io';
+import 'dart:async';
+import 'package:flutter/services.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:typed_data';
+import 'dart:io' as Io;
+import 'package:dial_in_v1/data/mini_classes.dart';
 
 
 
@@ -513,16 +530,30 @@ void setWidgetUp(){
       break;
 
       case ProfileType.water:   
-      _topLeft = widget._profile.getProfileItemValue( DatabaseIds.waterID);
-      _topRight = widget._profile.getProfileItemValue( DatabaseIds.ppm);
-      _bottomRight = widget._profile.getProfileItemValue( DatabaseIds.kh);
-      _bottomleft = widget._profile.getProfileItemValue( DatabaseIds.gh);
+
+      if(widget._profile.getProfileItemValue(DatabaseIds.ppm) == '' || 
+      widget._profile.getProfileItemValue(DatabaseIds.ppm) == null){ _topRight = '';}
+      else{ _topRight = widget._profile.getProfileItemValue(DatabaseIds.ppm) + 'ppm';}
+
+      if(widget._profile.getProfileItemValue(DatabaseIds.waterID) == '' || 
+      widget._profile.getProfileItemValue(DatabaseIds.waterID) == null){  _topLeft = '';}
+      else{ _topLeft = widget._profile.getProfileItemValue(DatabaseIds.waterID);}
+
+      if(widget._profile.getProfileItemValue(DatabaseIds.gh) == '' || 
+      widget._profile.getProfileItemValue(DatabaseIds.gh) == null){  _bottomleft = '';}
+      else{ _bottomleft = widget._profile.getProfileItemValue(DatabaseIds.gh) + 'ppm GH';}
+
+      if(widget._profile.getProfileItemValue(DatabaseIds.kh) == '' || 
+      widget._profile.getProfileItemValue(DatabaseIds.kh) == null){ _bottomRight = '';}
+      else{ _bottomRight = widget._profile.getProfileItemValue(DatabaseIds.kh) +'ppm KH';}
+
       break;
 
       case ProfileType.equipment:   
       _topLeft = widget._profile.getProfileItemValue( DatabaseIds.equipmentId);
       _topRight = widget._profile.getProfileItemValue( DatabaseIds.type);
-      _bottomRight = widget._profile.getProfileItemValue( DatabaseIds.method);
+      _bottomRight = '';
+      // widget._profile.getProfileItemValue( DatabaseIds.method);
       _bottomleft = widget._profile.getProfileItemValue( DatabaseIds.equipmentModel); 
       break;
 
@@ -611,7 +642,7 @@ void setWidgetUp(){
         Expanded(
             flex: 8,
             child: Container(
-                // padding: EdgeInsets.all(5.0),
+                padding: EdgeInsets.all(5.0),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
@@ -1636,6 +1667,40 @@ class ProfileRefresher extends StatelessWidget {
   }
 }
 
+class CupertinoImagePickerDiolog extends StatelessWidget {
 
+  final ImageSource _imageSource; 
+  final Function(String) _setUrl;
+
+  CupertinoImagePickerDiolog(this._imageSource, this._setUrl);
+
+  @override
+  Widget build(BuildContext context) {
+
+    String _title = '';
+
+    if(_imageSource == ImageSource.camera){ _title = StringLabels.camera;}
+    else{ _title = StringLabels.photoLibrary;}
+
+    return CupertinoDialogAction(
+          child: Text(_title, style: Theme.of(context).textTheme.display1),
+          isDestructiveAction: false,
+          onPressed: ()async{
+
+            showDialog(barrierDismissible: false, context: context ,
+            builder: (context) => 
+            Center(child:CircularProgressIndicator()));
+
+            File image = await ImagePicker.pickImage
+                              (maxWidth: 640.0, maxHeight: 480.0, source: _imageSource);
+            if (image != null){                
+            String url = await DatabaseFunctions.upLoadFileReturnUrl(image, [DatabaseIds.image]);
+             ///Callback to parent with Value
+             _setUrl(url);
+            }
+          }
+    );
+  }
+}
 
 

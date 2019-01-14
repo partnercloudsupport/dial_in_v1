@@ -208,253 +208,6 @@ class TabViewDataArray{
   }
 }
 
-// class UserEditingTable extends StatelessWidget {
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return  
-    
-//      ScopedModelDescendant<ProfilesModel>
-//       (builder: (context, _ ,model) =>
-    
-//     Dialog(insetAnimationCurve: Curves.easeInOut, insetAnimationDuration: Duration(seconds: 1), child:
-//             Container(width: 200.0, height: 250,child: 
-//               Card(child: 
-//                 Column(children: <Widget>[
-
-//                 Table(
-//                 defaultColumnWidth: FlexColumnWidth(3.0),
-//                 defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-//                 children: [
-
-//                   TableRow(children: [
-
-//                     TableCell(verticalAlignment: TableCellVerticalAlignment.middle ,child: Center(child: Text(StringLabels.userName))),
-
-//                     TableCell(verticalAlignment: TableCellVerticalAlignment.middle ,child: Center(child: TextFormField(
-//                       initialValue: model.userName,
-//                       onFieldSubmitted:(name) => DatabaseFunctions.updateUserProfile(name, model.userImage).then((_) => model.refreshUser()),
-//                     ))),
-//                   ]),
-
-//                   TableRow(children: [
-
-//                     TableCell(verticalAlignment: TableCellVerticalAlignment.middle ,child: Center(child: Text(StringLabels.userPhoto))),
-
-//                     TableCell(verticalAlignment: TableCellVerticalAlignment.middle, 
-//                     child: Container( padding: EdgeInsets.all(30.0), alignment: Alignment(0, 0),
-//                             child: 
-//                             InkWell(
-//                               onTap:(){ Functions.getimageFromCameraOrGallery(context,
-//                               (image) { DatabaseFunctions.updateUserProfile(model.userName, image);}).then((_) => model.refreshUser());},
-//                               child: Container(width: 80.0, height: 80.0, 
-//                               decoration: BoxDecoration(shape: BoxShape.circle, border: Border()), 
-//                               child:ClipRRect(
-//                                 borderRadius: new BorderRadius.circular(40),
-//                                 child: Image.network(model.userImage, fit: BoxFit.cover))
-//                               ))
-//                         )
-//                       ),
-//                     ] 
-//                   ),
-//                 ]
-//             ),
-//           MaterialButton(child: Text('Done'), onPressed: () => Navigator.pop(context),)
-//           ],
-//         )
-//       )
-//       )
-//     )
-//     );
-//   }
-// }
-
-// class UserEditingForm extends StatelessWidget {
-//   final _formKey = GlobalKey<FormState>();
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return  
-
-//     ScopedModelDescendant<ProfilesModel>
-//       (builder: (context, _ ,model) =>
-
-//     Dialog(insetAnimationCurve: Curves.easeInOut, insetAnimationDuration: Duration(seconds: 1), child:
-             
-//     Card(child:
-              
-              
-//     Form(
-//       key: _formKey,
-//       child: ListView(
-//         children: <Widget>[
-
-//           Container( padding: EdgeInsets.all(20.0), alignment: Alignment(0, 0),
-//               child: 
-//               InkWell(
-//                 onTap:(){ Functions.getimageFromCameraOrGallery(context,
-//                 (image) { DatabaseFunctions.updateUserProfile(model.userName, image);}).then((_) => model.refreshUser());},
-//                 child: Container(width: 80.0, height: 80.0, 
-//                 decoration: BoxDecoration(shape: BoxShape.circle, border: Border()), 
-//                 child:ClipRRect(
-//                   borderRadius: new BorderRadius.circular(80),
-//                   child: Image.network(model.userImage, fit: BoxFit.cover))
-//                 ))
-//           ),
-
-//           ///Username
-//           TextFormField(
-//             decoration: InputDecoration(labelText: StringLabels.userName),
-//             initialValue: model.userName,
-//             validator: (value) {
-//               if (value.isEmpty) {
-//                 return 'Please enter some text';
-//               }
-//             },
-//           ),
-//           /// Email
-//           TextFormField(
-//             decoration: InputDecoration(labelText: StringLabels.email),
-//             initialValue: model.userEmail,
-//             validator: (value) {
-//               if (value.isEmpty) {
-//                 return 'Please enter a valid email';
-//               }
-//             },
-//           ),
-//           ///Password
-//           TextFormField(
-//             decoration: InputDecoration(labelText: StringLabels.password),
-//             obscureText: true,
-//             validator: (value) {
-//               if (value.isEmpty) {
-//                 return 'Please enter a safe password';
-//               }
-//             },
-//           ),
-
-
-//           /// Submit button
-//           Padding(
-//             padding: const EdgeInsets.symmetric(vertical: 16.0),
-//             child: RaisedButton(
-//               onPressed: () {
-//                 // Validate will return true if the form is valid, or false if
-//                 // the form is invalid.
-//                 if (_formKey.currentState.validate()) {
-//                   // If the form is valid, we want to show a Snackbar
-//                   Navigator.pop(context);
-//                   Scaffold.of(context)
-//                       .showSnackBar(SnackBar(content: Text('Processing Data')));
-//                 }
-//               },
-//               child: Text('Submit'),
-//             ),
-//           ),
-//         ],
-//       ),
-//       )        
-//       )
-//       )
-//     );
-//   }
-// }
-
-
-// class UserInputForm extends StatelessWidget {
-
-//   final _formKey = GlobalKey<FormState>();
-  
-//   final String _userEmail;
-//   final String _userName;
-//   final String _password;
-
-//   UserInputForm(this._userName, this._userEmail);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return 
-    
-//     ScopedModelDescendant<ProfilesModel>
-//      (builder: (context, _ ,model) =>
-//     Form(
-//       key: _formKey,
-//       child: ListView(
-//         children: <Widget>[
-
-//           Container( padding: EdgeInsets.all(20.0), alignment: Alignment(0, 0),
-//               child: 
-//               InkWell(
-//                 onTap:(){ Functions.getimageFromCameraOrGallery(context,
-//                 (image) { DatabaseFunctions.updateUserProfile(image, image);}).then((_) => model.refreshUser());},
-//                 child: Container(width: 80.0, height: 80.0, 
-//                 decoration: BoxDecoration(shape: BoxShape.circle, border: Border()), 
-//                 child:ClipRRect(
-//                   borderRadius: new BorderRadius.circular(80),
-//                   child: Image.network(model.userImage, fit: BoxFit.cover))
-//                 ))
-//           ),
-
-//           ///Username
-//           TextFormField(
-//             decoration: InputDecoration(labelText: StringLabels.userName),
-//             initialValue: _userName,
-//             validator: (value) {
-//               if (value.isEmpty) {
-//                 return 'Please enter some text';
-//               }
-//             },
-//             onSaved: (value){_userName = value;}
-//           ),
-//           /// Email
-//           TextFormField(
-//             decoration: InputDecoration(labelText: StringLabels.email),
-//             initialValue: _userEmail,
-//             validator: (value) {
-//               if (value.isEmpty) {
-//                 return 'Please enter a valid email';
-//               }
-//             },
-//             onSaved: (value){_userEmail = value}
-//           ),
-//           ///Password
-//           TextFormField(
-//             decoration: InputDecoration(labelText: StringLabels.password),
-//             obscureText: true,
-//             validator: (value) {
-//               if (value.isEmpty) {
-//                 return 'Please enter a safe password';
-//               }
-//             },
-//             onSaved: (value){_password = value;}
-
-//           ),
-
-
-//           /// Submit button
-//           Padding(
-//             padding: const EdgeInsets.symmetric(vertical: 16.0),
-//             child: RaisedButton(
-//               onPressed: () {
-//                 // Validate will return true if the form is valid, or false if
-//                 // the form is invalid.
-//                 if (_formKey.currentState.validate()) {
-//                   // If the form is valid, we want to show a Snackbar
-//                   _formKey.currentState.save();
-//                   Navigator.pop(context);
-//                   Scaffold.of(context)
-//                       .showSnackBar(SnackBar(content: Text('Processing Data')));
-//                 }
-//               },
-//               child: Text('Submit'),
-//             ),
-//           ),
-//         ],
-//       ),
-//       ) 
-//      );       
-//   }
-// }
 
 class UserInputDetails extends StatefulWidget {
   final String _userEmail;
@@ -467,7 +220,8 @@ class UserInputDetails extends StatefulWidget {
 }
 
 class _UserInputDetailsState extends State<UserInputDetails> {
-
+  //TODO;
+  // UserImputDetailsModel();
   final _formKey = GlobalKey<FormState>();
   String _password = '';
   String _userEmail = '';
@@ -486,9 +240,6 @@ class _UserInputDetailsState extends State<UserInputDetails> {
   Widget build(BuildContext context) {
     return 
     
-    ScopedModelDescendant<ProfilesModel>
-     (builder: (context, _ ,model) =>
-
     Container( margin:EdgeInsets.all(10), child: 
     Form(
       key: _formKey,
@@ -498,8 +249,10 @@ class _UserInputDetailsState extends State<UserInputDetails> {
           Container( padding: EdgeInsets.all(20.0), alignment: Alignment(0, 0),
               child: 
               InkWell(
-                onTap:(){ Functions.getimageFromCameraOrGallery(context,
-                (image) { _userPhoto = image;});},
+               onTap:(){ 
+                    Functions.getimageFromCameraOrGallery(
+                      context,(String image){ setState(() {_userPhoto = image;});});
+                   },
                 child: Container(width: 200.0, height: 200.0, 
                 decoration: BoxDecoration(
                   shape: BoxShape.circle, 
@@ -507,7 +260,7 @@ class _UserInputDetailsState extends State<UserInputDetails> {
                   boxShadow: [BoxShadow(color: Colors.black, offset: Offset(2.0, 2.0))],), 
                 child:ClipRRect(
                   borderRadius: new BorderRadius.circular(200),
-                  child: Image.network(model.userImage, fit: BoxFit.cover))
+                  child: Image.network(_userPhoto, fit: BoxFit.cover))
                 ))
           ),
 
@@ -515,42 +268,54 @@ class _UserInputDetailsState extends State<UserInputDetails> {
           TextFormField(
             decoration: InputDecoration(labelText: StringLabels.userName),
             initialValue: widget._userName,
-            validator: (value) {
+            validator: (String value) {
               if (value.isEmpty) {
-                return 'Please enter some text';
+                return 'Enter some text';
               }
             },
             onSaved: (value){_userName = value;}
           ),
+
+           ///Motto
+            TextFormField(
+            decoration: InputDecoration(
+                          labelText: StringLabels.motto,
+                          hasFloatingPlaceholder: true,
+                                      ),
+            obscureText: false,
+            // TODO
+            onSaved: (String value){if (value != null || value != '');}
+
+          ),
+
           /// Email
           TextFormField(
             decoration: InputDecoration(labelText: StringLabels.email),
             initialValue: widget._userEmail,
-            validator: (value) {
+            validator: (String value) {
               if (value.isEmpty) {
                 return 'Please enter a valid email';
               }
             },
             onSaved: (value){_userEmail = value;}
           ),
+
           ///Password
           TextFormField(
-            decoration: InputDecoration(labelText: StringLabels.password),
+            decoration: InputDecoration(
+                          labelText: StringLabels.password,
+                          hasFloatingPlaceholder: true,
+                          helperText: 'if applicable'
+                                      ),
             obscureText: true,
-            validator: (value) {
-              if (value.isEmpty) {
-                return 'Please enter a safe password';
-              }
-            },
-            onSaved: (value){_password = value;}
-
+            onSaved: (String value){if (value != null || value != '')_password = value;}
           ),
+
+         
 
 
           /// Submit button
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0), child:
-            Container(width: 100, child: 
+            Container(width: 100,padding: const EdgeInsets.symmetric(vertical: 16.0), child: 
             RaisedButton(
               onPressed: () {
                 // Validate will return true if the form is valid, or false if
@@ -558,21 +323,20 @@ class _UserInputDetailsState extends State<UserInputDetails> {
                 if (_formKey.currentState.validate()) {
                   // If the form is valid, we want to show a Snackbar
                   _formKey.currentState.save();
-                  DatabaseFunctions.updateUserProfile(_userName,  _userPhoto, _userEmail, _password);
-                  Navigator.pop(context);
-                  Scaffold.of(context)
-                      .showSnackBar(SnackBar(content: Text('Processing Data')));
+                  DatabaseFunctions.updateUserProfile(_userName,  _userPhoto, _userEmail, _password)
+                  .then((_){ Navigator.pop(context); Scaffold.of(context)
+                  .showSnackBar(SnackBar(content: Text('Processing Data')));})
+                  .catchError((String error)=> PopUps.showAlert('Warning', error, 'ok', () => Navigator.pop(context), context));
                 }
               },
               child: Text('Submit'),
             ),
             )
-          ),
+          
         ],
       ),
       ) 
-      ,)
-     );       
+    );
   }
 }
 

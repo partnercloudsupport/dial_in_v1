@@ -203,56 +203,36 @@ class Functions {
   return returnFile;      
  } 
 
-  static Future<String> getimageFromCameraOrGallery(BuildContext context, Function(String) then)async{
-    String url = '';
+  static void getimageFromCameraOrGallery(BuildContext context, Function(String) completion)async{
 
-    await showDialog(context: context, builder: (BuildContext context){
-      return Center(child: Container( width:200, child:
+     showDialog(context: context, builder: (BuildContext context){
+      
+      return
+      Center(child: Container( width:200, child:
       
        CupertinoActionSheet(
          
          title: Text(StringLabels.photoSource, style: Theme.of(context).textTheme.subtitle,),
          actions: <Widget>[
 
-      new CupertinoDialogAction(
-          child: Text(StringLabels.camera, style: Theme.of(context).textTheme.display1),
-          isDestructiveAction: false,
-          onPressed: ()async{
-            showDialog(barrierDismissible: false, context: context ,
-            builder: (context) => Center(child:CircularProgressIndicator()));
-            File image = await ImagePicker.pickImage
-                              (maxWidth: 640.0, maxHeight: 480.0, source: ImageSource.camera);
-            url = await DatabaseFunctions.upLoadFileReturnUrl(image, [DatabaseIds.image]);
-            Navigator.of(context);
-            Navigator.of(context).pop(then(url));
-            Navigator.of(context).pop(then(url));
-            then(url);
-          }
-      ),
-    
-      new  CupertinoDialogAction(
-          child: Text(StringLabels.photoLibrary, style: Theme.of(context).textTheme.display1),
-          isDestructiveAction: false,
-          onPressed: ()async{
-            showDialog(barrierDismissible: false, context: context ,
-            builder: (context) => Center(child:CircularProgressIndicator())); 
-            File image = await ImagePicker.pickImage
-                              (maxWidth: 640.0, maxHeight: 480.0, source: ImageSource.gallery);
-            url = await DatabaseFunctions.upLoadFileReturnUrl(image, [DatabaseIds.image]);
-            Navigator.of(context);
-            Navigator.of(context).pop(then(url));
-            Navigator.of(context).pop(then(url));
-            then(url);
-          }
-      ),
-    ],
-    )
-    )
-    );
-    }
-    );
+          CupertinoImagePickerDiolog(
+            ImageSource.camera, 
+            (urlOut) {
+              Navigator.pop(context);
+              Navigator.pop(context, urlOut);}),
+      
+          CupertinoImagePickerDiolog(
+            ImageSource.gallery,
+            (urlOut) {
+              Navigator.pop(context);
+              Navigator.pop(context, urlOut);}),
 
-    return url;
+          ],
+         )
+        )
+      );
+     }
+    ).then((url) => completion(url));
   }
   
   static Future<File> getPictureFile(String filePath) async {

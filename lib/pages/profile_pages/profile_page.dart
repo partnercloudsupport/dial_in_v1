@@ -50,7 +50,6 @@ class ProfilePage extends StatefulWidget {
 class ProfilePageState extends State<ProfilePage> {
 
   double _margin = 10.0;
-  bool _isCopying;
   bool _isEditing;
   bool _isOldProfile;
   Profile _profile;
@@ -58,12 +57,15 @@ class ProfilePageState extends State<ProfilePage> {
   // ScrollController _scrollController;
   List<Widget> _appBarActions = [ Container()];
   List<Widget> _pageBody = List<Widget>();
+  ///TODO refactor into profile model
   RatioModel _ratioModel;
+  ///TODO
+  final _formKey = GlobalKey<FormState>();
+
 
   /// init state
   void initState() {
       assert( widget.isFromUserFeed != null, 'isFromUserFeed is null' );
-      _isCopying = widget.isCopying;
       _isEditing = widget.isEditing;
       _profile = widget.profile;
       _isOldProfile = widget.isOldProfile; 

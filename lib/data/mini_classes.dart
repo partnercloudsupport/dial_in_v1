@@ -40,6 +40,9 @@ class  UserProfile {
     String _userName;
     String get userName => _userName;
 
+    String _motto;
+    String get motto => _motto;
+
     String _userImage;
     String get userImage => _userImage;
 
@@ -73,14 +76,20 @@ class  UserProfile {
 
 class UserDetails{
 
-    String _userId;
-    String get userId => _userId;
+    String _id;
+    String get id => _id;
 
     String _userName;
     String get userName => _userName;
 
-    String _userImage;
-    String get userImage => _userImage;
+    String photo;
+    String get image => photo;
+
+    String _motto;
+    String get motto => _motto;
+
+    String _email;
+    String get email => _email;
 }
 
 

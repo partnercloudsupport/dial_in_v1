@@ -86,8 +86,9 @@ class SocialFeedBloc{
 
   /// Init of the class
   SocialFeedBloc(this._databaseId, this._currentUserStream, {this.isUserFollowing} )
-  {_currentUserStream.listen((profile){
-    _currentUser = profile;
+  {_currentUserStream.listen((user){
+    assert(user != null , 'user is null');
+    _currentUser = user;
     _userStreamListenerFunction();
    });
   }
@@ -95,17 +96,10 @@ class SocialFeedBloc{
   void deinit(){
     _initilised = false;
   }
-
   
   void dispose() { 
     _outgoingController.close();
     _incomingController.close();
-  }
-
-  void refresh(){
-   _initilised = false;
-    getProfiles();
-    // _outgoingController.add();
   }
 
   Future getProfiles()async{
@@ -126,7 +120,7 @@ class SocialFeedBloc{
     if(_currentFeedData != null){
     handleProfileList(_currentFeedData);}
     else{
-      refresh();
+      print('_currentFeedData is null');
     }
   }
 
@@ -164,9 +158,6 @@ class SocialFeedBloc{
 
           {if (profile.userId != null){
 
-            // bool following = isUserFollowing(profile.userId);
-            // bool following = _currentUser.isUserFollowing(profile.userId);
-
              bool result;
 
               if (_currentUser.following != null) {
@@ -179,7 +170,6 @@ class SocialFeedBloc{
               bool returnValue = !result;
 
               return returnValue;
-            // if(!following){ return true;}}
 
           }});
 
@@ -199,6 +189,8 @@ class SocialFeedBloc{
                 profiles.removeWhere((profile) { 
                    
                 if (profile.userId != null){
+
+                  assert(_currentUser.userId != null, 'user D is null');
 
                   String otherUserId = profile.userId ?? '';
                   String currentUserId = _currentUser.userId ?? '';
@@ -261,7 +253,10 @@ class UserFeed {
    if(!_initilised){
 
      _initilised= true;
-      DatabaseFunctions.getCurrentUserEmail().then((userEmail) => _userEmail = userEmail);
+
+
+      DatabaseFunctions.getCurrentUserEmail().then((userEmail) => _userEmail = userEmail)
+                        .catchError((error)=> print(error));
 
       DatabaseFunctions.getCurrentUserId()
       .then((user)

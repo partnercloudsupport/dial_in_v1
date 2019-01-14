@@ -26,10 +26,16 @@ class Profile {
   @required
   bool isPublic = true;
   List<Profile> profiles;
+  List<Map<String,String>> comments = List<Map<String,String>>();
+  List<String> likes = List<String>();
 
   // Is it water , coffee, grinder , machine etc?
 
-  Profile({
+  Profile(
+      
+      {
+      this.likes,
+      this.comments,
       this.userId,
       this.updatedAt,
       this.objectId,
@@ -1112,7 +1118,7 @@ Future<String> getUserImage ()async{
 
       case DatabaseIds.equipmentModel:
         _item = new Item(
-          title: StringLabels.model,
+          title: StringLabels.equipmentModel,
           value: '',
           databaseId: DatabaseIds.equipmentModel,
           placeHolderText: StringLabels.enterDescription,
@@ -1122,7 +1128,7 @@ Future<String> getUserImage ()async{
 
       case DatabaseIds.equipmentMake:
         _item = new Item(
-          title: StringLabels.make,
+          title: StringLabels.equipmentMake,
           value: '',
           databaseId: DatabaseIds.equipmentMake,
           placeHolderText: StringLabels.enterDescription,
