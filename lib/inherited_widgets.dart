@@ -176,16 +176,8 @@ class ProfilesModel extends Model {
         _baristaFeed.add(profile);
         break;
 
-      case ProfileType.none:
-        throw (profile.type);
-        break;
-
-      case ProfileType.feed:
-        throw (profile.type);
-        break;
-
       default:
-        throw (profile.type);
+        Error();
         break;
     }
   }
@@ -260,16 +252,8 @@ class ProfilesModel extends Model {
         _baristaFeed.removeProfile(profile);
         break;
 
-      case ProfileType.none:
-        throw (profile.type);
-        break;
-
-      case ProfileType.feed:
-        throw (profile.type);
-        break;
-
-      default:
-        throw (profile.type);
+      default: Error();
+      
         break;
     }
   }
@@ -328,17 +312,7 @@ class ProfilesModel extends Model {
         return baristaProfiles;
         break;
 
-      case ProfileType.none:
-        return throw (type);
-        break;
-
-      case ProfileType.feed:
-        return throw (type);
-        break;
-
-      default:
-        return throw (type);
-        break;
+      default: Error();        break;
     }
   }
 }

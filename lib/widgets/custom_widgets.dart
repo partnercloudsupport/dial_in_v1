@@ -15,29 +15,13 @@ import 'package:dial_in_v1/data/functions.dart';
 import 'package:dial_in_v1/inherited_widgets.dart';
 import 'package:scoped_model/scoped_model.dart';
 import "package:pull_to_refresh/pull_to_refresh.dart";
-import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:dial_in_v1/routes.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:dial_in_v1/pages/profile_pages/profile_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:dial_in_v1/database_functions.dart';
-import 'package:dial_in_v1/data/strings.dart';
-import 'package:flutter/material.dart';
-import 'package:dial_in_v1/data/profile.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dial_in_v1/widgets/custom_widgets.dart';
-import 'package:dial_in_v1/pages/profile_pages/profile_page.dart';
-import 'dart:math' as math;
 import 'dart:io';
-import 'dart:async';
-import 'package:flutter/services.dart';
-import 'package:path_provider/path_provider.dart';
-import 'dart:typed_data';
-import 'dart:io' as Io;
-import 'package:dial_in_v1/data/mini_classes.dart';
 
 
 
@@ -110,16 +94,20 @@ class _TextFieldEntryState extends State<TextFieldEntry> {
                 filled: true,
                 hintText: widget._placeholder,
                 hintStyle: TextStyle(color: Colors.black),
-                fillColor: Colors.grey.withOpacity(0.7))));
+                fillColor: Colors.grey.withOpacity(0.7)
+                )
+        )
+    );
   }
 }
 
 /// Circular picture
 class CircularPicture extends StatelessWidget {
   final String _image;
+  final String _placeHolder;
   final double _size;
 
-  CircularPicture(this._image, this._size);
+  CircularPicture(this._image,this._placeHolder ,this._size);
 
   @override
   Widget build(BuildContext context) {
@@ -139,7 +127,7 @@ class CircularPicture extends StatelessWidget {
           
           FadeInImage.assetNetwork(
             fit: BoxFit.cover,
-            placeholder: Images.rippleLoadingGif,
+            placeholder: _placeHolder,
             image: _image
              )),
           
@@ -229,7 +217,7 @@ class UserCard extends StatelessWidget {
           ///
           Container(
               child: Center(
-                  child: CircularPicture('assets/images/user.png', 100.0))),
+                  child: CircularPicture('assets/images/user.png',Images.user, 100.0))),
 
           Column(
             children: <Widget>[
@@ -571,25 +559,8 @@ void setWidgetUp(){
       _bottomRight = widget._profile.getProfileItemValue( DatabaseIds.age);       
       break;
 
-      case ProfileType.none:  
-      _topLeft = 'error none';
-      _topRight = 'error none';
-      _bottomRight = 'error none';
-      _bottomleft = 'error none';       
-      break;  
-
-      case ProfileType.feed:   
-      _topLeft = 'error feed';
-      _topRight = 'error feed';
-      _bottomRight = 'error feed';
-      _bottomleft = 'error feed';       
-      break;  
-
-      default: 
-      _topLeft = 'error default';
-      _topRight = 'error default';
-      _bottomRight = 'error default';
-      _bottomleft = 'error default';              
+      default: Error();    
+               
       break;
     }
 }
@@ -630,7 +601,7 @@ void setWidgetUp(){
       /// Profile picture
       ///
       ScalableWidget(Hero(tag: widget._profile.objectId , child: Container (
-          child: CircularPicture(widget._profile.image, 60.0)),)),
+          child: CircularPicture(widget._profile.image,Functions.getProfileImagePlaceholder(widget._profile.type),60.0)),)),
 
       Padding(padding: EdgeInsets.all(5.0)),
           
@@ -726,7 +697,7 @@ class SocialProfileCard extends StatelessWidget {
 
          /// User picture
           Container(child:InkWell(onTap:() => _giveUserProfile(_profile.userProfile, _tag),
-              child: Hero(tag: _profile.userProfile.userId + _tag.toString(), child: CircularPicture(_profile.userImage , 40.0)))),
+              child: Hero(tag: _profile.userProfile.userId + _tag.toString(), child: CircularPicture(_profile.userImage, Images.user , 40.0)))),
               
       
           Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[

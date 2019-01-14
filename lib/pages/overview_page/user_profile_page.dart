@@ -4,6 +4,7 @@ import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'package:dial_in_v1/data/strings.dart';
 import 'package:dial_in_v1/data/mini_classes.dart';
 import 'package:dial_in_v1/inherited_widgets.dart';
+import 'package:dial_in_v1/data/images.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class UserProfilePage extends StatelessWidget {
@@ -35,7 +36,9 @@ class UserProfilePage extends StatelessWidget {
                         child: Hero(
                             tag: tag == null ?  _userProfile.userId : _userProfile.userId + tag.toString(),
                             child: CircularPicture(
-                                _userProfile.userImage, 150.0)))),
+                                _userProfile.userImage, 
+                                Images.user,
+                                150.0)))),
 
                 /// User name
                 Text(

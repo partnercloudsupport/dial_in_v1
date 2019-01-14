@@ -16,9 +16,24 @@ import 'dart:typed_data';
 import 'package:image/image.dart' as Image;
 import 'dart:io' as Io;
 import 'package:dial_in_v1/data/mini_classes.dart';
+import 'package:dial_in_v1/data/images.dart';
 
 
 class Functions {
+
+  static String getProfileImagePlaceholder(ProfileType profileType){
+
+    switch(profileType){
+
+      case ProfileType.barista : return Images.user;           
+      case ProfileType.coffee : return Images.coffeeBeans;
+      case ProfileType.equipment : return Images.aeropressSmaller512x512;
+      case ProfileType.grinder : return Images.grinder;
+      case ProfileType.recipe : return Images.recipeSmaller;
+      case ProfileType.water : return Images.water;
+      
+    }
+  }
 
    static int getIntValue(dynamic item){
 
@@ -294,14 +309,6 @@ class Functions {
         return StringLabels.barista;
         break;
 
-      case ProfileType.none:
-        return StringLabels.none;
-        break;
-
-      case ProfileType.feed:
-        return StringLabels.feed;
-        break;
-
       default:
         return StringLabels.error;
         break;
@@ -368,8 +375,7 @@ class Functions {
         return ProfileType.barista;
         break;
 
-      default:
-        return ProfileType.none;
+      default: Error();
         break;
     }
   }

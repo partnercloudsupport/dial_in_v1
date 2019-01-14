@@ -508,22 +508,6 @@ Future<String> getUserImage ()async{
         );
         break;
 
-      case ProfileType.feed:
-        return new Profile(
-          userId: '',
-          isPublic: true,
-          updatedAt: DateTime.now(),
-          objectId: '',
-          image: Images.userFirebase,
-          databaseId: DatabaseIds.feed,
-          type: ProfileType.feed,
-          orderNumber: 0,
-          properties: [
-            createBlankItem(DatabaseIds.type),
-          ],
-        );
-        break;
-
       case ProfileType.grinder:
         return new Profile(
           userId: '',
@@ -540,24 +524,6 @@ Future<String> getUserImage ()async{
             createBlankItem(DatabaseIds.grinderModel),
             createBlankItem(DatabaseIds.burrs),
             createBlankItem(DatabaseIds.notes),
-          ],
-        );
-        break;
-
-      case ProfileType.none:
-        return new Profile(
-          userId: '',
-          isPublic: true,
-          updatedAt: DateTime.now(),
-          objectId: '',
-          // image: document[DatabaseIds.image].toString(),
-          databaseId: DatabaseIds.databaseId,
-          orderNumber: 0,
-          properties: [
-            createBlankItem(DatabaseIds.type),
-            createBlankItem(DatabaseIds.level),
-            createBlankItem(DatabaseIds.name),
-            createBlankItem(DatabaseIds.notes)
           ],
         );
         break;
@@ -1820,6 +1786,4 @@ enum ProfileType {
   grinder,
   equipment,
   barista,
-  feed,
-  none
 }

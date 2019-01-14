@@ -195,17 +195,17 @@ class TabViewDataArray{
     TabViewData(
     new FeedPage(), 
     Tab(icon: Icon(Icons.public), text: "Feed"),
-    ProfileType.feed),
+    ProfileType.recipe),
    
     TabViewData(new 
     DataPage(),
     Tab(icon: Icon(Icons.list),text: "Data"),
-    ProfileType.feed),
+    ProfileType.recipe),
 
     TabViewData(
       new CurrentUserPage(ProfilesModel.of(context).userProfile),
       Tab(icon: Icon(Icons.portrait),text: "User"),
-      ProfileType.none),
+      ProfileType.recipe),
     ];
   }
 }

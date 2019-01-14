@@ -165,7 +165,7 @@ class _ProfileInputCardWithAttributeState extends State<ProfileInputCardWithAttr
                   Padding(padding: EdgeInsets.all(5.0),),
 
                   /// Left profile selection
-                       CircularPicture(widget.profile.image, 40.0),
+                       CircularPicture(widget.profile.image, Functions.getProfileImagePlaceholder(widget.profile.type),40.0),
 
                         /// Spacer
                         Container(width: 10.0,),
@@ -440,7 +440,7 @@ class ProfileInputWithDetailsCardState extends State<ProfileInputWithDetailsCard
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
 
-                  CircularPicture(widget._profile.image, 40.0),
+                  CircularPicture(widget._profile.image, Functions.getProfileImagePlaceholder(widget._profile.type),40.0),
                   
                   Container(width: 10.0,),
 
@@ -535,7 +535,7 @@ class _ProfileInputCardState extends State<ProfileInputCard> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
 
-                  CircularPicture(widget._profile.image, 40.0),
+                  CircularPicture(widget._profile.image, Functions.getProfileImagePlaceholder(widget._profile.type),40.0),
 
                   /// Spacer
                   Container(width: 10.0,),

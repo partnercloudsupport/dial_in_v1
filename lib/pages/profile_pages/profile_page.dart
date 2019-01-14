@@ -207,7 +207,7 @@ class ProfilePageState extends State<ProfilePage> {
       /// Profile Image
       Container(padding: EdgeInsets.all(_margin),child: 
         InkWell(child:Hero(tag: _profile.objectId ,child: SizedBox(width: 200.0, height: 200.0,
-        child: CircularPicture(_profile.image, 200.0)) ,),
+        child: CircularPicture(_profile.image, Functions.getProfileImagePlaceholder(widget.profile.type),200.0)) ,),
           onTap: _isEditing?()
           {_getimage(
             (image){ setState(() {_profile.image = image;});});
@@ -288,16 +288,6 @@ class ProfilePageState extends State<ProfilePage> {
 
       case ProfileType.equipment:
       _structure = EquipmentPage(_profile, _margin,  _profile.setProfileItemValue, _isEditing, showPickerMenu);
-      break;
-
-      case ProfileType.feed:
-      break;
-
-      case ProfileType.grinder:
-      _structure = GrinderPage(_profile, _margin, _profile.setProfileItemValue, _isEditing, showPickerMenu);
-      break;
-
-      case ProfileType.none:
       break;
 
       case ProfileType.water:
