@@ -10,7 +10,7 @@ ThemeData buildThemeData(){
     ///Colors
     // primarySwatch: AppColors.getColor(ColorType.toolBar),
     primaryColorDark: Color.fromARGB(255, 240, 240, 250),
-    scaffoldBackgroundColor: Color.fromARGB(255, 71, 74, 77),
+    scaffoldBackgroundColor: Color.fromARGB(255, 200, 200, 200),
     primaryColorLight: Color.fromARGB(255, 180, 184, 171),
     primaryColor: AppColors.getColor(ColorType.primarySwatch),
     buttonColor: AppColors.getColor(ColorType.primarySwatch),
@@ -19,8 +19,8 @@ ThemeData buildThemeData(){
     // buttonColor: AppColors.getColor(ColorType.button),
     bottomAppBarColor: AppColors.getColor(ColorType.white),
     accentColor: AppColors.getColor(ColorType.tint),
-    cardColor: Colors.white,
-    // canvasColor: Colors.black12,
+    cardColor: Color.fromARGB(255, 230, 230, 230),
+    canvasColor: Color.fromARGB(255, 150, 150, 150),
     cursorColor: Colors.black,
     
     /// Font

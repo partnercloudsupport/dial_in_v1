@@ -76,20 +76,23 @@ class  UserProfile {
 
 class UserDetails{
 
-    String _id;
-    String get id => _id;
+  UserDetails({String userName, String id, String photo, String motto, String email,String password});
 
-    String _userName;
-    String get userName => _userName;
+    Map<String, String> values = Map<String, String>();
 
-    String photo;
-    String get image => photo;
-
-    String _motto;
-    String get motto => _motto;
-
-    String _email;
-    String get email => _email;
+      set id(String newId) => values[DatabaseIds.userId] = newId;
+      set photo(String newimage) => values[DatabaseIds.image];
+      set userName(String newuserName) => values[DatabaseIds.userName];
+      set motto(String newmotto) => values[DatabaseIds.motto];
+      set email(String newemail) => values[DatabaseIds.email];
+      set password(String newpassword) => values[DatabaseIds.password]; 
+    
+      String get id => values[DatabaseIds.userId];
+      String get photo => values[DatabaseIds.image];
+      String get userName => values[DatabaseIds.userName];
+      String get motto => values[DatabaseIds.motto];
+      String get email => values[DatabaseIds.email];
+      String get password => values[DatabaseIds.password];
 }
 
 

@@ -243,26 +243,41 @@ class DatabaseFunctions {
   }
     
   
-  static Future updateUserProfile(String userName, String imageUrl,String email, String password) async{
+  static Future updateUserProfile(UserDetails userdetails) async{
 
     FirebaseUser user = await FirebaseAuth.instance.currentUser().catchError((error) => print(error));
 
     UserUpdateInfo userUpdateInfo = UserUpdateInfo();
-    userUpdateInfo.displayName = userName;
-    userUpdateInfo.photoUrl = imageUrl;
+    if (userdetails.userName != null || userdetails.userName != ""){
+    userUpdateInfo.displayName = userdetails.userName;}
+    if (userdetails.photo != null || userdetails.photo != ""){
+    userUpdateInfo.photoUrl = userdetails.photo;}
 
-    if (password != null || password != ""){
-    user.updatePassword(password);}
-     if (email != null || email != ""){
-    user.updateEmail(email);}
+    if (userdetails.password != null || userdetails.password != ""){
+    user.updatePassword(userdetails.password).catchError(((error) => print(error)));}
+     if (userdetails.email != null || userdetails.email != ""){
+    user.updateEmail(userdetails.email).catchError(((error) => print(error)));}
 
     user.updateProfile(userUpdateInfo)
       .then( (_)async{
             Map<String, dynamic> data = {
             DatabaseIds.userId : user.uid,
-            DatabaseIds.userName : userName,
-            DatabaseIds.image : imageUrl,
+            DatabaseIds.userName : userdetails.userName,
+            DatabaseIds.image : userdetails.photo,
             };
+
+            Map<String, dynamic> newData = Map<String, dynamic>();
+
+            newData[DatabaseIds.userId] = user.uid;
+            
+            userdetails.values.forEach((key, value) {
+              if(
+                key == DatabaseIds.userName ||
+                key == DatabaseIds.image ||
+                key == DatabaseIds.motto 
+                ){
+               newData[key] = value;}
+            });
 
             Firestore.instance.collection(DatabaseIds.User).document(user.uid).get().then((doc){
 
@@ -360,27 +375,20 @@ class DatabaseFunctions {
   /// Delete Firebase Storage Item //TODO
   static void deleteFireBaseStorageItem(String fileUrl){
 
-    String filePath = 'https://firebasestorage.googleapis.com/v0/b/dial-in-21c50.appspot.com/o/default_images%2Fuser.png?alt=media&token=c2ccceec-8d24-42fe-b5c0-c987733ac8ae'
+    String filePath = fileUrl
                       .replaceAll(new 
                       RegExp(r'https://firebasestorage.googleapis.com/v0/b/dial-in-21c50.appspot.com/o/'), '');
-    
+
+    filePath = filePath.replaceAll(new RegExp(r'%2F'), '/');
+  
+    filePath = filePath.replaceAll(new RegExp(r'(\?alt).*'), '');
+
     StorageReference storageReferance = FirebaseStorage.instance.ref();
 
     storageReferance.child(filePath).delete().then((_) => print('Successfully deleted $filePath storage item' ));
 
   }
 
-  // final RegExp regExp = RegExp(r"(?<=https:\/\/firebasestorage.googleapis.com\/v0\/b\/dial-in-21c50.appspot.com\/o\/).*");
-    // String firebaseRef = FirebaseStorage.instance.ref().path;
-
-    //   String filePath = regExp.stringMatch(fileUrl.split('').reversed.join());
-    //   // Create a reference to the file to delete
-      // StorageReference desertRef = FirebaseStorage.instance.ref().child(filePath);
-
-      // Delete the file
-      // desertRef.delete()
-      // .then((_) {})
-      // .catchError((e){print(e);});
 
   /// Prepare Profile for FirebaseUpload or Update
   static Future<Map <String, dynamic>> prepareProfileForFirebaseUpload(Profile profile)async{
@@ -850,6 +858,7 @@ class Storage {
 }
 
 class DatabaseIds{
+  static const String motto = 'motto';
   static const String comments = 'comments';
   static const String likes = 'likes';
   static const String followers = 'followers';

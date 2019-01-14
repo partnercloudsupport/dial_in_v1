@@ -13,6 +13,8 @@ import 'package:dial_in_v1/data/functions.dart';
 import 'package:dial_in_v1/database_functions.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:dial_in_v1/pages/custom_scaffold.dart';
+import 'package:dial_in_v1/data/mini_classes.dart';
+
 
 class OverviewPage extends StatefulWidget{
  @override
@@ -143,7 +145,7 @@ class OverviewPageState extends State<OverviewPage> with SingleTickerProviderSta
 
                             return CustomScaffold(
 
-                              UserInputDetails(model.userName, model.userEmail, model.userImage),
+                              UserInputDetails(UserDetails(userName: model.userName, email: model.userEmail, photo: model.userImage)),
                               title: 'User Details');
                            
                           },
@@ -210,29 +212,24 @@ class TabViewDataArray{
 
 
 class UserInputDetails extends StatefulWidget {
-  final String _userEmail;
-  final String _userName;
-  final String _userPhoto;
+  
+  UserDetails _userDetails = UserDetails();
 
-  UserInputDetails(this._userName, this._userEmail, this._userPhoto);
+  UserInputDetails(this._userDetails,);
 
   _UserInputDetailsState createState() => _UserInputDetailsState();
 }
 
 class _UserInputDetailsState extends State<UserInputDetails> {
   //TODO;
-  // UserImputDetailsModel();
   final _formKey = GlobalKey<FormState>();
-  String _password = '';
-  String _userEmail = '';
-  String _userName = '';
-  String _userPhoto = '';
+
+  UserDetails _userDetails = UserDetails();
+
 
   void initState() { 
     super.initState();
-    _userEmail = widget._userEmail;
-    _userName = widget._userName;
-    _userPhoto = widget._userPhoto;
+
   }
 
   
@@ -251,7 +248,7 @@ class _UserInputDetailsState extends State<UserInputDetails> {
               InkWell(
                onTap:(){ 
                     Functions.getimageFromCameraOrGallery(
-                      context,(String image){ setState(() {_userPhoto = image;});});
+                      context,(String image){ setState(() {_userDetails.photo = image;});});
                    },
                 child: Container(width: 200.0, height: 200.0, 
                 decoration: BoxDecoration(
@@ -260,24 +257,25 @@ class _UserInputDetailsState extends State<UserInputDetails> {
                   boxShadow: [BoxShadow(color: Colors.black, offset: Offset(2.0, 2.0))],), 
                 child:ClipRRect(
                   borderRadius: new BorderRadius.circular(200),
-                  child: Image.network(_userPhoto, fit: BoxFit.cover))
+                  child: Image.network(_userDetails.photo ?? '', fit: BoxFit.cover))
                 ))
           ),
 
           ///Username
           TextFormField(
             decoration: InputDecoration(labelText: StringLabels.userName),
-            initialValue: widget._userName,
+            initialValue: _userDetails.userName ?? '',
             validator: (String value) {
               if (value.isEmpty) {
                 return 'Enter some text';
               }
             },
-            onSaved: (value){_userName = value;}
+            onSaved: (value){_userDetails.userName = value;}
           ),
 
            ///Motto
             TextFormField(
+            initialValue: _userDetails.motto ?? '',
             decoration: InputDecoration(
                           labelText: StringLabels.motto,
                           hasFloatingPlaceholder: true,
@@ -291,13 +289,13 @@ class _UserInputDetailsState extends State<UserInputDetails> {
           /// Email
           TextFormField(
             decoration: InputDecoration(labelText: StringLabels.email),
-            initialValue: widget._userEmail,
+            initialValue: _userDetails.email ?? '',
             validator: (String value) {
               if (value.isEmpty) {
                 return 'Please enter a valid email';
               }
             },
-            onSaved: (value){_userEmail = value;}
+            onSaved: (value){_userDetails.email = value;}
           ),
 
           ///Password
@@ -305,14 +303,11 @@ class _UserInputDetailsState extends State<UserInputDetails> {
             decoration: InputDecoration(
                           labelText: StringLabels.password,
                           hasFloatingPlaceholder: true,
-                          helperText: 'if applicable'
+                          helperText: 'If applicable'
                                       ),
             obscureText: true,
-            onSaved: (String value){if (value != null || value != '')_password = value;}
+            onSaved: (String value){if (value != null || value != '')_userDetails.password = value;}
           ),
-
-         
-
 
           /// Submit button
             Container(width: 100,padding: const EdgeInsets.symmetric(vertical: 16.0), child: 
@@ -323,7 +318,7 @@ class _UserInputDetailsState extends State<UserInputDetails> {
                 if (_formKey.currentState.validate()) {
                   // If the form is valid, we want to show a Snackbar
                   _formKey.currentState.save();
-                  DatabaseFunctions.updateUserProfile(_userName,  _userPhoto, _userEmail, _password)
+                  DatabaseFunctions.updateUserProfile(_userDetails)
                   .then((_){ Navigator.pop(context); Scaffold.of(context)
                   .showSnackBar(SnackBar(content: Text('Processing Data')));})
                   .catchError((String error)=> PopUps.showAlert('Warning', error, 'ok', () => Navigator.pop(context), context));

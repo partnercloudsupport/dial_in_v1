@@ -254,7 +254,6 @@ class UserFeed {
 
      _initilised= true;
 
-
       DatabaseFunctions.getCurrentUserEmail().then((userEmail) => _userEmail = userEmail)
                         .catchError((error)=> print(error));
 

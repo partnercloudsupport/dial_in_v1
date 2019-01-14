@@ -19,8 +19,11 @@ class UserProfilePage extends StatelessWidget {
 
     return ScopedModelDescendant<ProfilesModel>(
         rebuildOnChange: false,
-        builder: (context, _, model) => Container(
-                child: Card(
+        builder: (context, _, model) => 
+        
+        ListView(children:[
+          Container(
+            child: Card(
                     child: new Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -52,14 +55,24 @@ class UserProfilePage extends StatelessWidget {
 
                 Counts(_userProfile),
 
-                Padding(padding: EdgeInsets.all(20.0)),
-
                 //TODO bio
-                Text('Bio')
-
+                Card(
+                  margin: EdgeInsets.all(20.0),
+                  child: 
+                  Container(
+                    width: double.infinity, 
+                    padding: EdgeInsets.all(20.0), 
+                    child:Text('Bio')
+                  ),
+                )
                 
               ],
-            ))));
+            )
+            )
+          )
+        ]
+      )
+    );
   }
 }
 
