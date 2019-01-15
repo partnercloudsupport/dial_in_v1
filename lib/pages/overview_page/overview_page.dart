@@ -96,8 +96,6 @@ class OverviewPageState extends State<OverviewPage> with SingleTickerProviderSta
   Widget build(BuildContext context){
 
     return  
-    ScopedModelDescendant<ProfilesModel>
-     (builder: (context, _ ,model) =>
     
     Scaffold(
        
@@ -113,50 +111,7 @@ class OverviewPageState extends State<OverviewPage> with SingleTickerProviderSta
                   RawMaterialButton( onPressed: () => _scaffoldKey.currentState.openDrawer(),
                   child: Icon(Icons.menu))  ], ),
     
-        drawer:  Drawer(
-                // Add a ListView to the drawer. This ensures the user can scroll
-                // through the options in the Drawer if there isn't enough vertical
-                // space to fit everything.
-                child: ListView(
-                  // Important: Remove any padding from the ListView.
-                  padding: EdgeInsets.zero,
-                  children: <Widget>[
-                    DrawerHeader(
-                      child: Container(alignment:Alignment(0, 0),child:Text('Options', style:Theme.of(context).textTheme.title)),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor,
-                      ),
-                    ),
-                    ListTile(
-                      title: Text('Theme'),
-                      onTap: () {
-                        Navigator.push(context,MaterialPageRoute(builder: (BuildContext context) => ThemeTestPage()))
-                        .then((_)=>Navigator.pop(context));
-                        // Navigator.pop(context);
-                      },
-                    ),
-                    ListTile(
-                      title: Text('Edit user profile'),
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          barrierDismissible: true, // user must tap button!
-                          builder: (BuildContext context) {
-
-                            return CustomScaffold(
-
-                              UserInputDetails(UserDetails(userName: model.userName, email: model.userEmail, photo: model.userImage)),
-                              title: 'User Details');
-                           
-                          },
-                        ).then((_) { 
-                          model.refreshUser();
-                          Navigator.pop(context);});
-                      },
-                    ),
-                  ],
-                ),
-              ),// We'll populate the Drawer in the next step!
+      drawer: MainMenuDrawer(),
 
       body: TabBarView(
         controller: controller,
@@ -179,9 +134,67 @@ class OverviewPageState extends State<OverviewPage> with SingleTickerProviderSta
           _tabViews.tabs[2].tab,
         ],),),
       )
-      )
-     );
+      );
     }
+}
+
+class MainMenuDrawer extends StatelessWidget{
+
+  @override
+  Widget build(BuildContext context) {
+
+    return ScopedModelDescendant<ProfilesModel>(
+      builder: (BuildContext context, _ , ProfilesModel model)=>
+    
+    Drawer(
+
+      child: ListView(
+        // Important: Remove any padding from the ListView.
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            child: Container(alignment:Alignment(0, 0),child:Text('Options', style:Theme.of(context).textTheme.title)),
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor,
+            ),
+          ),
+          ListTile(
+            title: Text('Theme'),
+            onTap: () {
+              Navigator.push(context,MaterialPageRoute(builder: (BuildContext context) => ThemeTestPage()))
+              .then((_)=>Navigator.pop(context));
+            },
+          ),
+          ListTile(
+            title: Text('Edit user profile'),
+            onTap: () {
+
+             UserDetails userdetails = UserDetails(
+                                          idIn: model.userdetails.id ?? 'error',
+                                          userNameIn: model.userdetails.userName ?? 'error', 
+                                          emailIn: model.userdetails.email ?? 'error', 
+                                          photoIn: model.userdetails.userName ?? null,
+                                          mottoIn: model.userdetails.motto ?? 'error ');
+              showDialog(
+                context: context,
+                barrierDismissible: true,
+                builder: (BuildContext context) =>
+
+                   CustomScaffold(
+                          UserInputDetails(userDetails:userdetails),
+                          title: 'User Details'),
+              ).then((_) { 
+                model.refreshUser();
+                Navigator.pop(context);}
+              );
+            
+            }
+          )
+        ],
+      ),
+    ),
+    );
+  }
 }
 
 class TabViewDataArray{
@@ -203,7 +216,7 @@ class TabViewDataArray{
     ProfileType.recipe),
 
     TabViewData(
-      new CurrentUserPage(ProfilesModel.of(context).userProfile),
+      new CurrentUserPage(ProfilesModel.of(context).userProfileStream),
       Tab(icon: Icon(Icons.portrait),text: "User"),
       ProfileType.recipe),
     ];
@@ -213,9 +226,9 @@ class TabViewDataArray{
 
 class UserInputDetails extends StatefulWidget {
   
-  UserDetails _userDetails = UserDetails();
+  final UserDetails userDetails;
 
-  UserInputDetails(this._userDetails,);
+  UserInputDetails({this.userDetails});
 
   _UserInputDetailsState createState() => _UserInputDetailsState();
 }
@@ -224,14 +237,12 @@ class _UserInputDetailsState extends State<UserInputDetails> {
   //TODO;
   final _formKey = GlobalKey<FormState>();
 
-  UserDetails _userDetails = UserDetails();
-
+  UserDetails  _userDetails;
 
   void initState() { 
     super.initState();
-
+    _userDetails = widget.userDetails ?? UserDetails();
   }
-
   
   @override
   Widget build(BuildContext context) {

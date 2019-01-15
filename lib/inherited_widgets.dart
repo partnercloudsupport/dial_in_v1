@@ -42,11 +42,10 @@ class ProfilesInheritedWidget extends InheritedWidget {
 
 /// Profiles scoped model
 class ProfilesModel extends Model {
-  Stream<UserProfile> get userProfile => _userFeed.userProfile;
-  String get userId => _userFeed.userId;
-  String get userName => _userFeed.userName;
-  String get userImage => _userFeed.userImage;
-  String get userEmail => _userFeed.userEmail;
+
+  Stream<UserProfile> get userProfileStream { assert( _userFeed.userStream != null, '_userFeed.userProfile'); return _userFeed.userStream;}
+  UserProfile get currentUserProfile { assert( _userFeed.userProfile != null, '_userFeed.userProfile'); return _userFeed.userProfile;}
+  UserDetails get userdetails { assert( _userFeed.userDetails != null, '_userFeed.userDetails'); return _userFeed.userDetails;}
 
   int get recipeProfilesCount => _recipeFeed.profilesCount ?? 0;
   int get coffeeProfilesCount => _coffeeFeed.profilesCount ?? 0;
@@ -61,13 +60,24 @@ class ProfilesModel extends Model {
   SocialFeedBloc _followers;
   UserFeed _userFeed = new UserFeed();
 
+  /// init
+  ProfilesModel() {
+    _comminuty = new SocialFeedBloc(
+                          DatabaseIds.community,
+                          userProfileStream,
+    );
+    _followers = new SocialFeedBloc(DatabaseIds.following,
+                                    userProfileStream,
+                                    isUserFollowing: isUserFollowing);
+  }
+
   /// Checks the current user agaist the userId
   ///  to check if current is following
   bool isUserFollowing(String otherUser) {
     bool result;
 
-    if (_userFeed.following != null) {
-      List<String> followingList = _userFeed.following;
+    if (currentUserProfile.following != null) {
+      List<String> followingList = currentUserProfile.following;
 
       result = followingList.contains(otherUser) ? true : false;
     }
@@ -77,13 +87,13 @@ class ProfilesModel extends Model {
   /// Checks the following status then updates the record accordingly
   void followOrUnfollow(String otherUser, Function(bool) competionFollow) {
     if (isUserFollowing(otherUser)) {
-      DatabaseFunctions.unFollow(userId, otherUser, (success) {
+      DatabaseFunctions.unFollow(currentUserProfile.id, otherUser, (success) {
         _userFeed.refresh();
         competionFollow(false);
       })
       .catchError((error){print(error); Error();});
     } else {
-      DatabaseFunctions.addFollower(userId, otherUser, (success) {
+      DatabaseFunctions.addFollower(currentUserProfile.id, otherUser, (success) {
         _userFeed.refresh();
         competionFollow(true);
       })
@@ -105,16 +115,6 @@ class ProfilesModel extends Model {
   Stream<List<FeedProfileData>> get communnityFeed => _comminuty.profiles;
   Stream<List<FeedProfileData>> get followingFeed => _followers.profiles;
 
-  /// init
-  ProfilesModel() {
-
-    _comminuty = new SocialFeedBloc(
-      DatabaseIds.community,
-      userProfile,
-    );
-    _followers = new SocialFeedBloc(DatabaseIds.following, userProfile,
-        isUserFollowing: isUserFollowing);
-  }
 
   void logOut() {
     DatabaseFunctions.logOut().catchError((error) => print(error));

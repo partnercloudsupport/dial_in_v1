@@ -35,7 +35,7 @@ class  UserProfile {
     UserProfile(this._userId,this._userName,this._userImage, this._following, this._followers);
 
     String _userId;
-    String get userId => _userId;
+    String get id => _userId;
 
     String _userName;
     String get userName => _userName;
@@ -44,7 +44,7 @@ class  UserProfile {
     String get motto => _motto;
 
     String _userImage;
-    String get userImage => _userImage;
+    String get image => _userImage;
 
     List<String> _followers = new List<String>();
     List<String> get followers => _followers;
@@ -76,16 +76,23 @@ class  UserProfile {
 
 class UserDetails{
 
-  UserDetails({String userName, String id, String photo, String motto, String email,String password});
+  UserDetails({String userNameIn, String idIn, String photoIn, String mottoIn, String emailIn ,String passwordIn}){
+      id = idIn;
+      photo = photoIn;
+      userName = userNameIn;
+      motto = mottoIn;
+      email = emailIn;
+      password = passwordIn;
+  }
 
     Map<String, String> values = Map<String, String>();
 
       set id(String newId) => values[DatabaseIds.userId] = newId;
-      set photo(String newimage) => values[DatabaseIds.image];
-      set userName(String newuserName) => values[DatabaseIds.userName];
-      set motto(String newmotto) => values[DatabaseIds.motto];
-      set email(String newemail) => values[DatabaseIds.email];
-      set password(String newpassword) => values[DatabaseIds.password]; 
+      set photo(String newimage) => values[DatabaseIds.image] = newimage;
+      set userName(String newuserName) => values[DatabaseIds.userName] = newuserName;
+      set motto(String newmotto) => values[DatabaseIds.motto] = newmotto;
+      set email(String newemail) => values[DatabaseIds.email] = newemail;
+      set password(String newpassword) => values[DatabaseIds.password] = newpassword; 
     
       String get id => values[DatabaseIds.userId];
       String get photo => values[DatabaseIds.image];

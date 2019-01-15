@@ -34,9 +34,9 @@ class UserProfilePage extends StatelessWidget {
                     margin: EdgeInsets.all(10.0),
                     child: Center(
                         child: Hero(
-                            tag: tag == null ?  _userProfile.userId : _userProfile.userId + tag.toString(),
+                            tag: tag == null ?  _userProfile.id : _userProfile.id + tag.toString(),
                             child: CircularPicture(
-                                _userProfile.userImage, 
+                                _userProfile.image, 
                                 Images.user,
                                 150.0)))),
 
@@ -54,7 +54,7 @@ class UserProfilePage extends StatelessWidget {
                 // Following button Logic
                 isCurrentUser
                     ? Container(width: 0, height: 0)
-                    : FollowButton(_userProfile.userId),
+                    : FollowButton(_userProfile.id),
 
                 Counts(_userProfile),
 

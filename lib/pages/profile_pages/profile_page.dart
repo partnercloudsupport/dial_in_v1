@@ -11,7 +11,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:dial_in_v1/pages/profile_pages/recipe_profile_page.dart';
 import 'package:dial_in_v1/pages/profile_pages/water_profile_page.dart';
 import 'package:dial_in_v1/pages/profile_pages/equipment_profile_page.dart';
-import 'package:dial_in_v1/pages/profile_pages/grinder_profile_page.dart';
 import 'package:dial_in_v1/pages/profile_pages/barista_profile_page.dart';
 import 'package:dial_in_v1/pages/profile_pages/coffee_profile_page.dart';
 import 'package:dial_in_v1/theme/appColors.dart';
@@ -21,7 +20,6 @@ import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'dart:io';
 import 'dart:async';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:dial_in_v1/inherited_widgets.dart';
 
 class ProfilePage extends StatefulWidget {
   final bool isFromUserFeed;
@@ -380,7 +378,7 @@ class ProfilePageState extends State<ProfilePage> {
             File image = await ImagePicker.pickImage
                               (maxWidth: 640.0, maxHeight: 480.0, source: ImageSource.camera);
             url = await DatabaseFunctions.upLoadFileReturnUrl
-            (image,[ProfilesModel.of(context).userId  , DatabaseIds.image, _profile.databaseId],
+            (image,[ProfilesModel.of(context).currentUserProfile.id  , DatabaseIds.image, _profile.databaseId],
             errorHandler: (e){
               PopUps.showAlert( 
                 StringLabels.error,
@@ -404,7 +402,7 @@ class ProfilePageState extends State<ProfilePage> {
             File image = await ImagePicker.pickImage
                               (maxWidth: 640.0, maxHeight: 480.0, source: ImageSource.gallery);
            url = await DatabaseFunctions.upLoadFileReturnUrl
-            (image,[ProfilesModel.of(context).userId  , DatabaseIds.image, _profile.databaseId],
+            (image,[ProfilesModel.of(context).currentUserProfile.id  , DatabaseIds.image, _profile.databaseId],
             errorHandler: (e){
               PopUps.showAlert( 
                 StringLabels.error,

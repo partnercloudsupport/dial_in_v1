@@ -7,6 +7,8 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:dial_in_v1/inherited_widgets.dart';
 import 'package:dial_in_v1/routes.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
+import 'dart:developer';
+import 'package:flutter/rendering.dart';
 
 
 void main() {
@@ -19,6 +21,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+
+    /// Layout shown
+    debugPaintSizeEnabled = true;
 
     ProfilesModel _profilesModel = ProfilesModel();
 
@@ -35,9 +40,8 @@ class MyApp extends StatelessWidget {
      showPerformanceOverlay: false, 
      checkerboardRasterCacheImages: false, 
      checkerboardOffscreenLayers: false, 
-     showSemanticsDebugger: false, 
+     showSemanticsDebugger: false,
      debugShowCheckedModeBanner: true,
-     
 
       onGenerateRoute: (RouteSettings settings) {
         print(settings.name);

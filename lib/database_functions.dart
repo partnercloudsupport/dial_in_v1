@@ -165,6 +165,19 @@ class DatabaseFunctions {
           // }
   }
 
+  static Future<UserDetails>getCurrentUserDetails()async{
+
+    FirebaseUser user = await FirebaseAuth.instance.currentUser().catchError((error) => print(error));
+    
+    UserDetails userDetails = UserDetails(
+                                  idIn: user.uid,
+                                  emailIn: user.email,
+                                  );
+
+    assert(userDetails != null , 'userDetails is null');
+    return userDetails;
+  }
+
   /// SignUp
   static Future<void> signUp
   (String userName, String emailUser, String password, String imageUrl, Function(bool, String) completion) async {
@@ -172,10 +185,11 @@ class DatabaseFunctions {
       FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: emailUser, password: password)
           .then( (user)async{
+
+
             Map<String, dynamic> data = {
             DatabaseIds.userId : user.uid,
             DatabaseIds.userName : userName,
-            DatabaseIds.email : emailUser,
             DatabaseIds.image : imageUrl,
             DatabaseIds.following : List<String>()
             };

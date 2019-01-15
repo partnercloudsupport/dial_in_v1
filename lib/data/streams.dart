@@ -120,7 +120,7 @@ class SocialFeedBloc{
     if(_currentFeedData != null){
     handleProfileList(_currentFeedData);}
     else{
-      print('_currentFeedData is null');
+      if(_initilised){ print('_currentFeedData is null');}
     }
   }
 
@@ -190,10 +190,10 @@ class SocialFeedBloc{
                    
                 if (profile.userId != null){
 
-                  assert(_currentUser.userId != null, 'user D is null');
+                  assert(_currentUser.id != null, 'user D is null');
 
                   String otherUserId = profile.userId ?? '';
-                  String currentUserId = _currentUser.userId ?? '';
+                  String currentUserId = _currentUser.id ?? '';
                     
                     /// Remove the profile where the profile userId is eqaula to the currrent userId
                     if (otherUserId == currentUserId){ 
@@ -220,23 +220,18 @@ class SocialFeedBloc{
 class UserFeed {
    
   bool _initilised = false;
+  Stream<UserProfile> get userStream{assert(_outgoingController.stream != null, '_userDetails is null'); return _outgoingController.stream;}
+
+  UserDetails _userDetails;
+  UserDetails get userDetails {assert(_userDetails != null, '_userDetails is null'); return _userDetails;}
+
   UserProfile _userProfile;
-  String _userEmail = '';
-  String get userEmail =>_userEmail ?? '';
-
-  String get userImage => _userProfile.userImage ?? '';
-  String get userId => _userProfile.userId ?? '';
-  String get userName => _userProfile.userName ?? '';
-  List <String> get following => _userProfile.following ?? [''] ;
-
-  Stream<UserProfile> get userProfile => _outgoingController.stream;
+  UserProfile get userProfile {assert(_userProfile != null, '_userProfile is null'); return _userProfile;}
   
   final BehaviorSubject<UserProfile> _outgoingController = BehaviorSubject<UserProfile>();
 
   void deinit(){
     _initilised = false;
-    _userEmail = '';
-
   }
 
   void dispose() { 
@@ -254,19 +249,16 @@ class UserFeed {
 
      _initilised= true;
 
-      DatabaseFunctions.getCurrentUserEmail().then((userEmail) => _userEmail = userEmail)
+      _userDetails = await DatabaseFunctions.getCurrentUserDetails()
                         .catchError((error)=> print(error));
 
-      DatabaseFunctions.getCurrentUserId()
-      .then((user)
-      {DatabaseFunctions.getUserProfileFromFireStoreWithDocRef(user)
-
-        .then((userProfile)
-          
-        {_userProfile = userProfile;
-         _outgoingController.add(_userProfile);});
-
-      }).catchError((e) => print(e));
+      DatabaseFunctions.getUserProfileFromFireStoreWithDocRef(_userDetails.id)
+        .then((userProfile){
+              _userDetails.userName = userProfile.userName; 
+              _userDetails.photo = userProfile.image;
+              _userDetails.motto = userProfile.motto; 
+              _userProfile = userProfile;
+         _outgoingController.add(_userProfile);}).catchError((e) => print(e));
+      }
    }
   }
-}
