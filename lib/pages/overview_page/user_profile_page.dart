@@ -19,7 +19,7 @@ class UserProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return ScopedModelDescendant<ProfilesModel>(
-        rebuildOnChange: false,
+        rebuildOnChange: true,
         builder: (context, _, model) => 
         
         ListView(children:[
@@ -42,8 +42,19 @@ class UserProfilePage extends StatelessWidget {
 
                 /// User name
                 Text(
-                  _userProfile.userName,
+                  _userProfile.userName ?? '',
                   style: Theme.of(context).textTheme.display3,
+                ),
+
+                 //TODO bio
+                Card(
+                  margin: EdgeInsets.all(20.0),
+                  child: 
+                  Container(
+                    width: double.infinity, 
+                    padding: EdgeInsets.all(20.0), 
+                    child:Text(_userProfile.motto ?? '')
+                  ),
                 ),
 
                 ///Spacer
@@ -58,17 +69,6 @@ class UserProfilePage extends StatelessWidget {
 
                 Counts(_userProfile),
 
-                //TODO bio
-                Card(
-                  margin: EdgeInsets.all(20.0),
-                  child: 
-                  Container(
-                    width: double.infinity, 
-                    padding: EdgeInsets.all(20.0), 
-                    child:Text('Bio')
-                  ),
-                )
-                
               ],
             )
             )
@@ -136,11 +136,14 @@ class Counts extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+
               /// Followers
               CountBlock(
                 _userProfile.followers.length.toString(),
                 StringLabels.followers,
               ),
+
+              Icon(Icons.people_outline),
 
               /// Following
               CountBlock(
@@ -149,7 +152,6 @@ class Counts extends StatelessWidget {
               ),
             ],
           ),
-
          
         ],
       ),

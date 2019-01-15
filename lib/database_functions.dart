@@ -266,9 +266,9 @@ class DatabaseFunctions {
     if (userdetails.photo != null || userdetails.photo != ""){
     userUpdateInfo.photoUrl = userdetails.photo;}
 
-    if (userdetails.password != null || userdetails.password != ""){
+    if (userdetails.password != null && userdetails.password != ""){
     user.updatePassword(userdetails.password).catchError(((error) => print(error)));}
-     if (userdetails.email != null || userdetails.email != ""){
+     if (userdetails.email != null && userdetails.email != ""){
     user.updateEmail(userdetails.email).catchError(((error) => print(error)));}
 
     await user.updateProfile(userUpdateInfo)
@@ -382,6 +382,12 @@ class DatabaseFunctions {
     }
 
     final StorageUploadTask uploadTask = ref.putFile(file);
+    uploadTask.events.listen((event) {
+            double _progress = event.snapshot.bytesTransferred.toDouble() / event.snapshot.totalByteCount.toDouble();
+            print(_progress);
+        }).onError((error) {
+          print(error);
+        });
 
     return await (await uploadTask.onComplete).ref.getDownloadURL().catchError((error){errorHandler(error);});
   }
@@ -554,11 +560,13 @@ class DatabaseFunctions {
       if (doc.exists){
 
         userProfile = new UserProfile(
-                              doc.data[DatabaseIds.user]?? '',
-                              doc.data[DatabaseIds.userName]?? '',
-                              doc.data[DatabaseIds.image]?? '',
-                              doc.data[DatabaseIds.following]?? [''], 
-                              doc.data[DatabaseIds.followers]?? ['']);
+                              doc.data[DatabaseIds.user]?? 'Error: submit feedback database_functions.dart => line 557',
+                              doc.data[DatabaseIds.userName]?? 'Error: submit feedback database_functions.dart => line 558',
+                              doc.data[DatabaseIds.image]?? 'Error: submit feedback database_functions.dart => line 559',
+                              doc.data[DatabaseIds.following]?? ['Error: submit feedback database_functions.dart => line 560'],
+                              doc.data[DatabaseIds.followers]?? ['Error: submit feedback database_functions.dart => line 561'],
+                              doc.data[DatabaseIds.motto]?? 'Error: submit feedback database_functions.dart => line 562',
+                              );
 
         _outgoingController.add(userProfile);
       }else{
@@ -601,16 +609,20 @@ class DatabaseFunctions {
 
           _userProfile = new UserProfile(
                             docRefernace,
-                            doc.data[DatabaseIds.userName],
-                            doc.data[DatabaseIds.image],
-                            followingRevisedList ?? List<String>(),
-                            followersRevisedList ?? List<String>()
+                            doc.data[DatabaseIds.userName] ?? 'Error: submit feedback database_functions.dart => line 604',
+                            doc.data[DatabaseIds.image] ?? 'Error: submit feedback database_functions.dart => line 605',
+                            followingRevisedList ?? List<String>() ?? ['Error: submit feedback database_functions.dart => line 606'],
+                            followersRevisedList ?? List<String>() ?? ['Error: submit feedback database_functions.dart => line 607'],
+                            doc.data[DatabaseIds.motto] ??   'Error: submit feedback database_functions.dart => line 608'
                             );
+          
+          assert(_userProfile != null, '_userProfile == null');
       }
     }
+    assert(_userProfile != null, '_userProfile == null');
 
     return _userProfile ?? new UserProfile
-                            ('error', 'error', 'error', ['error'], ['error'],);
+                            ('error', 'error', 'error', ['error'], ['error'],'error');
   }
 
   /// Get value from collection with key

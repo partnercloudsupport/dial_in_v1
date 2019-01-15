@@ -32,7 +32,9 @@ class NumericTextFormatter extends TextInputFormatter {
 
 class  UserProfile {
 
-    UserProfile(this._userId,this._userName,this._userImage, this._following, this._followers);
+    UserProfile(this._userId,this._userName,this._userImage, this._following, this._followers, this._motto);
+    //TODO put into map
+    Map<String, dynamic> values = Map<String, dynamic>();
 
     String _userId;
     String get id => _userId;

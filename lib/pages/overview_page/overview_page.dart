@@ -169,21 +169,20 @@ class MainMenuDrawer extends StatelessWidget{
             title: Text('Edit user profile'),
             onTap: () {
 
-             UserDetails userdetails = UserDetails(
+            UserDetails userdetails = UserDetails(
                                           idIn: model.userdetails.id ?? 'error',
                                           userNameIn: model.userdetails.userName ?? 'error', 
                                           emailIn: model.userdetails.email ?? 'error', 
-                                          photoIn: model.userdetails.userName ?? null,
+                                          photoIn: model.userdetails.photo ?? null,
                                           mottoIn: model.userdetails.motto ?? 'error ');
-              showDialog(
-                context: context,
-                barrierDismissible: true,
-                builder: (BuildContext context) =>
+            
+             
+              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
 
                    CustomScaffold(
                           UserInputDetails(userDetails:userdetails),
                           title: 'User Details'),
-              ).then((_) { 
+              )).then((_) { 
                 model.refreshUser();
                 Navigator.pop(context);}
               );
@@ -254,7 +253,6 @@ class _UserInputDetailsState extends State<UserInputDetails> {
       DatabaseFunctions.updateUserProfile(_userDetails)
                   .catchError((String error)=> PopUps.showAlert('Warning', error, 'ok', () => Navigator.pop(context), context))
                   .then((_) { 
-                    ProfilesModel.of(context).refreshUser();
                     Navigator.pop(context); Scaffold.of(context);
                   }
                   );       

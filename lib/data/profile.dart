@@ -676,7 +676,8 @@ Future<String> getUserImage ()async{
           databaseId: DatabaseIds.time,
           placeHolderText: StringLabels.enterValue,
           keyboardType: TextInputType.number,
-          inputViewDataSet: StringDataArrays.minutesAndSeconds
+          inputViewDataSet: StringDataArrays.minutesAndSeconds,
+          icon: Icon(Icons.timer)
         );
         break;
 
@@ -697,6 +698,7 @@ Future<String> getUserImage ()async{
           databaseId: DatabaseIds.notes,
           placeHolderText: StringLabels.enterDescription,
           keyboardType: TextInputType.text,
+          icon: Icon(Icons.note)
         );
         break;
 
@@ -767,6 +769,7 @@ Future<String> getUserImage ()async{
           databaseId: DatabaseIds.coffeeId,
           placeHolderText: StringLabels.enterDescription,
           keyboardType: TextInputType.text,
+          
         );
         break;
 
@@ -791,6 +794,7 @@ Future<String> getUserImage ()async{
           databaseId: DatabaseIds.date,
           placeHolderText: StringLabels.enterDescription,
           keyboardType: TextInputType.number,
+          icon: Icon(Icons.date_range)
         );
         break;
 
@@ -845,7 +849,7 @@ Future<String> getUserImage ()async{
           databaseId: DatabaseIds.country,
           placeHolderText: StringLabels.enterDescription,
           keyboardType: TextInputType.text,
-          inputViewDataSet: StringDataArrays.countrys
+          inputViewDataSet: StringDataArrays.countrys,
         );
         break;
 
@@ -876,6 +880,7 @@ Future<String> getUserImage ()async{
           databaseId: DatabaseIds.producer,
           placeHolderText: StringLabels.enterDescription,
           keyboardType: TextInputType.text,
+          icon: Icon(Icons.nature_people)
         );
         break;
 

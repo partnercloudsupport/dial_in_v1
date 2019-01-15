@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dial_in_v1/data/mini_classes.dart';
 import 'package:dial_in_v1/pages/overview_page/user_profile_page.dart';
+import 'package:dial_in_v1/inherited_widgets.dart';
+
 
 class CurrentUserPage extends StatelessWidget{
 
@@ -61,15 +63,17 @@ class CurrentUserPage extends StatelessWidget{
                                     (mainAxisAlignment: MainAxisAlignment.center ,children: <Widget>[
                                       Container(child: Icon(Icons.warning),),
                                       Container(margin: EdgeInsets.all(20.0),child: Text('Error',style: Theme.of(context).textTheme.display3,),) ,],)),
-                                    ],);
+                                    ],
+                                  );
   }
 
   /// UI Build
   @override
   Widget build(BuildContext context) {
+
     return 
     StreamBuilder<UserProfile>(
-          stream:  _userProfile,
+          stream:  ProfilesModel.of(context).userProfileStream,
           builder: (context, snapshot) {
 
      switch (snapshot.hasError) {
