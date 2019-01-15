@@ -243,6 +243,23 @@ class _UserInputDetailsState extends State<UserInputDetails> {
     super.initState();
     _userDetails = widget.userDetails ?? UserDetails();
   }
+
+  _handleSubmitted() {
+
+    final FormState form = _formKey.currentState;
+    if (!form.validate()) {
+
+    } else {
+      form.save();
+      DatabaseFunctions.updateUserProfile(_userDetails)
+                  .catchError((String error)=> PopUps.showAlert('Warning', error, 'ok', () => Navigator.pop(context), context))
+                  .then((_) { 
+                    ProfilesModel.of(context).refreshUser();
+                    Navigator.pop(context); Scaffold.of(context);
+                  }
+                  );       
+    }
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -293,7 +310,7 @@ class _UserInputDetailsState extends State<UserInputDetails> {
                                       ),
             obscureText: false,
             // TODO
-            onSaved: (String value){if (value != null || value != '');}
+            onSaved: (String value){if (value != null || value != ''){_userDetails.motto = value;}}
 
           ),
 
@@ -324,21 +341,11 @@ class _UserInputDetailsState extends State<UserInputDetails> {
             Container(width: 100,padding: const EdgeInsets.symmetric(vertical: 16.0), child: 
             RaisedButton(
               onPressed: () {
-                // Validate will return true if the form is valid, or false if
-                // the form is invalid.
-                if (_formKey.currentState.validate()) {
-                  // If the form is valid, we want to show a Snackbar
-                  _formKey.currentState.save();
-                  DatabaseFunctions.updateUserProfile(_userDetails)
-                  .then((_){ Navigator.pop(context); Scaffold.of(context)
-                  .showSnackBar(SnackBar(content: Text('Processing Data')));})
-                  .catchError((String error)=> PopUps.showAlert('Warning', error, 'ok', () => Navigator.pop(context), context));
-                }
+                _handleSubmitted();
               },
               child: Text('Submit'),
             ),
             )
-          
         ],
       ),
       ) 

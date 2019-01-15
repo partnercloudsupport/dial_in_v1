@@ -12,8 +12,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:dial_in_v1/data/strings.dart';
 import 'package:dial_in_v1/data/mini_classes.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+
 
 class DatabaseFunctions {
 
@@ -29,7 +28,7 @@ class DatabaseFunctions {
  static Future addFollower(String currentUser, String follow, Function(bool) completion)async{
 
    /// Add following
-    DocumentSnapshot newDoc = await Firestore.instance.collection(DatabaseIds.User)
+    Firestore.instance.collection(DatabaseIds.User)
       .document(currentUser).get()
       .then((newDoc){ 
         
@@ -272,12 +271,13 @@ class DatabaseFunctions {
      if (userdetails.email != null || userdetails.email != ""){
     user.updateEmail(userdetails.email).catchError(((error) => print(error)));}
 
-    user.updateProfile(userUpdateInfo)
+    await user.updateProfile(userUpdateInfo)
       .then( (_)async{
             Map<String, dynamic> data = {
             DatabaseIds.userId : user.uid,
             DatabaseIds.userName : userdetails.userName,
             DatabaseIds.image : userdetails.photo,
+            DatabaseIds.motto : userdetails.motto 
             };
 
             Map<String, dynamic> newData = Map<String, dynamic>();
@@ -544,6 +544,8 @@ class DatabaseFunctions {
     Stream<DocumentSnapshot> userSnapshotStream = Firestore.instance.collection(DatabaseIds.User).document(docRefernace).snapshots();
 
     final BehaviorSubject<UserProfile> _outgoingController = BehaviorSubject<UserProfile>();
+
+    
 
     UserProfile userProfile;
 

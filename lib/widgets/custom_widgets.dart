@@ -1080,16 +1080,18 @@ class _DateTimeInputCardState extends State<DateTimeInputCard> {
       super.didUpdateWidget(oldWidget);
     }
 
-   void handleTextfieldFocus()async{
+    void handleTextfieldFocus()async{
         if (_focus.hasFocus){
         DateTime date = await getDateTimeInput(context, widget._dateTime, TimeOfDay.fromDateTime(widget._dateTime));
         setState(() {
-        _controller.text = widget._dateFormat.format(date);
-        widget.onDateChanged(date);
-                  _focus.unfocus(); 
-                });
-        }
+          if(date != null){
+            _controller.text = widget._dateFormat.format(date);
+            widget.onDateChanged(date);
+                      _focus.unfocus();
+          } 
+        });
       }
+    }
 
     Future<DateTime> getDateTimeInput(
       BuildContext context, DateTime initialDate, TimeOfDay initialTime) async {

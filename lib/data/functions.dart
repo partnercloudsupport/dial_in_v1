@@ -23,16 +23,21 @@ class Functions {
 
   static String getProfileImagePlaceholder(ProfileType profileType){
 
+    String placeHolder;
+
     switch(profileType){
 
-      case ProfileType.barista : return Images.user;           
-      case ProfileType.coffee : return Images.coffeeBeans;
-      case ProfileType.equipment : return Images.aeropressSmaller512x512;
-      case ProfileType.grinder : return Images.grinder;
-      case ProfileType.recipe : return Images.recipeSmaller;
-      case ProfileType.water : return Images.water;
-      
+      case ProfileType.barista : placeHolder = Images.user; break;           
+      case ProfileType.coffee : placeHolder = Images.coffeeBeans; break;
+      case ProfileType.equipment : placeHolder = Images.aeropressSmaller512x512; break;
+      case ProfileType.grinder : placeHolder = Images.grinder; break;
+      case ProfileType.recipe : placeHolder = Images.recipeSmaller; break;
+      case ProfileType.water : placeHolder = Images.water; break; 
     }
+
+    assert(placeHolder != null, 'placeHolder is null');
+
+    return placeHolder?? '';
   }
 
    static int getIntValue(dynamic item){
@@ -350,34 +355,41 @@ class Functions {
   }
 
   static ProfileType getProfileDatabaseIdType(String type) {
+
+    ProfileType result;
+
     switch (type) {
       case DatabaseIds.recipe:
-        return ProfileType.recipe;
+        result = ProfileType.recipe;
         break;
 
       case DatabaseIds.coffee:
-        return ProfileType.coffee;
+        result = ProfileType.coffee;
         break;
 
       case DatabaseIds.water:
-        return ProfileType.water;
+        result = ProfileType.water;
         break;
 
       case DatabaseIds.brewingEquipment:
-        return ProfileType.equipment;
+        result = ProfileType.equipment;
         break;
 
       case DatabaseIds.grinder:
-        return ProfileType.grinder;
+        result = ProfileType.grinder;
         break;
 
       case DatabaseIds.Barista:
-        return ProfileType.barista;
+        result = ProfileType.barista;
         break;
 
       default: Error();
         break;
     }
+
+    assert(result != null , 'result is null');
+
+    return result;
   }
 
   static String convertDatabaseIdToTitle(String databaseId) {

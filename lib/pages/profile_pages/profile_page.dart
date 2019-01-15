@@ -13,6 +13,7 @@ import 'package:dial_in_v1/pages/profile_pages/water_profile_page.dart';
 import 'package:dial_in_v1/pages/profile_pages/equipment_profile_page.dart';
 import 'package:dial_in_v1/pages/profile_pages/barista_profile_page.dart';
 import 'package:dial_in_v1/pages/profile_pages/coffee_profile_page.dart';
+import 'package:dial_in_v1/pages/profile_pages/grinder_profile_page.dart';
 import 'package:dial_in_v1/theme/appColors.dart';
 import 'package:dial_in_v1/database_functions.dart';
 import 'package:dial_in_v1/inherited_widgets.dart';
@@ -294,6 +295,10 @@ class ProfilePageState extends State<ProfilePage> {
 
       case ProfileType.recipe:
       _structure = RecipePage(_profile, (key, value){setState(()=> _profile.setProfileItemValue( key, value));}, _showProfileList, _isEditing );
+      break;
+
+      case ProfileType.grinder:
+      _structure = GrinderPage(_profile, _margin, _profile.setProfileItemValue, _isEditing, showPickerMenu);
       break;
 
       default:

@@ -13,7 +13,7 @@ import 'package:flutter/rendering.dart';
 
 void main() {
   ///Slow down animations
-  timeDilation = 3.0;
+  timeDilation = 1.0;
   runApp(new MyApp());
   }
  
@@ -22,8 +22,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    /// Layout shown
-    debugPaintSizeEnabled = true;
+    /// Layout shown ///
+    // debugPaintSizeEnabled = true;
 
     ProfilesModel _profilesModel = ProfilesModel();
 

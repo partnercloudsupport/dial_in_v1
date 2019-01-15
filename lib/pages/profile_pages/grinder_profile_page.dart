@@ -22,8 +22,9 @@ class GrinderPage extends StatelessWidget {
   /// UI Build
   ///
   @override
-  Widget build(BuildContext context) {
-    return new Column(children: <Widget>[
+  Widget build(BuildContext context) =>
+
+    new Column(children: <Widget>[
 
       /// Details
       GrinderDetailsCard(
@@ -44,7 +45,7 @@ class GrinderPage extends StatelessWidget {
           (text) { _profile.setProfileItemValue( DatabaseIds.notes, text);},
           _isEditing)
     ]);
-  }
+  
 }
 
 class GrinderDetailsCard extends StatelessWidget {
