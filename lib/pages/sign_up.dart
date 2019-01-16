@@ -61,10 +61,6 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     return new Scaffold(
         body: new Stack(children: <Widget>[
-      ///
-      /// Background
-      ///
-      //  Pagebackground(AssetImage('assets/images/cherriestwo.jpg')),
 
       Container(
         decoration: new BoxDecoration(
@@ -76,101 +72,105 @@ class _SignUpPageState extends State<SignUpPage> {
               tileMode: TileMode.clamp),
         ),
       ),
+      
+      SafeArea(
+              child: Stack(children: <Widget>[
 
-      ///
-      /// Back icon
-      ///
-
-      // Column(),
-
-      Center(child: 
-
-      ScalableWidget(
-        
-        new Container(child: 
-          
-          Column(children: <Widget>[
-
-            Padding(padding: EdgeInsets.all(20.0),),
-
-            SizedBox(
-              height: 30.0,
-              width: 30.0,
-              child: RawMaterialButton(
-                onPressed: () => Navigator.pop(context),
-                child: Container(
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image:
-                              AssetImage('assets/images/back_icon.png'),
-                          fit: BoxFit.fitHeight)),
+           Container(
+                margin: EdgeInsets.all(20.0),
+                height: 30.0,
+                width: 30.0,
+                child: RawMaterialButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image:
+                                AssetImage('assets/images/back_icon.png'),
+                            fit: BoxFit.fitHeight)),
+                  ),
                 ),
               ),
-            ),
+        ///
+        /// Back icon
+        ///
 
-            Padding(padding: EdgeInsets.all(20.0),),
+        // Column(),
 
-              /// New User text
-              Text(
-                StringLabels.newUser,
-                style: TextStyle(color: Colors.black87, fontSize: 30.0),
-              ),
+        Center(child: 
 
-              Padding(
-                padding: EdgeInsets.all(5.0),
-              ),
-
-              ///User Picture
-              InkWell(
-                  child: Container(
-                      decoration: BoxDecoration(shape: BoxShape.circle),
-                      margin: EdgeInsets.fromLTRB(25.0, 0.0, 25.0, 25.0),
-                      child: CircularPicture(_userImage, Images.user, 150.0)),
-                  onTap: () {
-                    Functions.getimageFromCameraOrGallery(context,
-                        (String image) {
-                      setState(() {
-                        _userImage = image;
-                      });
-                    });
-                  }),
-
-              /// Sign up details
-              /// Username
-              Text(
-                StringLabels.userName,
-                style: TextStyle(
-                    color: Colors.white70, fontWeight: FontWeight.w600),
-              ),
-              TextFieldEntry(StringLabels.userName, _userNameController, false),
-
-              /// Email
-              Text(
-                StringLabels.email,
-                style: TextStyle(
-                    color: Colors.white70, fontWeight: FontWeight.w600),
-              ),
-              TextFieldEntry(StringLabels.email, _emailController, false),
-
-              /// Password
-              Text(
-                StringLabels.password,
-                style: TextStyle(
-                    color: Colors.white70, fontWeight: FontWeight.w600),
-              ),
-              TextFieldEntry(StringLabels.password, _passwordController, true),
-
-              /// Signup button
-              Container(
-                margin: EdgeInsets.all(20.0),
-                child: ActionButton(StringLabels.signUp, signUpButton),
-              ),
+        ScalableWidget(
+          
+          new Container(child: 
+            
+            Column(children: <Widget>[
 
               Padding(padding: EdgeInsets.all(20.0),),
 
-          ])),
-        ),
+                /// New User text
+                Text(
+                  StringLabels.newUser,
+                  style: TextStyle(color: Colors.black87, fontSize: 30.0),
+                ),
+
+                Padding(
+                  padding: EdgeInsets.all(5.0),
+                ),
+
+                ///User Picture
+                InkWell(
+                    child: Container(
+                        decoration: BoxDecoration(shape: BoxShape.circle),
+                        margin: EdgeInsets.fromLTRB(25.0, 0.0, 25.0, 25.0),
+                        child: CircularPicture(_userImage, Images.user, 150.0)),
+                    onTap: () {
+                      Functions.getimageFromCameraOrGallery(context,
+                          (String image) {
+                        setState(() {
+                          _userImage = image;
+                        });
+                      });
+                    }),
+
+                /// Sign up details
+                /// Username
+                Text(
+                  StringLabels.userName,
+                  style: TextStyle(
+                      color: Colors.white70, fontWeight: FontWeight.w600),
+                ),
+                TextFieldEntry(StringLabels.userName, _userNameController, false),
+
+                /// Email
+                Text(
+                  StringLabels.email,
+                  style: TextStyle(
+                      color: Colors.white70, fontWeight: FontWeight.w600),
+                ),
+                TextFieldEntry(StringLabels.email, _emailController, false),
+
+                /// Password
+                Text(
+                  StringLabels.password,
+                  style: TextStyle(
+                      color: Colors.white70, fontWeight: FontWeight.w600),
+                ),
+                TextFieldEntry(StringLabels.password, _passwordController, true),
+
+                /// Signup button
+                Container(
+                  margin: EdgeInsets.all(20.0),
+                  child: ActionButton(StringLabels.signUp, signUpButton),
+                ),
+
+                Padding(padding: EdgeInsets.all(20.0),),
+
+            ])),
+          ),
+        )
+        ],),
       )
-    ]));
+    ])
+    );
   }
 }
