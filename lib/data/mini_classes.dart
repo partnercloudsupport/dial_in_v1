@@ -104,6 +104,11 @@ class UserDetails{
       String get password => values[DatabaseIds.password];
 }
 
+abstract class ImagePickerReturn{}
+
+abstract class ImageReturnedFalse extends ImagePickerReturn{}
+
+abstract class ImageReturnedTrue extends ImagePickerReturn{}
 
 enum FeedType {community, following}
 enum SnapShotDataState{

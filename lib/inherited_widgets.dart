@@ -40,6 +40,13 @@ class ProfilesInheritedWidget extends InheritedWidget {
       context.inheritFromWidgetOfExactType(DateWidget) as DateWidget;
 }
 
+
+class ImagePickerWidget extends Model{
+
+  
+
+}
+
 /// Profiles scoped model
 class ProfilesModel extends Model {
 

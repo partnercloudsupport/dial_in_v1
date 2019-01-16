@@ -868,10 +868,19 @@ class TabViewDataArray{
 }
 
 /// Popups
+
 class PopUps{
 ///
 /// Show alert
-/// 
+///
+static void showCircularProgressIndicator(BuildContext context){
+
+showDialog(barrierDismissible: false, context: context ,
+        builder: (context) => 
+
+      /// Show Loading
+      Center(child:CircularProgressIndicator()));
+}
 
 static Future<void> showAlert
 (String title, String message, String buttonText, Function buttonFunction, BuildContext context) async {
@@ -1453,12 +1462,35 @@ class ProfileRefresher extends StatelessWidget {
 class CupertinoImagePickerDiolog extends StatelessWidget {
 
   final ImageSource _imageSource; 
-  final Function(String) _setUrl;
+  final Function(dynamic) _setUrl;
 
   CupertinoImagePickerDiolog(this._imageSource, this._setUrl);
 
+  void showImagePicker(BuildContext context){
+      ImagePicker.pickImage(maxWidth: 640.0, maxHeight: 480.0, source: _imageSource)
+                  .then((image) => handleImagePickerReturn(image, context))
+                  .catchError((error) => print(error));
+  }
+
+  void handleImagePickerReturn(dynamic image, context){
+    if(image != null){
+      PopUps.showCircularProgressIndicator(context);
+      DatabaseFunctions.upLoadFileReturnUrl(image, [DatabaseIds.image])
+                                          .then((url) => sendBackUrl(url, context))
+                                          .catchError((error){print(error);});
+
+    }
+  }
+
+  void sendBackUrl(String url, BuildContext context){
+      assert(url != null);
+      if(url != null){_setUrl(url);
+      /// Remove circular progrss indicator
+      Navigator.pop(context, url);}  
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
 
     String _title = '';
 
@@ -1468,20 +1500,7 @@ class CupertinoImagePickerDiolog extends StatelessWidget {
     return CupertinoDialogAction(
           child: Text(_title, style: Theme.of(context).textTheme.display1),
           isDestructiveAction: false,
-          onPressed: ()async{
-
-            showDialog(barrierDismissible: false, context: context ,
-            builder: (context) => 
-            Center(child:CircularProgressIndicator()));
-
-            File image = await ImagePicker.pickImage
-                              (maxWidth: 640.0, maxHeight: 480.0, source: _imageSource);
-            if (image != null){                
-            String url = await DatabaseFunctions.upLoadFileReturnUrl(image, [DatabaseIds.image]);
-             ///Callback to parent with Value
-             _setUrl(url);
-            }
-          }
+          onPressed: () => showImagePicker(context)
     );
   }
 }

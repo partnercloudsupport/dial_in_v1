@@ -74,16 +74,19 @@ class _LoginPageState extends State<LoginPage> {
     Navigator.push(context,
             MaterialPageRoute(builder: (BuildContext context) => SignUpPage()))
         .then((details) {
-      if (details[DatabaseIds.success]) {
-        this._email = details[DatabaseIds.email];
-        this._password = details[DatabaseIds.password];
+      if(details != null){
 
-        loginButtonPressed();
-      } else {
-        PopUps.showAlert(StringLabels.warning,
-            'Error when logging in with sign up details', StringLabels.ok, () {
-          Navigator.of(context).pop();
-        }, context);
+        if (details[DatabaseIds.success]) {
+          this._email = details[DatabaseIds.email];
+          this._password = details[DatabaseIds.password];
+
+          loginButtonPressed();
+        } else {
+          PopUps.showAlert(StringLabels.warning,
+              'Error when logging in with sign up details', StringLabels.ok, () {
+            Navigator.of(context).pop();
+          }, context);
+        }  
       }
     });
   }

@@ -17,6 +17,8 @@ import 'package:image/image.dart' as Image;
 import 'dart:io' as Io;
 import 'package:dial_in_v1/data/mini_classes.dart';
 import 'package:dial_in_v1/data/images.dart';
+import 'package:dial_in_v1/data/mini_classes.dart';
+
 
 
 class Functions {
@@ -209,6 +211,7 @@ class Functions {
   return returnFile;      
 }
 
+  
   static File fileToJpg(File file){
   // decodeImage will identify the format of the image and use the appropriate
   // decoder.
@@ -223,36 +226,13 @@ class Functions {
   return returnFile;      
  } 
 
-  static void getimageFromCameraOrGallery(BuildContext context, Function(String) completion)async{
+ static void getimageFromCameraOrGallery(BuildContext context, Function(String) completion){
 
-     showDialog(context: context, builder: (BuildContext context){
-      
-      return
-      Center(child: Container( width:200, child:
-      
-       CupertinoActionSheet(
-         
-         title: Text(StringLabels.photoSource, style: Theme.of(context).textTheme.subtitle,),
-         actions: <Widget>[
+    showDialog(context: context, builder: (BuildContext context){
 
-          CupertinoImagePickerDiolog(
-            ImageSource.camera, 
-            (urlOut) {
-              Navigator.pop(context);
-              Navigator.pop(context, urlOut);}),
-      
-          CupertinoImagePickerDiolog(
-            ImageSource.gallery,
-            (urlOut) {
-              Navigator.pop(context);
-              Navigator.pop(context, urlOut);}),
-
-          ],
-         )
-        )
-      );
+      return new CupertinoImagePicker();
      }
-    ).then((url) => completion(url));
+    ).then((url){ if(url != null){ completion(url);}});
   }
   
   static Future<File> getPictureFile(String filePath) async {
@@ -577,5 +557,43 @@ class Functions {
               }
           }
         });
+  }
+}
+
+class CupertinoImagePicker extends StatelessWidget {
+  const CupertinoImagePicker(
+    {
+    Key key,
+    }) : super(key: key);
+
+  void returnUrl(String url, BuildContext context){
+    /// Remove CupertinoImagePicker diolog and return string
+    
+    Navigator.pop(context, url);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return 
+    
+    Center(child: Container( width:200, child:
+    
+     CupertinoActionSheet(
+       
+       title: Text(StringLabels.photoSource, style: Theme.of(context).textTheme.subtitle,),
+       actions: <Widget>[
+
+        CupertinoImagePickerDiolog(
+          ImageSource.camera, 
+          (urlOut) { returnUrl(urlOut , context);}),
+    
+        CupertinoImagePickerDiolog(
+          ImageSource.gallery,
+          (urlOut) { returnUrl(urlOut , context);}),
+
+        ],
+       )
+      )
+    );
   }
 }
