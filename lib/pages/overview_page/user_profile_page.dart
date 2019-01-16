@@ -16,22 +16,23 @@ class UserProfilePage extends StatelessWidget {
 
   /// UI Build
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) =>
 
-    return ScopedModelDescendant<ProfilesModel>(
-        rebuildOnChange: true,
-        builder: (context, _, model) => 
+ 
+    Stack(children: <Widget>[
         
-        ListView(children:[
+          Container(color: Theme.of(context).cardColor),
+      
+       Center(child: 
+      ScalableWidget(
           Container(
-            child: Card(
-                    child: new Column(
+              child: new Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
                     padding: EdgeInsets.all(10.0),
-                    margin: EdgeInsets.all(10.0),
+                    margin: EdgeInsets.all(15.0),
                     child: Center(
                         child: Hero(
                             tag: tag == null ?  _userProfile.id : _userProfile.id + tag.toString(),
@@ -43,24 +44,17 @@ class UserProfilePage extends StatelessWidget {
                 /// User name
                 Text(
                   _userProfile.userName ?? '',
-                  style: Theme.of(context).textTheme.display3,
+                  style: Theme.of(context).textTheme.display4,
                 ),
 
-                 //TODO bio
-                Card(
-                  margin: EdgeInsets.all(20.0),
-                  child: 
-                  Container(
-                    width: double.infinity, 
-                    padding: EdgeInsets.all(20.0), 
-                    child:Text(_userProfile.motto ?? '')
+                 //MOTTO
+                 
+                  _userProfile.motto == null ? 
+                  Container(width: 0, height: 0): 
+                  Container(padding: EdgeInsets.all(20.0), 
+                    child: Text(_userProfile.motto ?? '', style: Theme.of(context).textTheme.headline)
                   ),
-                ),
 
-                ///Spacer
-                Container(
-                  height: 20.0,
-                ),
 
                 // Following button Logic
                 isCurrentUser
@@ -71,12 +65,13 @@ class UserProfilePage extends StatelessWidget {
 
               ],
             )
-            )
+             
           )
-        ]
-      )
-    );
-  }
+        )
+        )
+      ],
+    
+  ); 
 }
 
 class CountBlock extends StatelessWidget {
@@ -104,7 +99,7 @@ class Counts extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(20.0),
+      margin: EdgeInsets.all(10.0),
       child: new Column(
         children: <Widget>[
           Row(
@@ -119,6 +114,8 @@ class Counts extends StatelessWidget {
                           snapshot.data.toString(),
                           StringLabels.brewCount,
                         )),
+
+                Padding(padding: EdgeInsets.all(10.0),),
 
                 /// Bean Stash
                 FutureBuilder(
@@ -143,7 +140,11 @@ class Counts extends StatelessWidget {
                 StringLabels.followers,
               ),
 
+              Padding(padding: EdgeInsets.all(10.0),),
+
               Icon(Icons.people_outline),
+
+              Padding(padding: EdgeInsets.all(10.0),),
 
               /// Following
               CountBlock(

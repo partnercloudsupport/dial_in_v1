@@ -669,8 +669,13 @@ class DatabaseFunctions {
       int _orderNumber = document[DatabaseIds.orderNumber] ?? 0;
       String _image = document[DatabaseIds.image] ?? '';
       bool _ispublic = document.data[DatabaseIds.public] ?? false;
-      List<String> likes = document.data[DatabaseIds.likes] ?? List<String>();
-      List<Map<String,String>> comments = document.data[DatabaseIds.comments] ?? List<Map<String,String>>();
+      List<dynamic> likesIn = document.data[DatabaseIds.likes] ?? List<dynamic>();
+      List<String> likes =  List<String>.from(likesIn);
+
+      List<Map<String,String>> comments;
+      if(document.data[DatabaseIds.comments] != null){
+      comments = List<Map<String,String>>.from(document.data[DatabaseIds.comments]) ?? List<dynamic>();}
+      else{comments = List<Map<String,String>>();};
 
       Profile _coffee;
       Profile _barista;

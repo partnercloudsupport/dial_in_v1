@@ -37,23 +37,17 @@ ThemeData buildThemeData(){
       display2: TextStyle( fontSize: 15.0),
       display3: TextStyle( fontSize: 25.0 , color: AppColors.getColor(ColorType.primarySwatch)),
       display4: TextStyle( fontSize: 25.0),
+      headline: TextStyle( fontSize: 15, fontStyle: FontStyle.italic ,color: AppColors.getColor(ColorType.primarySwatch))
+    
+      // subtitle: TextStyle( fontSize: 15, fontStyle: FontStyle.italic ,color: AppColors.getColor(ColorType.primarySwatch))
+      // subhead: TextStyle( fontSize: 15, fontStyle: FontStyle.italic ,color: AppColors.getColor(ColorType.primarySwatch))
     ),
 
-     primaryTextTheme: TextTheme( 
-      body1: TextStyle( fontSize: 13.0), 
-      body2: TextStyle( fontSize: 13.0),
-      button: TextStyle( fontSize: 15.0),
-      title: TextStyle( fontSize: 30.0),
-     ),
-    ///Widgets
-        
-        // accentIconTheme: IconThemeData( ),
-        // primaryIconTheme: IconThemeData(),
-        // buttonTheme: ButtonThemeData(),
-        tabBarTheme: TabBarTheme( 
-          labelColor:Colors.white,
-          unselectedLabelColor:  AppColors.getColor(ColorType.textLight),
-          )
+
+    tabBarTheme: TabBarTheme( 
+      labelColor:Colors.white,
+      unselectedLabelColor:  AppColors.getColor(ColorType.textLight),
+      )
 
           
   );

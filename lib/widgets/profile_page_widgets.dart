@@ -47,7 +47,7 @@ class ScoreSliderState extends State<ScoreSlider> {
           Container(
             margin: EdgeInsets.all(_margin),
             padding: EdgeInsets.all(_margin),
-            child: Text('${widget._label} ', style: Theme.of(context).textTheme.subtitle),
+            child: Text('${widget._label} ', style: Theme.of(context).textTheme.headline),
           ),
 
               Text('${_value.toInt()}/10' , style: Theme.of(context).textTheme.display3),

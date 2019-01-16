@@ -168,6 +168,7 @@ class MainMenuDrawer extends StatelessWidget{
           ListTile(
             title: Text('Edit user profile'),
             onTap: () {
+            
 
             UserDetails userdetails = UserDetails(
                                           idIn: model.userdetails.id ?? 'error',
@@ -215,7 +216,7 @@ class TabViewDataArray{
     ProfileType.recipe),
 
     TabViewData(
-      new CurrentUserPage(ProfilesModel.of(context).userProfileStream),
+      new CurrentUserPage(),
       Tab(icon: Icon(Icons.portrait),text: "User"),
       ProfileType.recipe),
     ];
