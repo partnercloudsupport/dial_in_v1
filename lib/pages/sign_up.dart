@@ -114,7 +114,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
 
                 Padding(
-                  padding: EdgeInsets.all(5.0),
+                  padding: EdgeInsets.all(10.0),
                 ),
 
                 ///User Picture

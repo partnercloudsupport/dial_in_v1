@@ -251,10 +251,15 @@ class _UserInputDetailsState extends State<UserInputDetails> {
 
     } else {
       form.save();
+      PopUps.showCircularProgressIndicator(context);
       DatabaseFunctions.updateUserProfile(_userDetails)
                   .catchError((String error)=> PopUps.showAlert('Warning', error, 'ok', () => Navigator.pop(context), context))
                   .then((_) { 
-                    Navigator.pop(context); Scaffold.of(context);
+                    /// Pop Circular indicator
+                    Navigator.pop(context);
+                    ProfilesModel.of(context).refreshUser();
+                    /// PopBack to drawer
+                    Navigator.pop(context);
                   }
                   );       
     }

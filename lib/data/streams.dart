@@ -229,6 +229,13 @@ class UserFeed {
   UserProfile get userProfile {assert(_userProfile != null, '_userProfile is null'); return _userProfile;}
   
   final BehaviorSubject<UserProfile> _outgoingController = BehaviorSubject<UserProfile>();
+  final BehaviorSubject<UserDetails> _outgoingUserDetailsController = BehaviorSubject<UserDetails>();
+
+
+  UserFeed(){
+    ///Make user Profile streams from firebase :)
+     DatabaseFunctions.getCurrentUserStream();
+  }
 
   void deinit(){
     _initilised = false;
@@ -236,6 +243,7 @@ class UserFeed {
 
   void dispose() { 
     _outgoingController.close();
+    _outgoingUserDetailsController.close();
   }
 
   void refresh(){
@@ -252,6 +260,8 @@ class UserFeed {
       _userDetails = await DatabaseFunctions.getCurrentUserDetails()
                         .catchError((error)=> print(error));
 
+      _outgoingUserDetailsController.add(_userDetails);
+
       DatabaseFunctions.getUserProfileFromFireStoreWithDocRef(_userDetails.id)
         .then((userProfile){
               _userDetails.userName = userProfile.userName; 
@@ -261,4 +271,4 @@ class UserFeed {
          _outgoingController.add(_userProfile);}).catchError((e) => print(e));
       }
    }
-  }
+}

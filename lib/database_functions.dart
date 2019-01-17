@@ -37,18 +37,20 @@ class DatabaseFunctions {
        
       if (newDoc.data.containsKey(DatabaseIds.following)){
         if (!((newDoc.data[DatabaseIds.following]) as List).contains(follow)){
-      
+          
+        /// TODO this is deleting every otherfield. We need to update it using firestore transactions.
         List<dynamic> newFollowingList = new List<String>.from(newDoc.data[DatabaseIds.following]);
         newFollowingList.add(follow);
-        Map<String, dynamic> data = { DatabaseIds.following : newFollowingList};
 
+        Map<String, dynamic> data = { DatabaseIds.following :  newFollowingList};
+        
           Firestore.instance
           .collection(DatabaseIds.User)
           .document(currentUser)
           .updateData(data)
           .whenComplete((){
             completion(true);
-            print('Successfully updated $follow follower');})
+            print('Successfully updated current user$currentUser follower');})
           .catchError((error){print(error);});
         }
 
@@ -65,13 +67,25 @@ class DatabaseFunctions {
                         .catchError((error){print(error);});
       }
 
+    }else{print('No document found with ID $currentUser');}
+    }
+    );
+
     /// Add followers
+
+    Firestore.instance.collection(DatabaseIds.User)
+      .document(follow).get()
+      .then((newDoc){ 
+        
+      if(newDoc.exists){
+    
       if (newDoc.data.containsKey(DatabaseIds.followers)){
          if (!((newDoc.data[DatabaseIds.followers]) as List).contains(currentUser)){
       
         List<dynamic> newFollowersList = new List<String>.from(newDoc.data[DatabaseIds.followers]);
         newFollowersList.add(currentUser);
-        Map<String, dynamic> data = { DatabaseIds.following : newFollowersList};
+
+        Map<String, dynamic> data = { DatabaseIds.followers :  newFollowersList};
 
           Firestore.instance
           .collection(DatabaseIds.User)
@@ -79,7 +93,7 @@ class DatabaseFunctions {
           .updateData(data)
           .whenComplete((){
             completion(true);
-            print('Successfully updated $follow follower');})
+            print('Successfully updated flollower $follow follower');})
           .catchError((error){print(error);});
         }
 
@@ -95,10 +109,12 @@ class DatabaseFunctions {
                         .setData(newDoc.data[DatabaseIds.followers])
                         .catchError((error){print(error);});
       }
+    
+    /// Document does not exist  
     }else{print('No document found with ID $currentUser');}
-    }
-    )
-      .catchError((e) => print(e)); 
+    
+    
+      }) .catchError((e) => print(e)); 
   }
 
   //TODO
@@ -112,14 +128,12 @@ class DatabaseFunctions {
               .document(currentUser).get()
               .then((newDoc){
       if(newDoc.exists){
-
-      if (newDoc.data.containsKey(DatabaseIds.following)){
+        if (newDoc.data.containsKey(DatabaseIds.following)){
         if ((newDoc.data[DatabaseIds.following] as List).contains(unFollow)){
 
         List<dynamic> newFollowingList = new List<String>.from(newDoc.data[DatabaseIds.following]);
         newFollowingList.remove(unFollow);
         Map<String, dynamic> data = { DatabaseIds.following : newFollowingList};
-
 
           Firestore.instance
           .collection(DatabaseIds.User)
@@ -127,7 +141,7 @@ class DatabaseFunctions {
           .updateData(data)
           .whenComplete((){
             completion(true);
-            print('Successfully removed $unFollow follower');})
+            print('Successfully removed follower $unFollow follower');})
           .catchError((error){print(error);});
 
         }
@@ -142,11 +156,57 @@ class DatabaseFunctions {
         .setData(newDoc.data[DatabaseIds.following])
         .then((_){
             completion(true);
-            print('Successfully updated $currentUser follower');})
+            print('Successfully removed current user $currentUser follower');})
         .catchError((error){print(error);});
       }
       }else{print('No document found with ID $currentUser');}
       })..catchError((e) => print(e));
+
+  
+    /// Remove current User from Collection
+
+      Firestore.instance
+              .collection(DatabaseIds.User)
+              .document(unFollow).get()
+              .then((newDoc){
+      if(newDoc.exists){
+
+      if (newDoc.data.containsKey(DatabaseIds.followers)){
+        if ((newDoc.data[DatabaseIds.followers] as List).contains(currentUser)){
+
+        List<dynamic> newFollowersList = new List<String>.from(newDoc.data[DatabaseIds.followers]);
+        newFollowersList.remove(currentUser);
+        Map<String, dynamic> data = { DatabaseIds.followers : newFollowersList};
+
+          Firestore.instance
+          .collection(DatabaseIds.User)
+          .document(unFollow)
+          .updateData(data)
+          .whenComplete((){
+            completion(true);
+            print('Successfully removed following $currentUser follower');})
+          .catchError((error){print(error);});
+
+        }
+      }else{
+        /// Create blank field for following
+        Map<String, dynamic> data = {DatabaseIds.following : List<dynamic>()};
+
+        Firestore.instance
+        .collection(DatabaseIds.User)
+        .document(unFollow)
+        .setData(data)
+        .then((_){
+            completion(true);
+            print('Successfully added following field to $unFollow document');})
+        .catchError((error){print(error);});
+      }
+     
+      }else{print('No document found with ID $unFollow');}
+      })..catchError((e) => print(e));
+
+
+
   }
 
   // Firestore fireStore;
@@ -163,6 +223,11 @@ class DatabaseFunctions {
           //   completion(false, e);
           // }
   }
+
+ static Stream<FirebaseUser>getCurrentUserStream(){
+
+  return FirebaseAuth.instance.onAuthStateChanged;
+ }
 
   static Future<UserDetails>getCurrentUserDetails()async{
 
@@ -591,7 +656,7 @@ class DatabaseFunctions {
     if (doc.exists) {
 
           /// For following
-          List<dynamic> following = (doc.data[DatabaseIds.following]) as List<dynamic>?? List<dynamic>();
+          List<dynamic> following = List<dynamic>.from(doc.data[DatabaseIds.following]) ?? List<dynamic>();
         
           List<String> followingRevisedList = new List<String>();
 
@@ -599,7 +664,7 @@ class DatabaseFunctions {
           { if(follow is String) {followingRevisedList.add(follow);}});
            
           /// For followers
-          List<dynamic> followers = (doc.data[DatabaseIds.followers]) as List<dynamic> ?? List<dynamic>();
+          List<dynamic> followers = List<dynamic>.from(doc.data[DatabaseIds.following]) ?? List<dynamic>();
           
           List<String> followersRevisedList = new List<String>();
 
@@ -613,7 +678,7 @@ class DatabaseFunctions {
                             doc.data[DatabaseIds.image] ?? 'Error: submit feedback database_functions.dart => line 605',
                             followingRevisedList ?? List<String>() ?? ['Error: submit feedback database_functions.dart => line 606'],
                             followersRevisedList ?? List<String>() ?? ['Error: submit feedback database_functions.dart => line 607'],
-                            doc.data[DatabaseIds.motto] ??   'Error: submit feedback database_functions.dart => line 608'
+                            doc.data[DatabaseIds.motto] ??  'Error: submit feedback database_functions.dart => line 608'
                             );
           
           assert(_userProfile != null, '_userProfile == null');

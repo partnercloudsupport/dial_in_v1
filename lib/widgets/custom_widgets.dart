@@ -488,7 +488,12 @@ class SocialProfileCard extends StatelessWidget {
 
     Widget _description;
 
-    if((_profile.profile.getProfileItemValue(DatabaseIds.descriptors) == '' || null) && (_profile.profile.getProfileItemValue(DatabaseIds.notes) == '' || null)){
+    if(
+    (_profile.profile.getProfileItemValue(DatabaseIds.descriptors) == '' ||
+     _profile.profile.getProfileItemValue(DatabaseIds.descriptors) ==  null) 
+     && 
+     (_profile.profile.getProfileItemValue(DatabaseIds.notes) == '' || 
+     _profile.profile.getProfileItemValue(DatabaseIds.notes) == null)){
       _description = Container(width: 0.0, height: 0.0,);
     }
     else{
