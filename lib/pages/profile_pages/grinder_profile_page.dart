@@ -41,8 +41,8 @@ class GrinderPage extends StatelessWidget {
 
       /// Notes
       NotesCard(StringLabels.notes,
-          _profile.getProfileItemValue( DatabaseIds.notes),
-          (text) { _profile.setProfileItemValue( DatabaseIds.notes, text);},
+          _profile.getItemValue( DatabaseIds.notes),
+          (text) { _profile.setItemValue( DatabaseIds.notes, text);},
           _isEditing)
     ]);
   

@@ -94,7 +94,7 @@ class _RecipePageState extends State<RecipePage> {
     /// Date
       DateTimeInputCard(
           StringLabels.date,
-          widget._profile.getProfileItemValue( DatabaseIds.date),
+          widget._profile.getItemValue( DatabaseIds.date),
           (dateTime)
           {if (dateTime != null){ widget._setProfileItemValue( DatabaseIds.date, dateTime);}},
             widget._isEditing),
@@ -124,7 +124,7 @@ class _RecipePageState extends State<RecipePage> {
           onProfileTextPressed: () {
             widget._showOptions(ProfileType.water);
           },
-          attributeTextfieldText: widget._profile.getProfileItemValue(
+          attributeTextfieldText: widget._profile.getItemValue(
                 DatabaseIds.temparature),
           attributeHintText: StringLabels.enterValue,
           attributeTitle: StringLabels.degreeC,
@@ -140,7 +140,7 @@ class _RecipePageState extends State<RecipePage> {
           onProfileTextPressed: () {
             widget._showOptions(ProfileType.grinder);
           },
-          attributeTextfieldText: widget._profile.getProfileItemValue(
+          attributeTextfieldText: widget._profile.getItemValue(
                 DatabaseIds.grindSetting),
           attributeHintText: StringLabels.enterValue,
           attributeTitle: StringLabels.setting,
@@ -157,7 +157,7 @@ class _RecipePageState extends State<RecipePage> {
           onProfileTextPressed: () {
             widget._showOptions(ProfileType.equipment);
           },
-          attributeTextfieldText: widget._profile.getProfileItemValue(
+          attributeTextfieldText: widget._profile.getItemValue(
                 DatabaseIds.preinfusion),
           attributeHintText: StringLabels.enterValue,
           attributeTitle: StringLabels.preinfusion,
@@ -195,7 +195,7 @@ class _RecipePageState extends State<RecipePage> {
       /// Notes
       NotesCard(
           StringLabels.notes,
-          widget._profile.getProfileItemValue(
+          widget._profile.getItemValue(
                 DatabaseIds.notes),
           (notes) {widget._setProfileItemValue( DatabaseIds.notes, notes);},
           widget._isEditing),
@@ -215,7 +215,7 @@ class _RecipePageState extends State<RecipePage> {
                   
                       ScoreSlider(
                         StringLabels.strength,
-                        double.parse(widget._profile.getProfileItemValue(DatabaseIds.strength)),
+                        double.parse(widget._profile.getItemValue(DatabaseIds.strength)),
                         (value) { widget._setProfileItemValue( DatabaseIds.strength, value.toString());},
                         widget._isEditing),
 
@@ -223,7 +223,7 @@ class _RecipePageState extends State<RecipePage> {
 
                       ScoreSlider(
                         StringLabels.balance,
-                        double.parse(widget._profile.getProfileItemValue(DatabaseIds.balance)),
+                        double.parse(widget._profile.getItemValue(DatabaseIds.balance)),
                         (value) { widget._setProfileItemValue( DatabaseIds.balance, value.toString());},
                         widget._isEditing),
 
@@ -232,7 +232,7 @@ class _RecipePageState extends State<RecipePage> {
 
                       ScoreSlider(
                         StringLabels.flavour,
-                        double.parse(widget._profile.getProfileItemValue(DatabaseIds.flavour)),
+                        double.parse(widget._profile.getItemValue(DatabaseIds.flavour)),
                         (value) { widget._setProfileItemValue( DatabaseIds.flavour, value.toString());},
                         widget._isEditing),
 
@@ -241,7 +241,7 @@ class _RecipePageState extends State<RecipePage> {
 
                       ScoreSlider(
                         StringLabels.body,
-                        double.parse(widget._profile.getProfileItemValue(DatabaseIds.body)),
+                        double.parse(widget._profile.getItemValue(DatabaseIds.body)),
                         (value) {widget._setProfileItemValue( DatabaseIds.body, value.toString());},
                         widget._isEditing),
 
@@ -250,7 +250,7 @@ class _RecipePageState extends State<RecipePage> {
 
                       ScoreSlider(
                         StringLabels.afterTaste,
-                        double.parse(widget._profile.getProfileItemValue(DatabaseIds.afterTaste)),
+                        double.parse(widget._profile.getItemValue(DatabaseIds.afterTaste)),
                         (value) {widget._setProfileItemValue( DatabaseIds.afterTaste, value.toString());},
                         widget._isEditing),
 
@@ -265,7 +265,7 @@ class _RecipePageState extends State<RecipePage> {
       ),
         NotesCard(
                 StringLabels.descriptors,
-                widget._profile.getProfileItemValue(
+                widget._profile.getItemValue(
                       DatabaseIds.descriptors),
                 (text) {widget._setProfileItemValue( DatabaseIds.descriptors, text);},
                 widget._isEditing),

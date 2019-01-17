@@ -49,7 +49,7 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
               Card(child:
                 Container(padding: EdgeInsets.all(20.0), alignment: Alignment(0, 1),
                   child:TextFieldWithInitalValue(TextInputType.text, StringLabels.name, StringLabels.enterNickname,
-               _profile.getProfileItemValue( DatabaseIds.coffeeId),
+               _profile.getItemValue( DatabaseIds.coffeeId),
                 (name){ widget._setProfileItemValue(DatabaseIds.coffeeId,name);}, double.infinity, widget._isEditing),)),
 
               RoastingDetailsCard(
@@ -57,7 +57,7 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
                 _profile.getProfileItem( DatabaseIds.roastProfile),
                 _profile.getProfileItem( DatabaseIds.roasteryName),
                 _profile.getProfileItem( DatabaseIds.roasterName),
-                _profile.getProfileItemValue( DatabaseIds.roastDate), 
+                _profile.getItemValue( DatabaseIds.roastDate), 
               /// Functions
                 widget._showPickerMenu,
                 (roasteryName){widget._setProfileItemValue( DatabaseIds.roasteryName,  roasteryName);}, 

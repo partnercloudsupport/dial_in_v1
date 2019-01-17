@@ -21,7 +21,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:dial_in_v1/pages/profile_pages/profile_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:dial_in_v1/classes/network_image_SSL.dart';
+import 'package:rxdart/rxdart.dart';
 import 'dart:io';
 
 
@@ -135,6 +135,114 @@ class CircularPicture extends StatelessWidget {
     );   
   }
 }
+
+/// Circular picture
+class CircularProfilePicture extends StatelessWidget {
+
+  final Profile _profile;
+  final double _size;
+
+  BehaviorSubject<Widget> _widgetStreamController = new BehaviorSubject<Widget>();
+
+  CircularProfilePicture(this._profile, this._size);
+
+  Future _returnImageWidget(BuildContext context)async{
+
+    if(
+      _profile.imageFilePath != null ||
+      _profile.imageFilePath != ''){   
+       if (await File(_profile.imageFilePath).exists()){
+         _widgetStreamController.add(Image.file(File(_profile.imageFilePath))); 
+        }
+      }
+
+    else 
+
+   if(
+      _profile.imageUrl != null ||
+      _profile.imageUrl != ''){    
+    if(await DatabaseFunctions.checkImageFileExists(_profile.imageUrl)){
+ 
+        _widgetStreamController.add(FadeInImage.assetNetwork(
+              fit: BoxFit.cover,
+              placeholder: _profile.getImagePlaceholder(),
+              image: _profile.imageUrl
+        )
+        );
+      }    
+    }
+  }
+
+  Widget setupWidgetView(SnapShotDataState dataState , AsyncSnapshot<Widget> snapshot){
+
+    Widget _returnWidget;
+
+    switch(dataState){
+      case SnapShotDataState.waiting: _returnWidget = CircularProgressIndicator(); break;
+
+      case SnapShotDataState.noData:_returnWidget =  Icon(Icons.error_outline) ;break;
+
+      case SnapShotDataState.hasdata:_returnWidget = snapshot.data; break;
+
+      case SnapShotDataState.hasError:
+        print(snapshot.error);
+        throw(snapshot.error);
+        break;
+    }   
+    assert (_returnWidget != null, '_return widdget is null');
+    return Container(
+            child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: [BoxShadow
+                      (color: Colors.black, offset: new Offset(0.0, 2.0),blurRadius: 2.0,)],
+                      shape: BoxShape.circle
+                        ),
+          height:_size,
+          width: _size,
+          margin: const EdgeInsets.all(5.0),
+          child: ClipRRect(
+            borderRadius: new BorderRadius.circular(_size),
+            child: snapshot.data
+          ),
+    
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    return 
+    StreamBuilder<Widget>(
+      stream: _widgetStreamController.stream ,
+      builder: (BuildContext context, AsyncSnapshot<Widget> snapshot){
+
+           switch (snapshot.hasError) {
+              case true: return setupWidgetView(SnapShotDataState.hasError, snapshot);
+              case false:
+
+              switch (snapshot.hasData) {
+                case false: 
+                  switch(snapshot.connectionState){
+                    case ConnectionState.none: break;
+                    case ConnectionState.active: return setupWidgetView(SnapShotDataState.noData, snapshot);
+                    case ConnectionState.waiting: return setupWidgetView(SnapShotDataState.waiting, snapshot);
+                    case ConnectionState.done: break;
+                  }     
+                  break;       
+
+                case true: return setupWidgetView(SnapShotDataState.hasdata, snapshot); 
+                  
+                default:
+              }
+          }
+      }
+    );
+  }
+}
+
+
 
 /// Action button
 class ActionButton extends StatelessWidget {
@@ -314,59 +422,59 @@ void setWidgetUp(){
       case ProfileType.recipe: 
       
       _topLeft = widget._profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.coffee);
-      _topRight = widget._dateFormat.format(widget._profile.getProfileItemValue(DatabaseIds.date));
+      _topRight = widget._dateFormat.format(widget._profile.getItemValue(DatabaseIds.date));
       _bottomRight = widget._profile.getProfileProfileTitleValue(profileDatabaseId: DatabaseIds.brewingEquipment);
       _bottomleft = 'widget._profile.getTotalScore()';
       _score = widget._profile.getTotalScore();
       break;
 
       case ProfileType.coffee:  
-      _topLeft = widget._profile.getProfileItemValue( DatabaseIds.coffeeId);
-      _topRight = widget._profile.getProfileItemValue( DatabaseIds.processingMethod);
-      _bottomRight = widget._dateFormat.format(widget._profile.getProfileItemValue(DatabaseIds.roastDate));
-      _bottomleft = widget._profile.getProfileItemValue( DatabaseIds.country);
+      _topLeft = widget._profile.getItemValue( DatabaseIds.coffeeId);
+      _topRight = widget._profile.getItemValue( DatabaseIds.processingMethod);
+      _bottomRight = widget._dateFormat.format(widget._profile.getItemValue(DatabaseIds.roastDate));
+      _bottomleft = widget._profile.getItemValue( DatabaseIds.country);
       break;
 
       case ProfileType.water:   
 
-      if(widget._profile.getProfileItemValue(DatabaseIds.ppm) == '' || 
-      widget._profile.getProfileItemValue(DatabaseIds.ppm) == null){ _topRight = '';}
-      else{ _topRight = widget._profile.getProfileItemValue(DatabaseIds.ppm) + 'ppm';}
+      if(widget._profile.getItemValue(DatabaseIds.ppm) == '' || 
+      widget._profile.getItemValue(DatabaseIds.ppm) == null){ _topRight = '';}
+      else{ _topRight = widget._profile.getItemValue(DatabaseIds.ppm) + 'ppm';}
 
-      if(widget._profile.getProfileItemValue(DatabaseIds.waterID) == '' || 
-      widget._profile.getProfileItemValue(DatabaseIds.waterID) == null){  _topLeft = '';}
-      else{ _topLeft = widget._profile.getProfileItemValue(DatabaseIds.waterID);}
+      if(widget._profile.getItemValue(DatabaseIds.waterID) == '' || 
+      widget._profile.getItemValue(DatabaseIds.waterID) == null){  _topLeft = '';}
+      else{ _topLeft = widget._profile.getItemValue(DatabaseIds.waterID);}
 
-      if(widget._profile.getProfileItemValue(DatabaseIds.gh) == '' || 
-      widget._profile.getProfileItemValue(DatabaseIds.gh) == null){  _bottomleft = '';}
-      else{ _bottomleft = widget._profile.getProfileItemValue(DatabaseIds.gh) + 'ppm GH';}
+      if(widget._profile.getItemValue(DatabaseIds.gh) == '' || 
+      widget._profile.getItemValue(DatabaseIds.gh) == null){  _bottomleft = '';}
+      else{ _bottomleft = widget._profile.getItemValue(DatabaseIds.gh) + 'ppm GH';}
 
-      if(widget._profile.getProfileItemValue(DatabaseIds.kh) == '' || 
-      widget._profile.getProfileItemValue(DatabaseIds.kh) == null){ _bottomRight = '';}
-      else{ _bottomRight = widget._profile.getProfileItemValue(DatabaseIds.kh) +'ppm KH';}
+      if(widget._profile.getItemValue(DatabaseIds.kh) == '' || 
+      widget._profile.getItemValue(DatabaseIds.kh) == null){ _bottomRight = '';}
+      else{ _bottomRight = widget._profile.getItemValue(DatabaseIds.kh) +'ppm KH';}
 
       break;
 
       case ProfileType.equipment:   
-      _topLeft = widget._profile.getProfileItemValue( DatabaseIds.equipmentId);
-      _topRight = widget._profile.getProfileItemValue( DatabaseIds.type);
+      _topLeft = widget._profile.getItemValue( DatabaseIds.equipmentId);
+      _topRight = widget._profile.getItemValue( DatabaseIds.type);
       _bottomRight = '';
       // widget._profile.getProfileItemValue( DatabaseIds.method);
-      _bottomleft = widget._profile.getProfileItemValue( DatabaseIds.equipmentModel); 
+      _bottomleft = widget._profile.getItemValue( DatabaseIds.equipmentModel); 
       break;
 
       case ProfileType.grinder:   
-      _topLeft = widget._profile.getProfileItemValue( DatabaseIds.grinderId);
-      _topRight = widget._profile.getProfileItemValue( DatabaseIds.burrs);
-      _bottomRight = widget._profile.getProfileItemValue( DatabaseIds.grinderMake);
-      _bottomleft = widget._profile.getProfileItemValue( DatabaseIds.grinderModel);      
+      _topLeft = widget._profile.getItemValue( DatabaseIds.grinderId);
+      _topRight = widget._profile.getItemValue( DatabaseIds.burrs);
+      _bottomRight = widget._profile.getItemValue( DatabaseIds.grinderMake);
+      _bottomleft = widget._profile.getItemValue( DatabaseIds.grinderModel);      
       break;
 
       case ProfileType.barista:   
-      _topLeft = widget._profile.getProfileItemValue( DatabaseIds.name);
-      _topRight = widget._profile.getProfileItemValue( DatabaseIds.level);
-      _bottomleft = widget._profile.getProfileItemValue( DatabaseIds.notes);
-      _bottomRight = widget._profile.getProfileItemValue( DatabaseIds.age);       
+      _topLeft = widget._profile.getItemValue( DatabaseIds.name);
+      _topRight = widget._profile.getItemValue( DatabaseIds.level);
+      _bottomleft = widget._profile.getItemValue( DatabaseIds.notes);
+      _bottomRight = widget._profile.getItemValue( DatabaseIds.age);       
       break;
 
       default: Error();    
@@ -489,15 +597,15 @@ class SocialProfileCard extends StatelessWidget {
     Widget _description;
 
     if(
-    (_profile.profile.getProfileItemValue(DatabaseIds.descriptors) == '' ||
-     _profile.profile.getProfileItemValue(DatabaseIds.descriptors) ==  null) 
+    (_profile.profile.getItemValue(DatabaseIds.descriptors) == '' ||
+     _profile.profile.getItemValue(DatabaseIds.descriptors) ==  null) 
      && 
-     (_profile.profile.getProfileItemValue(DatabaseIds.notes) == '' || 
-     _profile.profile.getProfileItemValue(DatabaseIds.notes) == null)){
+     (_profile.profile.getItemValue(DatabaseIds.notes) == '' || 
+     _profile.profile.getItemValue(DatabaseIds.notes) == null)){
       _description = Container(width: 0.0, height: 0.0,);
     }
     else{
-          _description =Container(margin: EdgeInsets.all(5.0), child: Text('Notes of ' + _profile.profile.getProfileItemValue(DatabaseIds.descriptors) + 'Info' + _profile.profile.getProfileItemValue(DatabaseIds.notes),  maxLines: 10), );
+          _description =Container(margin: EdgeInsets.all(5.0), child: Text('Notes of ' + _profile.profile.getItemValue(DatabaseIds.descriptors) + 'Info' + _profile.profile.getItemValue(DatabaseIds.notes),  maxLines: 10), );
       }
 
     return 
@@ -530,7 +638,7 @@ class SocialProfileCard extends StatelessWidget {
             Container(
               margin: EdgeInsets.all(5.0), 
               child: Text(
-                      _dateFormat.format(_profile.profile.getProfileItemValue(DatabaseIds.date)) ,  
+                      _dateFormat.format(_profile.profile.getItemValue(DatabaseIds.date)) ,  
                       maxLines: 1), ),
 
         ]),
@@ -1467,9 +1575,9 @@ class ProfileRefresher extends StatelessWidget {
 class CupertinoImagePickerDiolog extends StatelessWidget {
 
   final ImageSource _imageSource; 
-  final Function(dynamic) _setUrl;
+  final Function(dynamic) _setimage;
 
-  CupertinoImagePickerDiolog(this._imageSource, this._setUrl);
+  CupertinoImagePickerDiolog(this._imageSource, this._setimage);
 
   void showImagePicker(BuildContext context){
       ImagePicker.pickImage(maxWidth: 640.0, maxHeight: 480.0, source: _imageSource)
@@ -1479,20 +1587,30 @@ class CupertinoImagePickerDiolog extends StatelessWidget {
 
   void handleImagePickerReturn(dynamic image, context){
     if(image != null){
+      /// If image is not null Image is a file
       PopUps.showCircularProgressIndicator(context);
-      DatabaseFunctions.upLoadFileReturnUrl(image, [DatabaseIds.image])
-                                          .then((url) => sendBackUrl(url, context))
-                                          .catchError((error){print(error);});
+      sendBackFilePath((image as File).path, context);
 
+      // DatabaseFunctions.upLoadFileReturnUrl(image, [DatabaseIds.image])
+      //                                     .then((url) => sendBackUrl(url, context))
+      //                                     .catchError((error){print(error);});
     }
+  }
+
+  void sendBackFilePath(String filePath, BuildContext context){
+      assert(filePath != null);
+      if(filePath != null){_setimage(filePath);
+      /// Remove circular progrss indicator
+      Navigator.pop(context, filePath);}  
   }
 
   void sendBackUrl(String url, BuildContext context){
       assert(url != null);
-      if(url != null){_setUrl(url);
+      if(url != null){_setimage(url);
       /// Remove circular progrss indicator
       Navigator.pop(context, url);}  
   }
+
 
   @override
   Widget build(BuildContext context){

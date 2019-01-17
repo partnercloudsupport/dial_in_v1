@@ -79,9 +79,9 @@ class ProfilePageState extends State<ProfilePage> {
     else{this._appBarTitle =  Functions.getProfileTypeString(_profile.type);}
     }
     getBody();
-    _ratioModel = RatioModel(Functions.getIntValue(_profile.getProfileItemValue(DatabaseIds.brewingDose)),
-                        Functions.getIntValue(_profile.getProfileItemValue(DatabaseIds.yielde)),
-                        Functions.getIntValue(_profile.getProfileItemValue(DatabaseIds.brewWeight)));
+    _ratioModel = RatioModel(Functions.getIntValue(_profile.getItemValue(DatabaseIds.brewingDose)),
+                        Functions.getIntValue(_profile.getItemValue(DatabaseIds.yielde)),
+                        Functions.getIntValue(_profile.getItemValue(DatabaseIds.brewWeight)));
     super.initState();
   }
 
@@ -278,27 +278,27 @@ class ProfilePageState extends State<ProfilePage> {
 
     switch(profile.type){
       case ProfileType.barista:
-      _structure = BaristaPage(_profile, _margin,  _profile.setProfileItemValue, _isEditing);
+      _structure = BaristaPage(_profile, _margin,  _profile.setItemValue, _isEditing);
       break;
 
       case ProfileType.coffee:
-      _structure = CoffeeProfilePage(_profile, _profile.setProfileItemValue, _isEditing, showPickerMenu);
+      _structure = CoffeeProfilePage(_profile, _profile.setItemValue, _isEditing, showPickerMenu);
       break;
 
       case ProfileType.equipment:
-      _structure = EquipmentPage(_profile, _margin,  _profile.setProfileItemValue, _isEditing, showPickerMenu);
+      _structure = EquipmentPage(_profile, _margin,  _profile.setItemValue, _isEditing, showPickerMenu);
       break;
 
       case ProfileType.water:
-      _structure = WaterPage(_profile, _profile.setProfileItemValue, _isEditing);
+      _structure = WaterPage(_profile, _profile.setItemValue, _isEditing);
       break;
 
       case ProfileType.recipe:
-      _structure = RecipePage(_profile, (key, value){setState(()=> _profile.setProfileItemValue( key, value));}, _showProfileList, _isEditing );
+      _structure = RecipePage(_profile, (key, value){setState(()=> _profile.setItemValue( key, value));}, _showProfileList, _isEditing );
       break;
 
       case ProfileType.grinder:
-      _structure = GrinderPage(_profile, _margin, _profile.setProfileItemValue, _isEditing, showPickerMenu);
+      _structure = GrinderPage(_profile, _margin, _profile.setItemValue, _isEditing, showPickerMenu);
       break;
 
       default:
@@ -346,7 +346,7 @@ class ProfilePageState extends State<ProfilePage> {
               useMagnifier: true,
               onSelectedItemChanged:
                 (value){setState(() {
-                  _profile.setProfileItemValue(item.databaseId, item.inputViewDataSet[0][value]);
+                  _profile.setItemValue(item.databaseId, item.inputViewDataSet[0][value]);
                 });}, 
               itemExtent: _itemHeight,
               children: _items
@@ -424,7 +424,7 @@ class ProfilePageState extends State<ProfilePage> {
     //   ),
     // ],)));
     }
-    ).then((url) => setState(()=> _profile.setProfileItemValue(DatabaseIds.image, url)));
+    ).then((imageFilePath) => setState(()=> _profile.setItemValue(DatabaseIds.imagePath, imageFilePath)));
   }
 
 /// TODO;

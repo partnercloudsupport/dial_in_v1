@@ -255,7 +255,7 @@ class DatabaseFunctions {
             Map<String, dynamic> data = {
             DatabaseIds.userId : user.uid,
             DatabaseIds.userName : userName,
-            DatabaseIds.image : imageUrl,
+            DatabaseIds.imageUrl : imageUrl,
             DatabaseIds.following : List<String>()
             };
 
@@ -296,7 +296,7 @@ class DatabaseFunctions {
 
     String userId = await getCurrentUserId();
 
-      return await getValueFromFireStoreWithDocRef(DatabaseIds.User, userId, DatabaseIds.image) ?? '';
+      return await getValueFromFireStoreWithDocRef(DatabaseIds.User, userId, DatabaseIds.imageUrl) ?? '';
   }
 
   /// Get User Name
@@ -342,7 +342,7 @@ class DatabaseFunctions {
             Map<String, dynamic> data = {
             DatabaseIds.userId : user.uid,
             DatabaseIds.userName : userdetails.userName,
-            DatabaseIds.image : userdetails.photo,
+            DatabaseIds.imageUrl : userdetails.photo,
             DatabaseIds.motto : userdetails.motto 
             };
 
@@ -353,7 +353,7 @@ class DatabaseFunctions {
             userdetails.values.forEach((key, value) {
               if(
                 key == DatabaseIds.userName ||
-                key == DatabaseIds.image ||
+                key == DatabaseIds.imageUrl ||
                 key == DatabaseIds.motto 
                 ){
                newData[key] = value;}
@@ -394,13 +394,7 @@ class DatabaseFunctions {
   /// Dowload file from Firebase
   static Future<File> downloadFile(String httpPath)async{
 
-    final RegExp regExpPng = RegExp('([^?/]*\.(png))');
-    final RegExp regExpjpg = RegExp('([^?/]*\.(jpg))');
-    String fileName;
-
-    if (httpPath.contains(RegExp('png'))){fileName = regExpPng.stringMatch(httpPath);}
-    else if (httpPath.contains(RegExp('jpg'))){fileName = regExpjpg.stringMatch(httpPath);}
-    else {throw('No matching file type') ;}
+    String fileName = getImageNameFromFullUrl(httpPath);
 
     final Directory tempDir = Directory.systemTemp;
 
@@ -413,9 +407,40 @@ class DatabaseFunctions {
     return file;
 
      } catch (e){
-       return Functions.getFile(Images.recipeSmaller);
-     }
-}
+       throw('e');
+     }   
+  }
+
+  static Future<bool> checkImageFileExists(String httpPath)async{
+
+    String fileName = getImageNameFromFullUrl(httpPath);
+
+    try {
+
+    FirebaseStorage.instance
+    .ref().child(fileName)
+    .getDownloadURL()
+    .then((value)
+    {
+      print(value);});
+     } catch (e){
+       throw('e');
+     }   
+  }
+
+ static String getImageNameFromFullUrl(String httpPath){
+    
+    final RegExp regExpPng = RegExp('([^?/]*\.(png))');
+    final RegExp regExpjpg = RegExp('([^?/]*\.(jpg))');
+    String fileName;
+
+    if (httpPath.contains(RegExp('png'))){fileName = regExpPng.stringMatch(httpPath);}
+    else if (httpPath.contains(RegExp('jpg'))){fileName = regExpjpg.stringMatch(httpPath);}
+    else {throw('No matching file type') ;}
+    
+    assert(fileName != null);
+    return fileName;
+  }
 
   /// Update document with referance
   static Future<void> updateProfile(Profile profile)async{
@@ -475,7 +500,6 @@ class DatabaseFunctions {
 
   }
 
-
   /// Prepare Profile for FirebaseUpload or Update
   static Future<Map <String, dynamic>> prepareProfileForFirebaseUpload(Profile profile)async{
 
@@ -486,7 +510,7 @@ class DatabaseFunctions {
 
     String userId = await DatabaseFunctions.getCurrentUserId();
 
-        _properties[DatabaseIds.image] = profile.imageUrl;
+        _properties[DatabaseIds.imageUrl] = profile.imageUrl;
         _properties[DatabaseIds.orderNumber] = profile.orderNumber;
         _properties[DatabaseIds.user] = userId;
         _properties[DatabaseIds.public] = profile.isPublic;
@@ -524,7 +548,7 @@ class DatabaseFunctions {
 
     String userId = await DatabaseFunctions.getCurrentUserId();
 
-        _properties[DatabaseIds.image] = profile.imageUrl;
+        _properties[DatabaseIds.imageUrl] = profile.imageUrl;
         _properties[DatabaseIds.orderNumber] = profile.orderNumber;
         _properties[DatabaseIds.user] = userId;
         _properties[DatabaseIds.public] = profile.isPublic;
@@ -626,10 +650,11 @@ class DatabaseFunctions {
         userProfile = new UserProfile(
                               doc.data[DatabaseIds.user]?? 'Error: submit feedback database_functions.dart => line 557',
                               doc.data[DatabaseIds.userName]?? 'Error: submit feedback database_functions.dart => line 558',
-                              doc.data[DatabaseIds.image]?? 'Error: submit feedback database_functions.dart => line 559',
+                              doc.data[DatabaseIds.imageUrl]?? '',
                               doc.data[DatabaseIds.following]?? ['Error: submit feedback database_functions.dart => line 560'],
                               doc.data[DatabaseIds.followers]?? ['Error: submit feedback database_functions.dart => line 561'],
                               doc.data[DatabaseIds.motto]?? 'Error: submit feedback database_functions.dart => line 562',
+                              doc.data[DatabaseIds.imagePath]?? '',
                               );
 
         _outgoingController.add(userProfile);
@@ -674,10 +699,11 @@ class DatabaseFunctions {
           _userProfile = new UserProfile(
                             docRefernace,
                             doc.data[DatabaseIds.userName] ?? 'Error: submit feedback database_functions.dart => line 604',
-                            doc.data[DatabaseIds.image] ?? 'Error: submit feedback database_functions.dart => line 605',
+                            doc.data[DatabaseIds.imageUrl] ?? '',
                             followingRevisedList ?? List<String>() ?? ['Error: submit feedback database_functions.dart => line 606'],
                             followersRevisedList ?? List<String>() ?? ['Error: submit feedback database_functions.dart => line 607'],
-                            doc.data[DatabaseIds.motto] ??  'Error: submit feedback database_functions.dart => line 608'
+                            doc.data[DatabaseIds.motto] ??  'Error: submit feedback database_functions.dart => line 608',
+                            doc.data[DatabaseIds.imagePath]?? '',
                             );
           
           assert(_userProfile != null, '_userProfile == null');
@@ -686,7 +712,7 @@ class DatabaseFunctions {
     assert(_userProfile != null, '_userProfile == null');
 
     return _userProfile ?? new UserProfile
-                            ('error', 'error', 'error', ['error'], ['error'],'error');
+                            ('error', 'error', 'error', ['error'], ['error'],'error', 'error');
   }
 
   /// Get value from collection with key
@@ -731,7 +757,7 @@ class DatabaseFunctions {
       String _user = document[DatabaseIds.user] ?? '';
       String _objectId = document.documentID ?? '';
       int _orderNumber = document[DatabaseIds.orderNumber] ?? 0;
-      String _image = document[DatabaseIds.image] ?? '';
+      String _image = document[DatabaseIds.imageUrl] ?? '';
       bool _ispublic = document.data[DatabaseIds.public] ?? false;
       List<dynamic> likesIn = document.data[DatabaseIds.likes] ?? List<dynamic>();
       List<String> likes =  List<String>.from(likesIn);
@@ -779,7 +805,7 @@ class DatabaseFunctions {
 
       if ( key != DatabaseIds.orderNumber){
 
-      if ( key != DatabaseIds.image){
+      if ( key != DatabaseIds.imageUrl){
 
       if ( key != DatabaseIds.public){
 
@@ -975,10 +1001,11 @@ class CurrentUserProfileStream{
         UserProfile userProfile = new UserProfile(
                               doc.data[DatabaseIds.user] ?? 'Error: submit feedback database_functions.dart => line 976',
                               doc.data[DatabaseIds.userName] ?? 'Error: submit feedback database_functions.dart => line 977',
-                              doc.data[DatabaseIds.image]?? 'Error: submit feedback database_functions.dart => line 778',
+                              doc.data[DatabaseIds.imageUrl]?? 'Error: submit feedback database_functions.dart => line 778',
                               doc.data[DatabaseIds.following]?? ['Error: submit feedback database_functions.dart => line 979'],
                               doc.data[DatabaseIds.followers]?? ['Error: submit feedback database_functions.dart => line 980'],
                               doc.data[DatabaseIds.motto]?? 'Error: submit feedback database_functions.dart => line 981w',
+                              doc.data[DatabaseIds.imagePath]?? 'Error: submit feedback database_functions.dart => line 981w',
                               );
 
         userProfileStreamcontroller.add(userProfile);
@@ -1122,6 +1149,6 @@ class DatabaseIds{
   static const String waterImage = 'waterImage';
   static const String picture = 'picture';
   static const String imagePath = 'imagePath';
-  static const String image = 'image';
+  static const String imageUrl = 'image';
   static const String orderNumber = 'orderNumber';
 }

@@ -232,7 +232,7 @@ class Functions {
 
       return new CupertinoImagePicker();
      }
-    ).then((url){ if(url != null){ completion(url);}});
+    ).then((imageFilePath){ if(imageFilePath != null){ completion(imageFilePath);}});
   }
   
   static Future<File> getPictureFile(String filePath) async {
@@ -566,10 +566,9 @@ class CupertinoImagePicker extends StatelessWidget {
     Key key,
     }) : super(key: key);
 
-  void returnUrl(String url, BuildContext context){
+  void imagePath(String path, BuildContext context){
     /// Remove CupertinoImagePicker diolog and return string
-    
-    Navigator.pop(context, url);
+    Navigator.pop(context, path);
   }
 
   @override
@@ -585,11 +584,11 @@ class CupertinoImagePicker extends StatelessWidget {
 
         CupertinoImagePickerDiolog(
           ImageSource.camera, 
-          (urlOut) { returnUrl(urlOut , context);}),
+          (path) { imagePath(path , context);}),
     
         CupertinoImagePickerDiolog(
           ImageSource.gallery,
-          (urlOut) { returnUrl(urlOut , context);}),
+          (path) { imagePath(path , context);}),
 
         ],
        )

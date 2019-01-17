@@ -432,11 +432,11 @@ class RatioModel extends Model {
 
   void updateValues(Profile profile) {
     _doseStreamController.add(Functions.getIntValue(
-        profile.getProfileItemValue(DatabaseIds.brewingDose)));
+        profile.getItemValue(DatabaseIds.brewingDose)));
     _yieldStreamController.add(
-        Functions.getIntValue(profile.getProfileItemValue(DatabaseIds.yielde)));
+        Functions.getIntValue(profile.getItemValue(DatabaseIds.yielde)));
     _brewWWeightStreamController.add(Functions.getIntValue(
-        profile.getProfileItemValue(DatabaseIds.brewWeight)));
+        profile.getItemValue(DatabaseIds.brewWeight)));
     _dose =
         Functions.getIntValue(profile.getProfileItem(DatabaseIds.brewingDose));
     _yielde = Functions.getIntValue(profile.getProfileItem(DatabaseIds.yielde));

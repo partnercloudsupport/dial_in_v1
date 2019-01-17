@@ -82,19 +82,19 @@ class Profile {
 
   double getExtractionYield(){
 
-    dynamic tds = this.getProfileItemValue(DatabaseIds.tds) == '' ? 
+    dynamic tds = this.getItemValue(DatabaseIds.tds) == '' ? 
     0.0:
-    double.parse(this.getProfileItemValue(DatabaseIds.tds));
+    double.parse(this.getItemValue(DatabaseIds.tds));
 
     dynamic method = this.getProfileProfileItemValue(ProfileType.equipment, DatabaseIds.type);
 
-    dynamic dose = this.getProfileItemValue(DatabaseIds.brewingDose) == '' ? 
+    dynamic dose = this.getItemValue(DatabaseIds.brewingDose) == '' ? 
     0.0:
-    double.parse(this.getProfileItemValue(DatabaseIds.brewingDose));
+    double.parse(this.getItemValue(DatabaseIds.brewingDose));
 
-    dynamic yielde = this.getProfileItemValue(DatabaseIds.yielde) == '' ?
+    dynamic yielde = this.getItemValue(DatabaseIds.yielde) == '' ?
     0.0:
-    double.parse(this.getProfileItemValue(DatabaseIds.yielde));
+    double.parse(this.getItemValue(DatabaseIds.yielde));
 
     double extractionYield = 0.0;
 
@@ -115,7 +115,7 @@ class Profile {
     return double.parse(extractionYield.toStringAsFixed(2)); 
   }
 
-  void setProfileItemValue(String itemDatabaseId, dynamic value) {
+  void setItemValue(String itemDatabaseId, dynamic value) {
     if (value != null){
       for (var i = 0; i < this.properties.length; i++) {
         if (this.properties[i].databaseId == itemDatabaseId) {
@@ -133,8 +133,29 @@ class Profile {
   }
 
 
+   String getImagePlaceholder(){
 
-  dynamic getProfileItemValue(String itemDatabaseId) {
+    String placeHolder;
+
+    switch(this.type){
+
+      case ProfileType.barista : placeHolder = Images.user; break;           
+      case ProfileType.coffee : placeHolder = Images.coffeeBeans; break;
+      case ProfileType.equipment : placeHolder = Images.aeropressSmaller512x512; break;
+      case ProfileType.grinder : placeHolder = Images.grinder; break;
+      case ProfileType.recipe : placeHolder = Images.recipeSmaller; break;
+      case ProfileType.water : placeHolder = Images.water; break; 
+    }
+
+    assert(placeHolder != null, 'placeHolder is null');
+
+    return placeHolder?? '';
+  }
+
+
+
+
+  dynamic getItemValue(String itemDatabaseId) {
     
     dynamic value;
     for (var i = 0; i < this.properties.length; i++) {
@@ -174,37 +195,37 @@ class Profile {
       if (this.profiles[i].databaseId == profileDatabaseId) {
         switch (profileDatabaseId) {
           case DatabaseIds.recipe:
-            setProfileItemValue(
+            setItemValue(
                  DatabaseIds.recipeId,
                  profileDatabaseIdref);
             break;
 
           case DatabaseIds.coffee:
-            setProfileItemValue(
+            setItemValue(
                  DatabaseIds.coffeeId,
                  profileDatabaseIdref);
             break;
 
           case DatabaseIds.water:
-            setProfileItemValue(
+            setItemValue(
                  DatabaseIds.waterID,
                  profileDatabaseIdref);
             break;
 
           case DatabaseIds.brewingEquipment:
-            setProfileItemValue(
+            setItemValue(
                  DatabaseIds.equipmentId,
                  profileDatabaseIdref);
             break;
 
           case DatabaseIds.grinder:
-            setProfileItemValue(
+            setItemValue(
                  DatabaseIds.grinderId,
                  profileDatabaseIdref);
             break;
 
           case DatabaseIds.barista:
-            setProfileItemValue(
+            setItemValue(
                  DatabaseIds.name,  profileDatabaseIdref);
             break;
 
@@ -217,7 +238,7 @@ class Profile {
 
 Future<String> getUserImage ()async{
   
-  String imageUrl = await DatabaseFunctions.getValueFromFireStoreWithDocRef(DatabaseIds.User, this.userId, DatabaseIds.image);
+  String imageUrl = await DatabaseFunctions.getValueFromFireStoreWithDocRef(DatabaseIds.User, this.userId, DatabaseIds.imageUrl);
 
   return imageUrl ?? '';
 } 
@@ -293,35 +314,35 @@ Future<String> getUserImage ()async{
         if (this.profiles[i].databaseId == profileDatabaseId) {
           switch (profileDatabaseId) {
             case DatabaseIds.recipe:
-              value = this.profiles[i].getProfileItemValue( DatabaseIds.recipeId);
+              value = this.profiles[i].getItemValue( DatabaseIds.recipeId);
               break;
 
             case DatabaseIds.coffee:
-              value = this.profiles[i].getProfileItemValue( DatabaseIds.coffeeId);
+              value = this.profiles[i].getItemValue( DatabaseIds.coffeeId);
               break;
 
             case DatabaseIds.water:
-              value = this.profiles[i].getProfileItemValue( DatabaseIds.waterID);
+              value = this.profiles[i].getItemValue( DatabaseIds.waterID);
               break;
 
             case DatabaseIds.brewingEquipment:
-              value = this.profiles[i].getProfileItemValue( DatabaseIds.equipmentId);
+              value = this.profiles[i].getItemValue( DatabaseIds.equipmentId);
               break;
 
             case DatabaseIds.grinder:
-              value = this.profiles[i].getProfileItemValue( DatabaseIds.grinderId);
+              value = this.profiles[i].getItemValue( DatabaseIds.grinderId);
               break;
 
             case DatabaseIds.Barista:
-              value = this.profiles[i].getProfileItemValue( DatabaseIds.name);
+              value = this.profiles[i].getItemValue( DatabaseIds.name);
               break;
 
             case DatabaseIds.score:
-              value = (this.profiles[i].getProfileItemValue( DatabaseIds.strength) +
-                      this.profiles[i].getProfileItemValue( DatabaseIds.balance) +
-                      this.profiles[i].getProfileItemValue( DatabaseIds.flavour) +
-                      this.profiles[i].getProfileItemValue( DatabaseIds.body) +
-                      this.profiles[i].getProfileItemValue( DatabaseIds.afterTaste)).toString();
+              value = (this.profiles[i].getItemValue( DatabaseIds.strength) +
+                      this.profiles[i].getItemValue( DatabaseIds.balance) +
+                      this.profiles[i].getItemValue( DatabaseIds.flavour) +
+                      this.profiles[i].getItemValue( DatabaseIds.body) +
+                      this.profiles[i].getItemValue( DatabaseIds.afterTaste)).toString();
               break;  
 
             default:
@@ -338,35 +359,35 @@ Future<String> getUserImage ()async{
   String value = 'Error';
    switch (this.databaseId) {
             case DatabaseIds.recipe:
-              value = this.getProfileItemValue( DatabaseIds.recipeId);
+              value = this.getItemValue( DatabaseIds.recipeId);
               break;
 
             case DatabaseIds.coffee:
-              value = this.getProfileItemValue( DatabaseIds.coffeeId);
+              value = this.getItemValue( DatabaseIds.coffeeId);
               break;
 
             case DatabaseIds.water:
-              value = this.getProfileItemValue( DatabaseIds.waterID);
+              value = this.getItemValue( DatabaseIds.waterID);
               break;
 
             case DatabaseIds.brewingEquipment:
-              value = this.getProfileItemValue( DatabaseIds.equipmentId);
+              value = this.getItemValue( DatabaseIds.equipmentId);
               break;
 
             case DatabaseIds.grinder:
-              value = this.getProfileItemValue( DatabaseIds.grinderId);
+              value = this.getItemValue( DatabaseIds.grinderId);
               break;
 
             case DatabaseIds.Barista:
-              value = this.getProfileItemValue( DatabaseIds.name);
+              value = this.getItemValue( DatabaseIds.name);
               break;
 
             case DatabaseIds.score:
-            value = (this.getProfileItemValue( DatabaseIds.strength) +
-                      this.getProfileItemValue( DatabaseIds.balance) +
-                      this.getProfileItemValue( DatabaseIds.flavour) +
-                      this.getProfileItemValue( DatabaseIds.body) +
-                      this.getProfileItemValue( DatabaseIds.afterTaste)).toString();
+            value = (this.getItemValue( DatabaseIds.strength) +
+                      this.getItemValue( DatabaseIds.balance) +
+                      this.getItemValue( DatabaseIds.flavour) +
+                      this.getItemValue( DatabaseIds.body) +
+                      this.getItemValue( DatabaseIds.afterTaste)).toString();
               break;  
    }
    return value;
@@ -1764,11 +1785,11 @@ Future<String> getUserImage ()async{
   double getTotalScore(){
 
     List<double> scores = [
-      double.parse(this.getProfileItemValue(DatabaseIds.strength),),
-      double.parse(this.getProfileItemValue(DatabaseIds.balance)),
-      double.parse(this.getProfileItemValue(DatabaseIds.flavour)),
-      double.parse(this.getProfileItemValue(DatabaseIds.body)),
-      double.parse(this.getProfileItemValue(DatabaseIds.afterTaste)),
+      double.parse(this.getItemValue(DatabaseIds.strength),),
+      double.parse(this.getItemValue(DatabaseIds.balance)),
+      double.parse(this.getItemValue(DatabaseIds.flavour)),
+      double.parse(this.getItemValue(DatabaseIds.body)),
+      double.parse(this.getItemValue(DatabaseIds.afterTaste)),
     ];
     
     double finalscore = scores.reduce((value, element) => value + element);
@@ -1778,7 +1799,7 @@ Future<String> getUserImage ()async{
 
   int getDaysRested(){
     DateTime coffeeRoastDate = getProfileProfileItemValue(ProfileType.coffee, DatabaseIds.roastDate);
-    DateTime recipeMadeTime = getProfileItemValue(DatabaseIds.date);
+    DateTime recipeMadeTime = getItemValue(DatabaseIds.date);
     int result = recipeMadeTime.difference(coffeeRoastDate).inDays;
     print(coffeeRoastDate);
     print(recipeMadeTime);

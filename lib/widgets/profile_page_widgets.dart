@@ -166,7 +166,6 @@ class _ProfileInputCardWithAttributeState extends State<ProfileInputCardWithAttr
                   Padding(padding: EdgeInsets.all(5.0),),
 
                   /// Left profile selection
-                       CircularPicture(widget.profile.imageUrl, Functions.getProfileImagePlaceholder(widget.profile.type),40.0),
 
                         /// Spacer
                         Container(width: 10.0,),
@@ -742,10 +741,10 @@ class _RatioCardState extends State<RatioCard> {
           Container(
           child:Text
           (Functions.getTwoNumberRatio(
-          Functions.getIntValue(widget._profile.getProfileItemValue(DatabaseIds.brewingDose)),
+          Functions.getIntValue(widget._profile.getItemValue(DatabaseIds.brewingDose)),
           _brewRatioType == BrewRatioType.doseYield ?
-           Functions.getIntValue(widget._profile.getProfileItemValue(DatabaseIds.yielde)) :
-           Functions.getIntValue(widget._profile.getProfileItemValue(DatabaseIds.brewWeight))),
+           Functions.getIntValue(widget._profile.getItemValue(DatabaseIds.yielde)) :
+           Functions.getIntValue(widget._profile.getItemValue(DatabaseIds.brewWeight))),
           style: Theme.of(context).textTheme.display3,),),
 
           Container(

@@ -41,8 +41,8 @@ class EquipmentPage extends StatelessWidget {
 
       /// Notes
       NotesCard(StringLabels.method,
-          _profile.getProfileItemValue( DatabaseIds.method),
-          (text) {_profile.setProfileItemValue( DatabaseIds.method, text);},
+          _profile.getItemValue( DatabaseIds.method),
+          (text) {_profile.setItemValue( DatabaseIds.method, text);},
           _isEditing)
     ]);
   }

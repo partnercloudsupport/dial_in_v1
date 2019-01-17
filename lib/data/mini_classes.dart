@@ -12,9 +12,8 @@ class FeedProfileData{
 
   Profile get profile => _profile;
   UserProfile get userProfile => _userProfile;
-  String get userName => _userProfile._userName;
-  String get userImage => _userProfile._userImage;
-  List<String> get following => _userProfile._following;
+  String get userName => _userProfile.userName;
+  String get userImage => _userProfile.imageUrl;
 
 }
 
@@ -32,34 +31,48 @@ class NumericTextFormatter extends TextInputFormatter {
 
 class  UserProfile {
 
-    UserProfile(this._userId,this._userName,this._userImage, this._following, this._followers, this._motto);
+    UserProfile
+    (String _userId, String _userName, String _userImageUrl, List<String> _following, List<String> _followers, String _motto, String _userImageFilePath){
+       id = _userId; 
+       userName = _userName; 
+       imageUrl = _userImageUrl; 
+       following = _following; 
+       followers = _followers; 
+       motto = _motto; 
+       imageFilePath = _userImageFilePath;      
+    }
+
     //TODO put into map
     Map<String, dynamic> values = Map<String, dynamic>();
 
-    String _userId;
-    String get id => _userId;
+    String get id => values[DatabaseIds.userId];
+    set id(String setid) => values[DatabaseIds.userId] = setid;
 
-    String _userName;
-    String get userName => _userName;
+    String get userName => values[DatabaseIds.userName];
+    set userName(String setuserName) => values[DatabaseIds.userName] = setuserName;
 
-    String _motto;
-    String get motto => _motto;
+    String get motto => values[DatabaseIds.motto];
+    set motto(String setmotto) => values[DatabaseIds.motto] = setmotto;
 
-    String _userImage;
-    String get image => _userImage;
+    String get imageUrl => values[DatabaseIds.imageUrl];
+    set imageUrl(String setimageUrl) => values[DatabaseIds.imageUrl] = setimageUrl;
 
-    List<String> _followers = new List<String>();
-    List<String> get followers => _followers;
+    String get imageFilePath => values[DatabaseIds.imagePath];
+    set imageFilePath(String setimageFilePath) => values[DatabaseIds.imagePath] = setimageFilePath;
 
-    List<String> _following = new List<String>();
-    List<String> get following => _following;
+    List<String> get followers => values[DatabaseIds.followers];
+    set followers(List<String> setimageFilePath) => values[DatabaseIds.followers] = setimageFilePath;
+
+    List<String> get following => values[DatabaseIds.following];
+    set following(List<String> setimageFilePath) => values[DatabaseIds.following] = setimageFilePath;
+
 
     Future<int> getRecipeCount()async{ 
-      return await DatabaseFunctions.getCount(ProfileType.recipe, _userId);
+      return await DatabaseFunctions.getCount(ProfileType.recipe, id);
     }
 
     Future<int> getcoffeeCount()async{ 
-      return await DatabaseFunctions.getCount(ProfileType.coffee, _userId);
+      return await DatabaseFunctions.getCount(ProfileType.coffee, id);
     }
 
     bool isUserFollowing(String otherUser){
@@ -90,14 +103,14 @@ class UserDetails{
     Map<String, String> values = Map<String, String>();
 
       set id(String newId) => values[DatabaseIds.userId] = newId;
-      set photo(String newimage) => values[DatabaseIds.image] = newimage;
+      set photo(String newimage) => values[DatabaseIds.imageUrl] = newimage;
       set userName(String newuserName) => values[DatabaseIds.userName] = newuserName;
       set motto(String newmotto) => values[DatabaseIds.motto] = newmotto;
       set email(String newemail) => values[DatabaseIds.email] = newemail;
       set password(String newpassword) => values[DatabaseIds.password] = newpassword; 
     
       String get id => values[DatabaseIds.userId];
-      String get photo => values[DatabaseIds.image];
+      String get photo => values[DatabaseIds.imageUrl];
       String get userName => values[DatabaseIds.userName];
       String get motto => values[DatabaseIds.motto];
       String get email => values[DatabaseIds.email];
@@ -111,9 +124,7 @@ abstract class ImageReturnedFalse extends ImagePickerReturn{}
 abstract class ImageReturnedTrue extends ImagePickerReturn{}
 
 enum FeedType {community, following}
-enum SnapShotDataState{
-  waiting, noData, hasdata, hasError
-}
+enum SnapShotDataState{waiting, noData, hasdata, hasError}
 
  List<int> primeNumbers =
 [2, 3, 5, 7, 11, 13, 17, 19, 23,
