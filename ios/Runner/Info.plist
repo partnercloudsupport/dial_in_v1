@@ -41,5 +41,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSCameraUsageDescription</key>
+	<string>com.example.dialInV1 requires access to your phone’s camera.</string>
 </dict>
 </plist>
