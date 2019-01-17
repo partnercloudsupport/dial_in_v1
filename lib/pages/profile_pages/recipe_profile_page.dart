@@ -161,6 +161,7 @@ class _RecipePageState extends State<RecipePage> {
                 DatabaseIds.preinfusion),
           attributeHintText: StringLabels.enterValue,
           attributeTitle: StringLabels.preinfusion,
+          textFieldWidth: 200,
       ),
 
       /// Ratio card

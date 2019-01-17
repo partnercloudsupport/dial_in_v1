@@ -486,7 +486,7 @@ class DatabaseFunctions {
 
     String userId = await DatabaseFunctions.getCurrentUserId();
 
-        _properties[DatabaseIds.image] = profile.image;
+        _properties[DatabaseIds.image] = profile.imageUrl;
         _properties[DatabaseIds.orderNumber] = profile.orderNumber;
         _properties[DatabaseIds.user] = userId;
         _properties[DatabaseIds.public] = profile.isPublic;
@@ -506,7 +506,7 @@ class DatabaseFunctions {
     Firestore.instance.collection(profile.databaseId).document(profile.objectId)
         .delete()
         .whenComplete((){
-          DatabaseFunctions.deleteFireBaseStorageItem(profile.image);
+          DatabaseFunctions.deleteFireBaseStorageItem(profile.imageUrl);
           print('Successfully deleted ${profile.objectId}');})
         .catchError((e){print(e);});
   }
@@ -524,7 +524,7 @@ class DatabaseFunctions {
 
     String userId = await DatabaseFunctions.getCurrentUserId();
 
-        _properties[DatabaseIds.image] = profile.image;
+        _properties[DatabaseIds.image] = profile.imageUrl;
         _properties[DatabaseIds.orderNumber] = profile.orderNumber;
         _properties[DatabaseIds.user] = userId;
         _properties[DatabaseIds.public] = profile.isPublic;
@@ -806,7 +806,7 @@ class DatabaseFunctions {
               updatedAt: _updatedAt,
               objectId: _objectId,
               type: ProfileType.recipe,
-              image: _image,
+              imageUrl: _image,
               databaseId: databaseId,
               orderNumber: _orderNumber,
               properties: newProfile.properties,
@@ -829,7 +829,7 @@ class DatabaseFunctions {
               updatedAt: DateTime.now(),
               objectId: _objectId,
               type: ProfileType.coffee,
-              image: _image,
+              imageUrl: _image,
               databaseId: databaseId,
               orderNumber: _orderNumber,
               properties: newProfile.properties
@@ -845,7 +845,7 @@ class DatabaseFunctions {
               updatedAt: DateTime.now(),
               objectId: _objectId,
               type: ProfileType.grinder,
-              image: _image,
+              imageUrl: _image,
               databaseId: databaseId,
               orderNumber: _orderNumber,
               properties: newProfile.properties
@@ -861,7 +861,7 @@ class DatabaseFunctions {
         updatedAt: DateTime.now(),
         objectId: _objectId,
         type: ProfileType.equipment,
-        image: _image,
+        imageUrl: _image,
         databaseId: databaseId,
         orderNumber: _orderNumber,
         properties: newProfile.properties
@@ -877,7 +877,7 @@ class DatabaseFunctions {
         updatedAt: DateTime.now(),
         objectId: _objectId,
         type: ProfileType.water,
-        image: _image,
+        imageUrl: _image,
         databaseId: databaseId,
         orderNumber: _orderNumber,
         properties: newProfile.properties
@@ -893,7 +893,7 @@ class DatabaseFunctions {
         updatedAt: DateTime.now(),
         objectId: _objectId,
         type: ProfileType.barista,
-        image: _image,
+        imageUrl: _image,
         databaseId: databaseId,
         orderNumber: _orderNumber,
         properties: newProfile.properties
@@ -973,12 +973,12 @@ class CurrentUserProfileStream{
       if (doc.exists){
 
         UserProfile userProfile = new UserProfile(
-                              doc.data[DatabaseIds.user]?? 'Error: submit feedback database_functions.dart => line 557',
-                              doc.data[DatabaseIds.userName]?? 'Error: submit feedback database_functions.dart => line 558',
-                              doc.data[DatabaseIds.image]?? 'Error: submit feedback database_functions.dart => line 559',
-                              doc.data[DatabaseIds.following]?? ['Error: submit feedback database_functions.dart => line 560'],
-                              doc.data[DatabaseIds.followers]?? ['Error: submit feedback database_functions.dart => line 561'],
-                              doc.data[DatabaseIds.motto]?? 'Error: submit feedback database_functions.dart => line 562',
+                              doc.data[DatabaseIds.user] ?? 'Error: submit feedback database_functions.dart => line 976',
+                              doc.data[DatabaseIds.userName] ?? 'Error: submit feedback database_functions.dart => line 977',
+                              doc.data[DatabaseIds.image]?? 'Error: submit feedback database_functions.dart => line 778',
+                              doc.data[DatabaseIds.following]?? ['Error: submit feedback database_functions.dart => line 979'],
+                              doc.data[DatabaseIds.followers]?? ['Error: submit feedback database_functions.dart => line 980'],
+                              doc.data[DatabaseIds.motto]?? 'Error: submit feedback database_functions.dart => line 981w',
                               );
 
         userProfileStreamcontroller.add(userProfile);
@@ -991,17 +991,17 @@ class CurrentUserProfileStream{
 
 class Storage {
 
-  Future<String> get localPath async {
+  static Future<String> get localPath async {
     final dir = await getApplicationDocumentsDirectory();
     return dir.path;
   }
 
-  Future<File> get localFile async {
+  static Future<File> get localFile async {
     final path = await localPath;
-    return File('$path/db.txt');
+    return File('$path/');
   }
 
-  Future<String> readData() async {
+  static Future<String> readData() async {
     try {
       final file = await localFile;
       String body = await file.readAsString();
@@ -1012,7 +1012,7 @@ class Storage {
     }
   }
 
-  Future<File> writeData(String data) async {
+  static Future<File> writeData(String data) async {
     final file = await localFile;
     return file.writeAsString("$data");
   }

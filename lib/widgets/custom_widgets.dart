@@ -411,7 +411,7 @@ void setWidgetUp(){
       /// Profile picture
       ///
       ScalableWidget(Hero(tag: widget._profile.objectId , child: Container (
-          child: CircularPicture(widget._profile.image,Functions.getProfileImagePlaceholder(widget._profile.type),60.0)),)),
+          child: CircularPicture(widget._profile.imageUrl,Functions.getProfileImagePlaceholder(widget._profile.type),60.0)),)),
 
       Padding(padding: EdgeInsets.all(5.0)),
           
@@ -430,11 +430,11 @@ void setWidgetUp(){
                       Container(
                           child:Text(_topLeft, maxLines: 2, softWrap: true,
                            overflow: TextOverflow.ellipsis, style: Theme.of(context).textTheme.display1,)),
+
                       Container(
-                        
                               child: widget._profile.type == ProfileType.recipe ? 
                               ScalableWidget(FiveStarRating(widget._profile.getTotalScore().toInt()))  :
-                              Text(_bottomleft, maxLines: 1)
+                              Text(_bottomleft, maxLines: 1, overflow: TextOverflow.ellipsis,)
                       )
                     ]
                 )
@@ -453,10 +453,10 @@ void setWidgetUp(){
                     children: <Widget>[
                       Container(
                           // margin: EdgeInsets.all(5.0), 
-                          child: Text(_topRight, maxLines: 1)),
+                          child: Text(_topRight, maxLines: 1, overflow: TextOverflow.ellipsis,)),
                       Container(
                         margin: EdgeInsets.all(5.0),
-                        child: Text(_bottomRight, maxLines: 1),
+                        child: Text(_bottomRight, maxLines: 1, overflow: TextOverflow.ellipsis,),
                       )
                     ])))
       ]))
@@ -549,7 +549,7 @@ class SocialProfileCard extends StatelessWidget {
         /// Recipe picture
         Hero(tag: _profile.profile.objectId, child: SizedBox(width: double.infinity, height: 200.0, child:
           Material(type: MaterialType.card, elevation: 2.0 ,color: Theme.of(context).scaffoldBackgroundColor,
-          child: FadeInImage.assetNetwork(image:_profile.profile.image, fit: BoxFit.cover, placeholder: Images.rippleLoadingGif),),),),
+          child: FadeInImage.assetNetwork(image:_profile.profile.imageUrl, fit: BoxFit.cover, placeholder: Images.rippleLoadingGif),),),),
         
         ///Spacer
           Container(height: 20.0,),

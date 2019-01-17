@@ -15,8 +15,8 @@ class Profile {
   String databaseId;
   @required
   List<Item> properties;
-  @required
-  String image;
+  String imageUrl;
+  String imageFilePath;
   @required
   ProfileType type;
   @required
@@ -41,7 +41,8 @@ class Profile {
       this.objectId,
       this.type,
       this.properties,
-      this.image,
+      this.imageUrl,
+      this.imageFilePath,
       this.databaseId,
       this.orderNumber,
       this.profiles,
@@ -258,7 +259,7 @@ Future<String> getUserImage ()async{
    if (this.profiles != null) {
       for (var i = 0; i < this.profiles.length; i++) {
         if (this.profiles[i].type == profiletype) {
-              value = this.profiles[i].image;
+              value = this.profiles[i].imageUrl;
         }
       }
    }
@@ -403,7 +404,7 @@ Future<String> getUserImage ()async{
             isPublic: true,
             updatedAt: DateTime.now(),
             objectId: '',
-            image: Images.recipeSmallerFirebase,
+            imageUrl: Images.recipeSmallerFirebase,
             databaseId: DatabaseIds.recipe,
             type: ProfileType.recipe,
             orderNumber: 0,
@@ -441,7 +442,7 @@ Future<String> getUserImage ()async{
             isPublic: true,
             updatedAt: DateTime.now(),
             objectId: '',
-            image: Images.dropFirebase,
+            imageUrl: Images.dropFirebase,
             databaseId: DatabaseIds.water,
             type: ProfileType.water,
             orderNumber: 0,
@@ -462,7 +463,7 @@ Future<String> getUserImage ()async{
             isPublic: true,
             updatedAt: DateTime.now(),
             objectId: '',
-            image: Images.coffeeBeansFirebase,
+            imageUrl: Images.coffeeBeansFirebase,
             databaseId: DatabaseIds.coffee,
             type: ProfileType.coffee,
             orderNumber: 0,
@@ -494,7 +495,7 @@ Future<String> getUserImage ()async{
           isPublic: true,
           updatedAt: DateTime.now(),
           objectId: '',
-          image: Images.aeropressSmaller512x512Firebase,
+          imageUrl: Images.aeropressSmaller512x512Firebase,
           databaseId: DatabaseIds.brewingEquipment,
           type: ProfileType.equipment,
           orderNumber: 0,
@@ -514,7 +515,7 @@ Future<String> getUserImage ()async{
           isPublic: true,
           updatedAt: DateTime.now(),
           objectId: '',
-          image: Images.grinderFirebase,
+          imageUrl: Images.grinderFirebase,
           databaseId: DatabaseIds.grinder,
           type: ProfileType.grinder,
           orderNumber: 0,
@@ -534,7 +535,7 @@ Future<String> getUserImage ()async{
           isPublic: true,
           updatedAt: DateTime.now(),
           objectId: '',
-          image: Images.userFirebase,
+          imageUrl: Images.userFirebase,
           databaseId: DatabaseIds.Barista,
           type: ProfileType.barista,
           orderNumber: 0,
@@ -880,7 +881,6 @@ Future<String> getUserImage ()async{
           databaseId: DatabaseIds.producer,
           placeHolderText: StringLabels.enterDescription,
           keyboardType: TextInputType.text,
-          icon: Icon(Icons.nature_people)
         );
         break;
 
@@ -911,6 +911,8 @@ Future<String> getUserImage ()async{
           databaseId: DatabaseIds.harvest,
           placeHolderText: StringLabels.enterDescription,
           keyboardType: TextInputType.text,
+          icon: Icon(Icons.nature_people)
+
         );
         break;
 

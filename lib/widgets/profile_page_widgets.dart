@@ -81,7 +81,7 @@ class ProfileInputCardWithAttribute extends StatefulWidget {
 
   final double _padding = 5.0;
   final double _margin = 5.0;
-  final double _textFieldWidth = 150.0;
+  final double textFieldWidth;
   
   final Function(String) onAttributeTextChange;
   final Function onProfileTextPressed;
@@ -103,6 +103,7 @@ class ProfileInputCardWithAttribute extends StatefulWidget {
       this.attributeHintText,
       this.attributeTitle,
       this.keyboardType,
+      this.textFieldWidth = 150.0
       }
       );
 
@@ -165,7 +166,7 @@ class _ProfileInputCardWithAttributeState extends State<ProfileInputCardWithAttr
                   Padding(padding: EdgeInsets.all(5.0),),
 
                   /// Left profile selection
-                       CircularPicture(widget.profile.image, Functions.getProfileImagePlaceholder(widget.profile.type),40.0),
+                       CircularPicture(widget.profile.imageUrl, Functions.getProfileImagePlaceholder(widget.profile.type),40.0),
 
                         /// Spacer
                         Container(width: 10.0,),
@@ -440,7 +441,7 @@ class ProfileInputWithDetailsCardState extends State<ProfileInputWithDetailsCard
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
 
-                  CircularPicture(widget._profile.image, Functions.getProfileImagePlaceholder(widget._profile.type),40.0),
+                  CircularPicture(widget._profile.imageUrl, Functions.getProfileImagePlaceholder(widget._profile.type),40.0),
                   
                   Container(width: 10.0,),
 
@@ -535,7 +536,7 @@ class _ProfileInputCardState extends State<ProfileInputCard> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
 
-                  CircularPicture(widget._profile.image, Functions.getProfileImagePlaceholder(widget._profile.type),40.0),
+                  CircularPicture(widget._profile.imageUrl, Functions.getProfileImagePlaceholder(widget._profile.type),40.0),
 
                   /// Spacer
                   Container(width: 10.0,),
