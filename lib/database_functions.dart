@@ -223,6 +223,7 @@ class DatabaseFunctions {
           //   completion(false, e);
           // }
   }
+ 
 
  static Stream<FirebaseUser>getCurrentUserStream(){
 
@@ -616,8 +617,6 @@ class DatabaseFunctions {
 
     final BehaviorSubject<UserProfile> _outgoingController = BehaviorSubject<UserProfile>();
 
-    
-
     UserProfile userProfile;
 
     userSnapshotStream.listen((doc){
@@ -664,7 +663,7 @@ class DatabaseFunctions {
           { if(follow is String) {followingRevisedList.add(follow);}});
            
           /// For followers
-          List<dynamic> followers = List<dynamic>.from(doc.data[DatabaseIds.following]) ?? List<dynamic>();
+          List<dynamic> followers = List<dynamic>.from(doc.data[DatabaseIds.followers]) ?? List<dynamic>();
           
           List<String> followersRevisedList = new List<String>();
 
@@ -925,6 +924,70 @@ class DatabaseFunctions {
     });
   }
 }
+
+class CurrentUserDetailsStream{
+
+  Stream<FirebaseUser> userStream;
+  BehaviorSubject<UserDetails> userDetailsStreamcontroller = BehaviorSubject<UserDetails>();
+
+  CurrentUserDetailsStream(){
+    userStream = DatabaseFunctions.getCurrentUserStream();
+    userStream.listen(forUserDetails);
+  }
+
+  Stream<UserDetails> get userDetailsStream => userDetailsStreamcontroller.stream;
+
+  
+  void dipose(){userDetailsStreamcontroller.close(); }
+
+  void forUserDetails(FirebaseUser user){
+    UserDetails userDetails = UserDetails(
+                                  idIn: user.uid,
+                                  emailIn: user.email,
+                                  );
+    userDetailsStreamcontroller.add(userDetails);
+  }
+}
+
+class CurrentUserProfileStream{
+
+  Stream<UserDetails> userStream;
+  BehaviorSubject<UserProfile> userProfileStreamcontroller = BehaviorSubject<UserProfile>();
+
+  CurrentUserProfileStream(Stream<UserDetails> userDetailsStream){
+    userStream = userDetailsStream;
+    userStream.listen(forUserProfile);
+  }
+
+  Stream<UserProfile> get userProfileStream => userProfileStreamcontroller.stream;
+
+  
+  void dipose(){userProfileStreamcontroller.close(); }
+
+  void forUserProfile(UserDetails user){
+
+    Stream<DocumentSnapshot> userSnapshotStream  = Firestore.instance.collection(DatabaseIds.User).document(user.id).snapshots();
+
+    userSnapshotStream.listen((doc){
+
+      if (doc.exists){
+
+        UserProfile userProfile = new UserProfile(
+                              doc.data[DatabaseIds.user]?? 'Error: submit feedback database_functions.dart => line 557',
+                              doc.data[DatabaseIds.userName]?? 'Error: submit feedback database_functions.dart => line 558',
+                              doc.data[DatabaseIds.image]?? 'Error: submit feedback database_functions.dart => line 559',
+                              doc.data[DatabaseIds.following]?? ['Error: submit feedback database_functions.dart => line 560'],
+                              doc.data[DatabaseIds.followers]?? ['Error: submit feedback database_functions.dart => line 561'],
+                              doc.data[DatabaseIds.motto]?? 'Error: submit feedback database_functions.dart => line 562',
+                              );
+
+        userProfileStreamcontroller.add(userProfile);
+      }
+    });    
+  }
+}
+
+ 
 
 class Storage {
 

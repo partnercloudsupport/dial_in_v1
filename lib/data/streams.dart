@@ -222,9 +222,11 @@ class UserFeed {
   bool _initilised = false;
   Stream<UserProfile> get userStream{assert(_outgoingController.stream != null, '_userDetails is null'); return _outgoingController.stream;}
 
+  CurrentUserDetailsStream currentUserDetailsStream = CurrentUserDetailsStream();
   UserDetails _userDetails;
   UserDetails get userDetails {assert(_userDetails != null, '_userDetails is null'); return _userDetails;}
 
+  CurrentUserProfileStream currentUserProfileStream;
   UserProfile _userProfile;
   UserProfile get userProfile {assert(_userProfile != null, '_userProfile is null'); return _userProfile;}
   
@@ -233,6 +235,12 @@ class UserFeed {
 
 
   UserFeed(){
+
+    currentUserProfileStream = CurrentUserProfileStream(
+                              currentUserDetailsStream
+                              .userDetailsStreamcontroller
+                              .stream);
+
     ///Make user Profile streams from firebase :)
      DatabaseFunctions.getCurrentUserStream();
   }
