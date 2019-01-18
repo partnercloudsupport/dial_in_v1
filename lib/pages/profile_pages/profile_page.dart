@@ -206,7 +206,7 @@ class ProfilePageState extends State<ProfilePage> {
       /// Profile Image
       Container(padding: EdgeInsets.all(_margin),child: 
         InkWell(child:Hero(tag: _profile.objectId ,child: SizedBox(width: 200.0, height: 200.0,
-        child: CircularPicture(_profile.imageUrl, Functions.getProfileImagePlaceholder(widget.profile.type),200.0)) ,),
+        child: CircularProfilePicture(_profile, 200.0)) ,),
           onTap: _isEditing?()
           {_getimage(
             (image){ setState(() {_profile.imageUrl = image;});});

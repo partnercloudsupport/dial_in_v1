@@ -142,14 +142,14 @@ class CircularProfilePicture extends StatelessWidget {
   final Profile _profile;
   final double _size;
 
-  BehaviorSubject<Widget> _widgetStreamController = new BehaviorSubject<Widget>();
+  final BehaviorSubject<Widget> _widgetStreamController = new BehaviorSubject<Widget>();
 
   CircularProfilePicture(this._profile, this._size);
 
-  Future _returnImageWidget(BuildContext context)async{
+  Future _returnImageWidget()async{
 
     if(
-      _profile.imageFilePath != null ||
+      _profile.imageFilePath != null &&
       _profile.imageFilePath != ''){   
        if (await File(_profile.imageFilePath).exists()){
          _widgetStreamController.add(Image.file(File(_profile.imageFilePath))); 
@@ -159,17 +159,17 @@ class CircularProfilePicture extends StatelessWidget {
     else 
 
    if(
-      _profile.imageUrl != null ||
-      _profile.imageUrl != ''){    
-    if(await DatabaseFunctions.checkImageFileExists(_profile.imageUrl)){
- 
-        _widgetStreamController.add(FadeInImage.assetNetwork(
+      _profile.imageUrl != null &&
+      _profile.imageUrl != '') {    
+    if (  await DatabaseFunctions.checkImageFileExists( _profile.imageUrl ) )
+    { _widgetStreamController.add( FadeInImage.assetNetwork(
               fit: BoxFit.cover,
               placeholder: _profile.getImagePlaceholder(),
               image: _profile.imageUrl
-        )
-        );
-      }    
+              ));
+    } 
+    else { _widgetStreamController.add( Image.asset(_profile.getImagePlaceholder()));
+        }
     }
   }
 
@@ -212,6 +212,8 @@ class CircularProfilePicture extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    _returnImageWidget();
 
     return 
     StreamBuilder<Widget>(
@@ -519,7 +521,7 @@ void setWidgetUp(){
       /// Profile picture
       ///
       ScalableWidget(Hero(tag: widget._profile.objectId , child: Container (
-          child: CircularPicture(widget._profile.imageUrl,Functions.getProfileImagePlaceholder(widget._profile.type),60.0)),)),
+          child: CircularProfilePicture(widget._profile, 60.0)),)),
 
       Padding(padding: EdgeInsets.all(5.0)),
           

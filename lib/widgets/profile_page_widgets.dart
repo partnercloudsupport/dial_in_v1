@@ -439,7 +439,7 @@ class ProfileInputWithDetailsCardState extends State<ProfileInputWithDetailsCard
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
 
-                  CircularPicture(widget._profile.imageUrl, Functions.getProfileImagePlaceholder(widget._profile.type),40.0),
+                  CircularProfilePicture(widget._profile, 40.0),
                   
                   Container(width: 10.0,),
 
@@ -534,7 +534,7 @@ class _ProfileInputCardState extends State<ProfileInputCard> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
 
-                  CircularPicture(widget._profile.imageUrl, Functions.getProfileImagePlaceholder(widget._profile.type),40.0),
+                  CircularProfilePicture(widget._profile, 40.0),
 
                   /// Spacer
                   Container(width: 10.0,),

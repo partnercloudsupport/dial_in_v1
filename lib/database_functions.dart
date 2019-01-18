@@ -12,6 +12,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:dial_in_v1/data/strings.dart';
 import 'package:dial_in_v1/data/mini_classes.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:flutter/services.dart';
+
 
 
 class DatabaseFunctions {
@@ -414,18 +416,29 @@ class DatabaseFunctions {
   static Future<bool> checkImageFileExists(String httpPath)async{
 
     String fileName = getImageNameFromFullUrl(httpPath);
-
+    String value;
     try {
 
-    FirebaseStorage.instance
-    .ref().child(fileName)
-    .getDownloadURL()
-    .then((value)
-    {
-      print(value);});
+      value = await FirebaseStorage.instance
+                          .ref().child(fileName)
+                          .getDownloadURL();
+
+     } on PlatformException catch (pe) {
+
+      if ( pe.code == "Error -13010" ) { print(pe.message);}
+      else { throw(pe); }
+
      } catch (e){
-       throw('e');
+        throw(e); 
      }   
+
+    bool hasValue;
+
+    if ( value != null ) { hasValue = true; } else { hasValue = false;}
+    assert(hasValue is bool, 'value is not bool');
+    assert(hasValue != null, 'value is null');
+
+    return hasValue;
   }
 
  static String getImageNameFromFullUrl(String httpPath){
