@@ -671,7 +671,7 @@ class _RatioCardState extends State<RatioCard> {
   Widget build(BuildContext context) {
     return 
     
-    ScopedModelDescendant<RatioModel>
+    ScopedModelDescendant<ProfilePageModel>
             ( rebuildOnChange: false, builder: (context, _ ,model) =>
 
     Card(child:Container(

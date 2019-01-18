@@ -68,11 +68,11 @@ class  UserProfile {
 
 
     Future<int> getRecipeCount()async{ 
-      return await DatabaseFunctions.getCount(ProfileType.recipe, id);
+      return await Dbf.getCount(ProfileType.recipe, id);
     }
 
     Future<int> getcoffeeCount()async{ 
-      return await DatabaseFunctions.getCount(ProfileType.coffee, id);
+      return await Dbf.getCount(ProfileType.coffee, id);
     }
 
     bool isUserFollowing(String otherUser){

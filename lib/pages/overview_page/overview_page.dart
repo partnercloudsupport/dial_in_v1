@@ -254,7 +254,7 @@ class _UserInputDetailsState extends State<UserInputDetails> {
     } else {
       form.save();
       PopUps.showCircularProgressIndicator(context);
-      DatabaseFunctions.updateUserProfile(_userDetails)
+      Dbf.updateUserProfile(_userDetails)
                   .catchError((String error)=> PopUps.showAlert('Warning', error, 'ok', () => Navigator.pop(context), context))
                   .then((_) { 
                     /// Pop Circular indicator

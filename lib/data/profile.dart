@@ -17,7 +17,7 @@ class Profile {
   List<Item> properties;
 
   String imageUrl;
-
+  String imageAssetPlaceholder;
   String imageFilePath;
   @required
   ProfileType type;
@@ -45,6 +45,7 @@ class Profile {
       this.properties,
       this.imageUrl,
       this.imageFilePath,
+      this.imageAssetPlaceholder,
       this.databaseId,
       this.orderNumber,
       this.profiles,
@@ -238,7 +239,7 @@ class Profile {
 
 Future<String> getUserImage ()async{
   
-  String imageUrl = await DatabaseFunctions.getValueFromFireStoreWithDocRef(DatabaseIds.User, this.userId, DatabaseIds.imageUrl);
+  String imageUrl = await Dbf.getValueFromFireStoreWithDocRef(DatabaseIds.User, this.userId, DatabaseIds.imageUrl);
 
   return imageUrl ?? '';
 } 
@@ -301,7 +302,7 @@ Future<String> getUserImage ()async{
 
  Future<String> getProfileUserName()async{
    
-  String userName = await DatabaseFunctions.getValueFromFireStoreWithDocRef(DatabaseIds.User, this.userId, DatabaseIds.userName);
+  String userName = await Dbf.getValueFromFireStoreWithDocRef(DatabaseIds.User, this.userId, DatabaseIds.userName);
 
   return userName ?? 'Error: Could not find userName';
  }
@@ -425,9 +426,9 @@ Future<String> getUserImage ()async{
             isPublic: true,
             updatedAt: DateTime.now(),
             objectId: '',
-            imageUrl: Images.recipeSmallerFirebase,
             databaseId: DatabaseIds.recipe,
             type: ProfileType.recipe,
+            imageAssetPlaceholder: Images.recipeSmaller,
             orderNumber: 0,
             properties: [
               createBlankItem(DatabaseIds.barista),
@@ -463,8 +464,8 @@ Future<String> getUserImage ()async{
             isPublic: true,
             updatedAt: DateTime.now(),
             objectId: '',
-            imageUrl: Images.dropFirebase,
             databaseId: DatabaseIds.water,
+            imageAssetPlaceholder: Images.drop,
             type: ProfileType.water,
             orderNumber: 0,
             properties: [
@@ -484,10 +485,11 @@ Future<String> getUserImage ()async{
             isPublic: true,
             updatedAt: DateTime.now(),
             objectId: '',
-            imageUrl: Images.coffeeBeansFirebase,
+            imageAssetPlaceholder: Images.coffeeBeans,
             databaseId: DatabaseIds.coffee,
             type: ProfileType.coffee,
             orderNumber: 0,
+            
             properties: [
               createBlankItem(DatabaseIds.coffeeId),
               createBlankItem(DatabaseIds.country),
@@ -516,7 +518,7 @@ Future<String> getUserImage ()async{
           isPublic: true,
           updatedAt: DateTime.now(),
           objectId: '',
-          imageUrl: Images.aeropressSmaller512x512Firebase,
+          imageAssetPlaceholder: Images.groupHandle,
           databaseId: DatabaseIds.brewingEquipment,
           type: ProfileType.equipment,
           orderNumber: 0,
@@ -536,7 +538,7 @@ Future<String> getUserImage ()async{
           isPublic: true,
           updatedAt: DateTime.now(),
           objectId: '',
-          imageUrl: Images.grinderFirebase,
+          imageAssetPlaceholder: Images.grinder,
           databaseId: DatabaseIds.grinder,
           type: ProfileType.grinder,
           orderNumber: 0,

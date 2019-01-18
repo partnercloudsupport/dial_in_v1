@@ -80,8 +80,8 @@ class _RecipePageState extends State<RecipePage> {
   Widget build(BuildContext context) {
     return  
 
-    ScopedModelDescendant<RatioModel>
-              ( rebuildOnChange: true, builder: (BuildContext context, _ ,RatioModel model) {
+    ScopedModelDescendant<ProfilePageModel>
+              ( rebuildOnChange: true, builder: (BuildContext context, _ ,ProfilePageModel model) {
     
     model.updateValues(widget._profile);
 

@@ -16,16 +16,7 @@ import 'package:flutter/services.dart';
 
 
 
-class DatabaseFunctions {
-
-  // void initFireStore(){
-
-  //        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-  //         FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
-  //                                                 .setTimestampsInSnapshotsEnabled(true)
-  //                                                 .build();
-  //                                                 firestore.setFirestoreSettings(settings);
-  // }
+class Dbf {
 
  static Future addFollower(String currentUser, String follow, Function(bool) completion)async{
 
@@ -40,7 +31,7 @@ class DatabaseFunctions {
       if (newDoc.data.containsKey(DatabaseIds.following)){
         if (!((newDoc.data[DatabaseIds.following]) as List).contains(follow)){
           
-        /// TODO this is deleting every otherfield. We need to update it using firestore transactions.
+        /// TODO We need to update it using firestore transactions.
         List<dynamic> newFollowingList = new List<String>.from(newDoc.data[DatabaseIds.following]);
         newFollowingList.add(follow);
 
@@ -481,6 +472,8 @@ class DatabaseFunctions {
        ref = FirebaseStorage.instance.ref().child(folders[0]).child(folders[1]).child(path.basename(file.path));
     }else if(folders.length == 3){
         ref = FirebaseStorage.instance.ref().child(folders[0]).child(folders[1]).child(folders[2]).child(path.basename(file.path));
+    }else if(folders.length == 4){
+        ref = FirebaseStorage.instance.ref().child(folders[0]).child(folders[1]).child(folders[2]).child(folders[3]).child(path.basename(file.path));
     }else{
        ref = FirebaseStorage.instance.ref().child(path.basename(file.path));
     }
@@ -493,7 +486,11 @@ class DatabaseFunctions {
           print(error);
         });
 
-    return await (await uploadTask.onComplete).ref.getDownloadURL().catchError((error){errorHandler(error);});
+    var url = await (await uploadTask.onComplete).ref.getDownloadURL().catchError((error){errorHandler(error);});
+
+    assert( url != null, 'url is n ull');
+    assert( url is String, 'url is not a string');
+    return url;
   }
 
   /// Delete Firebase Storage Item //TODO
@@ -520,22 +517,26 @@ class DatabaseFunctions {
 
     if ( profile.imageFilePath != null )
       { if ( profile.imageFilePath != null )
-        { imageUrl = await DatabaseFunctions.upLoadFileReturnUrl
-                  ( File( profile.imageFilePath ), [DatabaseIds.user, profile.userId, 'images', profile.databaseId] );} }
+        { imageUrl = await Dbf.upLoadFileReturnUrl
+                  ( File(profile.imageFilePath ), [DatabaseIds.user, profile.userId, 'images', profile.databaseId] );} }
 
     Map <String, dynamic> _properties = new Map <String, dynamic>();
 
-     for (var i = 0; i < profile.properties.length; i++) {_properties[profile.properties[i].databaseId] = profile.properties[i].value;}
+     for (var i = 0; i < profile.properties.length; i++)
+      {_properties[profile.properties[i].databaseId] = profile.properties[i].value;}
 
     if ( imageUrl != null ){ _properties[DatabaseIds.imageUrl] = profile.imageUrl; }
 
-    String userId = await DatabaseFunctions.getCurrentUserId();
+    String userId = await Dbf.getCurrentUserId();
 
-        _properties[DatabaseIds.imageUrl] = profile.imageUrl;
-        _properties[DatabaseIds.imagePath] = profile.imageFilePath;
-        _properties[DatabaseIds.orderNumber] = profile.orderNumber;
-        _properties[DatabaseIds.user] = userId;
-        _properties[DatabaseIds.public] = profile.isPublic;
+      _properties[DatabaseIds.imageUrl] = profile.imageUrl;
+      _properties[DatabaseIds.orderNumber] = profile.orderNumber;
+      _properties[DatabaseIds.user] = userId;
+      _properties[DatabaseIds.public] = profile.isPublic;
+      _properties[DatabaseIds.likes] = profile.likes;
+      _properties[DatabaseIds.comments] = profile.comments;
+      profile.imageFilePath != null ? _properties[DatabaseIds.imagePath]  = profile.imageFilePath : print("profile.imageFilePath == null");
+      profile.imageUrl != null ? _properties[DatabaseIds.imageUrl]  = profile.imageUrl : print("profile.imageFilePath == null");
 
       if (profile.type == ProfileType.recipe){
         _properties[DatabaseIds.coffeeId] = profile.getProfileProfileRefernace(profileDatabaseId: DatabaseIds.coffee);
@@ -552,7 +553,7 @@ class DatabaseFunctions {
     Firestore.instance.collection(profile.databaseId).document(profile.objectId)
         .delete()
         .whenComplete((){
-          DatabaseFunctions.deleteFireBaseStorageItem(profile.imageUrl);
+          Dbf.deleteFireBaseStorageItem(profile.imageUrl);
           print('Successfully deleted ${profile.objectId}');})
         .catchError((e){print(e);});
   }
@@ -560,32 +561,11 @@ class DatabaseFunctions {
   /// Save profile
   static Future<Profile> saveProfile(Profile profile)async{
 
-    Map <String, dynamic> _properties = new Map <String, dynamic>();
+      Map <String, dynamic> _properties = await Dbf.prepareProfileForFirebaseUpload(profile);
 
-     for (var i = 0; i < profile.properties.length; i++) {
-
-        _properties[profile.properties[i].databaseId] = profile.properties[i].value;
-
-      }
-
-    String userId = await DatabaseFunctions.getCurrentUserId();
-
-        _properties[DatabaseIds.imageUrl] = profile.imageUrl;
-        _properties[DatabaseIds.orderNumber] = profile.orderNumber;
-        _properties[DatabaseIds.user] = userId;
-        _properties[DatabaseIds.public] = profile.isPublic;
-        _properties[DatabaseIds.likes] = profile.likes;
-        _properties[DatabaseIds.comments] = profile.comments;
-        _properties[DatabaseIds.imagePath] != null ? _properties[DatabaseIds.imagePath]  = profile.imageFilePath : print("profile.imageFilePath == null");
-
-      if (profile.type == ProfileType.recipe){
-        _properties[DatabaseIds.coffeeId] = profile.getProfileProfileRefernace(profileDatabaseId: DatabaseIds.coffee);
-        _properties[DatabaseIds.waterID] = profile.getProfileProfileRefernace(profileDatabaseId: DatabaseIds.water);
-        _properties[DatabaseIds.grinderId] = profile.getProfileProfileRefernace(profileDatabaseId: DatabaseIds.grinder);
-        _properties[DatabaseIds.barista] = profile.getProfileProfileRefernace(profileDatabaseId: DatabaseIds.Barista);
-        _properties[DatabaseIds.equipmentId] = profile.getProfileProfileRefernace(profileDatabaseId: DatabaseIds.brewingEquipment);}
-
-      DocumentReference documentReference = await Firestore.instance.collection(profile.databaseId).add(_properties).catchError((error){print(error);});
+      DocumentReference documentReference = await Firestore.instance.collection( profile.databaseId )
+      .add( _properties )
+      .catchError( ( error ) { print( error ); });
 
       final String docId = documentReference.documentID;
 
@@ -623,7 +603,7 @@ class DatabaseFunctions {
     DocumentSnapshot doc = await Firestore.instance.collection(collectionDataBaseId).document(docRefernace).get();
 
     if (doc.exists) {
-          _profile = await DatabaseFunctions.createProfileFromDocumentSnapshot(collectionDataBaseId, doc);
+          _profile = await Dbf.createProfileFromDocumentSnapshot(collectionDataBaseId, doc);
       } else {_profile =  await Profile.createBlankProfile(Functions.getProfileDatabaseIdType(collectionDataBaseId));}
 
     }else{_profile =  await Profile.createBlankProfile(Functions.getProfileDatabaseIdType(collectionDataBaseId));}
@@ -634,7 +614,7 @@ class DatabaseFunctions {
   static Future<List<Profile>> convertStreamToListOfProfiles(QuerySnapshot stream, String databaseId) async {
 
     final futureProfiles = stream.documents.map((doc) =>
-        DatabaseFunctions.createProfileFromDocumentSnapshot(databaseId, doc));
+        Dbf.createProfileFromDocumentSnapshot(databaseId, doc));
 
     return await Future.wait(futureProfiles);
   }
@@ -803,23 +783,23 @@ class DatabaseFunctions {
       if (databaseId == DatabaseIds.recipe){
 
       if (document.data.containsKey(DatabaseIds.coffeeId) && document.data[DatabaseIds.coffeeId] != ""){
-        _coffee = await DatabaseFunctions.getProfileFromFireStoreWithDocRef(DatabaseIds.coffee , document.data[DatabaseIds.coffeeId]);}
+        _coffee = await Dbf.getProfileFromFireStoreWithDocRef(DatabaseIds.coffee , document.data[DatabaseIds.coffeeId]);}
         else{_coffee = await Profile.createBlankProfile(ProfileType.coffee);}
 
       if (document.data.containsKey(DatabaseIds.barista) && document.data[DatabaseIds.barista] != ""){
-        _barista = await DatabaseFunctions.getProfileFromFireStoreWithDocRef(DatabaseIds.Barista, document.data[DatabaseIds.barista]);}
+        _barista = await Dbf.getProfileFromFireStoreWithDocRef(DatabaseIds.Barista, document.data[DatabaseIds.barista]);}
         else{_barista = await Profile.createBlankProfile(ProfileType.barista);}
 
       if (document.data.containsKey(DatabaseIds.equipmentId) && document.data[DatabaseIds.Barista] != ""){
-        _equipment = await DatabaseFunctions.getProfileFromFireStoreWithDocRef(DatabaseIds.brewingEquipment, document.data[DatabaseIds.equipmentId]);}
+        _equipment = await Dbf.getProfileFromFireStoreWithDocRef(DatabaseIds.brewingEquipment, document.data[DatabaseIds.equipmentId]);}
         else{_equipment = await Profile.createBlankProfile(ProfileType.equipment);}
 
       if (document.data.containsKey(DatabaseIds.grinderId) && document.data[DatabaseIds.grinderId] != ""){
-        _grinder = await DatabaseFunctions.getProfileFromFireStoreWithDocRef(DatabaseIds.grinder, document.data[DatabaseIds.grinderId]);}
+        _grinder = await Dbf.getProfileFromFireStoreWithDocRef(DatabaseIds.grinder, document.data[DatabaseIds.grinderId]);}
         else{_grinder = await Profile.createBlankProfile(ProfileType.grinder);}
 
       if (document.data.containsKey(DatabaseIds.waterID) && document.data[DatabaseIds.waterID] != ""){
-        _water = await DatabaseFunctions.getProfileFromFireStoreWithDocRef(DatabaseIds.water, document.data[DatabaseIds.waterID]);}
+        _water = await Dbf.getProfileFromFireStoreWithDocRef(DatabaseIds.water, document.data[DatabaseIds.waterID]);}
         else{_water = await Profile.createBlankProfile(ProfileType.water);}
       }
 
@@ -987,7 +967,7 @@ class CurrentUserDetailsStream{
   BehaviorSubject<UserDetails> userDetailsStreamcontroller = BehaviorSubject<UserDetails>();
 
   CurrentUserDetailsStream(){
-    userStream = DatabaseFunctions.getCurrentUserStream();
+    userStream = Dbf.getCurrentUserStream();
     userStream.listen(forUserDetails);
   }
 

@@ -179,11 +179,16 @@ class _CircularProfilerPictureState extends State<CircularProfilePicture> {
     _returnImageWidget();
   }
 
-  @override
+@override
   void didUpdateWidget(CircularProfilePicture oldWidget) {
    _returnImageWidget();
     super.didUpdateWidget(oldWidget);
   }
+ @override
+ void didChangeDependencies() {
+   super.didChangeDependencies();
+   _returnImageWidget();
+ }
 
   _returnImageWidget()async{
 
@@ -212,8 +217,8 @@ class _CircularProfilerPictureState extends State<CircularProfilePicture> {
     Widget _returnWidget;
     switch(dataState){
       case SnapShotDataState.waiting: _returnWidget = CircularBox(CircularProgressIndicator(), widget._size); break;
-      case SnapShotDataState.noData:_returnWidget =  CircularBox(Icon(Icons.error_outline), widget._size) ;break;
-      case SnapShotDataState.hasdata:_returnWidget = CircularBox(snapshot.data, widget._size); break;
+      case SnapShotDataState.noData: _returnWidget =  CircularBox(Icon(Icons.error_outline), widget._size) ;break;
+      case SnapShotDataState.hasdata: _returnWidget = CircularBox(snapshot.data, widget._size); break;
       case SnapShotDataState.hasError:
         print(snapshot.error);
         throw(snapshot.error);
@@ -846,8 +851,8 @@ class _RatioTextFieldItemWithInitalValueState extends State<RatioTextFieldItemWi
   Widget build(BuildContext context) {
  
     return    
-    ScopedModelDescendant<RatioModel>
-            ( rebuildOnChange: true, builder: (BuildContext context, _ ,RatioModel model) {
+    ScopedModelDescendant<ProfilePageModel>
+            ( rebuildOnChange: true, builder: (BuildContext context, _ ,ProfilePageModel model) {
 
       return
       StreamBuilder(

@@ -94,13 +94,13 @@ class ProfilesModel extends Model {
   /// Checks the following status then updates the record accordingly
   void followOrUnfollow(String otherUser, Function(bool) competionFollow) {
     if (isUserFollowing(otherUser)) {
-      DatabaseFunctions.unFollow(currentUserProfile.id, otherUser, (success) {
+      Dbf.unFollow(currentUserProfile.id, otherUser, (success) {
         _userFeed.refresh();
         competionFollow(false);
       })
       .catchError((error){print(error); Error();});
     } else {
-      DatabaseFunctions.addFollower(currentUserProfile.id, otherUser, (success) {
+      Dbf.addFollower(currentUserProfile.id, otherUser, (success) {
         _userFeed.refresh();
         competionFollow(true);
       })
@@ -124,7 +124,7 @@ class ProfilesModel extends Model {
 
 
   void logOut() {
-    DatabaseFunctions.logOut().catchError((error) => print(error));
+    Dbf.logOut().catchError((error) => print(error));
     deInit();
   }
 
@@ -190,7 +190,7 @@ class ProfilesModel extends Model {
   }
 
   void update(Profile profile) {
-    DatabaseFunctions.updateProfile(profile);
+    Dbf.updateProfile(profile);
     // switch (profile.type){
 
     //   case ProfileType.recipe:
@@ -232,7 +232,7 @@ class ProfilesModel extends Model {
   }
 
   void delete(Profile profile) {
-    DatabaseFunctions.deleteProfile(profile);
+    Dbf.deleteProfile(profile);
 
     switch (profile.type) {
       case ProfileType.recipe:
@@ -330,8 +330,8 @@ class ProfileModel extends Model {
   ProfileModel(_profile);
 }
 
-class RatioModel extends Model {
-  RatioModel(this._dose, this._yielde, this._brew) {
+class ProfilePageModel extends Model {
+  ProfilePageModel(this._dose, this._yielde, this._brew) {
     _doseStreamController.add(_dose);
     _yieldStreamController.add(_yielde);
     _brewWWeightStreamController.add(_brew);
@@ -455,6 +455,6 @@ class RatioModel extends Model {
     int brewIn,
   ) {}
 
-  static RatioModel of(BuildContext context) =>
-      ScopedModel.of<RatioModel>(context);
+  static ProfilePageModel of(BuildContext context) =>
+      ScopedModel.of<ProfilePageModel>(context);
 }

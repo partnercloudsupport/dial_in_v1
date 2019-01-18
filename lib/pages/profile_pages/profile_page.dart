@@ -7,18 +7,15 @@ import 'package:dial_in_v1/pages/overview_page/profile_list.dart';
 import 'package:dial_in_v1/data/item.dart';
 import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:dial_in_v1/pages/profile_pages/recipe_profile_page.dart';
 import 'package:dial_in_v1/pages/profile_pages/water_profile_page.dart';
 import 'package:dial_in_v1/pages/profile_pages/equipment_profile_page.dart';
 import 'package:dial_in_v1/pages/profile_pages/barista_profile_page.dart';
 import 'package:dial_in_v1/pages/profile_pages/coffee_profile_page.dart';
 import 'package:dial_in_v1/pages/profile_pages/grinder_profile_page.dart';
-import 'package:dial_in_v1/theme/appColors.dart';
 import 'package:dial_in_v1/database_functions.dart';
 import 'package:dial_in_v1/inherited_widgets.dart';
 import 'package:dial_in_v1/widgets/custom_widgets.dart';
-import 'dart:io';
 import 'dart:async';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -57,9 +54,8 @@ class ProfilePageState extends State<ProfilePage> {
   List<Widget> _appBarActions = [ Container()];
   List<Widget> _pageBody = List<Widget>();
   ///TODO refactor into profile model
-  RatioModel _ratioModel;
+  ProfilePageModel _ratioModel;
   ///TODO
-  final _formKey = GlobalKey<FormState>();
 
 
   /// init state
@@ -79,7 +75,7 @@ class ProfilePageState extends State<ProfilePage> {
     else{this._appBarTitle =  Functions.getProfileTypeString(_profile.type);}
     }
     getBody();
-    _ratioModel = RatioModel(Functions.getIntValue(_profile.getItemValue(DatabaseIds.brewingDose)),
+    _ratioModel = ProfilePageModel(Functions.getIntValue(_profile.getItemValue(DatabaseIds.brewingDose)),
                         Functions.getIntValue(_profile.getItemValue(DatabaseIds.yielde)),
                         Functions.getIntValue(_profile.getItemValue(DatabaseIds.brewWeight)));
     super.initState();
@@ -96,65 +92,6 @@ class ProfilePageState extends State<ProfilePage> {
   void dispose() {
     _ratioModel.dispose();
     super.dispose();
-  }
- 
-  /// UI Build
-  @override
-  Widget build(BuildContext context) {
-    setupAppBarActions();
-    getBody();
-    assert(_appBarTitle != null, '_appBarTitle is null');
-    return  new 
-
-    ScopedModel(
-      model: _ratioModel,
-      child:
-    Scaffold(
-       appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          _appBarTitle,
-          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15.0),
-        ),
-        automaticallyImplyLeading: false,
-        leading: _isEditing ? 
-        RawMaterialButton(
-            child: Icon(Icons.cancel),
-            onPressed: () {
-              setState(() {
-                _isEditing = false;
-                print(_isEditing.toString());
-              });
-            })
-        : RawMaterialButton(
-            child: Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.pop(context, false);
-              if(!_isOldProfile){ DatabaseFunctions.deleteFireBaseStorageItem(_profile.imageUrl);}
-            },
-          ),
-        actions: _appBarActions,
-      ),
-      
-      body: 
-      ListView(
-        // controller: _scrollController,
-        children: <Widget>[
-          Column(
-            children: <Widget>[
-
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: _pageBody),
-
-            /// All below changes depending on profile
-             _returnPageStructure(_profile),
-
-            ],
-          )
-        ],
-      ),
-      bottomNavigationBar: _returnBottomBar()
-      )
-    );
   }
 
    /// Setup bottom bar
@@ -176,21 +113,80 @@ class ProfilePageState extends State<ProfilePage> {
       });}
   }
 
-  /// save button function
+   /// save button function
   void saveFunction()async{
     if(_isOldProfile ){ 
 
       PopUps.showCircularProgressIndicator(context);
-      await DatabaseFunctions.updateProfile(_profile);
+      await Dbf.updateProfile(_profile);
       Navigator.pop(context);
       Navigator.pop(context, _profile);
     }else{
 
       PopUps.showCircularProgressIndicator(context);
-      var newProfile = await DatabaseFunctions.saveProfile(_profile);
+      var newProfile = await Dbf.saveProfile(_profile);
       Navigator.pop(context); 
       Navigator.pop(context, newProfile); 
     }
+  }
+ 
+  /// UI Build
+  @override
+  Widget build(BuildContext context) {
+    getBody();
+    setupAppBarActions();
+    assert(_appBarTitle != null, '_appBarTitle is null');
+    return  new 
+
+    ScopedModel(
+      model: _ratioModel,
+      child:
+    Scaffold(
+      /// TODO reimplement into app bar
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          _appBarTitle,
+          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15.0),
+        ),
+        automaticallyImplyLeading: false,
+        leading: _isEditing ? 
+        RawMaterialButton(
+            child: Icon(Icons.cancel),
+            onPressed: () {
+              setState(() {
+                _isEditing = false;
+                print(_isEditing.toString());
+              });
+            })
+        : RawMaterialButton(
+            child: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context, false);
+              if(!_isOldProfile){ Dbf.deleteFireBaseStorageItem(_profile.imageUrl);}
+            },
+          ),
+        actions: _appBarActions,
+      ),
+      body: 
+      ListView(
+        // controller: _scrollController,
+        children: <Widget>[
+          Column(
+            children: <Widget>[
+
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: _pageBody),
+
+            /// All below changes depending on profile
+             _returnPageStructure(_profile),
+
+            ],
+          )
+        ],
+      ),
+      bottomNavigationBar: _returnBottomBar()
+      )
+    );
   }
 
   /// Setup the body of the profile page
@@ -475,6 +471,158 @@ class _PublicProfileSwitchState extends State<PublicProfileSwitch> {
           ],
           ),
         ),
+    );
+  }
+}
+
+class ProfilePicture extends StatefulWidget {
+    final double _margin = 10.0;
+    final bool _isEditing;
+    final Profile _profile;
+    final Function _getImage;
+
+    ProfilePicture(this._isEditing, this._profile, this._getImage);
+
+  _ProfilePictureState createState() => _ProfilePictureState();
+}
+
+class _ProfilePictureState extends State<ProfilePicture> {
+
+  void onPictureTap(){
+
+    if( widget._isEditing )
+      {widget._getImage(
+        ///Callback with imagePath
+        (image){ setState(() { widget._profile.imageUrl = image; });});
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) =>
+
+     /// Profile Image
+      Container( padding: EdgeInsets.all( widget._margin ),child:
+        InkWell( onTap: onPictureTap , child:
+          Hero( tag: widget._profile.objectId ,child: 
+            SizedBox( width: 200.0, height: 200.0, child: 
+              CircularProfilePicture(widget._profile, 200.0)) ,),
+                       ));
+}
+
+
+class ProfilePageAppBar extends StatefulWidget {
+  String _appBarTitle;
+  bool _isEditing;
+  bool _isOldProfile;
+  bool _isFromUserFeed;
+  Profile _profile;
+
+  ProfilePageAppBar();
+  _ProfilePageAppBarState createState() => _ProfilePageAppBarState();
+}
+
+class _ProfilePageAppBarState extends State<ProfilePageAppBar> {
+
+    bool _isEditing;
+    List<Widget> _appBarActions;
+
+    void initState() { 
+      super.initState();
+      _isEditing = widget._isEditing;
+    }
+
+     /// Setup bottom bar
+  void setupAppBarActions(){
+    
+    if (!widget._isFromUserFeed){
+    _isEditing? 
+      
+      _appBarActions[0] = RawMaterialButton(
+                            child: Icon(Icons.save_alt),
+                            onPressed: saveFunction)   
+    : _appBarActions[0] = RawMaterialButton(
+                            child: Icon(Icons.edit),
+                            onPressed: () {
+                              setState(() {
+                                _isEditing = true;
+                                print(_isEditing);
+                              });
+      });}
+  }
+
+  /// save button function
+  void saveFunction()async{
+    if(widget._isOldProfile ){ 
+
+      PopUps.showCircularProgressIndicator(context);
+      await Dbf.updateProfile(widget._profile);
+      Navigator.pop(context);
+      Navigator.pop(context, widget._profile);
+    }else{
+
+      PopUps.showCircularProgressIndicator(context);
+      var newProfile = await Dbf.saveProfile(widget._profile);
+      Navigator.pop(context); 
+      Navigator.pop(context, newProfile); 
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+        centerTitle: true,
+        title: Text(
+          widget._appBarTitle,
+          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15.0),
+        ),
+        automaticallyImplyLeading: false,
+        leading: widget._isEditing ? 
+        RawMaterialButton(
+            child: Icon(Icons.cancel),
+            onPressed: () {
+              setState(() {
+                widget._isEditing = false;
+                print(_isEditing.toString());
+              });
+            })
+        : GoBackAppBarButton,
+        actions: _appBarActions,
+    );
+  }
+}
+
+class GoBackAppBarButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return RawMaterialButton(
+            child: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context, false);
+            },
+          );
+  }
+}
+
+class CancelEditingProfileAppBar extends StatefulWidget {
+
+  final bool _isEditing;
+  CancelEditingProfileAppBar(this._isEditing);
+
+  _CancelEditingProfileAppBarState createState() => _CancelEditingProfileAppBarState();
+}
+
+class _CancelEditingProfileAppBarState extends State<CancelEditingProfileAppBar> {
+
+  bool _isEditing;
+  @override
+  Widget build(BuildContext context) {
+    return RawMaterialButton(
+            child: Icon(Icons.cancel),
+            onPressed: () {
+              setState(() {
+                // widget._isEditing = false;
+              });
+            }
     );
   }
 }

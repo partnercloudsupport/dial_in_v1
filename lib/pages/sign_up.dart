@@ -28,7 +28,7 @@ class _SignUpPageState extends State<SignUpPage> {
         context: context,
         builder: (context) => Center(child: CircularProgressIndicator()));
 
-    await DatabaseFunctions.signUp(
+    await Dbf.signUp(
         _userNameController.text,
         _emailController.text,
         _passwordController.text,

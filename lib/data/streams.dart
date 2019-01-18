@@ -49,12 +49,12 @@ class FeedBloc{
     _incomingController = _incomingController = StreamController<QuerySnapshot>.broadcast();
     _outgoingController = BehaviorSubject<List<Profile>>();
 
-    String userID = await DatabaseFunctions.getCurrentUserId();
+    String userID = await Dbf.getCurrentUserId();
     _incomingController.addStream
-    (DatabaseFunctions.getStreamFromFireStore(_databaseId, DatabaseIds.user, userID));
+    (Dbf.getStreamFromFireStore(_databaseId, DatabaseIds.user, userID));
 
     _incomingController.stream.listen((p){
-      DatabaseFunctions.convertStreamToListOfProfiles(p,_databaseId)
+      Dbf.convertStreamToListOfProfiles(p,_databaseId)
       .then((profiles){ 
         _profiles = profiles;
         if (profile != null){profiles.add(profile);}
@@ -109,7 +109,7 @@ class SocialFeedBloc{
       _initilised = true;
     
       _incomingController.addStream( 
-                          DatabaseFunctions.getStreamFromFireStore(DatabaseIds.recipe, DatabaseIds.public, true));
+                          Dbf.getStreamFromFireStore(DatabaseIds.recipe, DatabaseIds.public, true));
         
       _incomingController.stream.listen(_profileStreamListenerFunction);
     }
@@ -126,7 +126,7 @@ class SocialFeedBloc{
 
   void _profileStreamListenerFunction(QuerySnapshot p){
 
-     DatabaseFunctions.convertStreamToListOfProfiles(p, DatabaseIds.recipe)
+     Dbf.convertStreamToListOfProfiles(p, DatabaseIds.recipe)
         .then((profilesOut){
 
           handleProfileList(profilesOut);
@@ -242,7 +242,7 @@ class UserFeed {
                               .stream);
 
     ///Make user Profile streams from firebase :)
-     DatabaseFunctions.getCurrentUserStream();
+     Dbf.getCurrentUserStream();
   }
 
   void deinit(){
@@ -265,12 +265,12 @@ class UserFeed {
 
      _initilised= true;
 
-      _userDetails = await DatabaseFunctions.getCurrentUserDetails()
+      _userDetails = await Dbf.getCurrentUserDetails()
                         .catchError((error)=> print(error));
 
       _outgoingUserDetailsController.add(_userDetails);
 
-      DatabaseFunctions.getUserProfileFromFireStoreWithDocRef(_userDetails.id)
+      Dbf.getUserProfileFromFireStoreWithDocRef(_userDetails.id)
         .then((userProfile){
               _userDetails.userName = userProfile.userName; 
               _userDetails.photo = userProfile.imageUrl;

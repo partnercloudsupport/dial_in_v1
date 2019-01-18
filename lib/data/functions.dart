@@ -428,7 +428,7 @@ class Functions {
   /// Create feed Profile from profile
   static Future<FeedProfileData> createFeedProfileFromProfile(Profile profile)async{
 
-    UserProfile userProfile = await DatabaseFunctions.getUserProfileFromFireStoreWithDocRef(profile.userId);
+    UserProfile userProfile = await Dbf.getUserProfileFromFireStoreWithDocRef(profile.userId);
 
     assert(userProfile != null , 'UserProfile is null');
 
@@ -462,14 +462,14 @@ class Functions {
   static Future<Widget> buildFeedCardFromDocument
   (BuildContext context, DocumentSnapshot document, Function(FeedProfileData) giveprofile, Function(UserProfile, int) _giveUserProfile, int index) async {
     
-    Profile profile = await DatabaseFunctions.createProfileFromDocumentSnapshot(DatabaseIds.recipe, document);
+    Profile profile = await Dbf.createProfileFromDocumentSnapshot(DatabaseIds.recipe, document);
     FeedProfileData feedProfile = await Functions.createFeedProfileFromProfile(profile);
     return SocialProfileCard(feedProfile, giveprofile, _giveUserProfile, index);
   }
   
   static Future<Widget> buildProfileCardFromDocument(DocumentSnapshot document, String databaseId, Function(Profile) giveprofile, Function(Profile, BuildContext) deleteProfile) async {
     
-    Profile profile = await DatabaseFunctions.createProfileFromDocumentSnapshot(databaseId, document);
+    Profile profile = await Dbf.createProfileFromDocumentSnapshot(databaseId, document);
 
     return ProfileCard(profile, giveprofile, deleteProfile);
   }
@@ -574,11 +574,8 @@ class CupertinoImagePicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return 
-    
     Center(child: Container( width:200, child:
-    
      CupertinoActionSheet(
-       
        title: Text(StringLabels.photoSource, style: Theme.of(context).textTheme.subtitle,),
        actions: <Widget>[
 
