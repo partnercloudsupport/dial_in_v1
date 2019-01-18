@@ -50,7 +50,7 @@ class ScoreSliderState extends State<ScoreSlider> {
             child: Text('${widget._label} ', style: Theme.of(context).textTheme.headline),
           ),
 
-              Text('${_value.toInt()}/10' , style: Theme.of(context).textTheme.display3),
+              Text('${_value.toInt()}/10' , style: Theme.of(context).textTheme.subtitle),
 
               widget._isEditing ? CupertinoSlider(
                   value: _value,
@@ -67,8 +67,7 @@ class ScoreSliderState extends State<ScoreSlider> {
                   divisions: 10,
                   // label: _value.toInt().toString(),
                   activeColor: Theme.of(context).sliderTheme.activeTrackColor,): Container(width: 0.0,height: 0.0,) ,
-                  // inactiveColor: Theme.of(context).sliderTheme.inactiveTrackColor,
-                
+                  // inactiveColor: Theme.of(context).sliderTheme.inactiveTrackColor,    
           ]
         )
     );

@@ -997,15 +997,21 @@ class CurrentUserProfileStream{
     userSnapshotStream.listen((doc){
 
       if (doc.exists){
+        
+        List<String> newFollowingList;
+        List<String> newFollowersList;
+
+        doc.data[DatabaseIds.following] != null ? newFollowingList = List<String>.from(doc.data[DatabaseIds.following] as List<dynamic>) : newFollowingList = List<String>();
+        doc.data[DatabaseIds.followers] != null ? newFollowersList = List<String>.from(doc.data[DatabaseIds.followers] as List<dynamic>) : newFollowersList = List<String>();
 
         UserProfile userProfile = new UserProfile(
-                              doc.data[DatabaseIds.user] ?? 'Error: submit feedback database_functions.dart => line 976',
-                              doc.data[DatabaseIds.userName] ?? 'Error: submit feedback database_functions.dart => line 977',
-                              doc.data[DatabaseIds.imageUrl]?? 'Error: submit feedback database_functions.dart => line 778',
-                              doc.data[DatabaseIds.following]?? ['Error: submit feedback database_functions.dart => line 979'],
-                              doc.data[DatabaseIds.followers]?? ['Error: submit feedback database_functions.dart => line 980'],
-                              doc.data[DatabaseIds.motto]?? 'Error: submit feedback database_functions.dart => line 981w',
-                              doc.data[DatabaseIds.imagePath]?? 'Error: submit feedback database_functions.dart => line 981w',
+                              doc.data[DatabaseIds.user] as String ?? 'Error: submit feedback database_functions.dart => line 976',
+                              doc.data[DatabaseIds.userName] as String ?? 'Error: submit feedback database_functions.dart => line 977',
+                              doc.data[DatabaseIds.imageUrl] as String ?? 'Error: submit feedback database_functions.dart => line 778',
+                              newFollowingList,
+                              newFollowersList,
+                              doc.data[DatabaseIds.motto] as String?? 'Error: submit feedback database_functions.dart => line 981w',
+                              doc.data[DatabaseIds.imagePath] as String?? 'Error: submit feedback database_functions.dart => line 981w',
                               );
 
         userProfileStreamcontroller.add(userProfile);

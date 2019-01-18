@@ -242,31 +242,15 @@ class ProfilePageState extends State<ProfilePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween, 
                 crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
 
-                  RawMaterialButton(
-                    child: Icon(Icons.content_copy),
-                    onPressed: ()async{  
-                      Profile _newProfile = _profile;
-                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
-                      ProfilePage(
-                        isFromUserFeed: false,
-                        isOldProfile: false,
-                        isCopying: true, 
-                        isEditing: true, 
-                        isNew: true, 
-                        type: _profile.type, 
-                        referance: '',
-                        profile: _newProfile ,)
-                        )
-                        ).then((_) => Navigator.pop(context))
-                        ;}),
+                  CopyProfileButton(_profile),
 
-                  RawMaterialButton(
-                    child: Icon(Icons.delete),
-                    onPressed: ()async{ if(_isOldProfile ) 
-                      {ProfilesModel.of(context).delete(_profile);
-                      Navigator.pop(context);}}),
-                ],),),
-              ));
+                  DeleteProfileButton(_profile)
+
+                ],
+              ),
+            ),
+            )
+    );
     }
     return _bottomBar; 
   }       
@@ -370,59 +354,7 @@ class ProfilePageState extends State<ProfilePage> {
     await showDialog(context: context, builder: (BuildContext context){
 
       CupertinoImagePicker();
-    //   return Center(child: 
-    //     Container(width: 250.0,
-    //       child: CupertinoActionSheet(title:Text(StringLabels.photoSource),
-    //       actions: <Widget>[
 
-    //   new CupertinoDialogAction(
-    //       child:  Text(StringLabels.camera, style: Theme.of(context).textTheme.display1),
-    //       isDestructiveAction: false,
-    //       onPressed: ()async{
-    //         showDialog(barrierDismissible: false, context: context ,
-    //         builder: (context) => Center(child:CircularProgressIndicator()
-    //         ));  
-    //         File image = await ImagePicker.pickImage
-    //                           (maxWidth: 640.0, maxHeight: 480.0, source: ImageSource.camera);
-    //         url = await DatabaseFunctions.upLoadFileReturnUrl
-    //         (image,[ProfilesModel.of(context).currentUserProfile.id  , DatabaseIds.image, _profile.databaseId],
-    //         errorHandler: (e){
-    //           PopUps.showAlert( 
-    //             StringLabels.error,
-    //             e,
-    //             StringLabels.ok ,
-    //             (){Navigator.of(context).pop();},
-    //             context);});
-    //             Navigator.of(context);
-    //             Navigator.of(context).pop(then(url));
-    //             Navigator.of(context).pop(then(url));
-    //       }
-    //   ),
-    
-    //   new  CupertinoDialogAction(
-    //       child: Text(StringLabels.photoLibrary, style: Theme.of(context).textTheme.display1,),
-    //       isDestructiveAction: false,
-    //       onPressed: ()async{ 
-    //         showDialog(barrierDismissible: false, context: context ,
-    //         builder: (context) => Center(child:CircularProgressIndicator()
-    //         ));
-    //         File image = await ImagePicker.pickImage
-    //                           (maxWidth: 640.0, maxHeight: 480.0, source: ImageSource.gallery);
-    //        url = await DatabaseFunctions.upLoadFileReturnUrl
-    //         (image,[ProfilesModel.of(context).currentUserProfile.id  , DatabaseIds.image, _profile.databaseId],
-    //         errorHandler: (e){
-    //           PopUps.showAlert( 
-    //             StringLabels.error,
-    //             e,
-    //             StringLabels.ok ,
-    //             (){Navigator.of(context).pop();},
-    //             context);});
-    //             Navigator.of(context);
-    //             Navigator.of(context).pop(then(url));
-    //             Navigator.of(context).pop(then(url));
-    //       }
-    //   ),
-    // ],)));
     }
     ).then((imageFilePath) => setState(()=> _profile.setItemValue(DatabaseIds.imagePath, imageFilePath)));
   }
@@ -553,8 +485,4 @@ class _PublicProfileSwitchState extends State<PublicProfileSwitch> {
     );
   }
 }
-
-
-
-
 

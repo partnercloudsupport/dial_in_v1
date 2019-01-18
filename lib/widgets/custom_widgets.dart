@@ -1628,4 +1628,69 @@ class CupertinoImagePickerDiolog extends StatelessWidget {
   }
 }
 
+class CopyProfileButton extends StatelessWidget {
+
+  final Profile _profile;
+
+  CopyProfileButton(this._profile);
+
+  @override
+  Widget build(BuildContext context) {
+    return 
+    RawMaterialButton(
+      child: Icon(Icons.content_copy),
+      onPressed: ()async{  
+
+        Profile _newProfile
+          = Profile(
+            likes:  _profile.likes,
+            comments: _profile.comments,
+            userId: _profile.userId,
+            updatedAt: DateTime.now(),
+            objectId: '',
+            type: _profile.type,
+            properties: _profile.properties,
+            databaseId: _profile.databaseId,
+            orderNumber: _profile.orderNumber,
+            profiles: _profile.profiles,
+          );
+
+        
+        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
+        ProfilePage(
+          isFromUserFeed: false,
+          isOldProfile: false,
+          isCopying: true, 
+          isEditing: true, 
+          isNew: true, 
+          type: _profile.type, 
+          referance: '',
+          profile: _newProfile ,)
+          )
+          ).then((_) => Navigator.pop(context)
+        );
+      }
+    );
+  }
+}
+
+class DeleteProfileButton extends StatelessWidget {
+
+  final Profile _profile;
+
+  DeleteProfileButton(this._profile);
+
+  @override
+  Widget build(BuildContext context) {
+    return RawMaterialButton(
+                    child: Icon(Icons.delete),
+                    onPressed: ()async{ ProfilesModel.of(context).delete(_profile);
+                      Navigator.pop(context);
+                    }
+    );        
+  }
+}
+
+
+
 

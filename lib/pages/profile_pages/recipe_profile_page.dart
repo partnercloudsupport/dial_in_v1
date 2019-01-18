@@ -70,11 +70,8 @@ class _RecipePageState extends State<RecipePage> {
       return TimePicker(item,  widget._setProfileItemValue);
       }
     );
-    // .then((v){ widget._scrollController.animateTo(widget._scrollController.position.pixels + 300,curve: Curves.easeInOut, duration: Duration(seconds: 1) );
-    // });
+   
   }
-
-
 
   ///
   /// UI Build
@@ -227,8 +224,7 @@ class _RecipePageState extends State<RecipePage> {
                         (value) { widget._setProfileItemValue( DatabaseIds.balance, value.toString());},
                         widget._isEditing),
 
-                                                Divider(),
-
+                      Divider(),
 
                       ScoreSlider(
                         StringLabels.flavour,
@@ -236,7 +232,7 @@ class _RecipePageState extends State<RecipePage> {
                         (value) { widget._setProfileItemValue( DatabaseIds.flavour, value.toString());},
                         widget._isEditing),
 
-                                                Divider(),
+                      Divider(),
 
 
                       ScoreSlider(
@@ -245,7 +241,7 @@ class _RecipePageState extends State<RecipePage> {
                         (value) {widget._setProfileItemValue( DatabaseIds.body, value.toString());},
                         widget._isEditing),
 
-                                                Divider(),
+                      Divider(),
 
 
                       ScoreSlider(

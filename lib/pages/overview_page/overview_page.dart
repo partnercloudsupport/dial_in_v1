@@ -14,6 +14,8 @@ import 'package:dial_in_v1/database_functions.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:dial_in_v1/pages/custom_scaffold.dart';
 import 'package:dial_in_v1/data/mini_classes.dart';
+import 'package:dial_in_v1/data/images.dart';
+
 
 
 class OverviewPage extends StatefulWidget{
@@ -289,7 +291,9 @@ class _UserInputDetailsState extends State<UserInputDetails> {
                   boxShadow: [BoxShadow(color: Colors.black, offset: Offset(2.0, 2.0))],), 
                 child:ClipRRect(
                   borderRadius: new BorderRadius.circular(200),
-                  child: Image.network(_userDetails.photo ?? '', fit: BoxFit.cover))
+                  child: FadeInImage.assetNetwork(
+                            image:_userDetails.photo ?? '',
+                            placeholder: Images.user ,fit: BoxFit.cover))
                 ))
           ),
 
