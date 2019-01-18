@@ -457,7 +457,7 @@ class DatabaseFunctions {
 
   /// Update document with referance
   static Future<void> updateProfile(Profile profile)async{
-
+   
     Map <String, dynamic> _documentProperties = await prepareProfileForFirebaseUpload(profile);
 
     Firestore.instance
@@ -516,14 +516,23 @@ class DatabaseFunctions {
   /// Prepare Profile for FirebaseUpload or Update
   static Future<Map <String, dynamic>> prepareProfileForFirebaseUpload(Profile profile)async{
 
+    var imageUrl;
+
+    if ( profile.imageFilePath != null )
+      { if ( profile.imageFilePath != null )
+        { imageUrl = await DatabaseFunctions.upLoadFileReturnUrl
+                  ( File( profile.imageFilePath ), [DatabaseIds.user, profile.userId, 'images', profile.databaseId] );} }
 
     Map <String, dynamic> _properties = new Map <String, dynamic>();
 
      for (var i = 0; i < profile.properties.length; i++) {_properties[profile.properties[i].databaseId] = profile.properties[i].value;}
 
+    if ( imageUrl != null ){ _properties[DatabaseIds.imageUrl] = profile.imageUrl; }
+
     String userId = await DatabaseFunctions.getCurrentUserId();
 
         _properties[DatabaseIds.imageUrl] = profile.imageUrl;
+        _properties[DatabaseIds.imagePath] = profile.imageFilePath;
         _properties[DatabaseIds.orderNumber] = profile.orderNumber;
         _properties[DatabaseIds.user] = userId;
         _properties[DatabaseIds.public] = profile.isPublic;
@@ -567,6 +576,7 @@ class DatabaseFunctions {
         _properties[DatabaseIds.public] = profile.isPublic;
         _properties[DatabaseIds.likes] = profile.likes;
         _properties[DatabaseIds.comments] = profile.comments;
+        _properties[DatabaseIds.imagePath] != null ? _properties[DatabaseIds.imagePath]  = profile.imageFilePath : print("profile.imageFilePath == null");
 
       if (profile.type == ProfileType.recipe){
         _properties[DatabaseIds.coffeeId] = profile.getProfileProfileRefernace(profileDatabaseId: DatabaseIds.coffee);
@@ -770,6 +780,7 @@ class DatabaseFunctions {
       String _user = document[DatabaseIds.user] ?? '';
       String _objectId = document.documentID ?? '';
       int _orderNumber = document[DatabaseIds.orderNumber] ?? 0;
+      String _imagePath = document[DatabaseIds.imagePath] ?? '';
       String _image = document[DatabaseIds.imageUrl] ?? '';
       bool _ispublic = document.data[DatabaseIds.public] ?? false;
       List<dynamic> likesIn = document.data[DatabaseIds.likes] ?? List<dynamic>();
@@ -846,6 +857,7 @@ class DatabaseFunctions {
               objectId: _objectId,
               type: ProfileType.recipe,
               imageUrl: _image,
+              imageFilePath: _imagePath,
               databaseId: databaseId,
               orderNumber: _orderNumber,
               properties: newProfile.properties,
@@ -869,6 +881,7 @@ class DatabaseFunctions {
               objectId: _objectId,
               type: ProfileType.coffee,
               imageUrl: _image,
+              imageFilePath: _imagePath,
               databaseId: databaseId,
               orderNumber: _orderNumber,
               properties: newProfile.properties
@@ -885,6 +898,7 @@ class DatabaseFunctions {
               objectId: _objectId,
               type: ProfileType.grinder,
               imageUrl: _image,
+              imageFilePath: _imagePath,
               databaseId: databaseId,
               orderNumber: _orderNumber,
               properties: newProfile.properties
@@ -901,6 +915,7 @@ class DatabaseFunctions {
         objectId: _objectId,
         type: ProfileType.equipment,
         imageUrl: _image,
+        imageFilePath: _imagePath,
         databaseId: databaseId,
         orderNumber: _orderNumber,
         properties: newProfile.properties
@@ -917,6 +932,7 @@ class DatabaseFunctions {
         objectId: _objectId,
         type: ProfileType.water,
         imageUrl: _image,
+        imageFilePath: _imagePath,
         databaseId: databaseId,
         orderNumber: _orderNumber,
         properties: newProfile.properties
@@ -933,6 +949,7 @@ class DatabaseFunctions {
         objectId: _objectId,
         type: ProfileType.barista,
         imageUrl: _image,
+        imageFilePath: _imagePath,
         databaseId: databaseId,
         orderNumber: _orderNumber,
         properties: newProfile.properties

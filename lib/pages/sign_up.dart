@@ -122,7 +122,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     child: Container(
                         decoration: BoxDecoration(shape: BoxShape.circle),
                         margin: EdgeInsets.fromLTRB(25.0, 0.0, 25.0, 25.0),
-                        child: CircularPicture(_userImage, Images.user, 150.0)),
+                        child: CircularFadeInAssetNetworkImage(_userImage, Images.user, 150.0)),
                     onTap: () {
                       Functions.getimageFromCameraOrGallery(context,
                           (String image) {

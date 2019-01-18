@@ -34,7 +34,7 @@ class UserProfilePage extends StatelessWidget {
                     child: Center(
                         child: Hero(
                             tag: tag == null ?  _userProfile.id : _userProfile.id + tag.toString(),
-                            child: CircularPicture(
+                            child: CircularFadeInAssetNetworkImage(
                                 _userProfile.imageUrl, 
                                 Images.user,
                                 150.0)))),

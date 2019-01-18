@@ -15,7 +15,9 @@ class Profile {
   String databaseId;
   @required
   List<Item> properties;
+
   String imageUrl;
+
   String imageFilePath;
   @required
   ProfileType type;
@@ -124,9 +126,7 @@ class Profile {
           else if(this.properties[i].value is double && value is String){ this.properties[i].value = double.parse(value);}
           else if(this.properties[i].value is String && value is int){ this.properties[i].value = value.toString();}
           else if(this.properties[i].value is String && value is double){ this.properties[i].value = value.toString();}
-          else{this.properties[i].value = value;}
-          
-
+          else{this.properties[i].value = value;}   
         }
       }
     }  

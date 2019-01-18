@@ -179,19 +179,17 @@ class ProfilePageState extends State<ProfilePage> {
   /// save button function
   void saveFunction()async{
     if(_isOldProfile ){ 
-      showDialog(barrierDismissible: false, context: context ,
-               builder: (context) => Center(child:CircularProgressIndicator()
-               )); 
-         await DatabaseFunctions.updateProfile(_profile);
-         Navigator.pop(context);
-         Navigator.pop(context, _profile);
-         }else{
-            showDialog(barrierDismissible: false, context: context ,
-               builder: (context) => Center(child:CircularProgressIndicator()
-               )); 
-         var newProfile = await DatabaseFunctions.saveProfile(_profile);
-          Navigator.pop(context); 
-          Navigator.pop(context, newProfile); 
+
+      PopUps.showCircularProgressIndicator(context);
+      await DatabaseFunctions.updateProfile(_profile);
+      Navigator.pop(context);
+      Navigator.pop(context, _profile);
+    }else{
+
+      PopUps.showCircularProgressIndicator(context);
+      var newProfile = await DatabaseFunctions.saveProfile(_profile);
+      Navigator.pop(context); 
+      Navigator.pop(context, newProfile); 
     }
   }
 
@@ -236,7 +234,7 @@ class ProfilePageState extends State<ProfilePage> {
     if (this._isOldProfile){
 
     _bottomBar = Material(child: 
-            Material( color: AppColors.getColor(ColorType.toolBar), child:
+            Material( color: Theme.of(context).primaryColor, child:
             BottomAppBar(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween, 
@@ -349,14 +347,9 @@ class ProfilePageState extends State<ProfilePage> {
   /// Get image for profile photo
   Future  _getimage(Function(String) then)async{
     
-    String url = '';
+    await showDialog(context: context, builder: (BuildContext context) => CupertinoImagePicker()
 
-    await showDialog(context: context, builder: (BuildContext context){
-
-      CupertinoImagePicker();
-
-    }
-    ).then((imageFilePath) => setState(()=> _profile.setItemValue(DatabaseIds.imagePath, imageFilePath)));
+    ).then((imageFilePath) => setState(()=> _profile.imageFilePath = imageFilePath));
   }
 
 /// TODO;
