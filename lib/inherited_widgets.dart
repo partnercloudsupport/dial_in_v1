@@ -286,6 +286,7 @@ class ProfilesModel extends Model {
 
   /// Get Profiles with type
   Stream<List<Profile>> profiles(ProfileType type) {
+   
     _userFeed.getProfile();
 
     switch (type) {
@@ -319,142 +320,9 @@ class ProfilesModel extends Model {
         return baristaProfiles;
         break;
 
-      default: Error();        break;
+      default: throw('No Stream returned ');        break;
     }
   }
 }
 
-class ProfileModel extends Model {
-  Profile _profile;
 
-  ProfileModel(_profile);
-}
-
-class ProfilePageModel extends Model {
-  ProfilePageModel(this._dose, this._yielde, this._brew) {
-    _doseStreamController.add(_dose);
-    _yieldStreamController.add(_yielde);
-    _brewWWeightStreamController.add(_brew);
-    _doseStreamController.listen((value) {
-      _dose = value;
-    });
-    _yieldStreamController.listen((value) {
-      _yielde = value;
-    });
-    _brewWWeightStreamController.listen((value) {
-      _brew = value;
-    });
-  }
-
-  ///TODO
-  BehaviorSubject<int> _doseStreamController = new BehaviorSubject<int>();
-  BehaviorSubject<int> _yieldStreamController = new BehaviorSubject<int>();
-  BehaviorSubject<int> _brewWWeightStreamController =
-      new BehaviorSubject<int>();
-
-  bool isCalculating = false;
-
-  /// not used yet TODO
-  int _dose = 0;
-  int _yielde = 0;
-  int _brew = 0;
-
-  Stream<int> getStream(String type) {
-    Stream<int> result;
-
-    switch (type) {
-      case DatabaseIds.brewingDose:
-        result = _doseStreamController.stream;
-        break;
-      case DatabaseIds.yielde:
-        result = _yieldStreamController.stream;
-        break;
-      case DatabaseIds.brewWeight:
-        result = _brewWWeightStreamController.stream;
-        break;
-    }
-    assert(result != null, 'no stream allocated');
-    return result;
-  }
-
-  int getValue(String type) {
-    int result;
-
-    switch (type) {
-      case DatabaseIds.brewingDose:
-        result = _dose;
-        break;
-      case DatabaseIds.yielde:
-        result = _yielde;
-        break;
-      case DatabaseIds.brewWeight:
-        result = _brew;
-        break;
-    }
-    return result ?? 0;
-  }
-
-  void dispose() {
-    _doseStreamController.close();
-    _yieldStreamController.close();
-    _brewWWeightStreamController.close();
-  }
-
-  String estimateBrewRatio(BrewRatioType type) {
-    isCalculating = true;
-
-    int result;
-
-    if (type == BrewRatioType.doseYield) {
-      result = _brew - (_dose.roundToDouble() * 1.9).toInt();
-      _yielde = result;
-      return result.toString();
-    } else {
-      result = (_dose.roundToDouble() * 1.9).toInt() + _yielde;
-      _brew = result;
-      return result.toString();
-    }
-  }
-
-  void updateValue(String databaseId, String value) {
-    switch (databaseId) {
-      case DatabaseIds.brewingDose:
-        _dose = int.parse(value);
-        break;
-      case DatabaseIds.yielde:
-        _yielde = int.parse(value);
-        break;
-      case DatabaseIds.brewWeight:
-        _brew = int.parse(value);
-        break;
-    }
-  }
-
-  void updateValues(Profile profile) {
-    _doseStreamController.add(Functions.getIntValue(
-        profile.getItemValue(DatabaseIds.brewingDose)));
-    _yieldStreamController.add(
-        Functions.getIntValue(profile.getItemValue(DatabaseIds.yielde)));
-    _brewWWeightStreamController.add(Functions.getIntValue(
-        profile.getItemValue(DatabaseIds.brewWeight)));
-    _dose =
-        Functions.getIntValue(profile.getProfileItem(DatabaseIds.brewingDose));
-    _yielde = Functions.getIntValue(profile.getProfileItem(DatabaseIds.yielde));
-    _brew =
-        Functions.getIntValue(profile.getProfileItem(DatabaseIds.brewWeight));
-  }
-
-  String getBrewRatioFromYielde(
-    int yieldIn,
-  ) {
-    int result = _brew - _dose;
-    return result.toString();
-  }
-
-  String getBrewRatioFromBrewWeight(
-    int brewIn,
-  ) {}
-
-  static ProfilePageModel of(BuildContext context) =>
-      ScopedModel.of<ProfilePageModel>(context);
-}

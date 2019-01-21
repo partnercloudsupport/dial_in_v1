@@ -10,16 +10,15 @@ import 'package:dial_in_v1/database_functions.dart';
 import 'package:flutter/services.dart';
 import 'package:dial_in_v1/data/functions.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:dial_in_v1/inherited_widgets.dart';
+import 'package:dial_in_v1/pages/profile_pages/profile_page_model.dart';
 
 
 class ScoreSlider extends StatefulWidget {
   final double _value;
   final String _label;
   final Function(double) _sliderValue;
-  final bool _isEditing;
 
-  ScoreSlider(this._label, this._value, this._sliderValue, this._isEditing);
+  ScoreSlider(this._label, this._value, this._sliderValue,);
 
   ScoreSliderState createState() => new ScoreSliderState();
 }
@@ -38,7 +37,18 @@ class ScoreSliderState extends State<ScoreSlider> {
 
   @override
   Widget build(BuildContext context) {
-    return 
+
+
+    return
+
+
+    
+ ScopedModelDescendant(builder: (BuildContext context,_, ProfilePageModel model) =>
+
+     StreamBuilder<Profile>(
+            stream: model.profileStream,
+            builder: (BuildContext context, AsyncSnapshot<Profile> snapshot){
+ 
     Container(width:double.infinity, margin: EdgeInsets.all(_margin), padding:EdgeInsets.all(_margin) , child: 
     Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -52,9 +62,10 @@ class ScoreSliderState extends State<ScoreSlider> {
 
               Text('${_value.toInt()}/10' , style: Theme.of(context).textTheme.subtitle),
 
-              widget._isEditing ? CupertinoSlider(
+            
+              model.isEditing ? CupertinoSlider(
                   value: _value,
-                  onChanged: widget._isEditing? (value){
+                  onChanged: model.isEditing? (value){
                     setState(() {
                       _value = value;
                     });}: null,
@@ -72,6 +83,9 @@ class ScoreSliderState extends State<ScoreSlider> {
         )
     );
   }
+     )
+ );
+}
 }
 
 /// Widgets
@@ -481,10 +495,9 @@ class ProfileInputCard extends StatefulWidget {
   final double _margin = 5.0;
   final Profile _profile;
   final Function _onProfileTextPressed;
-  final bool _isEditing;
 
 
-  ProfileInputCard(this._isEditing ,this._profile, this._onProfileTextPressed);
+  ProfileInputCard(this._profile, this._onProfileTextPressed);
 
   _ProfileInputCardState createState() => _ProfileInputCardState();
 }
@@ -516,7 +529,7 @@ class _ProfileInputCardState extends State<ProfileInputCard> {
 
       void handleLeftProfileTextfieldFocus(){
         if (_focus.hasFocus){
-          widget._onProfileTextPressed();
+          widget._onProfileTextPressed(widget._profile.type);
           _focus.unfocus();  
         }
       }
@@ -542,7 +555,6 @@ class _ProfileInputCardState extends State<ProfileInputCard> {
                   Expanded(child:Container(
                     margin: EdgeInsets.all(widget._margin,),
                     child: TextFormField(
-                        enabled: widget._isEditing,
                         textAlign: TextAlign.start,
                         decoration: new InputDecoration(
                           labelText: widget._profile.databaseId,
@@ -635,21 +647,7 @@ class CoffeeCard extends StatelessWidget {
 class RatioCard extends StatefulWidget {
   final double _margin = 5.0;
   final double _textFieldWidth = 80.0;
-  final bool _isEditing;
-  
-  final Profile _profile;
-
-  final Function(String) _doseChanged;
-  final Function(String) _yieldChanged;
-  final Function(String) _brewWeightChanged;
-
-  RatioCard(
-    this._profile,
-    this._doseChanged,
-    this._yieldChanged,
-    this._brewWeightChanged,
-    this._isEditing,
-  );
+ 
   _RatioCardState createState() => _RatioCardState();
 }
 class _RatioCardState extends State<RatioCard> {
@@ -672,7 +670,11 @@ class _RatioCardState extends State<RatioCard> {
     return 
     
     ScopedModelDescendant<ProfilePageModel>
-            ( rebuildOnChange: false, builder: (context, _ ,model) =>
+        ( rebuildOnChange: false, builder: (context, _ ,model) =>
+
+      StreamBuilder<Profile>(
+        stream: model.profileStream,
+        builder: (BuildContext context, AsyncSnapshot<Profile> snapshot){
 
     Card(child:Container(
       margin: EdgeInsets.all(widget._margin),
@@ -690,13 +692,13 @@ class _RatioCardState extends State<RatioCard> {
               RaisedButton( 
                 shape:  RoundedRectangleBorder(borderRadius: new BorderRadius.circular(20.0)),
                 child: Text('Calc Yield',softWrap: true, textAlign: TextAlign.center,),
-                onPressed: () => widget._yieldChanged(model.estimateBrewRatio(BrewRatioType.doseYield,)))),
+                onPressed: () => model.setProfileItemValue(DatabaseIds.brewWeight, model.estimateBrewRatio(BrewRatioType.doseYield,)))),
 
               Container(width: 130.0, child:
               RaisedButton(
                 shape:  RoundedRectangleBorder(borderRadius: new BorderRadius.circular(20.0)),
                 child: Text('Calc Weight', softWrap: true, textAlign: TextAlign.center),
-                onPressed: () =>  widget._brewWeightChanged(model.estimateBrewRatio(BrewRatioType.doseBrewWeight)))),
+                onPressed: () =>  model.setProfileItemValue(DatabaseIds.brewWeight, model.estimateBrewRatio(BrewRatioType.doseBrewWeight)))),
 
             ]),
 
@@ -706,26 +708,13 @@ class _RatioCardState extends State<RatioCard> {
             children: <Widget>[
 
               /// Dose
-              RatioTextFieldItemWithInitalValue(
-                widget._profile.getProfileItem(DatabaseIds.brewingDose), 
-                (value){  if(!_filter.hasMatch(value)){
-                widget._doseChanged(value);}}, 
-                widget._isEditing,
-                ),
+              RatioTextFieldItemWithInitalValue(snapshot.data.getItem(DatabaseIds.brewingDose)),
 
               /// Yield
-              RatioTextFieldItemWithInitalValue(
-                widget._profile.getProfileItem(DatabaseIds.yielde), 
-                (value){widget._yieldChanged(value);}, 
-                widget._isEditing,
-                ), 
+              RatioTextFieldItemWithInitalValue( snapshot.data.getItem(DatabaseIds.yielde)), 
               
               /// Brew wieght
-              RatioTextFieldItemWithInitalValue(
-                widget._profile.getProfileItem(DatabaseIds.brewWeight), 
-                (value){widget._brewWeightChanged(value);}, 
-                widget._isEditing,
-              ),  
+              RatioTextFieldItemWithInitalValue(snapshot.data.getItem(DatabaseIds.brewWeight),),  
             ],
           ),
 
@@ -740,10 +729,10 @@ class _RatioCardState extends State<RatioCard> {
           Container(
           child:Text
           (Functions.getTwoNumberRatio(
-          Functions.getIntValue(widget._profile.getItemValue(DatabaseIds.brewingDose)),
+          Functions.getIntValue(snapshot.data.getItemValue(DatabaseIds.brewingDose)),
           _brewRatioType == BrewRatioType.doseYield ?
-           Functions.getIntValue(widget._profile.getItemValue(DatabaseIds.yielde)) :
-           Functions.getIntValue(widget._profile.getItemValue(DatabaseIds.brewWeight))),
+           Functions.getIntValue(snapshot.data.getItemValue(DatabaseIds.yielde)) :
+           Functions.getIntValue(snapshot.data.getItemValue(DatabaseIds.brewWeight))),
           style: Theme.of(context).textTheme.display3,),),
 
           Container(
@@ -756,40 +745,33 @@ class _RatioCardState extends State<RatioCard> {
 
         ],
       ),
-    )));
-  }
+    ));
+    }
+      )
+        );
 }
+}
+
 
 ///Two textFieldcard
-class TwoTextfieldCard extends StatefulWidget {
+class TdsAndExtractionCard extends StatefulWidget {
   final double _padding = 10.0;
-  final Item _itemLeft;
-  final bool _isEditing;
-  final double _extractionYield;
-  
-  final Function(String) _onRightTextChanged;
 
-  TwoTextfieldCard(
-      this._onRightTextChanged,
-      this._itemLeft,
-      this._isEditing,
-      this._extractionYield
-     );
-
-  _TwoTextfieldCardState createState() => _TwoTextfieldCardState();
+  _TdsAndExtractionCardState createState() => _TdsAndExtractionCardState();
 }
-class _TwoTextfieldCardState extends State<TwoTextfieldCard> {
+class _TdsAndExtractionCardState extends State<TdsAndExtractionCard> {
 
-  TextEditingController _rightController = new TextEditingController();
-
-  @override
-    void initState() {
-        _rightController.text = widget._itemLeft.value;     
-        super.initState();
-    }
   @override
   Widget build(BuildContext context) {
-    return Card(child: Container(
+    return 
+    
+      ScopedModelDescendant(builder: (BuildContext context,_, ProfilePageModel model) =>
+
+     StreamBuilder<Profile>(
+            stream: model.profileStream,
+            builder: (BuildContext context, AsyncSnapshot<Profile> snapshot){
+
+          Card(child: Container(
 
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -801,29 +783,18 @@ class _TwoTextfieldCardState extends State<TwoTextfieldCard> {
 
                 Padding(padding: EdgeInsets.all(widget._padding/2)),
 
-                // Left
+                /// TDS
                 TextFieldItemWithInitalValue(
-                  widget._itemLeft,
-                  (value){
-                     if (Functions.countChacters(value,'.')>1)
-                              {PopUps.showAlert(StringLabels.error,
-                               'Only one decimel can be used.', 
-                               StringLabels.ok, 
-                               (){Navigator.pop(context);},
-                              context);}
-
-                              else{widget._onRightTextChanged(value);}
-                    },
+                  snapshot.data.getItemValue(DatabaseIds.tds),
                   100.0, 
-                  widget._isEditing,
                   textInputFormatters: [
                     BlacklistingTextInputFormatter
                       (new RegExp('[\\,]'), replacementString: '.',)]),
 
-      
+                /// Extraction
                 TextfieldWithFixedValue
                 (StringLabels.extraction, 
-                widget._extractionYield.toString()+'%',
+                snapshot.data.getItemValue(DatabaseIds.tds).toString()+'%',
                 width: 100.0,),
 
                 Padding(padding: EdgeInsets.all(widget._padding/2)),
@@ -832,7 +803,7 @@ class _TwoTextfieldCardState extends State<TwoTextfieldCard> {
             ]),
       ),
     );
-  }
+            }));}
 }
 
 class DoseYieldBrewControl extends StatefulWidget {
@@ -882,9 +853,8 @@ class NotesCard extends StatefulWidget {
   final Function(String) _onTextChanged;
   final String _title;
   final String _notes;
-  final bool _isEditing;
 
-  NotesCard(this._title, this._notes, this._onTextChanged, this._isEditing);
+  NotesCard(this._title, this._notes, this._onTextChanged);
   _NotesCardState createState() => _NotesCardState();
 }
 class _NotesCardState extends State<NotesCard> {
@@ -910,7 +880,6 @@ class _NotesCardState extends State<NotesCard> {
           Text(widget._title),
           Container(
             child: TextField(
-              enabled: widget._isEditing,
               controller: controller,
               textAlign: TextAlign.start,
               maxLines: null,

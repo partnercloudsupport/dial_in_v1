@@ -5,89 +5,81 @@ import 'package:dial_in_v1/database_functions.dart';
 import 'package:dial_in_v1/widgets/profile_page_widgets.dart';
 import 'package:dial_in_v1/data/profile.dart';
 import 'package:dial_in_v1/widgets/custom_widgets.dart';
-import 'package:dial_in_v1/data/item.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:dial_in_v1/pages/profile_pages/profile_page_model.dart';
+import 'package:dial_in_v1/data/strings.dart';
 
 class WaterPage extends StatelessWidget{
 
-final Profile _profile;
-final double _padding = 20.0;
-final bool _isEditing;
 
 // Sets a String and Value in the Parent profie
-final Function(String , dynamic) _setProfileItemValue;
 
-  WaterPage(this._profile, this._setProfileItemValue, this._isEditing);
+  WaterPage();
 
   /// UI Build
   @override
   Widget build(BuildContext context) {
-    return new Column(children: <Widget>[
 
-                  /// Name
-                  Container(margin: EdgeInsets.all(20.0),child: 
-                  Row
-                  (mainAxisAlignment: MainAxisAlignment.spaceEvenly, crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                  TextFieldItemWithInitalValue
-                  (_profile.getProfileItem(DatabaseIds.waterID),
-                  (name){_setProfileItemValue( DatabaseIds.waterID, name);}
-                  , 200.0,_isEditing)
-                   ]),) , 
-                  
-                  /// Date
-                  DateTimeInputCard(StringLabels.dateTested,
-                  _profile.getItemValue( DatabaseIds.date),
-                  (dateTime){_setProfileItemValue( DatabaseIds.date, dateTime);}, _isEditing),
+    return 
+    
+    ScopedModelDescendant(builder: (BuildContext  context ,_, ProfilePageModel model) =>
 
-                  /// Details
-                  WaterDetailsCard(
-                    (totalPpm){_setProfileItemValue( DatabaseIds.ppm, totalPpm);},
-                    (ghPpm){_setProfileItemValue( DatabaseIds.gh, ghPpm);},
-                    (khPpm){_setProfileItemValue( DatabaseIds.kh, khPpm);},
-                    (pH){_setProfileItemValue( DatabaseIds.ph, pH);},
-                    _profile.getProfileItem( DatabaseIds.ppm),
-                    _profile.getProfileItem( DatabaseIds.gh),
-                    _profile.getProfileItem( DatabaseIds.kh),
-                    _profile.getProfileItem( DatabaseIds.ph),
-                    _isEditing
-                    ),
+     StreamBuilder<Profile>(
+            stream: model.profileStream,
+            builder: (BuildContext context, AsyncSnapshot<Profile> profile){
+            
+              return 
+              Column(children: <Widget>[
 
-                  // /// Notes
-                   NotesCard(StringLabels.notes,
-                    _profile.getItemValue( DatabaseIds.notes),
-                    (text){_profile.setItemValue( DatabaseIds.notes, text);},
-                    _isEditing) 
-    ]);
-    }
+                    /// Name
+                    Container(margin: EdgeInsets.all(20.0),child: 
+                    Row
+                    (mainAxisAlignment: MainAxisAlignment.spaceEvenly, crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                    TextFieldItemWithInitalValue
+                    (profile.data.getItem(DatabaseIds.waterID),
+                     200.0
+                     )
+                    ]),) , 
+                    
+                    /// Date
+                    DateTimeInputCard(
+                    StringLabels.dateTested,
+                    profile.data.getItemValue( DatabaseIds.date),
+                    (dateTime){model.setProfileItemValue( DatabaseIds.date, dateTime);}),
+
+                    /// Details
+                    WaterDetailsCard(),
+
+                    // /// Notes
+                    NotesCard(StringLabels.notes,
+                      profile.data.getItemValue( DatabaseIds.notes),
+                      (text){model.setProfileItemValue( DatabaseIds.notes, text);},
+                      ) 
+                ]
+            );
+          }
+     )
+    );
+}
 }
 
 class WaterDetailsCard extends StatelessWidget {
   final double _padding = 5.0;
   final double _margin = 5.0;
   final double _textFieldWidth = 140.0;
-  final Function(String) _totalPpm;
-  final Function(String) _ghPpm;
-  final Function(String) _khPpm;
-  final Function(String) _pH;
-  final Item _totalPpmItem;
-  final Item _ghPpmItem;
-  final Item _khPpmItem;
-  final Item _pHItem;
-  final bool _isEditing;
-
-
-WaterDetailsCard(
-  ///Functions
-  this._totalPpm, this._ghPpm, this._khPpm, this._pH,
-  /// Items 
-  this._totalPpmItem, this._ghPpmItem, this._khPpmItem, this._pHItem,
-  /// Editing
-  this._isEditing
-  );
 
  @override
   Widget build(BuildContext context) {
-    return Card(child:
+    return 
+    
+     ScopedModelDescendant(builder: (BuildContext context,_, ProfilePageModel model) =>
+
+     StreamBuilder<Profile>(
+            stream: model.profileStream,
+            builder: (BuildContext context, AsyncSnapshot<Profile> snapshot){
+    
+    Card(child:
      Container(padding: EdgeInsets.all(_padding), margin: EdgeInsets.all( _margin),
      child: Column(children: <Widget>[
 
@@ -96,10 +88,10 @@ WaterDetailsCard(
         (mainAxisAlignment: MainAxisAlignment.spaceBetween, crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           ///Total ppm
-          TextFieldItemWithInitalValue( _totalPpmItem,(value){ _totalPpm(value);}, _textFieldWidth,_isEditing ),
+          TextFieldItemWithInitalValue(snapshot.data.getItem(DatabaseIds.ppm), _textFieldWidth,),
 
           ///gh Ppm
-          TextFieldItemWithInitalValue( _ghPpmItem,(value){ _ghPpm(value);}, _textFieldWidth, _isEditing),               
+          TextFieldItemWithInitalValue(snapshot.data.getItem(DatabaseIds.gh), _textFieldWidth,),               
 
         ]),
 
@@ -109,10 +101,10 @@ WaterDetailsCard(
          children: <Widget>[
 
           /// kH
-          TextFieldItemWithInitalValue( _khPpmItem,(value){ _khPpm(value);}, _textFieldWidth, _isEditing),
+          TextFieldItemWithInitalValue(snapshot.data.getItem(DatabaseIds.kh), _textFieldWidth,),
 
           /// pH
-          TextFieldItemWithInitalValue( _pHItem,(value){ _pH(value);}, _textFieldWidth, _isEditing),
+          TextFieldItemWithInitalValue(snapshot.data.getItem(DatabaseIds.ph), _textFieldWidth,),
 
             ],
           ),
@@ -120,5 +112,12 @@ WaterDetailsCard(
       )
     )
     );
+            }
+     )
+    );
   }
 }
+
+  
+  
+

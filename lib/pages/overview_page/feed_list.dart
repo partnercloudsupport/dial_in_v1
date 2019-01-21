@@ -48,7 +48,7 @@ class _FeedListState extends State<FeedList>{
   void _dealWithProfileSelection(FeedProfileData userProfile){
 
       Navigator.push(context, SlowerRoute((BuildContext context) =>
-      ProfilePage(isFromUserFeed: true ,isOldProfile: false, isCopying: false, isEditing: false, isNew: false, type: userProfile.profile.type, referance: userProfile.userName, profile: userProfile.profile)));
+      ProfilePage(isFromUserFeed: true ,isOldProfile: false, isCopying: false, isEditing: false, isNew: false, type: userProfile.profile.type, referance: userProfile.userName, profileReferance: userProfile.profile.objectId)));
   }
 
   Widget setupWidgetView(SnapShotDataState dataState , AsyncSnapshot<List<FeedProfileData>> snapshot, FeedType feedType){

@@ -19,6 +19,7 @@ import 'package:flutter/widgets.dart';
 import 'package:dial_in_v1/routes.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:dial_in_v1/pages/profile_pages/profile_page.dart';
+import 'package:dial_in_v1/pages/profile_pages/profile_page_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rxdart/rxdart.dart';
@@ -611,7 +612,7 @@ void setWidgetUp(){
 }
   void _editProfile(){
    Navigator.push(context, SlowerRoute((BuildContext context) =>
-          ProfilePage(isFromUserFeed: false, isFromProfile: false ,isOldProfile: true, isCopying: false, isEditing: true, isNew: false, type: widget._profile.type, referance: widget._profile.objectId, profile: widget._profile)));
+          ProfilePage(isFromUserFeed: false, isFromProfile: false ,isOldProfile: true, isCopying: false, isEditing: true, isNew: false, type: widget._profile.type, referance: widget._profile.objectId, profileReferance: widget._profile.objectId)));
   }
   @override
   Widget build(BuildContext context) {
@@ -807,13 +808,11 @@ class SocialProfileCard extends StatelessWidget {
 ///RatioTextField Item input
 class RatioTextFieldItemWithInitalValue extends StatefulWidget {
 
-  final Function(dynamic) _giveValue;
   final Item _item;
-  final bool _isEditing;
   final TextAlign textAlign;
 
 RatioTextFieldItemWithInitalValue
-(this._item, this._giveValue,this._isEditing,{this.textAlign = TextAlign.center});
+(this._item , {this.textAlign = TextAlign.center});
 
  _RatioTextFieldItemWithInitalValueState createState() => _RatioTextFieldItemWithInitalValueState();
 }
@@ -856,7 +855,7 @@ class _RatioTextFieldItemWithInitalValueState extends State<RatioTextFieldItemWi
 
       return
       StreamBuilder(
-      stream: model.getStream(widget._item.databaseId),
+      stream: model.getRatioStream(widget._item.databaseId),
       builder: (BuildContext context, AsyncSnapshot<int> snapShot){
 
         if(model.isCalculating){
@@ -872,7 +871,6 @@ class _RatioTextFieldItemWithInitalValueState extends State<RatioTextFieldItemWi
             child: TextField(
               focusNode: _focusNode,
               inputFormatters: _inputFormatters ?? <TextInputFormatter>[],
-              enabled: widget._isEditing,
               controller: _controller ,
               textAlign: widget.textAlign,
               keyboardType: widget._item.keyboardType,
@@ -884,8 +882,7 @@ class _RatioTextFieldItemWithInitalValueState extends State<RatioTextFieldItemWi
                 hintText: widget._item.placeHolderText,
                   ),
                   onChanged: (value) {
-                    model.updateValue(widget._item.databaseId,value);
-                    widget._giveValue(value);
+                    model.setProfileItemValue(widget._item.databaseId,value);
                   }
                 )
               )
@@ -1028,12 +1025,11 @@ class _TimePickerTextFieldState extends State<TimePickerTextField> {
 class PickerTextField extends StatefulWidget {
   final double _textFieldWidth;
   final Item _item;
-  final bool _isEditing;
   /// Returns a funtion with the Item 
   /// of the item to open the picker view witht the correct data.
   final Function(Item) _onItemTextPressed;
 
-  PickerTextField(this._item, this._onItemTextPressed, this._textFieldWidth, this._isEditing);
+  PickerTextField(this._item, this._onItemTextPressed, this._textFieldWidth);
 
   _PickerTextFieldState createState() => _PickerTextFieldState();
 }
@@ -1076,7 +1072,6 @@ class _PickerTextFieldState extends State<PickerTextField> {
     return Expanded(
       flex: 5,
       child: Container(padding: EdgeInsets.all(10.0), child: TextFormField(
-          enabled: widget._isEditing,
            textAlign: TextAlign.start,
            decoration: new InputDecoration(
              prefixIcon: widget._item.icon ?? null,
@@ -1300,9 +1295,8 @@ class DateTimeInputCard extends StatefulWidget {
   final DateTime _dateTime;
   final Function(DateTime) onDateChanged; 
   final String _title;
-  final bool _isEditing;
 
-  DateTimeInputCard(this._title, this._dateTime, this.onDateChanged, this._isEditing);
+  DateTimeInputCard(this._title, this._dateTime, this.onDateChanged,);
 
   _DateTimeInputCardState createState() => new _DateTimeInputCardState();
 }
@@ -1371,8 +1365,7 @@ class _DateTimeInputCardState extends State<DateTimeInputCard> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Expanded(
-                    child: TextFormField
-                    (enabled: widget._isEditing,
+                    child: TextFormField(
                       controller: _controller,
                       focusNode: _focus,
                       decoration: InputDecoration(
@@ -1435,15 +1428,13 @@ TextEditingController _controller;
 class TextFieldItemWithInitalValue extends StatefulWidget {
 
 final double _textFieldWidth;
-final Function(dynamic) _giveValue;
 final Item _item;
-final bool _isEditing;
 final List<TextInputFormatter> textInputFormatters;
 final TextAlign textAlign;
 
 
 TextFieldItemWithInitalValue
-(this._item, this._giveValue, this._textFieldWidth, this._isEditing,{this.textInputFormatters, this.textAlign = TextAlign.start,});
+(this._item,this._textFieldWidth, {this.textInputFormatters, this.textAlign = TextAlign.start,});
 
  _TextFieldItemWithInitialValueState createState() => _TextFieldItemWithInitialValueState();
 }
@@ -1461,6 +1452,9 @@ class _TextFieldItemWithInitialValueState extends State<TextFieldItemWithInitalV
   @override
   Widget build(BuildContext context) {
     return
+
+   ScopedModelDescendant(builder: (BuildContext context,_, ProfilePageModel model) =>
+    
     Expanded(
       flex: 5,
       child: Container(padding: EdgeInsets.all(5.0), margin: EdgeInsets.all(5.0), 
@@ -1468,7 +1462,6 @@ class _TextFieldItemWithInitialValueState extends State<TextFieldItemWithInitalV
           
           autofocus: false,
           inputFormatters: widget.textInputFormatters ?? <TextInputFormatter>[],
-          enabled: widget._isEditing,
           controller: _controller ,
           textAlign: widget.textAlign,
           keyboardType: widget._item.keyboardType,
@@ -1483,12 +1476,29 @@ class _TextFieldItemWithInitialValueState extends State<TextFieldItemWithInitalV
                         widget._item.databaseId == DatabaseIds.brewingDose ||
                         widget._item.databaseId == DatabaseIds.yielde ||
                         widget._item.databaseId == DatabaseIds.brewWeight){
-                          widget._giveValue(value.split('').reversed.join());
-                }else{ widget._giveValue(value);}}),
-            )
-          )); 
-        }
-}       
+
+                          model.setProfileItemValue(widget._item.databaseId, value.split('').reversed.join());
+                }else if(widget._item.databaseId == DatabaseIds.tds){
+                
+                 if(Functions.countChacters(value,'.')>1)
+                              {PopUps.showAlert(StringLabels.error,
+                               'Only one decimel can be used.', 
+                               StringLabels.ok, 
+                               (){Navigator.pop(context);},
+                              context);
+                              }
+               
+                }else{ 
+                  model.setProfileItemValue( widget._item.databaseId, value );
+              }
+              }
+      )
+    )   
+    )
+    )
+   );    
+}  
+}
 
 ///TextField Item input
 class TextFieldSpanItemWithInitalValue extends StatefulWidget {
@@ -1765,21 +1775,12 @@ class CopyProfileButton extends StatelessWidget {
       onPressed: ()async{  
 
         Profile _newProfile
-          = Profile(
-            likes:  _profile.likes,
-            comments: _profile.comments,
-            userId: _profile.userId,
-            updatedAt: DateTime.now(),
-            objectId: '',
-            type: _profile.type,
-            properties: _profile.properties,
-            databaseId: _profile.databaseId,
-            orderNumber: _profile.orderNumber,
-            profiles: _profile.profiles,
-          );
-
+          = await Dbf.getProfileFromFireStoreWithDocRef(_profile.databaseId, _profile.objectId);
+            _newProfile.updatedAt = DateTime.now();
+            _newProfile.objectId = '';
         
         Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
+        /// If prifile referance is null create new profile
         ProfilePage(
           isFromUserFeed: false,
           isOldProfile: false,
@@ -1788,7 +1789,7 @@ class CopyProfileButton extends StatelessWidget {
           isNew: true, 
           type: _profile.type, 
           referance: '',
-          profile: _newProfile ,)
+          profileReferance: _profile.objectId,)
           )
           ).then((_) => Navigator.pop(context)
         );

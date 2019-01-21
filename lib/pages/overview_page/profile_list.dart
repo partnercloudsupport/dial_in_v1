@@ -25,7 +25,7 @@ class _ProfileListState extends State<ProfileList>{
    void _dealWithProfileSelection(Profile profile){
 
        Navigator.push(context, SlowerRoute((BuildContext context) =>
-        ProfilePage(isFromUserFeed: false, isFromProfile: false ,isOldProfile: true, isCopying: false, isEditing: false, isNew: false, type: profile.type, referance: profile.objectId, profile: profile)));
+        ProfilePage(isFromUserFeed: false, isFromProfile: false ,isOldProfile: true, isCopying: false, isEditing: false, isNew: false, type: profile.type, referance: profile.objectId, profileReferance: profile.objectId)));
   }
 
   void _deleteProfile(Profile profile, BuildContext context){

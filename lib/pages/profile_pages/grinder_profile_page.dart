@@ -8,21 +8,25 @@ import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'package:dial_in_v1/data/item.dart';
 
 class GrinderPage extends StatelessWidget {
-  final double _margin;
-  final Profile _profile;
-  final bool _isEditing;
+  
   final Function(Item) _showPickerMenu;
 
 // Sets a String and Value in the Parent profie
   final Function(String, dynamic) _setProfileItemValue;
 
-  GrinderPage(this._profile, this._margin, this._setProfileItemValue, this._isEditing, this._showPickerMenu);
+  GrinderPage(this._showPickerMenu);
 
   ///
   /// UI Build
   ///
   @override
   Widget build(BuildContext context) =>
+
+  ScopedModelDescendant(builder: (BuildContext context,_, ProfilePageModel model) =>
+
+     StreamBuilder<Profile>(
+            stream: model.profileStream,
+            builder: (BuildContext context, AsyncSnapshot<Profile> snapshot){
 
     new Column(children: <Widget>[
 
@@ -115,4 +119,8 @@ class GrinderDetailsCard extends StatelessWidget {
       ),
     ));
   }
+
 }
+     )
+  );
+  }

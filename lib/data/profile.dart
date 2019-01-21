@@ -175,7 +175,7 @@ class Profile {
     }
   }
 
-  Item getProfileItem(String itemDatabaseId){
+  Item getItem(String itemDatabaseId){
     
     Item item;
     for (var i = 0; i < this.properties.length; i++) {

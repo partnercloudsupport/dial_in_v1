@@ -6,18 +6,17 @@ import 'package:intl/intl.dart';
 import 'package:dial_in_v1/data/profile.dart';
 import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'package:dial_in_v1/data/item.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:dial_in_v1/pages/profile_pages/profile_page_model.dart';
 
 /// Page
 class CoffeeProfilePage extends StatefulWidget {
-  final Profile _profile;
-  final _isEditing;
-  final Function(Item) _showPickerMenu;
  
-
+  final Function(Item) _showPickerMenu;
 // Sets a String and Value in the Parent profile
   final Function(String, dynamic) _setProfileItemValue;
 
-  CoffeeProfilePage(this._profile, this._setProfileItemValue, this._isEditing, this._showPickerMenu);
+  CoffeeProfilePage(this._setProfileItemValue, this._showPickerMenu);
 
   _CoffeeProfilePageState createState() => new _CoffeeProfilePageState();
 }
@@ -42,7 +41,14 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
   /// UI Build
   @override
   Widget build(BuildContext context) {
-    return new 
+    return 
+    
+     ScopedModelDescendant(builder: (BuildContext context,_, ProfilePageModel model) =>
+
+     StreamBuilder<Profile>(
+            stream: model.profileStream,
+            builder: (BuildContext context, AsyncSnapshot<Profile> snapshot){
+              
           Column(
             children: <Widget>[
 

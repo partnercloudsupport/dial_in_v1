@@ -11,7 +11,8 @@ import 'package:dial_in_v1/data/item.dart';
 import 'package:dial_in_v1/data/functions.dart';
 import 'dart:async';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:dial_in_v1/inherited_widgets.dart';
+import 'package:dial_in_v1/pages/profile_pages/profile_page_model.dart';
+
 
 class RecipePage extends StatefulWidget {
 
@@ -19,14 +20,9 @@ class RecipePage extends StatefulWidget {
 
   
   final Function(ProfileType) _showOptions;
-  final Profile _profile;
-  final bool _isEditing;
   // final ScrollController _scrollController;
 
-  // Sets a String and Value in the Parent profie
-  final Function(String , dynamic) _setProfileItemValue;
-
-  RecipePage(this._profile, this._setProfileItemValue, this._showOptions, this._isEditing, );
+  RecipePage(this._showOptions);
 }
 
 class _RecipePageState extends State<RecipePage> {
@@ -67,7 +63,7 @@ class _RecipePageState extends State<RecipePage> {
 
     showModalBottomSheet(context: context, builder: (BuildContext context){
       // widget._scrollController.animateTo(widget._scrollController.position.pixels - 300,curve: Curves.easeInOut, duration: Duration(seconds: 1) );
-      return TimePicker(item,  widget._setProfileItemValue);
+      return TimePicker(item,  );
       }
     );
    
@@ -82,8 +78,13 @@ class _RecipePageState extends State<RecipePage> {
 
     ScopedModelDescendant<ProfilePageModel>
               ( rebuildOnChange: true, builder: (BuildContext context, _ ,ProfilePageModel model) {
+
+
+     StreamBuilder<Profile>(
+            stream: model.profileStream,
+            builder: (BuildContext context, AsyncSnapshot<Profile> snapshot){
     
-    model.updateValues(widget._profile);
+    model.updateRatioValues();
 
     return
     Column(children: <Widget>[ 
@@ -91,14 +92,12 @@ class _RecipePageState extends State<RecipePage> {
     /// Date
       DateTimeInputCard(
           StringLabels.date,
-          widget._profile.getItemValue( DatabaseIds.date),
-          (dateTime)
-          {if (dateTime != null){ widget._setProfileItemValue( DatabaseIds.date, dateTime);}},
-            widget._isEditing),
+          snapshot.data.getItemValue( DatabaseIds.date),
+          (dateTime) {if (dateTime != null){ model.setProfileItemValue( DatabaseIds.date, dateTime);}},
+          ),
 
     ///Coffee
       ProfileInputWithDetailsCard(
-        widget._isEditing,
         widget._profile.getProfileProfile(ProfileType.coffee),
         StringLabels.rested,
         widget._profile.getDaysRested().toString() + ' days',
@@ -106,9 +105,8 @@ class _RecipePageState extends State<RecipePage> {
 
     ///Barista
       ProfileInputCard(
-        widget._isEditing,
-        widget._profile.getProfileProfile(ProfileType.barista),
-        (){widget._showOptions(ProfileType.barista);},),
+        snapshot.data.getProfileProfile(ProfileType.barista),
+        widget._showOptions),
 
     /// Water
       ProfileInputCardWithAttribute(
@@ -146,7 +144,6 @@ class _RecipePageState extends State<RecipePage> {
 
     /// Equipment
       ProfileInputCardWithAttribute(
-          widget._isEditing,
           profile: widget._profile.getProfileProfile(ProfileType.equipment),
           onAttributeTextChange: (text) {
             widget._setProfileItemValue(DatabaseIds.preinfusion, text);
@@ -162,29 +159,23 @@ class _RecipePageState extends State<RecipePage> {
       ),
 
       /// Ratio card
-      RatioCard(
-        widget._profile,
-        (dose) {widget._setProfileItemValue( DatabaseIds.brewingDose, dose);},  
-        (yielde) {widget._setProfileItemValue( DatabaseIds.yielde, yielde);},
-        (brewWeight) { widget._setProfileItemValue( DatabaseIds.brewWeight, brewWeight);},
-        widget._isEditing,
-      ),
+      RatioCard(),
 
       /// Time
       Card(child: Container(margin: EdgeInsets.all(10.0), child: Row(children: <Widget>[
         
           TimePickerTextField(
-          widget._profile.getProfileItem(DatabaseIds.time),
+          p._profile.getProfileItem(DatabaseIds.time),
           (item) => showPickerMenu(item, context),
           100.0, 
-          widget._isEditing)
+          )
 
           ],)),),
 
       /// Extraction and TDS
-      TwoTextfieldCard(
+      TdsAndExtractionCard(
         (tds) { widget._setProfileItemValue( DatabaseIds.tds, tds);},
-        widget._profile.getProfileItem(DatabaseIds.tds),
+        widget._profile.getItem(DatabaseIds.tds),
         widget._isEditing,
         widget._profile.getExtractionYield() 
       ),
@@ -212,34 +203,34 @@ class _RecipePageState extends State<RecipePage> {
                   
                       ScoreSlider(
                         StringLabels.strength,
-                        double.parse(widget._profile.getItemValue(DatabaseIds.strength)),
+                        double.parse(snapshot.data.getItemValue(DatabaseIds.strength)),
                         (value) { widget._setProfileItemValue( DatabaseIds.strength, value.toString());},
-                        widget._isEditing),
+                        ),
 
                         Divider(),
 
                       ScoreSlider(
                         StringLabels.balance,
-                        double.parse(widget._profile.getItemValue(DatabaseIds.balance)),
+                        double.parse(snapshot.data.getItemValue(DatabaseIds.balance)),
                         (value) { widget._setProfileItemValue( DatabaseIds.balance, value.toString());},
-                        widget._isEditing),
+                        ),
 
                       Divider(),
 
                       ScoreSlider(
                         StringLabels.flavour,
-                        double.parse(widget._profile.getItemValue(DatabaseIds.flavour)),
+                        double.parse(snapshot.data.getItemValue(DatabaseIds.flavour)),
                         (value) { widget._setProfileItemValue( DatabaseIds.flavour, value.toString());},
-                        widget._isEditing),
+                        ),
 
                       Divider(),
 
 
                       ScoreSlider(
                         StringLabels.body,
-                        double.parse(widget._profile.getItemValue(DatabaseIds.body)),
-                        (value) {widget._setProfileItemValue( DatabaseIds.body, value.toString());},
-                        widget._isEditing),
+                        double.parse(snapshot.data.getItemValue(DatabaseIds.body)),
+                        (value) {model.setProfileItemValue( DatabaseIds.body, value.toString());},
+                        ),
 
                       Divider(),
 
@@ -247,12 +238,12 @@ class _RecipePageState extends State<RecipePage> {
                       ScoreSlider(
                         StringLabels.afterTaste,
                         double.parse(widget._profile.getItemValue(DatabaseIds.afterTaste)),
-                        (value) {widget._setProfileItemValue( DatabaseIds.afterTaste, value.toString());},
-                        widget._isEditing),
+                        (value) {model.setProfileItemValue( DatabaseIds.afterTaste, value.toString());},
+                        ),
 
                       Padding(padding: EdgeInsets.all(20.0)),
 
-                      Text('Total score ${widget._profile.getTotalScore().toInt().toString()} / 50', style: Theme.of(context).textTheme.display4)
+                      Text('Total score ${snapshot.data.getTotalScore().toInt().toString()} / 50', style: Theme.of(context).textTheme.display4)
                       /// End of score   
                   
           ],
@@ -261,14 +252,16 @@ class _RecipePageState extends State<RecipePage> {
       ),
         NotesCard(
                 StringLabels.descriptors,
-                widget._profile.getItemValue(
+                snapshot.data.getItemValue(
                       DatabaseIds.descriptors),
-                (text) {widget._setProfileItemValue( DatabaseIds.descriptors, text);},
-                widget._isEditing),
+                (text) {model.setProfileItemValue( DatabaseIds.descriptors, text);},
+         ),
               ],
         );
     }
   );
+               }
+ );
   }
 }
 
@@ -276,9 +269,8 @@ class _RecipePageState extends State<RecipePage> {
 class TimePicker extends StatefulWidget {
 
   final Item item;
-  final Function(String , dynamic) _setProfileItemValue;
 
-  TimePicker(this.item, this._setProfileItemValue);
+  TimePicker(this.item);
   
 
   _TimePickerState createState() => _TimePickerState();
@@ -385,7 +377,17 @@ class _TimePickerState extends State<TimePicker> {
 
     }
 
-    return Container(
+    return 
+    
+     ScopedModelDescendant(builder: (BuildContext context,_, ProfilePageModel model) =>
+
+     StreamBuilder<Profile>(
+            stream: model.profileStream,
+            builder: (BuildContext context, AsyncSnapshot<Profile> snapshot){
+              
+     return
+              
+    Container(
        child: Container(child: SizedBox(height: 200.0, width: double.infinity, child: Column(children: <Widget>[
 
       Material(elevation: 5.0, shadowColor: Colors.black, color:Theme.of(context).accentColor, type:MaterialType.card, 
@@ -426,7 +428,7 @@ class _TimePickerState extends State<TimePicker> {
         onSelectedItemChanged:
           (value){ setState(() {
             mins = value;
-            widget._setProfileItemValue(widget.item.databaseId, ((mins * 60) + sec).toString());
+            model.setProfileItemValue(widget.item.databaseId, ((mins * 60) + sec).toString());
             });
           }, 
         itemExtent: _itemHeight,
@@ -447,7 +449,7 @@ class _TimePickerState extends State<TimePicker> {
         onSelectedItemChanged:
           (value){setState(() {      
             sec = value;
-            widget._setProfileItemValue(widget.item.databaseId,  ((mins * 60) + sec).toString());
+            model.setProfileItemValue(widget.item.databaseId,  ((mins * 60) + sec).toString());
              });
           }, 
         itemExtent: _itemHeight,
@@ -460,7 +462,10 @@ class _TimePickerState extends State<TimePicker> {
   ],))
   ],) )
   )
-  );}
+  );
+  }
+     )
+     );
 }
-  
+}
 
