@@ -17,7 +17,6 @@ import 'package:image/image.dart' as Image;
 import 'dart:io' as Io;
 import 'package:dial_in_v1/data/mini_classes.dart';
 import 'package:dial_in_v1/data/images.dart';
-import 'package:dial_in_v1/data/mini_classes.dart';
 
 
 

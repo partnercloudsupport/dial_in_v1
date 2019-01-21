@@ -3,11 +3,8 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:dial_in_v1/data/streams.dart';
 import 'package:dial_in_v1/database_functions.dart';
 import 'package:dial_in_v1/data/profile.dart';
-import 'package:dial_in_v1/data/functions.dart';
 import 'package:dial_in_v1/data/mini_classes.dart';
-import 'package:dial_in_v1/widgets/profile_page_widgets.dart';
 import 'dart:async';
-import 'package:rxdart/rxdart.dart';
 
 class CameraWidget extends InheritedWidget {
   CameraWidget({Key key, Widget child}) : super(key: key, child: child);
@@ -105,7 +102,6 @@ class ProfilesModel extends Model {
         competionFollow(true);
       })
       .catchError((error){print(error); Error();});
-;
     }
     // _followers.refresh();
   }

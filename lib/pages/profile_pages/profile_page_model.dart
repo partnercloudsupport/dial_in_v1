@@ -7,8 +7,6 @@ import 'package:dial_in_v1/widgets/profile_page_widgets.dart';
 import 'dart:async';
 import 'package:dial_in_v1/data/strings.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:scoped_model/scoped_model.dart';
-import 'package:dial_in_v1/pages/profile_pages/profile_page_model.dart';
 
 class ProfilePageModel extends Model {
 
@@ -19,6 +17,17 @@ class ProfilePageModel extends Model {
     _profile.setItemValue(DatabaseIds.brewingDose, value);
     _profileStreamController.add(_profile);
   }
+
+   void setSubProfile(Profile profile) {
+    
+    _profile.setSubProfile( profile );
+    _profileStreamController.add(_profile);
+  }
+
+  set profileImagePath(String imagePath) => _profile.imageFilePath;
+  set profileImageUrl(String imageUrl) => _profile.imageUrl;
+
+
 
   ///TODO
   BehaviorSubject<int> _doseStreamController ;
@@ -34,7 +43,7 @@ class ProfilePageModel extends Model {
   bool isCopying;
   bool _referance;
   bool _isNew;
-  
+  ProfileType type;
 
   bool isCalculating = false;
 
@@ -44,7 +53,9 @@ class ProfilePageModel extends Model {
     this.isFromUserFeed, 
     this.isEditing, 
     this.isOldProfile, 
-    this.isCopying) {
+    this.isCopying,
+    this._isNew) {
+      this.type = type; 
       _profileStreamController = new BehaviorSubject<Profile>();
       getProfile(profileReferance, type);
   }
@@ -61,9 +72,9 @@ class ProfilePageModel extends Model {
     _yieldStreamController = new BehaviorSubject<int>();
     _brewWWeightStreamController = new BehaviorSubject<int>();
 
-    _doseStreamController.add( _profile.getItemValue(DatabaseIds.brewingDose));
-    _yieldStreamController.add( _profile.getItemValue(DatabaseIds.yielde));
-    _brewWWeightStreamController.add( _profile.getItemValue(DatabaseIds.brewWeight));
+    _doseStreamController.add( Functions.getIntValue(_profile.getItemValue(DatabaseIds.brewingDose)));
+    _yieldStreamController.add( Functions.getIntValue(_profile.getItemValue(DatabaseIds.yielde)));
+    _brewWWeightStreamController.add( Functions.getIntValue(_profile.getItemValue(DatabaseIds.brewWeight)));
 
     _doseStreamController.listen((value) {
        setProfileItemValue(DatabaseIds.brewingDose, value);

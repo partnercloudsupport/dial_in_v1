@@ -1,27 +1,15 @@
-import 'package:dial_in_v1/data/strings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dial_in_v1/database_functions.dart';
 import 'package:dial_in_v1/widgets/profile_page_widgets.dart';
 import 'package:dial_in_v1/data/profile.dart';
-import 'package:dial_in_v1/data/item.dart';
 import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:dial_in_v1/pages/profile_pages/profile_page_model.dart';
 
 
 class EquipmentPage extends StatelessWidget {
-;
-  final Function(Item) _showPicker;
 
-// Sets a String and Value in the Parent profie
-  final Function(String, dynamic) _setProfileItemValue;
-
-  EquipmentPage(this._setProfileItemValue, this._showPicker);
-
-  ///
-  /// UI Build
-  ///
   @override
   Widget build(BuildContext context) {
     return 
@@ -31,18 +19,22 @@ class EquipmentPage extends StatelessWidget {
      StreamBuilder<Profile>(
             stream: model.profileStream,
             builder: (BuildContext context, AsyncSnapshot<Profile> snapshot){
+
+              return
               
                Column(children: <Widget>[
 
-      /// Details
-      EquipmentDetailsCard(),
+          /// Details
+          EquipmentDetailsCard(),
 
-      /// Notes
-      NotesCard(StringLabels.method,
-          _profile.getItemValue( DatabaseIds.method),
-          (text) {_profile.setItemValue( DatabaseIds.method, text);},
-          _isEditing)
-    ]);
+          /// Notes
+          NotesCard(snapshot.data.getItem( DatabaseIds.method)),
+
+        ]);
+          }
+        )
+
+     );
   }
 }
 
@@ -60,7 +52,9 @@ class EquipmentDetailsCard extends StatelessWidget {
 
      StreamBuilder<Profile>(
             stream: model.profileStream,
-            builder: (BuildContext context, AsyncSnapshot<Profile> snapshot){
+            builder: (BuildContext context, AsyncSnapshot<Profile> snapshot) =>
+
+
      Card(
         child: Container(
       padding: EdgeInsets.all(_padding),
@@ -91,15 +85,20 @@ class EquipmentDetailsCard extends StatelessWidget {
 
               /// Make
               TextFieldItemWithInitalValue(
-               _makeValue, (value){ _make(value);}, _textFieldWidth, _isEditing),
+               snapshot.data.getItem(DatabaseIds.equipmentMake),_textFieldWidth),
 
               /// Model
               TextFieldItemWithInitalValue(
-               _modelValue, (value){ _model(value);}, _textFieldWidth, _isEditing),
+               snapshot.data.getItem(DatabaseIds.equipmentModel),_textFieldWidth),
             ],
           ),
         ],
-      ),
-    ));
+        ),
+      ))
+     )
+    );
   }
 }
+
+ 
+

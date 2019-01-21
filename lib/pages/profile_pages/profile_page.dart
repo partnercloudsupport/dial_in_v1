@@ -3,8 +3,6 @@ import 'package:dial_in_v1/data/profile.dart';
 import 'package:dial_in_v1/data/strings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:dial_in_v1/data/functions.dart';
-import 'package:dial_in_v1/pages/overview_page/profile_list.dart';
-import 'package:dial_in_v1/data/item.dart';
 import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 import 'package:dial_in_v1/pages/profile_pages/recipe_profile_page.dart';
@@ -18,7 +16,6 @@ import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'dart:async';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:dial_in_v1/pages/profile_pages/profile_page_model.dart';
-
 
 
 class ProfilePage extends StatefulWidget {
@@ -55,8 +52,8 @@ class ProfilePage extends StatefulWidget {
 }
 
 class ProfilePageState extends State<ProfilePage> {
+
   double _margin = 10.0;
-  // ScrollController _scrollController;
   List<Widget> _appBarActions = [Container()];
   List<Widget> _pageBody = List<Widget>();
 
@@ -69,7 +66,8 @@ class ProfilePageState extends State<ProfilePage> {
   }
 
    void getProfile(){
-     _profilePageModel = ProfilePageModel(widget.profileReferance, widget.type, widget.isFromUserFeed, widget.isEditing, widget.isOldProfile, widget.isCopying);
+     _profilePageModel = ProfilePageModel
+    (widget.profileReferance, widget.type, widget.isFromUserFeed, widget.isEditing, widget.isOldProfile, widget.isCopying, widget.isNew);
     }
 
   @override
@@ -78,8 +76,6 @@ class ProfilePageState extends State<ProfilePage> {
     super.dispose();
   }
 
-
-  /// UI Build
   @override
   Widget build(BuildContext context) {
    
@@ -91,14 +87,17 @@ class ProfilePageState extends State<ProfilePage> {
         StreamBuilder<Profile>(
             stream: _profilePageModel.profileStream,
             builder: (BuildContext context, AsyncSnapshot<Profile> snapshot){
+
+              if (!snapshot.hasData){ return Center(child: CircularProgressIndicator(),); }
+              else {
             
              getBody(snapshot.data);
 
-              Scaffold(
+              return 
 
-                appBar: PreferredSize(preferredSize: Size.fromHeight(30) ,child: ProfilePageAppBar()),
+              Scaffold(
+                appBar: PreferredSize(preferredSize: Size.fromHeight(50) ,child: ProfilePageAppBar()),
                 body: ListView(
-                  // controller: _scrollController,
                   children: <Widget>[
                     Column(
                       children: <Widget>[
@@ -107,19 +106,24 @@ class ProfilePageState extends State<ProfilePage> {
                             children: _pageBody),
 
                         /// All below changes depending on profile
-                        _returnPageStructure(),
+                      Container()
+                        
+                        // _returnPageStructure(),
                       ],
                     )
                   ],
                 ),
-                bottomNavigationBar: _returnBottomBar());
+                bottomNavigationBar: _returnBottomBar(snapshot.data));
                 }
+            }
         )
     );
   }
 
+
   /// Setup the body of the profile page
   void getBody(Profile profile) {
+
     _pageBody = <Widget>[
       /// Spacer
       Expanded(
@@ -168,7 +172,7 @@ class ProfilePageState extends State<ProfilePage> {
   }
 
   /// Bottom bar
-  Widget _returnBottomBar() {
+  Widget _returnBottomBar(Profile profile) {
     Widget _bottomBar;
 
     if (_profilePageModel.isOldProfile) {
@@ -180,8 +184,8 @@ class ProfilePageState extends State<ProfilePage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              CopyProfileButton(_profilePageModel.profile),
-              DeleteProfileButton(_profilePageModel.profile)
+              CopyProfileButton(profile),
+              DeleteProfileButton(profile)
             ],
           ),
         ),
@@ -194,35 +198,31 @@ class ProfilePageState extends State<ProfilePage> {
   Widget _returnPageStructure() {
     Widget _structure;
 
-    switch (_profilePageModel.profile.type) {
+    switch (_profilePageModel.type) {
+
       case ProfileType.barista:
         _structure =
-            BaristaPage(_profilePageModel.profile, _margin, _profilePageModel.profile.setItemValue, _profilePageModel.isEditing);
+            BaristaPage();
         break;
 
       case ProfileType.coffee:
-        _structure = CoffeeProfilePage(
-            _profilePageModel.profile, _profilePageModel.profile.setItemValue, _profilePageModel.isEditing, showPickerMenu);
+        _structure = CoffeeProfilePage();
         break;
 
       case ProfileType.equipment:
-        _structure = EquipmentPage(_profilePageModel.profile, _margin, _profilePageModel.profile.setItemValue,
-            _profilePageModel.isEditing, showPickerMenu);
+        _structure = EquipmentPage();
         break;
 
       case ProfileType.water:
-        _structure = WaterPage(_profilePageModel.profile, _profilePageModel.profile.setItemValue, _profilePageModel.isEditing);
+        _structure = WaterPage();
         break;
 
       case ProfileType.recipe:
-        _structure = RecipePage(_profilePageModel.profile, (key, value) {
-          setState(() => _profilePageModel.profile.setItemValue(key, value));
-        }, _showProfileList, _profilePageModel.isEditing);
+        _structure = RecipePage();
         break;
 
       case ProfileType.grinder:
-        _structure = GrinderPage(_profilePageModel.profile, _margin, _profilePageModel.profile.setItemValue,
-            _profilePageModel.isEditing, showPickerMenu);
+        _structure = GrinderPage();
         break;
 
       default:
@@ -232,171 +232,16 @@ class ProfilePageState extends State<ProfilePage> {
     return _structure;
   }
 
-  void showPickerMenu(Item item,) {
-    List<Widget> _items = new List<Widget>();
-    double _itemHeight = 40.0;
-
-    if (item.inputViewDataSet != null && item.inputViewDataSet.length > 0) {
-      item.inputViewDataSet[0].forEach((itemText) {
-        _items.add(Center(
-            child: Text(
-          itemText,
-          style: Theme.of(context).textTheme.display2,
-        )));
-      });
-    }
-
-    showModalBottomSheet(
-        context: context,
-        builder: (BuildContext context) {
-
-         
-          if (item.inputViewDataSet != null &&
-              item.inputViewDataSet.length < 1) {
-            return Center(
-              child: Text('Error No Data for picker'),
-            );
-          } else {
-            int startItem = item.inputViewDataSet[0]
-                .indexWhere((value) => (value == item.value));
-
-            FixedExtentScrollController _scrollController =
-                new FixedExtentScrollController(initialItem: startItem);
-
-            return Container(
-                child: SizedBox(
-                    height: 200.0,
-                    width: double.infinity,
-                    child: Column(
-                      children: <Widget>[
-                        Material(
-                            elevation: 5.0,
-                            shadowColor: Colors.black,
-                            color: Theme.of(context).accentColor,
-                            type: MaterialType.card,
-                            child: Container(
-                              height: 40.0,
-                              width: double.infinity,
-                              alignment: Alignment(1, 0),
-                              child: FlatButton(
-                                  onPressed: () => Navigator.pop(context),
-                                  child: Text('Done')),
-                            )),
-                        SizedBox(
-                          height: 160.0,
-                          width: double.infinity,
-                          child: CupertinoPicker(
-                              scrollController: _scrollController,
-                              useMagnifier: true,
-                              onSelectedItemChanged: (value) {
-                                setState(() {
-                                  _profilePageModel.profile.setItemValue(item.databaseId,
-                                      item.inputViewDataSet[0][value]);
-                                });
-                              },
-                              itemExtent: _itemHeight,
-                              children: _items),
-                        )
-                      ],
-                    )));
-          }
-        }).then((nul) {
-      // TODO
-      // _scrollController
-      // .animateTo(_scrollController.position.pixels + 1000.0 ,curve: Curves.easeInOut, duration: Duration(seconds: 1));
-    });
-  }
+  
 
   /// Get image for profile photo
   Future _getimage( Function(String) then) async {
     await showDialog(
             context: context,
             builder: (BuildContext context) => CupertinoImagePicker())
-        .then((imageFilePath) =>
-            setState(() => _profilePageModel.profile.imageFilePath = imageFilePath));
-  }
-
-  /// TODO;
-  void _moveScreenForBottomSheet() {
-    // _scrollController.animateTo
-    // (_scrollController.position.pixels + 190.0,
-    // duration: Duration(milliseconds: 500),
-    // curve: Curves.easeIn);
-  }
-
-  //// Show Profiles list
-  void _showProfileList(ProfileType profileType) async {
-    // flutter defined function
-    var result;
-
-    await showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          // return object of type Dialog
-          return Center(
-              child: Container(
-                  height: 400.0,
-                  child: SimpleDialog(
-                    title: Text(Functions.convertDatabaseIdToTitle(
-                        Functions.getProfileTypeDatabaseId(profileType))),
-                    children: <Widget>[
-                      /// Add profile button
-                      RaisedButton(
-                        onPressed: () => createNewProfilePage(_profilePageModel.profile.type)
-                            .then(handleProfileselectionResult),
-                        child: Text('Add new profile'),
-                      ),
-
-                      /// Profiles list
-                      ProfileListDialog(
-                        profileType,
-                        (sentProfile) {
-                          setState(() {
-                            _profilePageModel.profile.setSubProfile(sentProfile);
-                          });
-                        },
-                      )
-                    ],
-                  )));
-        });
-    return result;
-  }
-
-  void handleProfileselectionResult(dynamic result) {
-    if (result is bool) {
-      if (result != false) {
-        Navigator.pop(context, result);
-      }
-    } else if (result is Profile) {
-      _profilePageModel.profile.setSubProfile(result);
-      Navigator.pop(context, result);
-    } else {
-      throw ('Wrong type in return');
-    }
-  }
-
-  Future<dynamic> createNewProfilePage(ProfileType profileType) async {
-
-    Profile _newProfile = await Profile.createBlankProfile(profileType);
-
-    /// Result to be passed back to
-    var result = await Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (BuildContext context) =>
-
-                /// New Profile goes into Profile page
-                ProfilePage(
-                  isFromUserFeed: false,
-                  isOldProfile: false,
-                  isFromProfile: true,
-                  isCopying: false,
-                  isEditing: true,
-                  isNew: true,
-                  type: profileType,
-                  referance: '',
-                )));
-    return result;
+        .then((imageFilePath) =>  setState(() { ProfilePageModel.of(context).profileImagePath =  imageFilePath;})
+  
+    );
   }
 }
 
@@ -423,7 +268,7 @@ class _PublicProfileSwitchState extends State<PublicProfileSwitch> {
       child:
 
           ///Public profile switch
-          Expanded(
+        Expanded(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -495,14 +340,14 @@ class ProfilePageAppBar extends StatefulWidget {
 
 class _ProfilePageAppBarState extends State<ProfilePageAppBar> {
 
-  List<Widget> _appBarActions;
+  List<Widget> _appBarActions = [ MaterialButton(onPressed: (){},)];
   
   /// Setup bottom bar
-  void setupAppBarActions(ProfilePageModel model) {
+  void setupAppBarActions(ProfilePageModel model, Profile profile) {
     if (!model.isFromUserFeed) {
       model.isEditing
           ? _appBarActions[0] = RawMaterialButton(
-              child: Icon(Icons.save_alt), onPressed:() => saveFunction(model))
+              child: Icon(Icons.save_alt), onPressed:() => saveFunction(model, profile))
           : _appBarActions[0] = RawMaterialButton(
               child: Icon(Icons.edit),
               onPressed: () {
@@ -512,15 +357,15 @@ class _ProfilePageAppBarState extends State<ProfilePageAppBar> {
   }
 
   /// save button function
-  void saveFunction(ProfilePageModel model) async {
+  void saveFunction(ProfilePageModel model, Profile profile) async {
     if (model.isOldProfile) {
       PopUps.showCircularProgressIndicator(context);
-      await Dbf.updateProfile(model.profile);
+      await Dbf.updateProfile(profile);
       Navigator.pop(context);
-      Navigator.pop(context, model.profile);
+      Navigator.pop(context, profile);
     } else {
       PopUps.showCircularProgressIndicator(context);
-      var newProfile = await Dbf.saveProfile(model.profile);
+      var newProfile = await Dbf.saveProfile(profile);
       Navigator.pop(context);
       Navigator.pop(context, newProfile);
     }
@@ -532,22 +377,28 @@ class _ProfilePageAppBarState extends State<ProfilePageAppBar> {
 
   ScopedModelDescendant<ProfilePageModel>(
       builder: (BuildContext context, _, model) {
-      
-        setupAppBarActions(model);
+
+        return
+
+        StreamBuilder(
+          stream: model.profileStream ,
+          builder: (BuildContext context, AsyncSnapshot snapshot){
+         
+        setupAppBarActions(model, snapshot.data);
+            return 
 
         AppBar(
               centerTitle: true,
-              title: Text(
-                model.appBarTitle(),
-                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15.0),
-              ),
+              title: Text(model.appBarTitle() , style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15.0)),
               automaticallyImplyLeading: false,
               leading: model.isEditing
                   ? RawMaterialButton(
                       child: Icon(Icons.cancel),
                       onPressed: () { model.isEditing = false; })
-                  : GoBackAppBarButton,
+                  : GoBackAppBarButton(),
               actions: _appBarActions,
+          );
+         },
         );
       }
     );

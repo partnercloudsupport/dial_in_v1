@@ -52,10 +52,8 @@ class WaterPage extends StatelessWidget{
                     WaterDetailsCard(),
 
                     // /// Notes
-                    NotesCard(StringLabels.notes,
-                      profile.data.getItemValue( DatabaseIds.notes),
-                      (text){model.setProfileItemValue( DatabaseIds.notes, text);},
-                      ) 
+                    NotesCard(profile.data.getItemValue( DatabaseIds.notes) ) 
+                    
                 ]
             );
           }

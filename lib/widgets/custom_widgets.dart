@@ -24,6 +24,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rxdart/rxdart.dart';
 import 'dart:io';
+import 'package:dial_in_v1/pages/overview_page/profile_list.dart';
 
 
 
@@ -261,16 +262,16 @@ class _CircularProfilerPictureState extends State<CircularProfilePicture> {
 
 class FadeInImageAssetNetworkFromProfile extends StatelessWidget {
 
-Profile _profile;
-FadeInImageAssetNetworkFromProfile(this._profile);
+  final Profile _profile;
+  FadeInImageAssetNetworkFromProfile(this._profile);
 
-  @override
-  Widget build(BuildContext context) =>
-    FadeInImage.assetNetwork(
-        fit: BoxFit.cover,
-        placeholder:_profile.getImagePlaceholder(),
-        image: _profile.imageUrl
-    );
+    @override
+    Widget build(BuildContext context) =>
+      FadeInImage.assetNetwork(
+          fit: BoxFit.cover,
+          placeholder:_profile.getImagePlaceholder(),
+          image: _profile.imageUrl
+      );
 }
 
 
@@ -818,8 +819,6 @@ RatioTextFieldItemWithInitalValue
 }
 class _RatioTextFieldItemWithInitalValueState extends State<RatioTextFieldItemWithInitalValue> {
 
-  /// Maybe TODO to format text
-  RegExp _filter = RegExp('\.\s');
   BlacklistingTextInputFormatter _spaceBlacklistingTextInputFormatter = BlacklistingTextInputFormatter(RegExp(' '),replacementString: '');
   BlacklistingTextInputFormatter _commaBlacklistingTextInputFormatter = BlacklistingTextInputFormatter(RegExp(','),replacementString: '.');
   WhitelistingTextInputFormatter _whitelistingTextInputFormatter = WhitelistingTextInputFormatter(RegExp('[0-9,.]'));
@@ -958,12 +957,11 @@ class AddButton extends StatelessWidget {
 class TimePickerTextField extends StatefulWidget {
   final double _textFieldWidth;
   final Item _item;
-  final bool _isEditing;
   /// Returns a funtion with the Item 
   /// of the item to open the picker view witht the correct data.
   final Function(Item) _onItemTextPressed;
 
-  TimePickerTextField(this._item, this._onItemTextPressed, this._textFieldWidth, this._isEditing);
+  TimePickerTextField(this._item, this._onItemTextPressed, this._textFieldWidth);
 
   _TimePickerTextFieldState createState() => _TimePickerTextFieldState();
 }
@@ -1008,7 +1006,6 @@ class _TimePickerTextFieldState extends State<TimePickerTextField> {
     return Expanded(
       flex: 5,
       child: Container(padding: EdgeInsets.all(10.0), child: TextFormField(
-          enabled: widget._isEditing,
            textAlign: TextAlign.start,
            decoration: new InputDecoration(
              prefixIcon: Icon(Icons.timer),
@@ -1027,9 +1024,8 @@ class PickerTextField extends StatefulWidget {
   final Item _item;
   /// Returns a funtion with the Item 
   /// of the item to open the picker view witht the correct data.
-  final Function(Item) _onItemTextPressed;
 
-  PickerTextField(this._item, this._onItemTextPressed, this._textFieldWidth);
+  PickerTextField(this._item, this._textFieldWidth);
 
   _PickerTextFieldState createState() => _PickerTextFieldState();
 }
@@ -1054,7 +1050,7 @@ class _PickerTextFieldState extends State<PickerTextField> {
 
       void handleLeftProfileTextfieldFocus(){
         if (_focus.hasFocus){setState(() {
-            widget._onItemTextPressed(widget._item);
+            PopUps.showPickerMenu(widget._item, context);
         });
           _focus.unfocus();  
         }
@@ -1105,13 +1101,169 @@ class TabViewDataArray{
 /// Popups
 
 class PopUps{
-///
-/// Show alert
-///
+
+  static void showProfileList(ProfileType profileType, BuildContext context) async {
+
+    void handleProfileselectionResult(dynamic result) {
+      if (result is bool) {
+        if (result != false) {
+          Navigator.pop(context, result);
+        }
+      } else if (result is Profile) {
+        ProfilePageModel.of(context).setSubProfile(result);
+        Navigator.pop(context, result);
+      } else {
+        throw ('Wrong type in return');
+      }
+    }
+
+      Future<dynamic> createNewProfilePage(ProfileType profileType) async {
+
+
+        /// Result to be passed back to
+        var result = await Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) =>
+
+                    /// New Profile goes into Profile page
+                    ProfilePage(
+                      isFromUserFeed: false,
+                      isOldProfile: false,
+                      isFromProfile: true,
+                      isCopying: false,
+                      isEditing: true,
+                      isNew: true,
+                      type: profileType,
+                      referance: '',
+                    )));
+    return result;
+    }
+    
+    // flutter defined function
+    var result;
+
+    await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+
+          ScopedModelDescendant(builder: ( BuildContext context ,_, ProfilePageModel model ) =>
+
+            Center(
+              child: Container(
+                  height: 400.0,
+                  child: SimpleDialog(
+                    title: Text(Functions.convertDatabaseIdToTitle(
+                        Functions.getProfileTypeDatabaseId(profileType))),
+                    children: <Widget>[
+                      /// Add profile button
+                      RaisedButton(
+                        onPressed: () => createNewProfilePage(profileType)
+                            .then(handleProfileselectionResult),
+                        child: Text('Add new profile'),
+                      ),
+
+                      /// Profiles list
+                      ProfileListDialog(
+                        profileType,
+                        (sentProfile) {  model.setSubProfile(sentProfile);},
+                      )
+                    ],
+                  )))
+        );
+    return result;
+  }
+    );
+  }
+
+ 
+
+
+
 static void showCircularProgressIndicator(BuildContext context){
-showDialog(barrierDismissible: false, context: context ,
-        builder: (context) =>  Center(child:CircularProgressIndicator()));
+  showDialog(barrierDismissible: false, context: context ,
+          builder: (context) =>  Center(child:CircularProgressIndicator()));
 }
+
+static void showPickerMenu(Item item, BuildContext context) {
+    List<Widget> _items = new List<Widget>();
+    double _itemHeight = 40.0;
+
+    if (item.inputViewDataSet != null && item.inputViewDataSet.length > 0) {
+      item.inputViewDataSet[0].forEach((itemText) {
+        _items.add(Center(
+            child: Text(
+          itemText,
+          style: Theme.of(context).textTheme.display2,
+        )));
+      });
+    }
+
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+
+        
+    
+          if (item.inputViewDataSet != null &&
+              item.inputViewDataSet.length < 1) {
+            return Center(
+              child: Text('Error No Data for picker'),
+            );
+          } else {
+            int startItem = item.inputViewDataSet[0]
+                .indexWhere((value) => (value == item.value));
+
+            FixedExtentScrollController _scrollController =
+                new FixedExtentScrollController(initialItem: startItem);
+
+            return
+            
+              ScopedModelDescendant(
+        builder: (BuildContext context, _, ProfilePageModel model) =>
+     
+            
+             Container(
+                child: SizedBox(
+                    height: 200.0,
+                    width: double.infinity,
+                    child: Column(
+                      children: <Widget>[
+                        Material(
+                            elevation: 5.0,
+                            shadowColor: Colors.black,
+                            color: Theme.of(context).accentColor,
+                            type: MaterialType.card,
+                            child: Container(
+                              height: 40.0,
+                              width: double.infinity,
+                              alignment: Alignment(1, 0),
+                              child: FlatButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  child: Text('Done')),
+                            )),
+                        SizedBox(
+                          height: 160.0,
+                          width: double.infinity,
+                          child: CupertinoPicker(
+                              scrollController: _scrollController,
+                              useMagnifier: true,
+                              onSelectedItemChanged: (value) {
+                                  model.setProfileItemValue(item.databaseId,item.inputViewDataSet[0][value]);
+                              },
+                              itemExtent: _itemHeight,
+                              children: _items),
+                        )
+                      ],
+                    ))));
+          }
+        }).then((nul) {
+      // TODO
+      // _scrollController
+      // .animateTo(_scrollController.position.pixels + 1000.0 ,curve: Curves.easeInOut, duration: Duration(seconds: 1));
+    });
+  }
+
 
 static Future<void> showAlert
 (String title, String message, String buttonText, Function buttonFunction, BuildContext context) async {
@@ -1221,9 +1373,8 @@ class DateInputCard extends StatefulWidget {
   final DateTime _dateTime;
   final Function(DateTime) onDateChanged; 
   final String _title;
-  final bool _isEditing;
 
-  DateInputCard(this._title, this._dateTime, this.onDateChanged, this._isEditing);
+  DateInputCard(this._title, this._dateTime, this.onDateChanged);
 
   _DateInputCardState createState() => new _DateInputCardState();
 }
@@ -1274,11 +1425,10 @@ class _DateInputCardState extends State<DateInputCard> {
       child:Container( 
         margin:  EdgeInsets.all(widget._padding),
         padding: EdgeInsets.all(widget._padding),
-        child:  TextFormField
-          (enabled: widget._isEditing,
-            controller: _controller,
+        child:  TextFormField(
+          controller: _controller,
           focusNode: _focus,
-            decoration: InputDecoration(
+          decoration: InputDecoration(
               prefixIcon: Icon(Icons.date_range),
               labelText: widget._title),
           ),

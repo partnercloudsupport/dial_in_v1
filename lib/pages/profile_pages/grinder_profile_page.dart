@@ -1,24 +1,15 @@
-import 'package:dial_in_v1/data/strings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dial_in_v1/database_functions.dart';
 import 'package:dial_in_v1/widgets/profile_page_widgets.dart';
 import 'package:dial_in_v1/data/profile.dart';
 import 'package:dial_in_v1/widgets/custom_widgets.dart';
-import 'package:dial_in_v1/data/item.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:dial_in_v1/pages/profile_pages/profile_page_model.dart';
+
 
 class GrinderPage extends StatelessWidget {
   
-  final Function(Item) _showPickerMenu;
-
-// Sets a String and Value in the Parent profie
-  final Function(String, dynamic) _setProfileItemValue;
-
-  GrinderPage(this._showPickerMenu);
-
-  ///
-  /// UI Build
-  ///
   @override
   Widget build(BuildContext context) =>
 
@@ -28,55 +19,37 @@ class GrinderPage extends StatelessWidget {
             stream: model.profileStream,
             builder: (BuildContext context, AsyncSnapshot<Profile> snapshot){
 
-    new Column(children: <Widget>[
+    return new Column(children: <Widget>[
 
       /// Details
-      GrinderDetailsCard(
-        (name) {_setProfileItemValue(DatabaseIds.grinderId, name);},
-        _showPickerMenu,
-        (make) {_setProfileItemValue(DatabaseIds.grinderMake, make);},
-        (model) {_setProfileItemValue(DatabaseIds.grinderModel, model);},
-        _profile.getProfileItem(DatabaseIds.grinderId),
-        _profile.getProfileItem(DatabaseIds.burrs),        
-        _profile.getProfileItem(DatabaseIds.grinderMake),        
-        _profile.getProfileItem(DatabaseIds.grinderModel),
-        _isEditing        
-      ),
+      GrinderDetailsCard(),
 
       /// Notes
-      NotesCard(StringLabels.notes,
-          _profile.getItemValue( DatabaseIds.notes),
-          (text) { _profile.setItemValue( DatabaseIds.notes, text);},
-          _isEditing)
+      NotesCard(snapshot.data.getItem( DatabaseIds.notes))
     ]);
   
+    }
+     )
+  );
 }
 
 class GrinderDetailsCard extends StatelessWidget {
   final double _padding = 5.0;
   final double _margin = 5.0;
   final double _textFieldWidth = 140.0;
-  final Function(String) _name;
-  final Function(Item) _burrs;
-  final Function(String) _make;
-  final Function(String) _model;
-  final Item _nameValue;
-  final Item _burrsValue;
-  final Item _makeValue;
-  final Item _modelValue;
-  final bool _isEditing;
-
-  GrinderDetailsCard(
-    /// Functions
-    this._name,this._burrs,this._make,this._model,
-    /// Variables
-    this._nameValue, this._burrsValue, this._makeValue, this._modelValue,
-    this._isEditing
-  );
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return 
+    
+  
+  ScopedModelDescendant(builder: (BuildContext context,_, ProfilePageModel model) =>
+
+     StreamBuilder<Profile>(
+            stream: model.profileStream,
+            builder: (BuildContext context, AsyncSnapshot<Profile> snapshot){
+    
+    Card(
         child: Container(
       padding: EdgeInsets.all(_padding),
       margin: EdgeInsets.all(_margin),
@@ -89,12 +62,10 @@ class GrinderDetailsCard extends StatelessWidget {
             children: <Widget>[
               
               /// Name
-              TextFieldItemWithInitalValue(_nameValue,
-              (value){ _name(value);}, _textFieldWidth, _isEditing),
+              TextFieldItemWithInitalValue( snapshot.data.getItem( DatabaseIds.grinderId ), _textFieldWidth),
 
               /// Burrs
-              PickerTextField(_burrsValue,
-              (value){_burrs(value);}, _textFieldWidth, _isEditing),
+              PickerTextField( snapshot.data.getItem( DatabaseIds.burrs ), _textFieldWidth),
 
             ],
           ),
@@ -106,21 +77,19 @@ class GrinderDetailsCard extends StatelessWidget {
             children: <Widget>[
 
               /// Make
-              TextFieldItemWithInitalValue(
-               _makeValue, (value){ _make(value);}, _textFieldWidth, _isEditing),
+              TextFieldItemWithInitalValue( snapshot.data.getItem( DatabaseIds.grinderMake ), _textFieldWidth),
 
               /// Model
-              TextFieldItemWithInitalValue(
-               _modelValue, (value){ _model(value);} , _textFieldWidth, _isEditing),
+              TextFieldItemWithInitalValue( snapshot.data.getItem( DatabaseIds.grinderModel ), _textFieldWidth),
 
             ],
           ),
         ],
       ),
-    ));
+    )
+    );
   }
-
-}
      )
-  );
+     );
   }
+}

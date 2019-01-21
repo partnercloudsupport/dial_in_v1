@@ -12,18 +12,21 @@ import 'package:dial_in_v1/data/functions.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:dial_in_v1/pages/profile_pages/profile_page_model.dart';
 
-
 class ScoreSlider extends StatefulWidget {
   final double _value;
   final String _label;
   final Function(double) _sliderValue;
 
-  ScoreSlider(this._label, this._value, this._sliderValue,);
+  ScoreSlider(
+    this._label,
+    this._value,
+    this._sliderValue,
+  );
 
   ScoreSliderState createState() => new ScoreSliderState();
 }
+
 class ScoreSliderState extends State<ScoreSlider> {
- 
   double _value;
   String _label;
   double _margin = 5.0;
@@ -37,195 +40,186 @@ class ScoreSliderState extends State<ScoreSlider> {
 
   @override
   Widget build(BuildContext context) {
+    return ScopedModelDescendant(
+        builder: (BuildContext context, _, ProfilePageModel model) =>
+            StreamBuilder<Profile>(
+                stream: model.profileStream,
+                builder:
+                    (BuildContext context, AsyncSnapshot<Profile> snapshot) {
+                  Container(
+                      width: double.infinity,
+                      margin: EdgeInsets.all(_margin),
+                      padding: EdgeInsets.all(_margin),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Container(
+                              margin: EdgeInsets.all(_margin),
+                              padding: EdgeInsets.all(_margin),
+                              child: Text('${widget._label} ',
+                                  style: Theme.of(context).textTheme.headline),
+                            ),
 
+                            Text('${_value.toInt()}/10',
+                                style: Theme.of(context).textTheme.subtitle),
 
-    return
-
-
-    
- ScopedModelDescendant(builder: (BuildContext context,_, ProfilePageModel model) =>
-
-     StreamBuilder<Profile>(
-            stream: model.profileStream,
-            builder: (BuildContext context, AsyncSnapshot<Profile> snapshot){
- 
-    Container(width:double.infinity, margin: EdgeInsets.all(_margin), padding:EdgeInsets.all(_margin) , child: 
-    Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-
-          Container(
-            margin: EdgeInsets.all(_margin),
-            padding: EdgeInsets.all(_margin),
-            child: Text('${widget._label} ', style: Theme.of(context).textTheme.headline),
-          ),
-
-              Text('${_value.toInt()}/10' , style: Theme.of(context).textTheme.subtitle),
-
-            
-              model.isEditing ? CupertinoSlider(
-                  value: _value,
-                  onChanged: model.isEditing? (value){
-                    setState(() {
-                      _value = value;
-                    });}: null,
-                  onChangeEnd:  (value) {
-                    
-                    widget._sliderValue(value);
-                  },
-                  min: 0,
-                  max: 10,
-                  divisions: 10,
-                  // label: _value.toInt().toString(),
-                  activeColor: Theme.of(context).sliderTheme.activeTrackColor,): Container(width: 0.0,height: 0.0,) ,
-                  // inactiveColor: Theme.of(context).sliderTheme.inactiveTrackColor,    
-          ]
-        )
-    );
+                            model.isEditing
+                                ? CupertinoSlider(
+                                    value: _value,
+                                    onChanged: model.isEditing
+                                        ? (value) {
+                                            setState(() {
+                                              _value = value;
+                                            });
+                                          }
+                                        : null,
+                                    onChangeEnd: (value) {
+                                      widget._sliderValue(value);
+                                    },
+                                    min: 0,
+                                    max: 10,
+                                    divisions: 10,
+                                    // label: _value.toInt().toString(),
+                                    activeColor: Theme.of(context)
+                                        .sliderTheme
+                                        .activeTrackColor,
+                                  )
+                                : Container(
+                                    width: 0.0,
+                                    height: 0.0,
+                                  ),
+                            // inactiveColor: Theme.of(context).sliderTheme.inactiveTrackColor,
+                          ]));
+                }));
   }
-     )
- );
-}
 }
 
 /// Widgets
 
 class ProfileInputCardWithAttribute extends StatefulWidget {
-
   final double _padding = 5.0;
   final double _margin = 5.0;
   final double textFieldWidth;
-  
-  final Function(String) onAttributeTextChange;
-  final Function onProfileTextPressed;
-  final String attributeTextfieldText;
-  final String attributeHintText;
+
+  final Item attributeItem;
   final String profileHintText = StringLabels.chooseProfile;
-  final String attributeTitle;
-  final TextInputType keyboardType;
   final Profile profile;
-  final bool _isEditing;
-  
 
-  ProfileInputCardWithAttribute(this._isEditing,
-      {
-      this.profile,
-      this.onAttributeTextChange,
-      this.onProfileTextPressed,
-      this.attributeTextfieldText,
-      this.attributeHintText,
-      this.attributeTitle,
-      this.keyboardType,
-      this.textFieldWidth = 150.0
-      }
-      );
+  ProfileInputCardWithAttribute(
+      {this.profile, this.attributeItem, this.textFieldWidth = 150.0});
 
-      _ProfileInputCardWithAttributeState createState() => new _ProfileInputCardWithAttributeState();
+  _ProfileInputCardWithAttributeState createState() =>
+      new _ProfileInputCardWithAttributeState();
 }
-class _ProfileInputCardWithAttributeState extends State<ProfileInputCardWithAttribute> {
 
-      TextEditingController _attributeController;
-      TextEditingController _profileTextController;
-      FocusNode _textFocus;
+class _ProfileInputCardWithAttributeState
+    extends State<ProfileInputCardWithAttribute> {
+  TextEditingController _attributeController;
+  TextEditingController _profileTextController;
+  FocusNode _textFocus;
 
-      @override
-       void initState() {
-            _attributeController = new TextEditingController(text: widget.attributeTextfieldText);
-            _attributeController.addListener(sendAttributeValue);
-            _profileTextController = new TextEditingController();
-            _textFocus = new FocusNode();
-            _textFocus.addListener(handleProfileTextfieldFocus);
-            super.initState();
-      }
+  @override
+  void initState() {
+    _attributeController =
+        new TextEditingController(text: widget.attributeItem.value);
+    _attributeController.addListener(sendAttributeValue);
+    _profileTextController = new TextEditingController();
+    _textFocus = new FocusNode();
+    _textFocus.addListener(handleProfileTextfieldFocus);
+    super.initState();
+  }
 
-      @override
-      void dispose() {
-        // Clean up the controller when the Widget is removed from the Widget tree
-        _attributeController.dispose();
-        _profileTextController.dispose();
-        super.dispose();
-      }
+  @override
+  void dispose() {
+    // Clean up the controller when the Widget is removed from the Widget tree
+    _attributeController.dispose();
+    _profileTextController.dispose();
+    super.dispose();
+  }
 
-      void sendAttributeValue(){
-        widget.onAttributeTextChange(_attributeController.text);
-      }
+  void sendAttributeValue() {
+    ProfilePageModel.of(context).setProfileItemValue(
+        widget.attributeItem.databaseId, _attributeController.text);
+  }
 
-      void handleProfileTextfieldFocus(){
-        if (_textFocus.hasFocus){
-        widget.onProfileTextPressed();
-        _textFocus.unfocus();  
-        }
-      }
+  void handleProfileTextfieldFocus() {
+    if (_textFocus.hasFocus) {
+      PopUps.showProfileList(widget.profile.type, context);
+      _textFocus.unfocus();
+    }
+  }
 
-       @override
-          void didUpdateWidget(Widget oldWidget) {
-            _profileTextController.text =  widget.profile.getProfileTitleValue();
-           super.didUpdateWidget(oldWidget);
-      }
-
+  @override
+  void didUpdateWidget(Widget oldWidget) {
+    _profileTextController.text = widget.profile.getProfileTitleValue();
+    super.didUpdateWidget(oldWidget);
+  }
 
   @override
   Widget build(BuildContext context) {
-    _profileTextController.text =  widget.profile.getProfileTitleValue();
+    _profileTextController.text = widget.profile.getProfileTitleValue();
     return Card(
         margin: EdgeInsets.all(widget._margin),
-          child: Container(
+        child: Container(
             padding: EdgeInsets.all(widget._padding),
             child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-
-                  Padding(padding: EdgeInsets.all(5.0),),
+                  Padding(
+                    padding: EdgeInsets.all(5.0),
+                  ),
 
                   /// Left profile selection
 
-                        /// Spacer
-                        Container(width: 10.0,),
+                  /// Spacer
+                  Container(
+                    width: 10.0,
+                  ),
 
-                      Expanded(flex:1 ,child:
-                        Container(
-                          margin: EdgeInsets.all(5.0),child: 
-                          TextFormField(
-                            enabled: widget._isEditing,
-                            textAlign: TextAlign.start,
-                            keyboardType: widget.keyboardType,
-                            decoration: new InputDecoration(
-                              labelText: widget.profile.databaseId,
-                              hintText: StringLabels.selectProfile,),
-                            focusNode: _textFocus,
-                            controller: _profileTextController,)
-                      ),),
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                        margin: EdgeInsets.all(5.0),
+                        child: TextFormField(
+                          textAlign: TextAlign.start,
+                          keyboardType: widget.attributeItem.keyboardType,
+                          decoration: new InputDecoration(
+                            labelText: widget.profile.databaseId,
+                            hintText: StringLabels.selectProfile,
+                          ),
+                          focusNode: _textFocus,
+                          controller: _profileTextController,
+                        )),
+                  ),
 
-                      /// Spacer
-                        Container(width: 10.0,),
+                  /// Spacer
+                  Container(
+                    width: 10.0,
+                  ),
 
-                            Container(margin: EdgeInsets.all(10.0), width: 60.0, child:
-                             TextFormField(
-                              enabled: widget._isEditing,
-                              textAlign: TextAlign.start,
-                              keyboardType: widget.keyboardType,
-                              decoration: new InputDecoration(
-                                labelStyle: widget.attributeTitle == StringLabels.preinfusion ?
-                                                                      TextStyle(fontSize:8.0) :
-                                                                      Theme.of(context).textTheme.caption,
-                                labelText: widget.attributeTitle,
-                                hintText: widget.attributeHintText,),
-                                controller: _attributeController,
-                              )
-                            )
-                        
-                      ]
-                )
-              )
-            );
-    }
+                  Container(
+                      margin: EdgeInsets.all(10.0),
+                      width: 60.0,
+                      child: TextFormField(
+                        textAlign: TextAlign.start,
+                        keyboardType: widget.attributeItem.keyboardType,
+                        decoration: new InputDecoration(
+                          labelStyle: widget.attributeItem.title ==
+                                  StringLabels.preinfusion
+                              ? TextStyle(fontSize: 8.0)
+                              : Theme.of(context).textTheme.caption,
+                          labelText: widget.attributeItem.title,
+                          hintText: widget.attributeItem.placeHolderText,
+                        ),
+                        controller: _attributeController,
+                      ))
+                ])));
+  }
 }
-
 
 ///Double profile card
 class DoubleProfileInputCard extends StatefulWidget {
-
   final double _padding = 20.0;
   final double _margin = 10.0;
   final double _cornerRadius = 20.0;
@@ -241,104 +235,99 @@ class DoubleProfileInputCard extends StatefulWidget {
   final String rightTextfieldText;
   final String rightHintText;
   final Function onRightProfileTextPressed;
- 
 
-  DoubleProfileInputCard({   
+  DoubleProfileInputCard({
     @required this.leftImageRefString,
     @required this.leftTitle,
     @required this.leftTextfieldText,
     @required this.leftHintText,
     @required this.onLeftProfileTextPressed,
-
     @required this.rightImageRefString,
     @required this.rightTitle,
     @required this.rightTextfieldText,
     @required this.rightHintText,
     @required this.onRightProfileTextPressed,
-    });
+  });
 
-      _DoubleProfileInputCardState createState() => new _DoubleProfileInputCardState();
+  _DoubleProfileInputCardState createState() =>
+      new _DoubleProfileInputCardState();
 }
+
 class _DoubleProfileInputCardState extends State<DoubleProfileInputCard> {
+  TextEditingController _leftController;
+  FocusNode _leftFocus;
 
-      TextEditingController _leftController;
-       FocusNode _leftFocus;
-     
-      TextEditingController _rightController;
-       FocusNode _rightFocus;
+  TextEditingController _rightController;
+  FocusNode _rightFocus;
 
-    
-      @override
-       void initState() {
+  @override
+  void initState() {
+    _leftFocus = new FocusNode();
+    _leftFocus.addListener(handleLeftProfileTextfieldFocus);
+    _rightFocus = new FocusNode();
+    _rightFocus.addListener(handleRightProfileTextfieldFocus);
+    super.initState();
+  }
 
-            _leftFocus = new FocusNode();
-            _leftFocus.addListener(handleLeftProfileTextfieldFocus);
-            _rightFocus = new FocusNode();
-            _rightFocus.addListener(handleRightProfileTextfieldFocus);
-            super.initState();
-      }
+  @override
+  void didUpdateWidget(Widget oldWidget) {
+    _leftController = new TextEditingController(text: widget.leftTextfieldText);
+    _rightController =
+        new TextEditingController(text: widget.rightTextfieldText);
+    super.didUpdateWidget(oldWidget);
+  }
 
-      @override
-          void didUpdateWidget(Widget oldWidget) {
-            _leftController = new TextEditingController(text: widget.leftTextfieldText);
-            _rightController = new TextEditingController(text: widget.rightTextfieldText);
-           super.didUpdateWidget(oldWidget);
-          }
+  @override
+  void dispose() {
+    // Clean up the controller when the Widget is removed from the Widget tree
+    _leftController.dispose();
+    _rightController.dispose();
+    super.dispose();
+  }
 
-      @override
-      void dispose() {
-        // Clean up the controller when the Widget is removed from the Widget tree
-        _leftController.dispose();
-        _rightController.dispose();
-        super.dispose();
-      }
+  void handleLeftProfileTextfieldFocus() {
+    if (_leftFocus.hasFocus) {
+      widget.onLeftProfileTextPressed();
+      _leftFocus.unfocus();
+    }
+  }
 
-
-      void handleLeftProfileTextfieldFocus(){
-        if (_leftFocus.hasFocus){
-        widget.onLeftProfileTextPressed();
-        _leftFocus.unfocus();  
-        }
-      }
-
-      void handleRightProfileTextfieldFocus(){
-        if (_rightFocus.hasFocus){
-        widget.onRightProfileTextPressed();
-        _rightFocus.unfocus();  
-        }
-      }
-
+  void handleRightProfileTextfieldFocus() {
+    if (_rightFocus.hasFocus) {
+      widget.onRightProfileTextPressed();
+      _rightFocus.unfocus();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Card(
         margin: EdgeInsets.all(widget._margin),
-          child: Container(
+        child: Container(
             padding: EdgeInsets.all(widget._padding),
             child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-
                   /// Left profile selection
                   Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-
                         Container(
-                            margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, widget._margin),
+                            margin: EdgeInsets.fromLTRB(
+                                0.0, 0.0, 0.0, widget._margin),
                             width: 40.0,
                             height: 40.0,
                             child: Image.asset(
                               widget.leftImageRefString,
                               fit: BoxFit.cover,
                             )),
-
                         Container(
-                          width: widget._textFieldWidth,
-                          margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, widget._margin),
-                          child: TextFormField(
+                            width: widget._textFieldWidth,
+                            margin: EdgeInsets.fromLTRB(
+                                0.0, 0.0, 0.0, widget._margin),
+                            child: TextFormField(
                               textAlign: TextAlign.end,
                               decoration: new InputDecoration(
                                 labelText: widget.leftTitle,
@@ -346,9 +335,7 @@ class _DoubleProfileInputCardState extends State<DoubleProfileInputCard> {
                               ),
                               focusNode: _leftFocus,
                               controller: _leftController,
-                              )
-                        ),
-                 
+                            )),
                       ]),
 
                   /// Right
@@ -356,27 +343,28 @@ class _DoubleProfileInputCardState extends State<DoubleProfileInputCard> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-
                         Container(
-                            margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, widget._margin),
+                            margin: EdgeInsets.fromLTRB(
+                                0.0, 0.0, 0.0, widget._margin),
                             width: 40.0,
                             height: 40.0,
                             child: Image.asset(
                               widget.rightImageRefString,
                               fit: BoxFit.cover,
                             )),
-
                         Container(
                           width: widget._textFieldWidth,
-                          margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, widget._margin),
+                          margin: EdgeInsets.fromLTRB(
+                              0.0, 0.0, 0.0, widget._margin),
                           child: TextFormField(
-                              textAlign: TextAlign.end,
-                              decoration: new InputDecoration(
-                                labelText: widget.rightTitle,
-                                hintText: widget.rightHintText,
-                              ),
-                              focusNode: _rightFocus,
-                              controller: _rightController,),
+                            textAlign: TextAlign.end,
+                            decoration: new InputDecoration(
+                              labelText: widget.rightTitle,
+                              hintText: widget.rightHintText,
+                            ),
+                            focusNode: _rightFocus,
+                            controller: _rightController,
+                          ),
                         ),
                       ]),
                 ])));
@@ -392,187 +380,184 @@ class ProfileInputWithDetailsCard extends StatefulWidget {
   final Profile _profile;
   final String _detailTitle;
   final String _detailValue;
-  final Function _onProfileTextPressed;
-  final bool _isEditing;
 
-  ProfileInputWithDetailsCard
-  (this._isEditing, this._profile, this._detailTitle, this._detailValue, this._onProfileTextPressed,);
+  ProfileInputWithDetailsCard(
+    this._profile,
+    this._detailTitle,
+    this._detailValue,
+  );
 
-  ProfileInputWithDetailsCardState createState() => ProfileInputWithDetailsCardState();
+  ProfileInputWithDetailsCardState createState() =>
+      ProfileInputWithDetailsCardState();
 }
-class ProfileInputWithDetailsCardState extends State<ProfileInputWithDetailsCard> {
 
+class ProfileInputWithDetailsCardState
+    extends State<ProfileInputWithDetailsCard> {
   TextEditingController _controller;
   TextEditingController _detailController;
 
   FocusNode _focus;
 
-      @override
-       void initState() {
-            _focus = new FocusNode();
-            _focus.addListener(handleLeftProfileTextfieldFocus);
-            _controller = new TextEditingController();
-            _detailController = new TextEditingController();
-            _controller.text = widget._profile.getProfileTitleValue();
-            _detailController.text =  widget._detailValue;
-            super.initState();
-      }
+  @override
+  void initState() {
+    _focus = new FocusNode();
+    _focus.addListener(handleLeftProfileTextfieldFocus);
+    _controller = new TextEditingController();
+    _detailController = new TextEditingController();
+    _controller.text = widget._profile.getProfileTitleValue();
+    _detailController.text = widget._detailValue;
+    super.initState();
+  }
 
-      @override
-        void didUpdateWidget(Widget oldWidget) {
-          _controller.text = widget._profile.getProfileTitleValue();
-          _detailController.text =  widget._detailValue;
-         super.didUpdateWidget(oldWidget);
-        }
+  @override
+  void didUpdateWidget(Widget oldWidget) {
+    _controller.text = widget._profile.getProfileTitleValue();
+    _detailController.text = widget._detailValue;
+    super.didUpdateWidget(oldWidget);
+  }
 
-      @override
-      void dispose() {
-        // Clean up the controller when the Widget is removed from the Widget tree
-        _controller.dispose();
-        _detailController.dispose();
-        super.dispose();
-      }
+  @override
+  void dispose() {
+    // Clean up the controller when the Widget is removed from the Widget tree
+    _controller.dispose();
+    _detailController.dispose();
+    super.dispose();
+  }
 
-      void handleLeftProfileTextfieldFocus(){
-        if (_focus.hasFocus){
-        widget._onProfileTextPressed();
-        setState(() {
-                  _focus.unfocus(); 
-                });
-        }
-      }
+  void handleLeftProfileTextfieldFocus() {
+    if (_focus.hasFocus) {
+      PopUps.showProfileList(widget._profile.type, context);
+      _focus.unfocus();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-       child: Card(
-        margin: EdgeInsets.all(widget._margin),
-          child: Container(
-            padding: EdgeInsets.all(widget._padding),
-            child: Row(
-                textBaseline: TextBaseline.ideographic,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
+        child: Card(
+            margin: EdgeInsets.all(widget._margin),
+            child: Container(
+                padding: EdgeInsets.all(widget._padding),
+                child: Row(
+                    textBaseline: TextBaseline.ideographic,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      CircularProfilePicture(widget._profile, 40.0),
 
-                  CircularProfilePicture(widget._profile, 40.0),
-                  
-                  Container(width: 10.0,),
+                      Container(
+                        width: 10.0,
+                      ),
 
+                      /// Profile
+                      Expanded(
+                          child: Container(
+                              margin: EdgeInsets.fromLTRB(
+                                  0.0, 0.0, widget._margin, 0.0),
+                              child: TextFormField(
+                                textAlign: TextAlign.start,
+                                decoration: new InputDecoration(
+                                  labelText: widget._profile.databaseId,
+                                ),
+                                focusNode: _focus,
+                                controller: _controller,
+                              ))),
 
-                  /// Profile
-                  Expanded(child: Container(
-                          margin: EdgeInsets.fromLTRB(0.0, 0.0, widget._margin, 0.0),
-                          child: TextFormField(
-                              enabled: widget._isEditing,
-                              textAlign: TextAlign.start,
-                              decoration: new InputDecoration(
-                                labelText: widget._profile.databaseId,
-                              ),
-                              focusNode: _focus,
-                              controller: _controller,
-                          ))),
+                      // /// Spacer
+                      Container(
+                        width: 10.0,
+                      ),
 
-                  // /// Spacer        
-                  Container(width: 10.0,),
-                  
-                  /// Attribute Value
-                  Container( width: 60, child: 
-                  TextfieldWithFixedValue(widget._detailTitle, _detailController.text)),
-
-                ]
-            )
-          )
-       )
-    );
+                      /// Attribute Value
+                      Container(
+                          width: 60,
+                          child: TextfieldWithFixedValue(
+                              widget._detailTitle, _detailController.text)),
+                    ]))));
   }
 }
 
 /// TextField With pickerview
-
 
 //Single profile card
 class ProfileInputCard extends StatefulWidget {
   final double _padding = 10.0;
   final double _margin = 5.0;
   final Profile _profile;
-  final Function _onProfileTextPressed;
 
-
-  ProfileInputCard(this._profile, this._onProfileTextPressed);
+  ProfileInputCard(this._profile);
 
   _ProfileInputCardState createState() => _ProfileInputCardState();
 }
-class _ProfileInputCardState extends State<ProfileInputCard> {
 
+class _ProfileInputCardState extends State<ProfileInputCard> {
   TextEditingController _controller;
   FocusNode _focus;
 
-      @override
-       void initState() {
-            _focus = new FocusNode();
-            _focus.addListener(handleLeftProfileTextfieldFocus);
-            _controller = new TextEditingController();
-            super.initState();
-      }
+  @override
+  void initState() {
+    _focus = new FocusNode();
+    _focus.addListener(handleLeftProfileTextfieldFocus);
+    _controller = new TextEditingController();
+    super.initState();
+  }
 
-      @override
-          void didUpdateWidget(Widget oldWidget) {
-            _controller.text =  widget._profile.getProfileTitleValue();
-           super.didUpdateWidget(oldWidget);
-          }
+  @override
+  void didUpdateWidget(Widget oldWidget) {
+    _controller.text = widget._profile.getProfileTitleValue();
+    super.didUpdateWidget(oldWidget);
+  }
 
-      @override
-      void dispose() {
-        // Clean up the controller when the Widget is removed from the Widget tree
-        _controller.dispose();
-        super.dispose();
-      }
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
-      void handleLeftProfileTextfieldFocus(){
-        if (_focus.hasFocus){
-          widget._onProfileTextPressed(widget._profile.type);
-          _focus.unfocus();  
-        }
-      }
+  void handleLeftProfileTextfieldFocus() {
+    if (_focus.hasFocus) {
+      PopUps.showProfileList(widget._profile.type, context);
+      _focus.unfocus();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    _controller.text =  widget._profile.getProfileTitleValue();
+    _controller.text = widget._profile.getProfileTitleValue();
     return Container(
-       child: Card(
-        margin: EdgeInsets.all(widget._margin),
-          child: Container(
-            padding: EdgeInsets.all(widget._padding),
-            child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
+        child: Card(
+            margin: EdgeInsets.all(widget._margin),
+            child: Container(
+                padding: EdgeInsets.all(widget._padding),
+                child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      CircularProfilePicture(widget._profile, 40.0),
 
-                  CircularProfilePicture(widget._profile, 40.0),
+                      /// Spacer
+                      Container(
+                        width: 10.0,
+                      ),
 
-                  /// Spacer
-                  Container(width: 10.0,),
-
-                  Expanded(child:Container(
-                    margin: EdgeInsets.all(widget._margin,),
-                    child: TextFormField(
-                        textAlign: TextAlign.start,
-                        decoration: new InputDecoration(
-                          labelText: widget._profile.databaseId,
-                        ),
-                        focusNode: _focus,
-                        controller: _controller,
-                    ))),
-                ]
-            )
-          )
-       )
-    );
+                      Expanded(
+                          child: Container(
+                              margin: EdgeInsets.all(
+                                widget._margin,
+                              ),
+                              child: TextFormField(
+                                textAlign: TextAlign.start,
+                                decoration: new InputDecoration(
+                                  labelText: widget._profile.databaseId,
+                                ),
+                                focusNode: _focus,
+                                controller: _controller,
+                              ))),
+                    ]))));
   }
 }
 
 /// Profile image
 class ProfileImage extends StatelessWidget {
-  
   final double _padding = 20.0;
   final double _margin = 10.0;
   final double _textFieldWidth = 120.0;
@@ -584,7 +569,7 @@ class ProfileImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return
-        
+
         /// Profile Image
         Container(
             margin: EdgeInsets.all(_margin),
@@ -601,10 +586,12 @@ class ProfileImage extends StatelessWidget {
                 ),
               )
             ], borderRadius: BorderRadius.circular(_cornerRadius)),
-            child: Card(child: ClipRRect(
+            child: Card(
+              child: ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(_cornerRadius)),
                 child: _image,
-                ),) );
+              ),
+            ));
   }
 }
 
@@ -647,111 +634,135 @@ class CoffeeCard extends StatelessWidget {
 class RatioCard extends StatefulWidget {
   final double _margin = 5.0;
   final double _textFieldWidth = 80.0;
- 
+
   _RatioCardState createState() => _RatioCardState();
 }
-class _RatioCardState extends State<RatioCard> {
 
+class _RatioCardState extends State<RatioCard> {
   BrewRatioType _brewRatioType = BrewRatioType.doseYield;
   RegExp _filter = RegExp('\.\s');
-  BlacklistingTextInputFormatter _spaceBlacklistingTextInputFormatter = BlacklistingTextInputFormatter(RegExp(' '),replacementString: '');
-  BlacklistingTextInputFormatter _commaBlacklistingTextInputFormatter = BlacklistingTextInputFormatter(RegExp(','),replacementString: '.');
-  WhitelistingTextInputFormatter _whitelistingTextInputFormatter = WhitelistingTextInputFormatter(RegExp('[0-9,.]'));
+  BlacklistingTextInputFormatter _spaceBlacklistingTextInputFormatter =
+      BlacklistingTextInputFormatter(RegExp(' '), replacementString: '');
+  BlacklistingTextInputFormatter _commaBlacklistingTextInputFormatter =
+      BlacklistingTextInputFormatter(RegExp(','), replacementString: '.');
+  WhitelistingTextInputFormatter _whitelistingTextInputFormatter =
+      WhitelistingTextInputFormatter(RegExp('[0-9,.]'));
   List<TextInputFormatter> _inpuFormatters = List<TextInputFormatter>();
 
   @override
-    void initState() {
-      _inpuFormatters = [_commaBlacklistingTextInputFormatter,_spaceBlacklistingTextInputFormatter,_whitelistingTextInputFormatter];
-      super.initState();
-    }
+  void initState() {
+    _inpuFormatters = [
+      _commaBlacklistingTextInputFormatter,
+      _spaceBlacklistingTextInputFormatter,
+      _whitelistingTextInputFormatter
+    ];
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return 
-    
-    ScopedModelDescendant<ProfilePageModel>
-        ( rebuildOnChange: false, builder: (context, _ ,model) =>
+    return ScopedModelDescendant<ProfilePageModel>(
+        rebuildOnChange: false,
+        builder: (context, _, model) => StreamBuilder<Profile>(
+            stream: model.profileStream,
+            builder: (BuildContext context, AsyncSnapshot<Profile> snapshot) {
+              Card(
+                  child: Container(
+                margin: EdgeInsets.all(widget._margin),
+                padding: EdgeInsets.all(widget._margin),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Container(
+                              width: 130.0,
+                              child: RaisedButton(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          new BorderRadius.circular(20.0)),
+                                  child: Text(
+                                    'Calc Yield',
+                                    softWrap: true,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  onPressed: () => model.setProfileItemValue(
+                                      DatabaseIds.brewWeight,
+                                      model.estimateBrewRatio(
+                                        BrewRatioType.doseYield,
+                                      )))),
+                          Container(
+                              width: 130.0,
+                              child: RaisedButton(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          new BorderRadius.circular(20.0)),
+                                  child: Text('Calc Weight',
+                                      softWrap: true,
+                                      textAlign: TextAlign.center),
+                                  onPressed: () => model.setProfileItemValue(
+                                      DatabaseIds.brewWeight,
+                                      model.estimateBrewRatio(
+                                          BrewRatioType.doseBrewWeight)))),
+                        ]),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        /// Dose
+                        RatioTextFieldItemWithInitalValue(
+                            snapshot.data.getItem(DatabaseIds.brewingDose)),
 
-      StreamBuilder<Profile>(
-        stream: model.profileStream,
-        builder: (BuildContext context, AsyncSnapshot<Profile> snapshot){
+                        /// Yield
+                        RatioTextFieldItemWithInitalValue(
+                            snapshot.data.getItem(DatabaseIds.yielde)),
 
-    Card(child:Container(
-      margin: EdgeInsets.all(widget._margin),
-      padding: EdgeInsets.all(widget._margin),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              
-              Container(width: 130.0, child:
-              RaisedButton( 
-                shape:  RoundedRectangleBorder(borderRadius: new BorderRadius.circular(20.0)),
-                child: Text('Calc Yield',softWrap: true, textAlign: TextAlign.center,),
-                onPressed: () => model.setProfileItemValue(DatabaseIds.brewWeight, model.estimateBrewRatio(BrewRatioType.doseYield,)))),
-
-              Container(width: 130.0, child:
-              RaisedButton(
-                shape:  RoundedRectangleBorder(borderRadius: new BorderRadius.circular(20.0)),
-                child: Text('Calc Weight', softWrap: true, textAlign: TextAlign.center),
-                onPressed: () =>  model.setProfileItemValue(DatabaseIds.brewWeight, model.estimateBrewRatio(BrewRatioType.doseBrewWeight)))),
-
-            ]),
-
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-
-              /// Dose
-              RatioTextFieldItemWithInitalValue(snapshot.data.getItem(DatabaseIds.brewingDose)),
-
-              /// Yield
-              RatioTextFieldItemWithInitalValue( snapshot.data.getItem(DatabaseIds.yielde)), 
-              
-              /// Brew wieght
-              RatioTextFieldItemWithInitalValue(snapshot.data.getItem(DatabaseIds.brewWeight),),  
-            ],
-          ),
-
-          Padding(padding: EdgeInsets.all(widget._margin)),
-
-          DoseYieldBrewControl((value){  setState(() {
-                      _brewRatioType = value;
-                    });  }),
-
-          Padding(padding: EdgeInsets.all(widget._margin)),
-
-          Container(
-          child:Text
-          (Functions.getTwoNumberRatio(
-          Functions.getIntValue(snapshot.data.getItemValue(DatabaseIds.brewingDose)),
-          _brewRatioType == BrewRatioType.doseYield ?
-           Functions.getIntValue(snapshot.data.getItemValue(DatabaseIds.yielde)) :
-           Functions.getIntValue(snapshot.data.getItemValue(DatabaseIds.brewWeight))),
-          style: Theme.of(context).textTheme.display3,),),
-
-          Container(
-            child:  _brewRatioType == BrewRatioType.doseYield ? 
-            Text('Dose : Yield',style: Theme.of(context).textTheme.caption, ):
-            Text('Dose : Brew Weight',style: Theme.of(context).textTheme.caption, )            ,
-          ),
-
-          Padding(padding: EdgeInsets.all(widget._margin)),
-
-        ],
-      ),
-    ));
-    }
-      )
-        );
+                        /// Brew wieght
+                        RatioTextFieldItemWithInitalValue(
+                          snapshot.data.getItem(DatabaseIds.brewWeight),
+                        ),
+                      ],
+                    ),
+                    Padding(padding: EdgeInsets.all(widget._margin)),
+                    DoseYieldBrewControl((value) {
+                      setState(() {
+                        _brewRatioType = value;
+                      });
+                    }),
+                    Padding(padding: EdgeInsets.all(widget._margin)),
+                    Container(
+                      child: Text(
+                        Functions.getTwoNumberRatio(
+                            Functions.getIntValue(snapshot.data
+                                .getItemValue(DatabaseIds.brewingDose)),
+                            _brewRatioType == BrewRatioType.doseYield
+                                ? Functions.getIntValue(snapshot.data
+                                    .getItemValue(DatabaseIds.yielde))
+                                : Functions.getIntValue(snapshot.data
+                                    .getItemValue(DatabaseIds.brewWeight))),
+                        style: Theme.of(context).textTheme.display3,
+                      ),
+                    ),
+                    Container(
+                      child: _brewRatioType == BrewRatioType.doseYield
+                          ? Text(
+                              'Dose : Yield',
+                              style: Theme.of(context).textTheme.caption,
+                            )
+                          : Text(
+                              'Dose : Brew Weight',
+                              style: Theme.of(context).textTheme.caption,
+                            ),
+                    ),
+                    Padding(padding: EdgeInsets.all(widget._margin)),
+                  ],
+                ),
+              ));
+            }));
+  }
 }
-}
-
 
 ///Two textFieldcard
 class TdsAndExtractionCard extends StatefulWidget {
@@ -759,55 +770,63 @@ class TdsAndExtractionCard extends StatefulWidget {
 
   _TdsAndExtractionCardState createState() => _TdsAndExtractionCardState();
 }
-class _TdsAndExtractionCardState extends State<TdsAndExtractionCard> {
 
+class _TdsAndExtractionCardState extends State<TdsAndExtractionCard> {
   @override
   Widget build(BuildContext context) {
-    return 
-    
-      ScopedModelDescendant(builder: (BuildContext context,_, ProfilePageModel model) =>
+    return ScopedModelDescendant(
+        builder: (BuildContext context, _, ProfilePageModel model) =>
+            StreamBuilder<Profile>(
+                stream: model.profileStream,
+                builder:
+                    (BuildContext context, AsyncSnapshot<Profile> snapshot) {
+                  Card(
+                    child: Container(
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                Padding(
+                                    padding:
+                                        EdgeInsets.all(widget._padding / 2)),
 
-     StreamBuilder<Profile>(
-            stream: model.profileStream,
-            builder: (BuildContext context, AsyncSnapshot<Profile> snapshot){
+                                /// TDS
+                                TextFieldItemWithInitalValue(
+                                    snapshot.data.getItemValue(DatabaseIds.tds),
+                                    100.0,
+                                    textInputFormatters: [
+                                      BlacklistingTextInputFormatter(
+                                        new RegExp('[\\,]'),
+                                        replacementString: '.',
+                                      )
+                                    ]),
 
-          Card(child: Container(
+                                /// Extraction
+                                TextfieldWithFixedValue(
+                                  StringLabels.extraction,
+                                  snapshot.data
+                                          .getItemValue(DatabaseIds.tds)
+                                          .toString() +
+                                      '%',
+                                  width: 100.0,
+                                ),
 
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-
-                Padding(padding: EdgeInsets.all(widget._padding/2)),
-
-                /// TDS
-                TextFieldItemWithInitalValue(
-                  snapshot.data.getItemValue(DatabaseIds.tds),
-                  100.0, 
-                  textInputFormatters: [
-                    BlacklistingTextInputFormatter
-                      (new RegExp('[\\,]'), replacementString: '.',)]),
-
-                /// Extraction
-                TextfieldWithFixedValue
-                (StringLabels.extraction, 
-                snapshot.data.getItemValue(DatabaseIds.tds).toString()+'%',
-                width: 100.0,),
-
-                Padding(padding: EdgeInsets.all(widget._padding/2)),
-                ],
-              ),
-            ]),
-      ),
-    );
-            }));}
+                                Padding(
+                                    padding:
+                                        EdgeInsets.all(widget._padding / 2)),
+                              ],
+                            ),
+                          ]),
+                    ),
+                  );
+                }));
+  }
 }
 
 class DoseYieldBrewControl extends StatefulWidget {
-
   final Function(BrewRatioType) _brewRatioTypeFunction;
 
   DoseYieldBrewControl(this._brewRatioTypeFunction);
@@ -815,34 +834,50 @@ class DoseYieldBrewControl extends StatefulWidget {
   @override
   _DoseYieldBrewControlState createState() => _DoseYieldBrewControlState();
 }
-enum BrewRatioType{doseYield, doseBrewWeight}
-class _DoseYieldBrewControlState extends State<DoseYieldBrewControl> {
 
+enum BrewRatioType { doseYield, doseBrewWeight }
+
+class _DoseYieldBrewControlState extends State<DoseYieldBrewControl> {
   int _groupValue = 0;
 
   @override
   Widget build(BuildContext context) {
-    return  
-      CupertinoSegmentedControl(
-            groupValue: _groupValue,
-            selectedColor: Theme.of(context).primaryColor,
-            unselectedColor:  Theme.of(context).primaryColorLight,
-            borderColor:  Theme.of(context).primaryColorDark,
-            onValueChanged: (intValue){ setState((){
-              assert(intValue < 2, 'Int value is too hight' );
-              _groupValue = intValue;
-              switch (intValue) {
-                case 0: widget._brewRatioTypeFunction(BrewRatioType.doseYield); break;
-                case 1: widget._brewRatioTypeFunction(BrewRatioType.doseBrewWeight); break;
-                default: Error();
-              }
-            });}
-              ,
-      children:{
-          0 : Container(padding: EdgeInsets.all(5.0),child:Text('Dose/Yield',style: Theme.of(context).textTheme.body2,),),
-          1 : Container(padding: EdgeInsets.all(5.0),child:Text('Dose/Brew Weight',style: Theme.of(context).textTheme.body2,))
-      }
-    );
+    return CupertinoSegmentedControl(
+        groupValue: _groupValue,
+        selectedColor: Theme.of(context).primaryColor,
+        unselectedColor: Theme.of(context).primaryColorLight,
+        borderColor: Theme.of(context).primaryColorDark,
+        onValueChanged: (intValue) {
+          setState(() {
+            assert(intValue < 2, 'Int value is too hight');
+            _groupValue = intValue;
+            switch (intValue) {
+              case 0:
+                widget._brewRatioTypeFunction(BrewRatioType.doseYield);
+                break;
+              case 1:
+                widget._brewRatioTypeFunction(BrewRatioType.doseBrewWeight);
+                break;
+              default:
+                Error();
+            }
+          });
+        },
+        children: {
+          0: Container(
+            padding: EdgeInsets.all(5.0),
+            child: Text(
+              'Dose/Yield',
+              style: Theme.of(context).textTheme.body2,
+            ),
+          ),
+          1: Container(
+              padding: EdgeInsets.all(5.0),
+              child: Text(
+                'Dose/Brew Weight',
+                style: Theme.of(context).textTheme.body2,
+              ))
+        });
   }
 }
 
@@ -850,51 +885,53 @@ class _DoseYieldBrewControlState extends State<DoseYieldBrewControl> {
 class NotesCard extends StatefulWidget {
   final double _padding = 10.0;
   final double _margin = 10.0;
-  final Function(String) _onTextChanged;
-  final String _title;
-  final String _notes;
+  final Item _item;
 
-  NotesCard(this._title, this._notes, this._onTextChanged);
+  NotesCard(this._item);
   _NotesCardState createState() => _NotesCardState();
 }
-class _NotesCardState extends State<NotesCard> {
 
+class _NotesCardState extends State<NotesCard> {
   TextEditingController controller;
 
-  void initState() { 
-    controller = new TextEditingController(text: this.widget._notes);
+  void initState() {
+    controller = new TextEditingController(text: this.widget._item.value);
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Container(
-      height: 200.0,
-      margin: EdgeInsets.all(widget._margin),
-      padding: EdgeInsets.all(widget._padding),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-
-        children: <Widget>[
-          Text(widget._title),
-          Container(
-            child: TextField(
-              controller: controller,
-              textAlign: TextAlign.start,
-              maxLines: null,
-              keyboardType: TextInputType.text,
-              decoration: new InputDecoration(
-                border: InputBorder.none,
-                hintText: StringLabels.enterInfo,
-              ),
-              onChanged: widget._onTextChanged)
-            )
-          ],
-        ),
-      )
-    );
+    return ScopedModelDescendant(
+        builder: (BuildContext context, _, ProfilePageModel model) =>
+            StreamBuilder<Profile>(
+                stream: model.profileStream,
+                builder:
+                    (BuildContext context, AsyncSnapshot<Profile> snapshot) {
+                  Card(
+                      child: Container(
+                    height: 200.0,
+                    margin: EdgeInsets.all(widget._margin),
+                    padding: EdgeInsets.all(widget._padding),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(widget._item.title),
+                        Container(
+                            child: TextField(
+                                controller: controller,
+                                textAlign: TextAlign.start,
+                                maxLines: null,
+                                keyboardType: TextInputType.text,
+                                decoration: new InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: StringLabels.enterInfo,
+                                ),
+                                onChanged: (value) => model.setProfileItemValue(
+                                    widget._item.databaseId, value)))
+                      ],
+                    ),
+                  ));
+                }));
   }
 }
-
-

@@ -4,7 +4,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:dial_in_v1/data/profile.dart';
 import 'package:dial_in_v1/data/functions.dart';
-import 'package:dial_in_v1/data/images.dart';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart' as path;
@@ -109,10 +108,6 @@ class Dbf {
     
       }) .catchError((e) => print(e)); 
   }
-
-  //TODO
-  static void upDateFirebaseData(){}
-  
 
   static Future unFollow(String currentUser, String unFollow , Function(bool) completion)async{
 
@@ -493,7 +488,6 @@ class Dbf {
     return url;
   }
 
-  /// Delete Firebase Storage Item //TODO
   static void deleteFireBaseStorageItem(String fileUrl){
 
     String filePath = fileUrl
@@ -635,40 +629,39 @@ class Dbf {
                               .snapshots();
   }
 
-  /// TODO
-  static void  getUserProfileStreamFromFireStoreWithDocRef(String docRefernace){
+  // static void  getUserProfileStreamFromFireStoreWithDocRef(String docRefernace){
 
-    Completer completer = new Completer();
+  //   Completer completer = new Completer();
 
-    Stream<DocumentSnapshot> userSnapshotStream = Firestore.instance.collection(DatabaseIds.User).document(docRefernace).snapshots();
+  //   Stream<DocumentSnapshot> userSnapshotStream = Firestore.instance.collection(DatabaseIds.User).document(docRefernace).snapshots();
 
-    final BehaviorSubject<UserProfile> _outgoingController = BehaviorSubject<UserProfile>();
+  //   final BehaviorSubject<UserProfile> _outgoingController = BehaviorSubject<UserProfile>();
 
-    UserProfile userProfile;
+  //   UserProfile userProfile;
 
-    userSnapshotStream.listen((doc){
+  //   userSnapshotStream.listen((doc){
 
-      if (doc.exists){
+  //     if (doc.exists){
 
-        userProfile = new UserProfile(
-                              doc.data[DatabaseIds.user]?? 'Error: submit feedback database_functions.dart => line 557',
-                              doc.data[DatabaseIds.userName]?? 'Error: submit feedback database_functions.dart => line 558',
-                              doc.data[DatabaseIds.imageUrl]?? '',
-                              doc.data[DatabaseIds.following]?? ['Error: submit feedback database_functions.dart => line 560'],
-                              doc.data[DatabaseIds.followers]?? ['Error: submit feedback database_functions.dart => line 561'],
-                              doc.data[DatabaseIds.motto]?? 'Error: submit feedback database_functions.dart => line 562',
-                              doc.data[DatabaseIds.imagePath]?? '',
-                              );
+  //       userProfile = new UserProfile(
+  //                             doc.data[DatabaseIds.user]?? 'Error: submit feedback database_functions.dart => line 557',
+  //                             doc.data[DatabaseIds.userName]?? 'Error: submit feedback database_functions.dart => line 558',
+  //                             doc.data[DatabaseIds.imageUrl]?? '',
+  //                             doc.data[DatabaseIds.following]?? ['Error: submit feedback database_functions.dart => line 560'],
+  //                             doc.data[DatabaseIds.followers]?? ['Error: submit feedback database_functions.dart => line 561'],
+  //                             doc.data[DatabaseIds.motto]?? 'Error: submit feedback database_functions.dart => line 562',
+  //                             doc.data[DatabaseIds.imagePath]?? '',
+  //                             );
 
-        _outgoingController.add(userProfile);
-      }else{
+  //       _outgoingController.add(userProfile);
+  //     }else{
 
-        completer.completeError('ERROR');
+  //       completer.completeError('ERROR');
 
-      }
-    });
-    completer.completeError('ERROR');
-  }
+  //     }
+  //   });
+  //   completer.completeError('ERROR');
+  // }
 
     /// Get profiles from fore store with doc referance //TODO;
   static Future<UserProfile> getUserProfileFromFireStoreWithDocRef(String docRefernace)async{
