@@ -170,9 +170,7 @@ class _ProfileInputCardWithAttributeState
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   
-                  Container(
-                    width: 10.0,
-                  ),
+                  Container(width: 10.0,),
 
                   CircularProfilePicture(widget.profile, 40.0),
 

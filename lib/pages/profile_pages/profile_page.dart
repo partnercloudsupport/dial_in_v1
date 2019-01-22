@@ -17,7 +17,6 @@ import 'dart:async';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:dial_in_v1/pages/profile_pages/profile_page_model.dart';
 
-
 class ProfilePage extends StatefulWidget {
   final bool isFromUserFeed;
   @required
@@ -52,7 +51,6 @@ class ProfilePage extends StatefulWidget {
 }
 
 class ProfilePageState extends State<ProfilePage> {
-
   double _margin = 10.0;
   List<Widget> _appBarActions = [Container()];
   List<Widget> _pageBody = List<Widget>();
@@ -65,73 +63,70 @@ class ProfilePageState extends State<ProfilePage> {
     super.initState();
   }
 
-   void getProfile(){
-     _profilePageModel = ProfilePageModel
-    (widget.profileReferance, widget.type, widget.isFromUserFeed, widget.isEditing, widget.isOldProfile, widget.isCopying, widget.isNew);
-    }
+  void getProfile() {
+    _profilePageModel = ProfilePageModel(
+        widget.profileReferance,
+        widget.type,
+        widget.isFromUserFeed,
+        widget.isEditing,
+        widget.isOldProfile,
+        widget.isCopying,
+        widget.isNew);
+  }
 
   @override
   void dispose() {
     _profilePageModel.dispose();
     super.dispose();
   }
-  
+
   @override
   Widget build(BuildContext context) {
-   
-    return new 
-    ScopedModel(
-      model: _profilePageModel,
-      child: 
+    return new ScopedModel(
+        model: _profilePageModel,
+        child: StreamBuilder<bool>(
+            stream: _profilePageModel.isEditingStream,
+            builder: (BuildContext context, AsyncSnapshot<bool> isEditing) =>
+                StreamBuilder<Profile>(
+                    stream: _profilePageModel.profileStream,
+                    builder:
+                        (BuildContext context, AsyncSnapshot<Profile> profile) {
+                      if (!profile.hasData) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else {
+                        getBody(profile.data, isEditing.data);
 
-      StreamBuilder<bool>(
-        stream: _profilePageModel.isEditingStream,
-        builder: (BuildContext context, AsyncSnapshot<bool> isEditing) =>
-      
-      StreamBuilder<Profile>(
-        stream: _profilePageModel.profileStream,
-        builder: (BuildContext context, AsyncSnapshot<Profile> profile){
+                        return Scaffold(
+                            appBar: PreferredSize(
+                                preferredSize: Size.fromHeight(50),
+                                child: ProfilePageAppBar()),
+                            body: ListView(
+                              children: <Widget>[
+                                AbsorbPointer(
+                                    absorbing: !isEditing.data,
+                                    child: Column(
+                                      children: <Widget>[
+                                        Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: _pageBody),
 
-          if (!profile.hasData){ return Center(child: CircularProgressIndicator(),); }
-          else {
-        
-          getBody(profile.data, isEditing.data);
-
-          return 
-
-          Scaffold(
-            appBar: PreferredSize(preferredSize: Size.fromHeight(50) ,child: ProfilePageAppBar()),
-            body:
-              AbsorbPointer
-              (absorbing: !isEditing.data,
-                child:
-                ListView(
-                  children: <Widget>[
-                    Column(
-                      children: <Widget>[
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: _pageBody),
-
-                        /// All below changes depending on profile                        
-                        _returnPageStructure(),
-                      ],
-                    )
-                  ],
-                ),
-                ),
-                bottomNavigationBar: _returnBottomBar(profile.data));
-                }
-            }
-        )
-    )
-    );
+                                        /// All below changes depending on profile
+                                        _returnPageStructure(),
+                                      ],
+                                    )),
+                              ],
+                            ),
+                            bottomNavigationBar:
+                                _returnBottomBar(profile.data));
+                      }
+                    })));
   }
 
-
   /// Setup the body of the profile page
-  void getBody(Profile profile , bool isEditing) {
-
+  void getBody(Profile profile, bool isEditing) {
     _pageBody = <Widget>[
       /// Spacer
       Expanded(
@@ -151,7 +146,7 @@ class ProfilePageState extends State<ProfilePage> {
             ),
             onTap: isEditing
                 ? () {
-                    _getimage( (image) {
+                    _getimage((image) {
                       setState(() {
                         profile.imageUrl = image;
                       });
@@ -168,12 +163,12 @@ class ProfilePageState extends State<ProfilePage> {
     if (!widget.isFromUserFeed) {
       if (isEditing) {
         _pageBody[2] = PublicProfileSwitch(
-                              profile.isPublic,
-                              (String id, dynamic isPublic) {
-                                setState(() {
-                                  profile.isPublic = isPublic;
-                                });
-                              },
+          profile.isPublic,
+          (String id, dynamic isPublic) {
+            setState(() {
+              profile.isPublic = isPublic;
+            });
+          },
         );
       }
     }
@@ -207,10 +202,8 @@ class ProfilePageState extends State<ProfilePage> {
     Widget _structure;
 
     switch (_profilePageModel.type) {
-
       case ProfileType.barista:
-        _structure =
-            BaristaPage();
+        _structure = BaristaPage();
         break;
 
       case ProfileType.coffee:
@@ -240,16 +233,14 @@ class ProfilePageState extends State<ProfilePage> {
     return _structure;
   }
 
-  
-
   /// Get image for profile photo
-  Future _getimage( Function(String) then) async {
+  Future _getimage(Function(String) then) async {
     await showDialog(
             context: context,
             builder: (BuildContext context) => CupertinoImagePicker())
-        .then((imageFilePath) =>  setState(() { ProfilePageModel.of(context).profileImagePath =  imageFilePath;})
-  
-    );
+        .then((imageFilePath) => setState(() {
+              ProfilePageModel.of(context).profileImagePath = imageFilePath;
+            }));
   }
 }
 
@@ -274,9 +265,9 @@ class _PublicProfileSwitchState extends State<PublicProfileSwitch> {
   Widget build(BuildContext context) {
     return Container(
       child:
-      
+
           ///Public profile switch
-        Expanded(
+          Expanded(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -347,21 +338,26 @@ class ProfilePageAppBar extends StatefulWidget {
 }
 
 class _ProfilePageAppBarState extends State<ProfilePageAppBar> {
+  List<Widget> _appBarActions = [
+    MaterialButton(
+      onPressed: () {},
+    )
+  ];
 
-  List<Widget> _appBarActions = [ MaterialButton(onPressed: (){},)];
-  
   /// Setup bottom bar
-  void setupAppBarActions(ProfilePageModel model, Profile profile, bool isEditing) {
+  void setupAppBarActions(
+      ProfilePageModel model, Profile profile, bool isEditing) {
     if (!model.isFromUserFeed) {
-     
-          
       isEditing
-          ? _appBarActions[0] =  RawMaterialButton(
-              child: Icon(Icons.save_alt), onPressed:() => saveFunction(model, profile))
-          : _appBarActions[0] =  RawMaterialButton(
+          ? _appBarActions[0] = RawMaterialButton(
+              child: Icon(Icons.save_alt),
+              onPressed: () => saveFunction(model, profile))
+          : _appBarActions[0] = RawMaterialButton(
               child: Icon(Icons.edit),
               onPressed: () {
-                setState(() { model.isEdtingSink.add(true); });
+                setState(() {
+                  model.isEdtingSink.add(true);
+                });
               });
     }
   }
@@ -382,44 +378,35 @@ class _ProfilePageAppBarState extends State<ProfilePageAppBar> {
   }
 
   @override
-  Widget build(BuildContext context) => 
-  
+  Widget build(BuildContext context) => ScopedModelDescendant<ProfilePageModel>(
+          builder: (BuildContext context, _, model) {
+        return StreamBuilder<Profile>(
+            stream: model.profileStream,
+            builder: (BuildContext context, AsyncSnapshot<Profile> profile) {
+              return StreamBuilder<bool>(
+                stream: model.isEditingStream,
+                builder: (BuildContext context, AsyncSnapshot<bool> isEditing) {
+                  setupAppBarActions(model, profile.data, isEditing.data);
 
-  ScopedModelDescendant<ProfilePageModel>(
-      builder: (BuildContext context, _, model) {
-
-        return
-
-        StreamBuilder<Profile>(
-          stream: model.profileStream ,
-          builder: (BuildContext context, AsyncSnapshot<Profile> profile){
-            return
-
-          StreamBuilder<bool>(
-          stream: model.isEditingStream ,
-          builder: (BuildContext context, AsyncSnapshot<bool> isEditing){
-         
-        setupAppBarActions(model, profile.data, isEditing.data);
-
-        return 
-
-        AppBar(
-              centerTitle: true,
-              title: Text(model.appBarTitle(isEditing.data) , style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15.0)),
-              automaticallyImplyLeading: false,
-              leading: isEditing.data
-                  ? RawMaterialButton(
-                      child: Icon(Icons.cancel),
-                      onPressed: () => setState((){ model.isEdtingSink.add(false); }))
-                  : GoBackAppBarButton(),
-              actions: _appBarActions,
-          );
-         },
-        );
-      }
-        );
-      }
-    );
+                  return AppBar(
+                    centerTitle: true,
+                    title: Text(model.appBarTitle(isEditing.data),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700, fontSize: 15.0)),
+                    automaticallyImplyLeading: false,
+                    leading: isEditing.data
+                        ? RawMaterialButton(
+                            child: Icon(Icons.cancel),
+                            onPressed: () => setState(() {
+                                  model.isEdtingSink.add(false);
+                                }))
+                        : GoBackAppBarButton(),
+                    actions: _appBarActions,
+                  );
+                },
+              );
+            });
+      });
 }
 
 class GoBackAppBarButton extends StatelessWidget {
@@ -446,17 +433,12 @@ class _CancelEditingProfileAppBarState
     extends State<CancelEditingProfileAppBar> {
   bool _isEditing;
   @override
-  Widget build(BuildContext context) =>
-  ScopedModelDescendant<ProfilePageModel>(
-      builder: (BuildContext context, _, model) => 
-      
-   RawMaterialButton(
-        child: Icon(Icons.cancel),
-        onPressed: () {
-          setState(() {
-            // widget._isEditing = false;
-          });
-        }
-    )
-  );
+  Widget build(BuildContext context) => ScopedModelDescendant<ProfilePageModel>(
+      builder: (BuildContext context, _, model) => RawMaterialButton(
+          child: Icon(Icons.cancel),
+          onPressed: () {
+            setState(() {
+              // widget._isEditing = false;
+            });
+          }));
 }

@@ -1176,10 +1176,6 @@ class PopUps{
     );
   }
 
- 
-
-
-
 static void showCircularProgressIndicator(BuildContext context){
   showDialog(barrierDismissible: false, context: context ,
           builder: (context) =>  Center(child:CircularProgressIndicator()));
@@ -1202,8 +1198,6 @@ static void showPickerMenu(Item item, BuildContext context) {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext context) {
-
-        
     
           if (item.inputViewDataSet != null &&
               item.inputViewDataSet.length < 1) {
