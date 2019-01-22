@@ -14,7 +14,7 @@ class ProfilePageModel extends Model {
 
   void setProfileItemValue(String id, dynamic value) {
     
-    _profile.setItemValue(DatabaseIds.brewingDose, value);
+    _profile.setItemValue(id, value);
     _profileStreamController.add(_profile);
   }
 
@@ -149,19 +149,23 @@ class ProfilePageModel extends Model {
     _isEditingStreamController.close();
   }
 
-  String estimateBrewRatio(BrewRatioType type) {
+  void estimateBrewRatio(BrewRatioType type) {
     isCalculating = true;
 
-    int result;
+    double _dose = double.parse(_profile.getItemValue(DatabaseIds.brewingDose));
+    double _yielde = double.parse(_profile.getItemValue(DatabaseIds.yielde));
+    double _brewWeight = double.parse(_profile.getItemValue(DatabaseIds.brewWeight));
+
+    double result;
 
     if (type == BrewRatioType.doseYield) {
-      result = Functions.getIntValue( _profile.getItemValue(DatabaseIds.brewWeight)) - Functions.getIntValue(( _profile.getItemValue(DatabaseIds.brewingDose).roundToDouble() * 1.9));
+
+      result =  (_brewWeight - (_dose * 1.9)).toDouble();
        setProfileItemValue( DatabaseIds.yielde, result );
-      return result.toString();
+
     } else {
-      result = Functions.getIntValue( _profile.getItemValue(DatabaseIds.brewingDose).roundToDouble() * 1.9) + Functions.getIntValue( _profile.getItemValue(DatabaseIds.yielde));
+      result = ((_dose * 1.9) + _yielde).toDouble();
        setProfileItemValue(DatabaseIds.brewWeight, result);
-      return result.toString();
     }
   }
 

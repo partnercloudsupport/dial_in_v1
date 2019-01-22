@@ -678,44 +678,44 @@ class _RatioCardState extends State<RatioCard> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
+
                     Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
+
                           Container(
-                              width: 130.0,
-                              child: RaisedButton(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          new BorderRadius.circular(20.0)),
-                                  child: Text(
-                                    'Calc Yield',
+                            width: 130.0,
+                            child: RaisedButton(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      new BorderRadius.circular(20.0)),
+                              child: Text(
+                                'Calc Yield',
+                                softWrap: true,
+                                textAlign: TextAlign.center,
+                              ),
+                              onPressed: () => model.estimateBrewRatio(BrewRatioType.doseYield,)
+                              )),
+                              
+                          Container(
+                            width: 130.0,
+                            child: RaisedButton(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        new BorderRadius.circular(20.0)),
+                                child: Text('Calc Weight',
                                     softWrap: true,
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  onPressed: () => model.setProfileItemValue(
-                                      DatabaseIds.brewWeight,
-                                      model.estimateBrewRatio(
-                                        BrewRatioType.doseYield,
-                                      )))),
-                          Container(
-                              width: 130.0,
-                              child: RaisedButton(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          new BorderRadius.circular(20.0)),
-                                  child: Text('Calc Weight',
-                                      softWrap: true,
-                                      textAlign: TextAlign.center),
-                                  onPressed: () => model.setProfileItemValue(
-                                      DatabaseIds.brewWeight,
-                                      model.estimateBrewRatio(
-                                          BrewRatioType.doseBrewWeight)))),
+                                    textAlign: TextAlign.center),
+                                onPressed: () => model.estimateBrewRatio( BrewRatioType.doseBrewWeight)
+                                )),
                         ]),
+
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
+
                         /// Dose
                         RatioTextFieldItemWithInitalValue(
                             snapshot.data.getItem(DatabaseIds.brewingDose)),
