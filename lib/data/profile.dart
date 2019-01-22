@@ -614,7 +614,7 @@ Future<String> getUserImage ()async{
 
       case DatabaseIds.grindSetting:
         _item = new Item(
-          title: StringLabels.grindSetting,
+          title: StringLabels.setting,
           value: '',
           databaseId: DatabaseIds.grindSetting,
           placeHolderText: StringLabels.enterValue,
@@ -634,7 +634,7 @@ Future<String> getUserImage ()async{
 
       case DatabaseIds.temparature:
         _item = new Item(
-          title: StringLabels.temparature,
+          title: StringLabels.degreeC,
           value: '',
           databaseId: DatabaseIds.temparature,
           placeHolderText: StringLabels.enterTemparature,
@@ -847,6 +847,16 @@ Future<String> getUserImage ()async{
           value: '',
           databaseId: DatabaseIds.ph,
           placeHolderText: StringLabels.ph,
+          keyboardType: TextInputType.number,
+        );
+        break;
+
+        case DatabaseIds.testTemparature:
+        _item = new Item(
+          title: StringLabels.testTemparature,
+          value: '',
+          databaseId: DatabaseIds.testTemparature,
+          placeHolderText: StringLabels.degreeC,
           keyboardType: TextInputType.number,
         );
         break;

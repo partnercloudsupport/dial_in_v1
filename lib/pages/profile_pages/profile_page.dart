@@ -181,8 +181,9 @@ class ProfilePageState extends State<ProfilePage> {
     if (_profilePageModel.isOldProfile) {
       _bottomBar = Material(
           child: Material(
-        color: Theme.of(context).primaryColor,
+        color: Theme.of(context).buttonColor,
         child: BottomAppBar(
+          color: Theme.of(context).accentColor,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -339,12 +340,9 @@ class ProfilePageAppBar extends StatefulWidget {
 
 class _ProfilePageAppBarState extends State<ProfilePageAppBar> {
   List<Widget> _appBarActions = [
-    MaterialButton(
-      onPressed: () {},
-    )
+    MaterialButton(onPressed: () {},)
   ];
 
-  /// Setup bottom bar
   void setupAppBarActions(
       ProfilePageModel model, Profile profile, bool isEditing) {
     if (!model.isFromUserFeed) {

@@ -160,7 +160,7 @@ class ProfilePageModel extends Model {
 
     if (type == BrewRatioType.doseYield) {
 
-      result =  (_brewWeight - (_dose * 1.9)).toDouble();
+      result =  (_brewWeight - (_dose* 1.9)).toDouble();
        setProfileItemValue( DatabaseIds.yielde, result );
 
     } else {

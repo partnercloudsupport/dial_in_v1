@@ -147,7 +147,7 @@ class _ProfileInputCardWithAttributeState
 
   void handleProfileTextfieldFocus() {
     if (_textFocus.hasFocus) {
-      PopUps.showProfileList(widget.profile.type, context);
+      PopUps.showProfileList(widget.profile.type, context , ProfilePageModel.of(context));
       _textFocus.unfocus();
     }
   }
@@ -430,7 +430,7 @@ class ProfileInputWithDetailsCardState
 
   void handleLeftProfileTextfieldFocus() {
     if (_focus.hasFocus) {
-      PopUps.showProfileList(widget._profile.type, context);
+      PopUps.showProfileList(widget._profile.type, context, ProfilePageModel.of(context));
       _focus.unfocus();
     }
   }
@@ -519,7 +519,7 @@ class _ProfileInputCardState extends State<ProfileInputCard> {
 
   void handleLeftProfileTextfieldFocus() {
     if (_focus.hasFocus) {
-      PopUps.showProfileList(widget._profile.type, context);
+      PopUps.showProfileList(widget._profile.type, context , ProfilePageModel.of(context));
       _focus.unfocus();
     }
   }
@@ -697,7 +697,7 @@ class _RatioCardState extends State<RatioCard> {
                               ),
                               onPressed: () => model.estimateBrewRatio(BrewRatioType.doseYield,)
                               )),
-                              
+
                           Container(
                             width: 130.0,
                             child: RaisedButton(

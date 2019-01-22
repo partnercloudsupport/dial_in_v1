@@ -1102,7 +1102,7 @@ class TabViewDataArray{
 
 class PopUps{
 
-  static void showProfileList(ProfileType profileType, BuildContext context) async {
+  static void showProfileList(ProfileType profileType, BuildContext context, ProfilePageModel model) async {
 
     void handleProfileselectionResult(dynamic result) {
       if (result is bool) {
@@ -1143,16 +1143,12 @@ class PopUps{
     // flutter defined function
     var result;
 
-    await showDialog(
-        context: context,
-        builder: (BuildContext context) {
+    await showDialog(context: context, builder: (BuildContext context) {
 
-          ScopedModelDescendant(builder: ( BuildContext context ,_, ProfilePageModel model ) =>
+          return
+            
+            SimpleDialog(
 
-            Center(
-              child: Container(
-                  height: 400.0,
-                  child: SimpleDialog(
                     title: Text(Functions.convertDatabaseIdToTitle(
                         Functions.getProfileTypeDatabaseId(profileType))),
                     children: <Widget>[
@@ -1164,16 +1160,19 @@ class PopUps{
                       ),
 
                       /// Profiles list
+                      Container(
+                      height: 400.0,
+                      width: 300.0,
+                      child:
                       ProfileListDialog(
                         profileType,
                         (sentProfile) {  model.setSubProfile(sentProfile);},
-                      )
+                      ))
                     ],
-                  )))
-        );
-    return result;
-  }
+            );
+    }
     );
+    return result;
   }
 
 static void showCircularProgressIndicator(BuildContext context){
