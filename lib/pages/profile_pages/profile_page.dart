@@ -75,29 +75,37 @@ class ProfilePageState extends State<ProfilePage> {
     _profilePageModel.dispose();
     super.dispose();
   }
-
+  
   @override
   Widget build(BuildContext context) {
    
     return new 
     ScopedModel(
-        model: _profilePageModel,
-        child: 
+      model: _profilePageModel,
+      child: 
+
+      StreamBuilder<bool>(
+        stream: _profilePageModel.isEditingStream,
+        builder: (BuildContext context, AsyncSnapshot<bool> isEditing) =>
+      
+      StreamBuilder<Profile>(
+        stream: _profilePageModel.profileStream,
+        builder: (BuildContext context, AsyncSnapshot<Profile> profile){
+
+          if (!profile.hasData){ return Center(child: CircularProgressIndicator(),); }
+          else {
         
-        StreamBuilder<Profile>(
-            stream: _profilePageModel.profileStream,
-            builder: (BuildContext context, AsyncSnapshot<Profile> snapshot){
+          getBody(profile.data, isEditing.data);
 
-              if (!snapshot.hasData){ return Center(child: CircularProgressIndicator(),); }
-              else {
-            
-             getBody(snapshot.data);
+          return 
 
-              return 
-
-              Scaffold(
-                appBar: PreferredSize(preferredSize: Size.fromHeight(50) ,child: ProfilePageAppBar()),
-                body: ListView(
+          Scaffold(
+            appBar: PreferredSize(preferredSize: Size.fromHeight(50) ,child: ProfilePageAppBar()),
+            body:
+              AbsorbPointer
+              (absorbing: !isEditing.data,
+                child:
+                ListView(
                   children: <Widget>[
                     Column(
                       children: <Widget>[
@@ -105,24 +113,24 @@ class ProfilePageState extends State<ProfilePage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: _pageBody),
 
-                        /// All below changes depending on profile
-                      Container()
-                        
-                        // _returnPageStructure(),
+                        /// All below changes depending on profile                        
+                        _returnPageStructure(),
                       ],
                     )
                   ],
                 ),
-                bottomNavigationBar: _returnBottomBar(snapshot.data));
+                ),
+                bottomNavigationBar: _returnBottomBar(profile.data));
                 }
             }
         )
+    )
     );
   }
 
 
   /// Setup the body of the profile page
-  void getBody(Profile profile) {
+  void getBody(Profile profile , bool isEditing) {
 
     _pageBody = <Widget>[
       /// Spacer
@@ -141,7 +149,7 @@ class ProfilePageState extends State<ProfilePage> {
                   height: 200.0,
                   child: CircularProfilePicture(profile, 200.0)),
             ),
-            onTap: _profilePageModel.isEditing
+            onTap: isEditing
                 ? () {
                     _getimage( (image) {
                       setState(() {
@@ -158,7 +166,7 @@ class ProfilePageState extends State<ProfilePage> {
     ];
 
     if (!widget.isFromUserFeed) {
-      if (_profilePageModel.isEditing) {
+      if (isEditing) {
         _pageBody[2] = PublicProfileSwitch(
                               profile.isPublic,
                               (String id, dynamic isPublic) {
@@ -266,7 +274,7 @@ class _PublicProfileSwitchState extends State<PublicProfileSwitch> {
   Widget build(BuildContext context) {
     return Container(
       child:
-
+      
           ///Public profile switch
         Expanded(
         child: Column(
@@ -343,15 +351,17 @@ class _ProfilePageAppBarState extends State<ProfilePageAppBar> {
   List<Widget> _appBarActions = [ MaterialButton(onPressed: (){},)];
   
   /// Setup bottom bar
-  void setupAppBarActions(ProfilePageModel model, Profile profile) {
+  void setupAppBarActions(ProfilePageModel model, Profile profile, bool isEditing) {
     if (!model.isFromUserFeed) {
-      model.isEditing
-          ? _appBarActions[0] = RawMaterialButton(
+     
+          
+      isEditing
+          ? _appBarActions[0] =  RawMaterialButton(
               child: Icon(Icons.save_alt), onPressed:() => saveFunction(model, profile))
-          : _appBarActions[0] = RawMaterialButton(
+          : _appBarActions[0] =  RawMaterialButton(
               child: Icon(Icons.edit),
               onPressed: () {
-                setState(() { model.isEditing = true; });
+                setState(() { model.isEdtingSink.add(true); });
               });
     }
   }
@@ -380,25 +390,33 @@ class _ProfilePageAppBarState extends State<ProfilePageAppBar> {
 
         return
 
-        StreamBuilder(
+        StreamBuilder<Profile>(
           stream: model.profileStream ,
-          builder: (BuildContext context, AsyncSnapshot snapshot){
+          builder: (BuildContext context, AsyncSnapshot<Profile> profile){
+            return
+
+          StreamBuilder<bool>(
+          stream: model.isEditingStream ,
+          builder: (BuildContext context, AsyncSnapshot<bool> isEditing){
          
-        setupAppBarActions(model, snapshot.data);
-            return 
+        setupAppBarActions(model, profile.data, isEditing.data);
+
+        return 
 
         AppBar(
               centerTitle: true,
-              title: Text(model.appBarTitle() , style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15.0)),
+              title: Text(model.appBarTitle(isEditing.data) , style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15.0)),
               automaticallyImplyLeading: false,
-              leading: model.isEditing
+              leading: isEditing.data
                   ? RawMaterialButton(
                       child: Icon(Icons.cancel),
-                      onPressed: () { model.isEditing = false; })
+                      onPressed: () => setState((){ model.isEdtingSink.add(false); }))
                   : GoBackAppBarButton(),
               actions: _appBarActions,
           );
          },
+        );
+      }
         );
       }
     );

@@ -37,8 +37,13 @@ class ProfilePageModel extends Model {
   BehaviorSubject<Profile> _profileStreamController ;
   Stream<Profile> get profileStream => _profileStreamController.stream;
 
+
+  BehaviorSubject<bool> _isEditingStreamController;
+  Stream<bool> get isEditingStream => _isEditingStreamController.stream;
+  Sink<bool> get isEdtingSink => _isEditingStreamController.sink;
+
+
   bool isFromUserFeed;
-  bool isEditing;
   bool isOldProfile;
   bool isCopying;
   bool _referance;
@@ -51,12 +56,14 @@ class ProfilePageModel extends Model {
     String profileReferance, 
     ProfileType type, 
     this.isFromUserFeed, 
-    this.isEditing, 
+    _isEditing, 
     this.isOldProfile, 
     this.isCopying,
     this._isNew) {
       this.type = type; 
       _profileStreamController = new BehaviorSubject<Profile>();
+      _isEditingStreamController = new BehaviorSubject<bool>();
+      _isEditingStreamController.add(_isEditing);
       getProfile(profileReferance, type);
   }
 
@@ -87,7 +94,7 @@ class ProfilePageModel extends Model {
     });
   }
 
-  String appBarTitle(){
+  String appBarTitle(bool isEditing){
   if ( isFromUserFeed && _referance != null)
     { return  "$_referance's Recipe"; } 
     
@@ -139,6 +146,7 @@ class ProfilePageModel extends Model {
     _doseStreamController.close();
     _yieldStreamController.close();
     _brewWWeightStreamController.close();
+    _isEditingStreamController.close();
   }
 
   String estimateBrewRatio(BrewRatioType type) {
@@ -157,11 +165,11 @@ class ProfilePageModel extends Model {
     }
   }
 
-  void updateRatioValues(){
-    _doseStreamController.add ( Functions.getIntValue( _profile.getItemValue( DatabaseIds.brewingDose )));
-    _yieldStreamController.add ( Functions.getIntValue(_profile.getItemValue( DatabaseIds.yielde )));
-    _brewWWeightStreamController.add ( Functions.getIntValue( _profile.getItemValue( DatabaseIds.brewWeight )));
-  }
+  // void updateRatioValues(){
+  //   _doseStreamController.add ( Functions.getIntValue( _profile.getItemValue( DatabaseIds.brewingDose )));
+  //   _yieldStreamController.add ( Functions.getIntValue(_profile.getItemValue( DatabaseIds.yielde )));
+  //   _brewWWeightStreamController.add ( Functions.getIntValue( _profile.getItemValue( DatabaseIds.brewWeight )));
+  // }
 
   String getBrewRatioFromYielde( int yieldIn ) {
     int result = Functions.getIntValue( _profile.getItemValue( DatabaseIds.brewWeight )) - Functions.getIntValue( _profile.getItemValue( DatabaseIds.brewingDose ));

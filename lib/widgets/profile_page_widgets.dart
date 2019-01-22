@@ -42,10 +42,15 @@ class ScoreSliderState extends State<ScoreSlider> {
   Widget build(BuildContext context) {
     return ScopedModelDescendant(
         builder: (BuildContext context, _, ProfilePageModel model) =>
+        StreamBuilder<bool>(
+        stream: model.isEditingStream,
+        builder: (BuildContext context, AsyncSnapshot<bool> isEditing) =>
             StreamBuilder<Profile>(
                 stream: model.profileStream,
                 builder:
                     (BuildContext context, AsyncSnapshot<Profile> snapshot) {
+
+                      return
                   Container(
                       width: double.infinity,
                       margin: EdgeInsets.all(_margin),
@@ -63,10 +68,10 @@ class ScoreSliderState extends State<ScoreSlider> {
                             Text('${_value.toInt()}/10',
                                 style: Theme.of(context).textTheme.subtitle),
 
-                            model.isEditing
+                            isEditing.data
                                 ? CupertinoSlider(
                                     value: _value,
-                                    onChanged: model.isEditing
+                                    onChanged: isEditing.data
                                         ? (value) {
                                             setState(() {
                                               _value = value;
@@ -90,7 +95,7 @@ class ScoreSliderState extends State<ScoreSlider> {
                                   ),
                             // inactiveColor: Theme.of(context).sliderTheme.inactiveTrackColor,
                           ]));
-                }));
+                })));
   }
 }
 
@@ -105,8 +110,7 @@ class ProfileInputCardWithAttribute extends StatefulWidget {
   final String profileHintText = StringLabels.chooseProfile;
   final Profile profile;
 
-  ProfileInputCardWithAttribute(
-      {this.profile, this.attributeItem, this.textFieldWidth = 150.0});
+  ProfileInputCardWithAttribute(this.profile, this.attributeItem,{ this.textFieldWidth = 150.0});
 
   _ProfileInputCardWithAttributeState createState() =>
       new _ProfileInputCardWithAttributeState();
@@ -120,8 +124,7 @@ class _ProfileInputCardWithAttributeState
 
   @override
   void initState() {
-    _attributeController =
-        new TextEditingController(text: widget.attributeItem.value);
+    _attributeController = new TextEditingController(text: widget.attributeItem.value);
     _attributeController.addListener(sendAttributeValue);
     _profileTextController = new TextEditingController();
     _textFocus = new FocusNode();
@@ -166,9 +169,12 @@ class _ProfileInputCardWithAttributeState
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.all(5.0),
+                  
+                  Container(
+                    width: 10.0,
                   ),
+
+                  CircularProfilePicture(widget.profile, 40.0),
 
                   /// Left profile selection
 
@@ -666,6 +672,7 @@ class _RatioCardState extends State<RatioCard> {
         builder: (context, _, model) => StreamBuilder<Profile>(
             stream: model.profileStream,
             builder: (BuildContext context, AsyncSnapshot<Profile> snapshot) {
+              return
               Card(
                   child: Container(
                 margin: EdgeInsets.all(widget._margin),
@@ -795,7 +802,7 @@ class _TdsAndExtractionCardState extends State<TdsAndExtractionCard> {
 
                                 /// TDS
                                 TextFieldItemWithInitalValue(
-                                    snapshot.data.getItemValue(DatabaseIds.tds),
+                                    snapshot.data.getItem(DatabaseIds.tds),
                                     100.0,
                                     textInputFormatters: [
                                       BlacklistingTextInputFormatter(
@@ -907,6 +914,9 @@ class _NotesCardState extends State<NotesCard> {
                 stream: model.profileStream,
                 builder:
                     (BuildContext context, AsyncSnapshot<Profile> snapshot) {
+
+                    return
+
                   Card(
                       child: Container(
                     height: 200.0,

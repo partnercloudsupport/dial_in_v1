@@ -558,7 +558,7 @@ Future<String> getUserImage ()async{
           isPublic: true,
           updatedAt: DateTime.now(),
           objectId: '',
-          imageUrl: Images.userFirebase,
+          imageAssetPlaceholder: Images.user,
           databaseId: DatabaseIds.Barista,
           type: ProfileType.barista,
           orderNumber: 0,
@@ -570,18 +570,7 @@ Future<String> getUserImage ()async{
         );
         break;
 
-      default:
-        return new Profile(
-          isPublic: true,
-          updatedAt: DateTime.now(),
-          objectId: '',
-          // image: document[DatabaseIds.image].toString(),
-          databaseId: DatabaseIds.databaseId,
-          orderNumber: 0,
-          properties: [
-            createBlankItem(DatabaseIds.name),
-          ],
-        );
+      default: throw('Error - no profile created');
         break;
     }
   }

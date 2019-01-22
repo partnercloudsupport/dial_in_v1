@@ -995,11 +995,11 @@ class _TimePickerTextFieldState extends State<TimePickerTextField> {
         }
       }
 
-      @override
-      void didUpdateWidget(TimePickerTextField oldWidget) {
-        _controller.text = Functions.convertSecsToMinsAndSec(Functions.getIntValue(_item.value));
-          super.didUpdateWidget(oldWidget);
-        }      
+      // @override
+      //  void didUpdateWidget(TimePickerTextField oldWidget) {
+      //   _controller.text = Functions.convertSecsToMinsAndSec(Functions.getIntValue(_item.value));
+      //     super.didUpdateWidget(oldWidget);
+      //   }     
 
   @override
   Widget build(BuildContext context) {
@@ -1193,7 +1193,7 @@ static void showPickerMenu(Item item, BuildContext context) {
       item.inputViewDataSet[0].forEach((itemText) {
         _items.add(Center(
             child: Text(
-          itemText,
+          itemText.toString(),
           style: Theme.of(context).textTheme.display2,
         )));
       });

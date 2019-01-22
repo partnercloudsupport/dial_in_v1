@@ -65,11 +65,9 @@ class _RecipePageState extends State<RecipePage> {
      StreamBuilder<Profile>(
             stream: model.profileStream,
             builder: (BuildContext context, AsyncSnapshot<Profile> snapshot){
-    
-    model.updateRatioValues();
-
+   
     return
-    
+
     Column(children: <Widget>[ 
 
     /// Date
@@ -88,16 +86,19 @@ class _RecipePageState extends State<RecipePage> {
     ///Barista
       ProfileInputCard(snapshot.data.getProfileProfile(ProfileType.barista),),
 
-    /// Water
-      ProfileInputCardWithAttribute( profile: snapshot.data.getProfileProfile(ProfileType.water),),
+    // /// Water
+      ProfileInputCardWithAttribute
+      ( snapshot.data.getProfileProfile(ProfileType.water), snapshot.data.getItem(DatabaseIds.temparature)),
 
-    /// Grinder
-      ProfileInputCardWithAttribute(profile: snapshot.data.getProfileProfile(ProfileType.grinder)),
+    // /// Grinder
+      ProfileInputCardWithAttribute
+      ( snapshot.data.getProfileProfile(ProfileType.grinder), snapshot.data.getItem(DatabaseIds.grindSetting)),
 
-    /// Equipment
-      ProfileInputCardWithAttribute(profile: snapshot.data.getProfileProfile(ProfileType.equipment),),
+    // /// Equipment
+      ProfileInputCardWithAttribute
+      ( snapshot.data.getProfileProfile(ProfileType.equipment), snapshot.data.getItem(DatabaseIds.preinfusion)),
 
-      /// Ratio card
+      /// Ratio card /// TODO fix
       RatioCard(),
 
       /// Time
@@ -107,74 +108,75 @@ class _RecipePageState extends State<RecipePage> {
           snapshot.data.getItem(DatabaseIds.time),
           (item) => PopUps.showPickerMenu(item, context),
           100.0, 
-          )
+          ),
 
           ],)),),
 
       /// Extraction and TDS
-      TdsAndExtractionCard( ),
+      /// TODO
+      // TdsAndExtractionCard(),
 
       /// Notes
       NotesCard( snapshot.data.getItem( DatabaseIds.notes )),
 
       ///Score Section
       Card( child: Container(
-              
-              padding: EdgeInsets.all(50.0),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
         
-                    Text(
-                      StringLabels.score,
-                      style: Theme.of(context).textTheme.title,
-                      ),
-                  
-                      ScoreSlider(
-                        StringLabels.strength,
-                        double.parse(snapshot.data.getItemValue(DatabaseIds.strength)),
-                        (value) { model.setProfileItemValue( DatabaseIds.strength, value.toString());},
-                        ),
+        padding: EdgeInsets.all(50.0),
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
 
-                        Divider(),
+            Text(
+              StringLabels.score,
+              style: Theme.of(context).textTheme.title,
+              ),
+          
+              ScoreSlider(
+                StringLabels.strength,
+                double.parse(snapshot.data.getItemValue(DatabaseIds.strength)),
+                (value) { model.setProfileItemValue( DatabaseIds.strength, value.toString());},
+                ),
 
-                      ScoreSlider(
-                        StringLabels.balance,
-                        double.parse(snapshot.data.getItemValue(DatabaseIds.balance)),
-                        (value) { model.setProfileItemValue( DatabaseIds.balance, value.toString());},
-                        ),
+                Divider(),
 
-                      Divider(),
+              ScoreSlider(
+                StringLabels.balance,
+                double.parse(snapshot.data.getItemValue(DatabaseIds.balance)),
+                (value) { model.setProfileItemValue( DatabaseIds.balance, value.toString());},
+                ),
 
-                      ScoreSlider(
-                        StringLabels.flavour,
-                        double.parse(snapshot.data.getItemValue(DatabaseIds.flavour)),
-                        (value) { model.setProfileItemValue( DatabaseIds.flavour, value.toString());},
-                        ),
+              Divider(),
 
-                      Divider(),
+              ScoreSlider(
+                StringLabels.flavour,
+                double.parse(snapshot.data.getItemValue(DatabaseIds.flavour)),
+                (value) { model.setProfileItemValue( DatabaseIds.flavour, value.toString());},
+                ),
 
-
-                      ScoreSlider(
-                        StringLabels.body,
-                        double.parse(snapshot.data.getItemValue(DatabaseIds.body)),
-                        (value) {model.setProfileItemValue( DatabaseIds.body, value.toString());},
-                        ),
-
-                      Divider(),
+              Divider(),
 
 
-                      ScoreSlider(
-                        StringLabels.afterTaste,
-                        double.parse(snapshot.data.getItemValue(DatabaseIds.afterTaste)),
-                        (value) {model.setProfileItemValue( DatabaseIds.afterTaste, value.toString());},
-                        ),
+              ScoreSlider(
+                StringLabels.body,
+                double.parse(snapshot.data.getItemValue(DatabaseIds.body)),
+                (value) {model.setProfileItemValue( DatabaseIds.body, value.toString());},
+                ),
 
-                      Padding(padding: EdgeInsets.all(20.0)),
+              Divider(),
 
-                      Text('Total score ${snapshot.data.getTotalScore().toInt().toString()} / 50', style: Theme.of(context).textTheme.display4)
-                      /// End of score   
-                  
+
+              ScoreSlider(
+                StringLabels.afterTaste,
+                double.parse(snapshot.data.getItemValue(DatabaseIds.afterTaste)),
+                (value) {model.setProfileItemValue( DatabaseIds.afterTaste, value.toString());},
+                ),
+
+              Padding(padding: EdgeInsets.all(20.0)),
+
+              Text('Total score ${snapshot.data.getTotalScore().toInt().toString()} / 50', style: Theme.of(context).textTheme.display4)
+              /// End of score   
+          
           ],
         ),
         ),
