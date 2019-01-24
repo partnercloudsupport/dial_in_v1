@@ -187,44 +187,6 @@ class ProfilesModel extends Model {
 
   void update(Profile profile) {
     Dbf.updateProfile(profile);
-    // switch (profile.type){
-
-    //   case ProfileType.recipe:
-    //    _recipeFeed.add(profile);
-    //   break;
-
-    //   case ProfileType.coffee:
-    //    _coffeeFeed.add(profile);
-    //   break;
-
-    //   case ProfileType.grinder:
-    //    _grinderFeed.add(profile);
-    //   break;
-
-    //   case ProfileType.equipment:
-    //    _equipmentFeed.add(profile);
-    //   break;
-
-    //   case ProfileType.water:
-    //    _waterFeed.add(profile);
-    //   break;
-
-    //   case ProfileType.barista:
-    //    _baristaFeed.add(profile);
-    //   break;
-
-    //   case ProfileType.none:
-    //    throw(profile.type);
-    //   break;
-
-    //   case ProfileType.feed:
-    //    throw(profile.type);
-    //   break;
-
-    //   default:
-    //    throw(profile.type);
-    //   break;
-    // }
   }
 
   void delete(Profile profile) {
@@ -321,4 +283,17 @@ class ProfilesModel extends Model {
   }
 }
 
+class ImagePickerModel extends Model {
+
+  String _referance = 'dvjbeuyvba';
+  String get referance => _referance;
+
+  String _filePath;
+  String get getFilePath => _filePath;
+  set setFilePath(String filePath) => _filePath = filePath;
+
+ static ImagePickerModel of(BuildContext context) =>
+      ScopedModel.of<ImagePickerModel>(context);
+  
+}
 

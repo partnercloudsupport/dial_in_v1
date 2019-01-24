@@ -78,6 +78,7 @@ class SocialFeedBloc{
   UserProfile _currentUser;
   Function(String) isUserFollowing;
   List<Profile> _currentFeedData;
+  
 
   Stream<List<FeedProfileData>> get profiles => _outgoingController.stream;
 

@@ -1025,7 +1025,7 @@ class CurrentUserProfileStream{
 
  
 
-class Storage {
+class LocalStorage {
 
   static Future<String> get localPath async {
     final dir = await getApplicationDocumentsDirectory();
@@ -1052,6 +1052,17 @@ class Storage {
     final file = await localFile;
     return file.writeAsString("$data");
   }
+
+  static Future<String> saveFileToDeviceReturnPath(File image, String referance)async{
+
+    //TODO
+    // final String path = await LocalStorage.localPath;
+
+    // final File newImage = await image.copy('$path/$referance').catchError((e) => print(e));
+    
+    return image.path;
+
+  } 
 }
 
 class DatabaseIds{

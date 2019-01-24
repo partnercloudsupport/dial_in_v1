@@ -24,8 +24,8 @@ class ProfilePageModel extends Model {
     _profileStreamController.add(_profile);
   }
 
-  set profileImagePath(String imagePath) => _profile.imageFilePath;
-  set profileImageUrl(String imageUrl) => _profile.imageUrl;
+  set profileImagePath(String imagePath) => _profile.imageFilePath = imagePath;
+  set profileImageUrl(String imageUrl) => _profile.imageUrl = imageUrl;
 
 
 
@@ -169,16 +169,11 @@ class ProfilePageModel extends Model {
     }
   }
 
-  // void updateRatioValues(){
-  //   _doseStreamController.add ( Functions.getIntValue( _profile.getItemValue( DatabaseIds.brewingDose )));
-  //   _yieldStreamController.add ( Functions.getIntValue(_profile.getItemValue( DatabaseIds.yielde )));
-  //   _brewWWeightStreamController.add ( Functions.getIntValue( _profile.getItemValue( DatabaseIds.brewWeight )));
-  // }
-
   String getBrewRatioFromYielde( int yieldIn ) {
     int result = Functions.getIntValue( _profile.getItemValue( DatabaseIds.brewWeight )) - Functions.getIntValue( _profile.getItemValue( DatabaseIds.brewingDose ));
     return result.toString();
   }
+
 
   static ProfilePageModel of(BuildContext context) =>
       ScopedModel.of<ProfilePageModel>(context);

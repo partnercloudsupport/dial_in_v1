@@ -45,14 +45,10 @@ class UserProfilePage extends StatelessWidget {
                   style: Theme.of(context).textTheme.display4,
                 ),
 
-                 //MOTTO
-                 
+                 //MOTTO       
                   _userProfile.motto == null ? 
                   Container(width: 0, height: 0): 
-                  Container(padding: EdgeInsets.all(20.0), 
-                    child: Text(_userProfile.motto ?? '', style: Theme.of(context).textTheme.headline)
-                  ),
-
+                  Container(padding: EdgeInsets.all(20.0), child: Text(_userProfile.motto ?? '', style: Theme.of(context).textTheme.headline)),
 
                 // Following button Logic
                 isCurrentUser

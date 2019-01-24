@@ -96,7 +96,8 @@ class ProfilePageState extends State<ProfilePage> {
                           child: CircularProgressIndicator(),
                         );
                       } else {
-                        getBody(profile.data, isEditing.data);
+                        
+                        getBody(profile.data, isEditing.data, _profilePageModel);
 
                         return Scaffold(
                             appBar: PreferredSize(
@@ -126,7 +127,7 @@ class ProfilePageState extends State<ProfilePage> {
   }
 
   /// Setup the body of the profile page
-  void getBody(Profile profile, bool isEditing) {
+  void getBody(Profile profile, bool isEditing, ProfilePageModel model) {
     _pageBody = <Widget>[
       /// Spacer
       Expanded(
@@ -146,11 +147,8 @@ class ProfilePageState extends State<ProfilePage> {
             ),
             onTap: isEditing
                 ? () {
-                    _getimage((image) {
-                      setState(() {
-                        profile.imageUrl = image;
-                      });
-                    });
+                    _getimage( model ,
+                     (image) {setState(() { profile.imageUrl = image; }); });
                   }
                 : () {}),
       ),
@@ -235,13 +233,10 @@ class ProfilePageState extends State<ProfilePage> {
   }
 
   /// Get image for profile photo
-  Future _getimage(Function(String) then) async {
-    await showDialog(
-            context: context,
-            builder: (BuildContext context) => CupertinoImagePicker())
-        .then((imageFilePath) => setState(() {
-              ProfilePageModel.of(context).profileImagePath = imageFilePath;
-            }));
+  Future _getimage(ProfilePageModel model, Function(String) then) async {
+    
+   String filePath = await showDialog( context: context,builder: ( BuildContext context ) => CupertinoImagePicker());
+   setState(() { model.profileImagePath = filePath; });
   }
 }
 

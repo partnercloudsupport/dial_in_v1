@@ -1851,42 +1851,25 @@ class ProfileRefresher extends StatelessWidget {
 class CupertinoImagePickerDiolog extends StatelessWidget {
 
   final ImageSource _imageSource; 
-  final Function(dynamic) _setimage;
 
-  CupertinoImagePickerDiolog(this._imageSource, this._setimage);
+  CupertinoImagePickerDiolog(this._imageSource);
 
-  void showImagePicker(BuildContext context){
+  void showImagePicker(BuildContext context, ImagePickerModel model){
+
       ImagePicker.pickImage(maxWidth: 640.0, maxHeight: 480.0, source: _imageSource)
-                  .then((image) => handleImagePickerReturn(image, context))
+                  .then((image) => handleImagePickerReturn(image, context, model))
+                  .then( (filePath) => Navigator.pop(context, model.getFilePath))
                   .catchError((error) => print(error));
   }
 
-  void handleImagePickerReturn(dynamic image, context){
+  void handleImagePickerReturn(dynamic image, BuildContext context, ImagePickerModel model)async{
     if(image != null){
-      /// If image is not null Image is a file
       PopUps.showCircularProgressIndicator(context);
-      sendBackFilePath((image as File).path, context);
-
-      // DatabaseFunctions.upLoadFileReturnUrl(image, [DatabaseIds.image])
-      //                                     .then((url) => sendBackUrl(url, context))
-      //                                     .catchError((error){print(error);});
+      String filePath = await LocalStorage.saveFileToDeviceReturnPath(image, model.referance);
+      model.setFilePath = filePath;
+      Navigator.pop(context, filePath);
     }
   }
-
-  void sendBackFilePath(String filePath, BuildContext context){
-      assert(filePath != null);
-      if(filePath != null){_setimage(filePath);
-      /// Remove circular progrss indicator
-      Navigator.pop(context, filePath);}  
-  }
-
-  void sendBackUrl(String url, BuildContext context){
-      assert(url != null);
-      if(url != null){_setimage(url);
-      /// Remove circular progrss indicator
-      Navigator.pop(context, url);}  
-  }
-
 
   @override
   Widget build(BuildContext context){
@@ -1899,7 +1882,7 @@ class CupertinoImagePickerDiolog extends StatelessWidget {
     return CupertinoDialogAction(
           child: Text(_title, style: Theme.of(context).textTheme.display1),
           isDestructiveAction: false,
-          onPressed: () => showImagePicker(context)
+          onPressed: () => showImagePicker(context, ImagePickerModel.of(context))
     );
   }
 }

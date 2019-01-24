@@ -17,6 +17,8 @@ import 'package:image/image.dart' as Image;
 import 'dart:io' as Io;
 import 'package:dial_in_v1/data/mini_classes.dart';
 import 'package:dial_in_v1/data/images.dart';
+import 'package:dial_in_v1/inherited_widgets.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 
 
@@ -559,35 +561,31 @@ class Functions {
   }
 }
 
-class CupertinoImagePicker extends StatelessWidget {
-  const CupertinoImagePicker(
-    {
-    Key key,
-    }) : super(key: key);
 
-  void imagePath(String path, BuildContext context){
-    /// Remove CupertinoImagePicker diolog and return string
-    Navigator.pop(context, path);
-  }
+
+class CupertinoImagePicker extends StatelessWidget {
+
+  final ImagePickerModel model = new ImagePickerModel();
 
   @override
   Widget build(BuildContext context) {
     return 
-    Center(child: Container( width:200, child:
-     CupertinoActionSheet(
-       title: Text(StringLabels.photoSource, style: Theme.of(context).textTheme.subtitle,),
-       actions: <Widget>[
+    ScopedModel(
+      model: model,
+      child:
+      Center(child: Container( width:200, child:
 
-        CupertinoImagePickerDiolog(
-          ImageSource.camera, 
-          (path) { imagePath(path , context);}),
-    
-        CupertinoImagePickerDiolog(
-          ImageSource.gallery,
-          (path) { imagePath(path , context);}),
+      CupertinoActionSheet(
+        title: Text(StringLabels.photoSource, style: Theme.of(context).textTheme.subtitle,),
+        actions: <Widget>[
 
-        ],
-       )
+          CupertinoImagePickerDiolog(ImageSource.camera),
+      
+          CupertinoImagePickerDiolog(ImageSource.gallery),
+
+          ],
+        )
+        )
       )
     );
   }
