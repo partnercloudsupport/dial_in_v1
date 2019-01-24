@@ -12,6 +12,7 @@ import 'package:dial_in_v1/data/strings.dart';
 import 'package:dial_in_v1/data/mini_classes.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:flutter/services.dart';
+import 'package:dial_in_v1/data/functions.dart';
 
 
 
@@ -440,6 +441,8 @@ class Dbf {
     assert(fileName != null);
     return fileName;
   }
+
+
 
   /// Update document with referance
   static Future<void> updateProfile(Profile profile)async{
@@ -1056,14 +1059,20 @@ class LocalStorage {
   static Future<String> saveFileToDeviceReturnPath(File image, String referance)async{
 
     File oldImage = image;
-    //TODO
-    final String path = await LocalStorage.localPath;
+    final String locaPath = await LocalStorage.localPath;
 
-    final File newImage = await oldImage.copy('$path/filename.jpg').catchError((e) => print(e));
+    String fileType = Functions.getFileType(image.path);
+    
+    String fileName = Functions.getRandomNumber();
+
+    final String path = '$locaPath/$fileName.$fileType';
+
+    final File newImage = await oldImage.copy(path).catchError((e) => print(e));
     
     return newImage.path;
 
   } 
+  
 }
 
 class DatabaseIds{

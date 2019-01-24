@@ -48,6 +48,8 @@ class GrinderDetailsCard extends StatelessWidget {
      StreamBuilder<Profile>(
             stream: model.profileStream,
             builder: (BuildContext context, AsyncSnapshot<Profile> snapshot){
+
+              return
     
     Card(
         child: Container(

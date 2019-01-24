@@ -41,9 +41,11 @@ class BaristaDetailsCard extends StatelessWidget {
     return ScopedModelDescendant<ProfilePageModel>(
         rebuildOnChange: true,
         builder: (BuildContext context, _, ProfilePageModel model) {
+          return
           StreamBuilder<Profile>(
               stream: model.profileStream,
               builder: (BuildContext context, AsyncSnapshot<Profile> snapshot) {
+                return
                 Card(
                     child: Container(
                         padding: EdgeInsets.all(_padding),

@@ -24,6 +24,20 @@ import 'package:scoped_model/scoped_model.dart';
 
 class Functions {
 
+  static String getFileType(String path){
+    
+    final RegExp regExpPng = RegExp(r'(png)');
+    final RegExp regExpjpg = RegExp(r'jpg');
+    String fileName;
+
+    if (path.contains(regExpPng)){ fileName = 'png';}
+    else if (path.contains(regExpjpg)){ fileName = 'jpg';}
+    else {throw('No matching file type') ;}
+    
+    assert(fileName != null);
+    return fileName;
+  }
+
   static String getProfileImagePlaceholder(ProfileType profileType){
 
     String placeHolder;

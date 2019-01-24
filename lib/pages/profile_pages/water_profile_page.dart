@@ -52,7 +52,7 @@ class WaterPage extends StatelessWidget{
                     WaterDetailsCard(),
 
                     // /// Notes
-                    NotesCard(profile.data.getItemValue( DatabaseIds.notes) ) 
+                    NotesCard(profile.data.getItem( DatabaseIds.notes) ) 
                     
                 ]
             );
@@ -76,6 +76,7 @@ class WaterDetailsCard extends StatelessWidget {
      StreamBuilder<Profile>(
             stream: model.profileStream,
             builder: (BuildContext context, AsyncSnapshot<Profile> snapshot){
+              return
     
     Card(child:
      Container(padding: EdgeInsets.all(_padding), margin: EdgeInsets.all( _margin),
