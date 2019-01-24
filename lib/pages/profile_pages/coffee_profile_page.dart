@@ -32,13 +32,11 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
             children: <Widget>[
 
 
-                  // Card(child:
-
-              Container(padding: EdgeInsets.all(20.0), alignment: Alignment(0, 1), height: 100.0,
-              child:
-              
+              Card(child:
+              Container(margin: EdgeInsets.all(10), height: 100.0, child:
+              Column(mainAxisAlignment: MainAxisAlignment.center ,children: <Widget>[
               TextFieldItemWithInitalValue
-              (snapshot.data.getItem( DatabaseIds.coffeeId), 300),),
+              (snapshot.data.getItem( DatabaseIds.coffeeId), 300)]))),
               
               RoastingDetailsCard(),
 
@@ -104,7 +102,7 @@ class OriginDetailsCard extends StatelessWidget {
           ///Alititude
           TextFieldItemWithInitalValue(snapshot.data.getItem(DatabaseIds.altitude),_textFieldWidth),
           ///Country
-          PickerTextField(snapshot.data.getItem(DatabaseIds.altitude), _textFieldWidth,),
+          PickerTextField(snapshot.data.getItem(DatabaseIds.country), _textFieldWidth,),
         ],)
     ],),)
     );

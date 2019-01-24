@@ -1252,7 +1252,9 @@ static void showPickerMenu(Item item, BuildContext context, ProfilePageModel mod
                               children: _items),
                         )
                       ],
-                    )));
+                    )
+                )
+            );
           }
         }).then((nul) {
       // TODO
