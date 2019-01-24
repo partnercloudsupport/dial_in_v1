@@ -146,8 +146,7 @@ class ProfilePageState extends State<ProfilePage> {
                   child: CircularProfilePicture(profile, 200.0)),
             ),
             onTap: isEditing
-                ? () {
-                    _getimage( model ,
+                ? () {_getimage( model ,
                      (image) {setState(() { profile.imageUrl = image; }); });
                   }
                 : () {}),
@@ -235,8 +234,8 @@ class ProfilePageState extends State<ProfilePage> {
   /// Get image for profile photo
   Future _getimage(ProfilePageModel model, Function(String) then) async {
     
-   String filePath = await showDialog( context: context,builder: ( BuildContext context ) => CupertinoImagePicker());
-   setState(() { model.profileImagePath = filePath; });
+   var filePath = await showDialog( context: context,builder: ( BuildContext context ) => CupertinoImagePicker());
+   setState(() { if ( filePath != null ){ model.profileImagePath = filePath; }});
   }
 }
 
@@ -263,7 +262,7 @@ class _PublicProfileSwitchState extends State<PublicProfileSwitch> {
       child:
 
           ///Public profile switch
-          Expanded(
+        Expanded(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,

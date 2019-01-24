@@ -31,12 +31,15 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
           Column(
             children: <Widget>[
 
-              Card(child:
-                Container(padding: EdgeInsets.all(20.0), alignment: Alignment(0, 1),
-                  child:
-                  TextFieldItemWithInitalValue
-                  (snapshot.data.getItemValue( DatabaseIds.coffeeId),double.infinity),)),
 
+                  // Card(child:
+
+              Container(padding: EdgeInsets.all(20.0), alignment: Alignment(0, 1), height: 100.0,
+              child:
+              
+              TextFieldItemWithInitalValue
+              (snapshot.data.getItem( DatabaseIds.coffeeId), 300),),
+              
               RoastingDetailsCard(),
 
               ///Origin details
@@ -75,7 +78,7 @@ class OriginDetailsCard extends StatelessWidget {
     StreamBuilder<Profile>(
           stream: model.profileStream,
           builder: (BuildContext context, AsyncSnapshot<Profile> snapshot){
-  
+            return
     Card(child: Container(padding: EdgeInsets.all(_padding), margin: EdgeInsets.all( _margin), child: Column(children: <Widget>[
 
         Text(StringLabels.originDetails, style: Theme.of(context).textTheme.title,),
@@ -152,18 +155,18 @@ class RoastingDetailsCardState extends State<RoastingDetailsCard> {
 
         ///Roast profile
           PickerTextField
-          (snapshot.data.getItemValue(DatabaseIds.roastProfile), _textFieldWidth),                  
+          (snapshot.data.getItem(DatabaseIds.roastProfile), _textFieldWidth),                  
         ],),
 
         ///Row 2
         Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: <Widget>[
           ///Roastery Name
           TextFieldItemWithInitalValue
-          (snapshot.data.getItemValue(DatabaseIds.roasterName), _textFieldWidth) ,    
+          (snapshot.data.getItem(DatabaseIds.roasterName), _textFieldWidth) ,    
           
           /// Roaster name
           TextFieldItemWithInitalValue
-          (snapshot.data.getItemValue(DatabaseIds.roasterName), _textFieldWidth) ,    
+          (snapshot.data.getItem(DatabaseIds.roasterName), _textFieldWidth) ,    
                                  
         ],)
     ],))
@@ -274,7 +277,6 @@ class GreenDetailsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return 
     
-     
     ScopedModelDescendant(builder: (BuildContext context,_, ProfilePageModel model) =>
 
     StreamBuilder<Profile>(

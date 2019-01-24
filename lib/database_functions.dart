@@ -1055,12 +1055,13 @@ class LocalStorage {
 
   static Future<String> saveFileToDeviceReturnPath(File image, String referance)async{
 
+    File oldImage = image;
     //TODO
-    // final String path = await LocalStorage.localPath;
+    final String path = await LocalStorage.localPath;
 
-    // final File newImage = await image.copy('$path/$referance').catchError((e) => print(e));
+    final File newImage = await oldImage.copy('$path/filename.jpg').catchError((e) => print(e));
     
-    return image.path;
+    return newImage.path;
 
   } 
 }

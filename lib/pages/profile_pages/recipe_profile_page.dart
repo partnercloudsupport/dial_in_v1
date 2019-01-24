@@ -106,7 +106,7 @@ class _RecipePageState extends State<RecipePage> {
         
           TimePickerTextField(
           snapshot.data.getItem(DatabaseIds.time),
-          (item) => PopUps.showPickerMenu(item, context),
+          (item) => PopUps.showPickerMenu(item, context, model),
           100.0, 
           ),
 

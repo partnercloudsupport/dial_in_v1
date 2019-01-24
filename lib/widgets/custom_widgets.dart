@@ -1033,6 +1033,7 @@ class _PickerTextFieldState extends State<PickerTextField> {
 
   TextEditingController _controller;
   FocusNode _focus;
+  ProfilePageModel _model;
 
       @override
        void initState() {
@@ -1049,8 +1050,8 @@ class _PickerTextFieldState extends State<PickerTextField> {
       }
 
       void handleLeftProfileTextfieldFocus(){
-        if (_focus.hasFocus){setState(() {
-            PopUps.showPickerMenu(widget._item, context);
+        if (_focus.hasFocus){ setState(() {
+            PopUps.showPickerMenu(widget._item, context, _model);
         });
           _focus.unfocus();  
         }
@@ -1065,7 +1066,13 @@ class _PickerTextFieldState extends State<PickerTextField> {
   @override
   Widget build(BuildContext context) {
      _controller.text = widget._item.value;
-    return Expanded(
+     _model = ProfilePageModel.of(context);
+
+    return 
+    ScopedModelDescendant(builder: (BuildContext context,_, ProfilePageModel model) =>
+
+    
+    Expanded(
       flex: 5,
       child: Container(padding: EdgeInsets.all(10.0), child: TextFormField(
            textAlign: TextAlign.start,
@@ -1075,7 +1082,8 @@ class _PickerTextFieldState extends State<PickerTextField> {
            ),
            focusNode: _focus,
            controller: _controller,
-       )));
+       )))
+    );
   }
 }
 
@@ -1180,7 +1188,7 @@ static void showCircularProgressIndicator(BuildContext context){
           builder: (context) =>  Center(child:CircularProgressIndicator()));
 }
 
-static void showPickerMenu(Item item, BuildContext context) {
+static void showPickerMenu(Item item, BuildContext context, ProfilePageModel model) {
     List<Widget> _items = new List<Widget>();
     double _itemHeight = 40.0;
 
@@ -1211,10 +1219,6 @@ static void showPickerMenu(Item item, BuildContext context) {
                 new FixedExtentScrollController(initialItem: startItem);
 
             return
-            
-              ScopedModelDescendant(
-        builder: (BuildContext context, _, ProfilePageModel model) =>
-     
             
              Container(
                 child: SizedBox(
@@ -1248,7 +1252,7 @@ static void showPickerMenu(Item item, BuildContext context) {
                               children: _items),
                         )
                       ],
-                    ))));
+                    )));
           }
         }).then((nul) {
       // TODO
@@ -1858,7 +1862,6 @@ class CupertinoImagePickerDiolog extends StatelessWidget {
 
       ImagePicker.pickImage(maxWidth: 640.0, maxHeight: 480.0, source: _imageSource)
                   .then((image) => handleImagePickerReturn(image, context, model))
-                  .then( (filePath) => Navigator.pop(context, model.getFilePath))
                   .catchError((error) => print(error));
   }
 
@@ -1867,7 +1870,8 @@ class CupertinoImagePickerDiolog extends StatelessWidget {
       PopUps.showCircularProgressIndicator(context);
       String filePath = await LocalStorage.saveFileToDeviceReturnPath(image, model.referance);
       model.setFilePath = filePath;
-      Navigator.pop(context, filePath);
+      Navigator.pop(context, model.getFilePath);
+      Navigator.pop(context, model.getFilePath);
     }
   }
 
