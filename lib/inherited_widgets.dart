@@ -301,6 +301,7 @@ class ImagePickerModel extends Model {
   
 }
 
+
 class TimerPickerModel extends Model {
 
   ProfilePageModel _profilePageModel;
@@ -309,6 +310,8 @@ class TimerPickerModel extends Model {
 
   BehaviorSubject<bool> timerRunningStreamContoller = new BehaviorSubject<bool>();
   set timerIsActive (bool isActive) => timerRunningStreamContoller.sink.add(isActive);
+
+  bool get timerIsActive => timer.isActive; 
   Stream<bool> get isTimerActiveStream => timerRunningStreamContoller.stream;
 
   BehaviorSubject<int> _timeStream = new BehaviorSubject<int>();
@@ -333,9 +336,9 @@ class TimerPickerModel extends Model {
   }
 
   void resetWatch() {
-      timerIsActive = false;
-      _time = 0;
-      timer.cancel();
+    timer.cancel();
+    timerIsActive = false;
+   _time = 0;
   }
 
   void updateTime(Timer t){ _time = _time + 1;}
@@ -343,7 +346,7 @@ class TimerPickerModel extends Model {
   Item get item => _profilePageModel.getItem(DatabaseIds.time);
 
   int get mins => ( _time / 60 ).floor();
-  set mins(int minsIn) => _time = (minsIn ~/ 60) + seconds;
+  set mins(int minsIn) => _time = (minsIn * 60) + seconds;
   int get seconds =>  _time % 60;
   set seconds(int secondsIn) => _time = (mins~/ 60) + secondsIn;
 

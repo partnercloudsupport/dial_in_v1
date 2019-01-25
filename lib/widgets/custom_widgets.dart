@@ -1138,10 +1138,8 @@ class TabViewDataArray{
 
 class TimePicker extends StatefulWidget {
 
-  final TimerPickerModel _model; 
-
+  final TimerPickerModel _model;
   TimePicker(this._model);
-
   _TimePickerState createState() => _TimePickerState();
 }
 
@@ -1157,29 +1155,34 @@ class _TimePickerState extends State<TimePicker> {
   List< Widget> _minutes = new List<Widget>();
   List< Widget> _seconds = new List<Widget>();
 
+  int tickerTimeMs = 500;
+
   void initState() { 
     widget._model.timeStream.listen(handleTimeChange);
     _minuteController = new FixedExtentScrollController();
     _secondController = new FixedExtentScrollController();
-    
     super.initState();
   }
 
 
   void handleTimeChange(int time){
-    print(time);
-    if(widget._model.mins == 0){
-      _minuteController.jumpToItem( widget._model.mins);
-    }else{
-      _minuteController.animateToItem( widget._model.mins,
-      duration: Duration( milliseconds: 800), curve: Curves.easeInOut);}
-
-    if(widget._model.seconds == 0){
-      _secondController.jumpToItem( widget._model.seconds);
-    }else{
-    _secondController.animateToItem( widget._model.seconds,
-    duration: Duration( milliseconds: 800), curve: Curves.easeInOut);
+    if (widget._model.timerIsActive){
+      setScollControllers();
     }
+  }
+
+  void setScollControllers(){
+
+    _minuteController.animateToItem( widget._model.mins,
+    duration: Duration( milliseconds: 500), curve: Curves.easeInOut);
+
+    _secondController.animateToItem( widget._model.seconds,
+    duration: Duration( milliseconds: 500), curve: Curves.easeInOut);
+  }
+
+  void _resetTimer(){
+      widget._model.resetWatch();
+      setScollControllers();
   }
 
   void initialise(){
@@ -1189,6 +1192,8 @@ class _TimePickerState extends State<TimePicker> {
       Functions.oneToFiftynine()
       .forEach((itemText){_seconds.add(Center(child:Text(itemText.toString(), style: Theme.of(context).textTheme.display2,)));});
       _initialised = true;
+
+      setScollControllers();
     }
   } 
   
@@ -1222,7 +1227,7 @@ class _TimePickerState extends State<TimePicker> {
             child:
             Row(mainAxisAlignment: MainAxisAlignment.center ,children: <Widget>[
 
-              FlatButton(onPressed:() => widget._model.resetWatch(), child: Icon(Icons.restore)),
+              FlatButton(onPressed:() => _resetTimer(), child: Icon(Icons.restore)),
 
               FlatButton(onPressed:() => isRunning.data ? widget._model.stopWatch() : widget._model.startWatch() ,child: isRunning.data ? Icon(Icons.stop): Icon(Icons.play_arrow)),
 
@@ -1267,9 +1272,7 @@ class _TimePickerState extends State<TimePicker> {
                   children: _seconds
                   ),),
                 Text('s'),
-
-                    ],
-                )
+                ],)
             ],))
           ])
       )
