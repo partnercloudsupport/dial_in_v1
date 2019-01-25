@@ -139,14 +139,24 @@ class CircularFadeInAssetNetworkImage extends StatelessWidget {
 }
 
 /// Circular picture
-class CircularBox extends StatelessWidget {
+class ShapedBox extends StatelessWidget {
   final Widget _child;
   final double _size;
+  final Shape _shape;
 
-  CircularBox(this._child, this._size,);
+  ShapedBox(this._child, this._size, this._shape);
 
   @override
   Widget build(BuildContext context) {
+
+    BorderRadius border;
+
+    switch(_shape){
+
+      case Shape.circle: border = BorderRadius.circular(_size); break;
+      case Shape.square: border = BorderRadius.vertical(); break;
+    }
+
     return Container(
         decoration: BoxDecoration(
           color: Colors.white,
@@ -165,14 +175,19 @@ class CircularBox extends StatelessWidget {
   }
 }
 
-class CircularProfilePicture extends StatefulWidget {
+class ProfilePicture extends StatefulWidget {
+
   final Profile _profile;
   final double _size;
-  CircularProfilePicture(this._profile, this._size);
-  _CircularProfilerPictureState createState() => _CircularProfilerPictureState();
-}
+  final Shape _shape;
 
-class _CircularProfilerPictureState extends State<CircularProfilePicture> {
+  ProfilePicture(this._profile, this._size, this._shape);
+  _ProfilerPictureState createState() => _ProfilerPictureState();
+
+}
+enum Shape {square, circle}
+
+class _ProfilerPictureState extends State<ProfilePicture> {
 
   final BehaviorSubject<Widget> _widgetStreamController = new BehaviorSubject<Widget>();
 
@@ -182,7 +197,7 @@ class _CircularProfilerPictureState extends State<CircularProfilePicture> {
   }
 
 @override
-  void didUpdateWidget(CircularProfilePicture oldWidget) {
+  void didUpdateWidget(ProfilePicture oldWidget) {
    _returnImageWidget();
     super.didUpdateWidget(oldWidget);
   }
@@ -215,17 +230,18 @@ class _CircularProfilerPictureState extends State<CircularProfilePicture> {
         }
   }
 
-  Widget setupWidgetView(SnapShotDataState dataState , AsyncSnapshot<Widget> snapshot){
+  Widget setupWidgetView(SnapShotDataState dataState , AsyncSnapshot<Widget> snapshot, Shape shape){
     Widget _returnWidget;
-    switch(dataState){
-      case SnapShotDataState.waiting: _returnWidget = CircularBox(CircularProgressIndicator(), widget._size); break;
-      case SnapShotDataState.noData: _returnWidget =  CircularBox(Icon(Icons.error_outline), widget._size) ;break;
-      case SnapShotDataState.hasdata: _returnWidget = CircularBox(snapshot.data, widget._size); break;
+
+      switch(dataState){
+      case SnapShotDataState.waiting: _returnWidget = ShapedBox(CircularProgressIndicator(), widget._size, shape); break;
+      case SnapShotDataState.noData: _returnWidget =  ShapedBox(Icon(Icons.error_outline), widget._size, shape) ;break;
+      case SnapShotDataState.hasdata: _returnWidget = ShapedBox(snapshot.data, widget._size, shape); break;
       case SnapShotDataState.hasError:
         print(snapshot.error);
         throw(snapshot.error);
         break;
-    }   
+    } 
     assert (_returnWidget != null, '_return widdget is null');
     return  _returnWidget;
   }
@@ -238,7 +254,7 @@ class _CircularProfilerPictureState extends State<CircularProfilePicture> {
       builder: (BuildContext context, AsyncSnapshot<Widget> snapshot){
 
         switch (snapshot.hasError) {
-          case true: return setupWidgetView(SnapShotDataState.hasError, snapshot);
+          case true: return setupWidgetView(SnapShotDataState.hasError, snapshot, widget._shape);
           case false:
 
           switch (snapshot.hasData) {
@@ -246,12 +262,12 @@ class _CircularProfilerPictureState extends State<CircularProfilePicture> {
             case false: 
               switch(snapshot.connectionState){
                 case ConnectionState.none: break;
-                case ConnectionState.active: return setupWidgetView(SnapShotDataState.noData, snapshot);
-                case ConnectionState.waiting: return setupWidgetView(SnapShotDataState.waiting, snapshot);
+                case ConnectionState.active: return setupWidgetView(SnapShotDataState.noData, snapshot, widget._shape);
+                case ConnectionState.waiting: return setupWidgetView(SnapShotDataState.waiting, snapshot, widget._shape);
                 case ConnectionState.done: break;}     
               break;       
 
-            case true: return setupWidgetView(SnapShotDataState.hasdata, snapshot); 
+            case true: return setupWidgetView(SnapShotDataState.hasdata, snapshot, widget._shape); 
             default:
           }
       }
@@ -648,7 +664,7 @@ void setWidgetUp(){
       /// Profile picture
       ///
       ScalableWidget(Hero(tag: widget._profile.objectId , child: Container (
-          child: CircularProfilePicture(widget._profile, 60.0)),)),
+          child: ProfilePicture(widget._profile, 60.0, Shape.circle)),)),
 
       Padding(padding: EdgeInsets.all(5.0)),
           
@@ -710,7 +726,7 @@ void setWidgetUp(){
   }
 
 ///Social card
-class SocialProfileCard extends StatelessWidget {
+class SocialFeedCard extends StatelessWidget {
 
   final Function(UserProfile, int) _giveUserProfile;
   final Function(FeedProfileData) _giveprofile;
@@ -718,7 +734,7 @@ class SocialProfileCard extends StatelessWidget {
   final _dateFormat = DateFormat.yMd();
   final int _tag;
 
-  SocialProfileCard(this._profile, this._giveprofile, this._giveUserProfile, this._tag);
+  SocialFeedCard(this._profile, this._giveprofile, this._giveUserProfile, this._tag);
 
   @override
   Widget build(BuildContext context) {

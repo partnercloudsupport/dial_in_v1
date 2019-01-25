@@ -143,7 +143,7 @@ class ProfilePageState extends State<ProfilePage> {
               child: SizedBox(
                   width: 200.0,
                   height: 200.0,
-                  child: CircularProfilePicture(profile, 200.0)),
+                  child: ProfilePicture(profile, 200.0, Shape.circle)),
             ),
             onTap: isEditing
                 ? () {_getimage( model ,
@@ -284,48 +284,48 @@ class _PublicProfileSwitchState extends State<PublicProfileSwitch> {
   }
 }
 
-class ProfilePicture extends StatefulWidget {
-  final double _margin = 10.0;
-  final bool _isEditing;
-  final Profile _profile;
-  final Function _getImage;
+// class ProfilePicture extends StatefulWidget {
+//   final double _margin = 10.0;
+//   final bool _isEditing;
+//   final Profile _profile;
+//   final Function _getImage;
 
-  ProfilePicture(this._isEditing, this._profile, this._getImage);
+//   ProfilePicture(this._isEditing, this._profile, this._getImage);
 
-  _ProfilePictureState createState() => _ProfilePictureState();
-}
+//   _ProfilePictureState createState() => _ProfilePictureState();
+// }
 
-class _ProfilePictureState extends State<ProfilePicture> {
-  void onPictureTap() {
-    if (widget._isEditing) {
-      widget._getImage(
+// class _ProfilePictureState extends State<ProfilePicture> {
+//   void onPictureTap() {
+//     if (widget._isEditing) {
+//       widget._getImage(
 
-          ///Callback with imagePath
-          (image) {
-        setState(() {
-          widget._profile.imageUrl = image;
-        });
-      });
-    }
-  }
+//           ///Callback with imagePath
+//           (image) {
+//         setState(() {
+//           widget._profile.imageUrl = image;
+//         });
+//       });
+//     }
+//   }
 
-  @override
-  Widget build(BuildContext context) =>
+//   @override
+//   Widget build(BuildContext context) =>
 
-      /// Profile Image
-      Container(
-          padding: EdgeInsets.all(widget._margin),
-          child: InkWell(
-            onTap: onPictureTap,
-            child: Hero(
-              tag: widget._profile.objectId,
-              child: SizedBox(
-                  width: 200.0,
-                  height: 200.0,
-                  child: CircularProfilePicture(widget._profile, 200.0)),
-            ),
-          ));
-}
+//       /// Profile Image
+//       Container(
+//           padding: EdgeInsets.all(widget._margin),
+//           child: InkWell(
+//             onTap: onPictureTap,
+//             child: Hero(
+//               tag: widget._profile.objectId,
+//               child: SizedBox(
+//                   width: 200.0,
+//                   height: 200.0,
+//                   child: ProfilePicture(widget._profile, 200.0)),
+//             ),
+//           ));
+// }
 
 class ProfilePageAppBar extends StatefulWidget {
   ProfilePageAppBar();

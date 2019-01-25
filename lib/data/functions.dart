@@ -471,7 +471,7 @@ class Functions {
     
     FeedProfileData feedProfile = await Functions.createFeedProfileFromProfile(profile);
 
-    return SocialProfileCard(feedProfile, giveprofile, _giveUserProfile, index);
+    return SocialFeedCard(feedProfile, giveprofile, _giveUserProfile, index);
   }
 
   static Future<Widget> buildFeedCardFromDocument
@@ -479,7 +479,7 @@ class Functions {
     
     Profile profile = await Dbf.createProfileFromDocumentSnapshot(DatabaseIds.recipe, document);
     FeedProfileData feedProfile = await Functions.createFeedProfileFromProfile(profile);
-    return SocialProfileCard(feedProfile, giveprofile, _giveUserProfile, index);
+    return SocialFeedCard(feedProfile, giveprofile, _giveUserProfile, index);
   }
   
   static Future<Widget> buildProfileCardFromDocument(DocumentSnapshot document, String databaseId, Function(Profile) giveprofile, Function(Profile, BuildContext) deleteProfile) async {

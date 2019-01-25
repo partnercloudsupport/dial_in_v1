@@ -172,7 +172,7 @@ class _ProfileInputCardWithAttributeState
                   
                   Container(width: 10.0,),
 
-                  CircularProfilePicture(widget.profile, 40.0),
+                  ProfilePicture(widget.profile, 40.0, Shape.circle),
 
                   /// Left profile selection
 
@@ -446,7 +446,7 @@ class ProfileInputWithDetailsCardState
                     textBaseline: TextBaseline.ideographic,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      CircularProfilePicture(widget._profile, 40.0),
+                      ProfilePicture(widget._profile, 40.0, Shape.circle),
 
                       Container(
                         width: 10.0,
@@ -536,7 +536,7 @@ class _ProfileInputCardState extends State<ProfileInputCard> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      CircularProfilePicture(widget._profile, 40.0),
+                      ProfilePicture(widget._profile, 40.0, Shape.circle),
 
                       /// Spacer
                       Container(

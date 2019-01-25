@@ -24,8 +24,14 @@ class ProfilePageModel extends Model {
     _profileStreamController.add(_profile);
   }
 
-  set profileImagePath(String imagePath) => _profile.imageFilePath = imagePath;
-  set profileImageUrl(String imageUrl) => _profile.imageUrl = imageUrl;
+  set profileImagePath(String imagePath) { 
+    _profile.imageFilePath = imagePath;
+    _profileStreamController.add(_profile);
+  }
+  set profileImageUrl(String imageUrl){
+    _profile.imageUrl = imageUrl;
+    _profileStreamController.add(_profile);
+  }
 
 
 
