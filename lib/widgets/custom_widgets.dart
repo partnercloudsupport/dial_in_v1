@@ -181,6 +181,109 @@ class ShapedBox extends StatelessWidget {
   }
 }
 
+class UserProfilePicture extends StatefulWidget {
+
+  final String _imageUrl;
+  final String _imagePath;
+  final double _size;
+  final Shape _shape;
+
+  UserProfilePicture(this._imageUrl, this._size, this._shape, this._imagePath);
+  _UserProfilerPictureState createState() => _UserProfilerPictureState();
+
+}
+
+class _UserProfilerPictureState extends State<UserProfilePicture> {
+
+  final BehaviorSubject<Widget> _widgetStreamController = new BehaviorSubject<Widget>();
+
+  void initState() { 
+    super.initState();
+    _returnImageWidget();
+  }
+
+  @override
+    void didUpdateWidget(UserProfilePicture oldWidget) {
+   _returnImageWidget();
+      super.didUpdateWidget(oldWidget);
+    }
+
+ @override
+ void didChangeDependencies() {
+   super.didChangeDependencies();
+   _returnImageWidget();
+ }
+
+  _returnImageWidget()async{
+
+    if(
+      widget._imagePath != null &&
+      widget._imagePath != ''){   
+       if (await File(widget._imagePath).exists()){
+         _widgetStreamController.add(Image.file(File(widget._imagePath),
+                                                fit: BoxFit.cover,)); 
+        }
+      }
+
+    else 
+
+   if(
+      widget._imageUrl != null &&
+      widget._imageUrl != '') {    
+      _widgetStreamController.add( FadeInImage.assetNetwork(image: widget._imageUrl, placeholder: Images.user,));
+    } 
+    else { 
+      _widgetStreamController.add( Image.asset(Images.user));
+        }
+  }
+
+  Widget setupWidgetView(SnapShotDataState dataState , AsyncSnapshot<Widget> snapshot, Shape shape){
+    Widget _returnWidget;
+
+      switch(dataState){
+      case SnapShotDataState.waiting: _returnWidget = ShapedBox(CircularProgressIndicator(), widget._size, shape); break;
+      case SnapShotDataState.noData: _returnWidget =  ShapedBox(Icon(Icons.error_outline), widget._size, shape) ;break;
+      case SnapShotDataState.hasdata: _returnWidget = ShapedBox(snapshot.data, widget._size, shape); break;
+      case SnapShotDataState.hasError:
+        print(snapshot.error);
+        throw(snapshot.error);
+        break;
+    } 
+    assert (_returnWidget != null, '_return widdget is null');
+    return  _returnWidget;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+   return 
+    StreamBuilder<Widget>(
+      stream: _widgetStreamController.stream ,
+      builder: (BuildContext context, AsyncSnapshot<Widget> snapshot){
+
+        switch (snapshot.hasError) {
+          case true: return setupWidgetView(SnapShotDataState.hasError, snapshot, widget._shape);
+          case false:
+
+          switch (snapshot.hasData) {
+
+            case false: 
+              switch(snapshot.connectionState){
+                case ConnectionState.none: break;
+                case ConnectionState.active: return setupWidgetView(SnapShotDataState.noData, snapshot, widget._shape);
+                case ConnectionState.waiting: return setupWidgetView(SnapShotDataState.waiting, snapshot, widget._shape);
+                case ConnectionState.done: break;}     
+              break;       
+
+            case true: return setupWidgetView(SnapShotDataState.hasdata, snapshot, widget._shape); 
+            default:
+          }
+      }
+      }
+    );
+  }
+}
+
+
 class ProfilePicture extends StatefulWidget {
 
   final Profile _profile;

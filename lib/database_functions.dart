@@ -318,8 +318,8 @@ class Dbf {
     UserUpdateInfo userUpdateInfo = UserUpdateInfo();
     if (userdetails.userName != null || userdetails.userName != ""){
     userUpdateInfo.displayName = userdetails.userName;}
-    if (userdetails.photo != null || userdetails.photo != ""){
-    userUpdateInfo.photoUrl = userdetails.photo;}
+    if (userdetails.photoUrl != null || userdetails.photoUrl != ""){
+    userUpdateInfo.photoUrl = userdetails.photoUrl;}
 
     if (userdetails.password != null && userdetails.password != ""){
     user.updatePassword(userdetails.password).catchError(((error) => print(error)));}
@@ -331,7 +331,7 @@ class Dbf {
             Map<String, dynamic> data = {
             DatabaseIds.userId : user.uid,
             DatabaseIds.userName : userdetails.userName,
-            DatabaseIds.imageUrl : userdetails.photo,
+            DatabaseIds.imageUrl : userdetails.photoUrl,
             DatabaseIds.motto : userdetails.motto 
             };
 

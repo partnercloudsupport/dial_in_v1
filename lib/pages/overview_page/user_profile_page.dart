@@ -22,7 +22,7 @@ class UserProfilePage extends StatelessWidget {
           Container(color: Theme.of(context).cardColor),
       
        Center(child: 
-      ScalableWidget(
+        ScalableWidget(
           Container(
               child: new Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -34,10 +34,7 @@ class UserProfilePage extends StatelessWidget {
                     child: Center(
                         child: Hero(
                             tag: tag == null ?  _userProfile.id : _userProfile.id + tag.toString(),
-                            child: CircularFadeInAssetNetworkImage(
-                                _userProfile.imageUrl, 
-                                Images.user,
-                                150.0)))),
+                            child: UserProfilePicture( _userProfile.imageUrl , 150 , Shape.circle ,  _userProfile.imageFilePath )))),
 
                 /// User name
                 Text(
@@ -64,7 +61,6 @@ class UserProfilePage extends StatelessWidget {
         )
         )
       ],
-    
   ); 
 }
 

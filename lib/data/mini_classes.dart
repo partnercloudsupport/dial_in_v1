@@ -91,9 +91,10 @@ class  UserProfile {
 
 class UserDetails{
 
-  UserDetails({String userNameIn, String idIn, String photoIn, String mottoIn, String emailIn ,String passwordIn}){
+  UserDetails({String userNameIn, String idIn, String photoIn, String mottoIn, String emailIn ,String passwordIn, String photoPathIn}){
       id = idIn;
-      photo = photoIn;
+      photoUrl = photoIn;
+      photoPath = photoPathIn;
       userName = userNameIn;
       motto = mottoIn;
       email = emailIn;
@@ -103,14 +104,16 @@ class UserDetails{
     Map<String, String> values = Map<String, String>();
 
       set id(String newId) => values[DatabaseIds.userId] = newId;
-      set photo(String newimage) => values[DatabaseIds.imageUrl] = newimage;
+      set photoUrl(String newimage) => values[DatabaseIds.imageUrl] = newimage;
+      set photoPath(String newimageFile) => values[DatabaseIds.imagePath] = newimageFile;
       set userName(String newuserName) => values[DatabaseIds.userName] = newuserName;
       set motto(String newmotto) => values[DatabaseIds.motto] = newmotto;
       set email(String newemail) => values[DatabaseIds.email] = newemail;
       set password(String newpassword) => values[DatabaseIds.password] = newpassword; 
     
       String get id => values[DatabaseIds.userId];
-      String get photo => values[DatabaseIds.imageUrl];
+      String get photoUrl => values[DatabaseIds.imageUrl];
+      String get photoPath => values[DatabaseIds.imagePath];
       String get userName => values[DatabaseIds.userName];
       String get motto => values[DatabaseIds.motto];
       String get email => values[DatabaseIds.email];

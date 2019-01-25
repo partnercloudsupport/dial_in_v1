@@ -274,7 +274,8 @@ class UserFeed {
       Dbf.getUserProfileFromFireStoreWithDocRef(_userDetails.id)
         .then((userProfile){
               _userDetails.userName = userProfile.userName; 
-              _userDetails.photo = userProfile.imageUrl;
+              _userDetails.photoUrl = userProfile.imageUrl;
+                            _userDetails.photoUrl = userProfile.imageUrl;
               _userDetails.motto = userProfile.motto; 
               _userProfile = userProfile;
          _outgoingController.add(_userProfile);}).catchError((e) => print(e));

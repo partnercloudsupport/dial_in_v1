@@ -15,8 +15,7 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:dial_in_v1/pages/custom_scaffold.dart';
 import 'package:dial_in_v1/data/mini_classes.dart';
 import 'package:dial_in_v1/data/images.dart';
-
-
+import 'dart:io';
 
 class OverviewPage extends StatefulWidget{
  @override
@@ -176,7 +175,7 @@ class MainMenuDrawer extends StatelessWidget{
                                           idIn: model.userdetails.id ?? 'error',
                                           userNameIn: model.userdetails.userName ?? 'error', 
                                           emailIn: model.userdetails.email ?? 'error', 
-                                          photoIn: model.userdetails.photo ?? null,
+                                          photoIn: model.userdetails.photoUrl ?? null,
                                           mottoIn: model.userdetails.motto ?? 'error ');
             
              
@@ -226,17 +225,14 @@ class TabViewDataArray{
 }
 
 
-class UserInputDetails extends StatefulWidget {
-  
+class UserInputDetails extends StatefulWidget { 
   final UserDetails userDetails;
-
   UserInputDetails({this.userDetails});
-
   _UserInputDetailsState createState() => _UserInputDetailsState();
 }
 
 class _UserInputDetailsState extends State<UserInputDetails> {
-  //TODO;
+
   final _formKey = GlobalKey<FormState>();
 
   UserDetails  _userDetails;
@@ -282,7 +278,8 @@ class _UserInputDetailsState extends State<UserInputDetails> {
               InkWell(
                onTap:(){ 
                     Functions.getimageFromCameraOrGallery(
-                      context,(String image){ setState(() {_userDetails.photo = image;});});
+                      context,(String imagepath)async{
+                         setState(() {_userDetails.photoPath = imagepath;});});
                    },
                 child: Container(width: 200.0, height: 200.0, 
                 decoration: BoxDecoration(
@@ -291,9 +288,7 @@ class _UserInputDetailsState extends State<UserInputDetails> {
                   boxShadow: [BoxShadow(color: Colors.black, offset: Offset(2.0, 2.0))],), 
                 child:ClipRRect(
                   borderRadius: new BorderRadius.circular(200),
-                  child: FadeInImage.assetNetwork(
-                            image:_userDetails.photo ?? '',
-                            placeholder: Images.user ,fit: BoxFit.cover))
+                  child: UserProfilePicture(widget.userDetails.photoUrl, 150.0, Shape.circle , widget.userDetails.photoPath))
                 ))
           ),
 
