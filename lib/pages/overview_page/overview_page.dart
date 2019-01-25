@@ -279,7 +279,7 @@ class _UserInputDetailsState extends State<UserInputDetails> {
                onTap:(){ 
                     Functions.getimageFromCameraOrGallery(
                       context,(String imagepath)async{
-                         setState(() {_userDetails.photoPath = imagepath;});});
+                         setState(() {  _userDetails.photoPath = imagepath;});});
                    },
                 child: Container(width: 200.0, height: 200.0, 
                 decoration: BoxDecoration(
@@ -288,8 +288,14 @@ class _UserInputDetailsState extends State<UserInputDetails> {
                   boxShadow: [BoxShadow(color: Colors.black, offset: Offset(2.0, 2.0))],), 
                 child:ClipRRect(
                   borderRadius: new BorderRadius.circular(200),
-                  child: UserProfilePicture(widget.userDetails.photoUrl, 150.0, Shape.circle , widget.userDetails.photoPath))
-                ))
+                  child: FutureBuilder<String>(
+                    future: widget.userDetails.getPhotoPath(),
+                    initialData: '',
+                    builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                      return  UserProfilePicture(widget.userDetails.photoUrl, 150.0, Shape.circle , snapshot.data);
+                    },
+                  ),
+                )))
           ),
 
           ///Username

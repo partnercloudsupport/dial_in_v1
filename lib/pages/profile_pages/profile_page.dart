@@ -327,7 +327,10 @@ class _ProfilePageAppBarState extends State<ProfilePageAppBar> {
                   );
                 },
               );
-            });
+            }
+            
+            
+          );
       });
 }
 

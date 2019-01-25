@@ -2,6 +2,7 @@ import 'package:dial_in_v1/data/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:dial_in_v1/database_functions.dart';
+import 'dart:io';
 
 class FeedProfileData{
 
@@ -113,11 +114,22 @@ class UserDetails{
     
       String get id => values[DatabaseIds.userId];
       String get photoUrl => values[DatabaseIds.imageUrl];
-      String get photoPath => values[DatabaseIds.imagePath];
       String get userName => values[DatabaseIds.userName];
       String get motto => values[DatabaseIds.motto];
       String get email => values[DatabaseIds.email];
       String get password => values[DatabaseIds.password];
+
+      Future<String> getPhotoPath()async{ 
+        
+        dynamic value;
+
+        if (await File(values[DatabaseIds.imagePath]).exists())
+        { value = values[DatabaseIds.imagePath];}
+        else{ Dbf.updateField(DatabaseIds.user, id, DatabaseIds.imagePath, null);
+        }
+        assert(value != null, 'Value is null');
+        return value;
+      }
 }
 
 abstract class ImagePickerReturn{}

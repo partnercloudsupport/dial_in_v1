@@ -458,6 +458,16 @@ class Dbf {
 
   }
 
+  static void updateField(String collection, String documentRef, String key, dynamic value){
+
+    Firestore.instance
+    .collection(collection)
+    .document(documentRef)
+    .updateData({key : value})
+    .whenComplete((){print('Successfully updated $documentRef');})
+    .catchError((error){print(error);});
+  }
+
   /// Upload file to Firebase
   static Future<String> upLoadFileReturnUrl(File file, List<String> folders, {Function(String)  errorHandler})async{
 

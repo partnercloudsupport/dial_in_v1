@@ -324,11 +324,9 @@ class _ProfilerPictureState extends State<ProfilePicture> {
        if (await File(widget._profile.imageFilePath).exists()){
          _widgetStreamController.add(Image.file(File(widget._profile.imageFilePath),
                                                 fit: BoxFit.cover,)); 
-        }
+        }else{ Dbf.updateField(widget._profile.databaseId, widget._profile.objectId, DatabaseIds.imagePath, null);}
       }
-
     else 
-
    if(
       widget._profile.imageUrl != null &&
       widget._profile.imageUrl != '') {    
