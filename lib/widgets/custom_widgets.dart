@@ -971,6 +971,7 @@ class AddButton extends StatelessWidget {
 
 // TimePicker textfield card
 class TimePickerTextField extends StatefulWidget {
+
   final double _textFieldWidth;
 
   TimePickerTextField(this._textFieldWidth);
@@ -981,15 +982,15 @@ class _TimePickerTextFieldState extends State<TimePickerTextField> {
 
   TextEditingController _controller;
   FocusNode _focus;
-  TimerPickerModel model;
+  TimerPickerModel _model;
+  
 
       @override
        void initState() {
             _focus = new FocusNode();
             _focus.addListener(handleLeftProfileTextfieldFocus);
-            _controller = new TextEditingController();
-                     
-            model = new TimerPickerModel(ProfilePageModel.of(context));
+            _controller = new TextEditingController(); 
+            _model = new TimerPickerModel(ProfilePageModel.of(context));
             super.initState();
       }
 
@@ -1001,36 +1002,47 @@ class _TimePickerTextFieldState extends State<TimePickerTextField> {
 
       void handleLeftProfileTextfieldFocus(){
         if (_focus.hasFocus){setState(() {
-          PopUps.showTimePicker(context, model);
+          PopUps.showTimePicker(context, _model);
         });
           _focus.unfocus();  
         }
       }
-
-      // @override
-      //  void didUpdateWidget(TimePickerTextField oldWidget) {
-      //   _controller.text = Functions.convertSecsToMinsAndSec(Functions.getIntValue(_item.value));
-      //     super.didUpdateWidget(oldWidget);
-      //   }     
+ 
 
   @override
   Widget build(BuildContext context) {
 
-    int time = Functions.getIntValue(ProfilePageModel.of(context).getItemValue(DatabaseIds.time));
-    String textfieldValue = Functions.convertSecsToMinsAndSec(time);
-     _controller.text =textfieldValue;
+    return 
 
-    return Expanded(
-      flex: 5,
-      child: Container(padding: EdgeInsets.all(10.0), child: TextFormField(
-           textAlign: TextAlign.start,
-           decoration: new InputDecoration(
-             prefixIcon: Icon(Icons.timer),
-             labelText: StringLabels.time,
-           ),
-           focusNode: _focus,
-           controller: _controller,
-       )));
+    ScopedModelDescendant(builder: (BuildContext context ,_, ProfilePageModel model) => 
+
+    StreamBuilder<Profile>(
+    stream: model.profileStream,
+    builder: (BuildContext context, AsyncSnapshot<Profile> profile) {
+
+      int time =  Functions.getIntValue(profile.data.getItemValue(DatabaseIds.time));
+      String timeString = Functions.convertSecsToMinsAndSec(time);
+    
+    _controller.text = timeString;
+
+    return
+
+      Expanded(
+        flex: 5,
+        child: Container(padding: EdgeInsets.all(10.0), child: TextFormField(
+            textAlign: TextAlign.start,
+            decoration: new InputDecoration(
+              prefixIcon: Icon(Icons.timer),
+              labelText: StringLabels.time,
+            ),
+            focusNode: _focus,
+            controller: _controller,
+        )
+        )
+      );  
+    }
+    )
+  );
   }
 }
 
@@ -1121,6 +1133,146 @@ class TabViewDataArray{
   List<TabViewData> ref;
 
  TabViewDataArray(this.ref);
+}
+
+
+class TimePicker extends StatefulWidget {
+
+  final TimerPickerModel _model; 
+
+  TimePicker(this._model);
+
+  _TimePickerState createState() => _TimePickerState();
+}
+
+class _TimePickerState extends State<TimePicker> {
+  
+  double _itemHeight = 40.0; 
+  double _pickerHeight = 120.0;
+  double _pickerWidth = 50.0;
+  bool _initialised = false;
+  FixedExtentScrollController  _minuteController;
+  FixedExtentScrollController _secondController ;
+
+  List< Widget> _minutes = new List<Widget>();
+  List< Widget> _seconds = new List<Widget>();
+
+  void initState() { 
+    widget._model.timeStream.listen(handleTimeChange);
+    _minuteController = new FixedExtentScrollController();
+    _secondController = new FixedExtentScrollController();
+    
+    super.initState();
+  }
+
+
+  void handleTimeChange(int time){
+    print(time);
+    _minuteController.animateToItem( widget._model.mins,
+    duration: Duration( milliseconds: 800), curve: Curves.linear);
+
+    _secondController.animateToItem( widget._model.seconds,
+    duration: Duration( milliseconds: 800), curve: Curves.linear);
+  }
+
+  void initialise(){
+    if(!_initialised){
+      Functions.oneToFiftynine()
+      .forEach((itemText){_minutes.add(Center(child:Text(itemText.toString(), style: Theme.of(context).textTheme.display2,)));});
+      Functions.oneToFiftynine()
+      .forEach((itemText){_seconds.add(Center(child:Text(itemText.toString(), style: Theme.of(context).textTheme.display2,)));});
+      _initialised = true;
+    }
+  } 
+  
+  @override
+  Widget build(BuildContext context) =>
+
+        StreamBuilder<int>(
+        stream: widget._model.timeStream,
+        initialData: 0,
+        builder: (BuildContext context, AsyncSnapshot<int> time) =>
+        
+        StreamBuilder<bool>(
+        stream: widget._model.isTimerActiveStream,
+        initialData: false,
+        builder: (BuildContext context, AsyncSnapshot<bool> active) {
+
+        initialise();
+
+        return
+
+        StreamBuilder<bool>(
+          stream: widget._model.timerRunningStreamContoller ,
+          initialData: false ,
+          builder: (BuildContext context, AsyncSnapshot<bool> isRunning){
+
+            return Container(
+              child: Container(child: SizedBox(height: 200.0, width: double.infinity, child: Column(children: <Widget>[
+
+            Material(elevation: 5.0, shadowColor: Colors.black, color:Theme.of(context).accentColor, type:MaterialType.card, 
+            child: Container(height: 40.0, width: double.infinity,
+            child:
+            Row(mainAxisAlignment: MainAxisAlignment.center ,children: <Widget>[
+
+              FlatButton(onPressed:() => widget._model.resetWatch(), child: Icon(Icons.restore)),
+
+              FlatButton(onPressed:() => isRunning.data ? widget._model.stopWatch() : widget._model.startWatch() ,child: isRunning.data ? Icon(Icons.stop): Icon(Icons.play_arrow)),
+
+              Expanded(child: Container(),),
+
+                FlatButton(onPressed:() => Navigator.pop(context),
+              child: Text('Done')),
+
+            ],)
+            )
+            ),
+
+            SizedBox(height: 160.0, width: double.infinity  ,child:
+            Row(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center,  
+            children: <Widget>[
+
+              /// Minutes picker
+              Row(children: <Widget>[
+                SizedBox(height: _pickerHeight, width: _pickerWidth ,
+                child: CupertinoPicker(
+                  backgroundColor: Colors.transparent,
+                  scrollController: _minuteController,
+                  useMagnifier: true,
+                  onSelectedItemChanged: (value){  widget._model.mins = value; }, 
+                  itemExtent: _itemHeight,
+                  children: _minutes
+                  ),),
+                  Text('m')
+              ],),
+
+              Padding(padding: EdgeInsets.all(20.0)),
+
+              /// Seconds picker
+                Row(children: <Widget>[
+                    SizedBox(height: _pickerHeight, width: _pickerWidth  ,
+                child: CupertinoPicker(
+                  backgroundColor:  Colors.transparent,
+                  scrollController: _secondController,
+                  useMagnifier: true,
+                  onSelectedItemChanged: (value){  widget._model.seconds = value;}, 
+                  itemExtent: _itemHeight,
+                  children: _seconds
+                  ),),
+                Text('s'),
+
+                    ],
+                )
+            ],))
+          ])
+      )
+    ),
+    );
+    }
+    );
+    }
+    )
+    );
 }
 
 /// Popups
@@ -1279,98 +1431,11 @@ static void showPickerMenu(Item item, BuildContext context, ProfilePageModel mod
 
 static void showTimePicker(BuildContext context, TimerPickerModel model) {
 
-  double _itemHeight = 40.0; 
-  double _pickerHeight = 120.0;
-  double _pickerWidth = 50.0;
-
-  List< Widget> _minutes = new List<Widget>();
-  List< Widget> _seconds = new List<Widget>();  
-
     showModalBottomSheet(
         context: context,
-        builder: (BuildContext context) {
-
-           if (model.item.inputViewDataSet != null && model.item.inputViewDataSet.length > 0)
-          {model.item.inputViewDataSet[0]
-          .forEach((itemText){_minutes.add(Center(child:Text(itemText.toString(), style: Theme.of(context).textTheme.display2,)));}
-          );}
-
-          if (model.item.inputViewDataSet != null && model.item.inputViewDataSet.length > 0)
-          {model.item.inputViewDataSet[1]
-          .forEach((itemText){_seconds.add(Center(child:Text(itemText.toString(), style: Theme.of(context).textTheme.display2,)));}
-          );}    
-
-
-            return
-
-        ScopedModelDescendant<TimerPickerModel>
-              ( rebuildOnChange: true, builder: (BuildContext context, _ , TimerPickerModel model) =>
-   
-        Container(child: SizedBox(height: 200.0, width: double.infinity, child: Column(children: <Widget>[
-
-                    Material(elevation: 5.0, shadowColor: Colors.black, color:Theme.of(context).accentColor, type:MaterialType.card, 
-                    child: Container(height: 40.0, width: double.infinity,
-                    child:
-                    Row(mainAxisAlignment: MainAxisAlignment.center ,children: <Widget>[
-
-                    FlatButton(onPressed:() => model.resetWatch(), child: Icon(Icons.restore)),
-
-                    FlatButton(onPressed:() => model.timer.isActive ? model.stopWatch() : model.startWatch() ,child: model.timer.isActive ? Icon(Icons.stop): Icon(Icons.play_arrow)),
-
-                    Expanded(child: Container(),),
-
-                     FlatButton(onPressed:() => Navigator.pop(context),
-                    child: Text('Done')),
-
-                    ],)
-                    )
-                    ),
-
-               SizedBox(height: 160.0, width: double.infinity  ,child:
-                Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, crossAxisAlignment: CrossAxisAlignment.center,  
-                children: <Widget>[
-
-                  /// Minutes picker
-                  Row(children: <Widget>[
-                    SizedBox(height: _pickerHeight, width: _pickerWidth ,
-                    child: CupertinoPicker(
-                      backgroundColor: Colors.transparent,
-                      scrollController: model.minuteController,
-                      useMagnifier: true,
-                      onSelectedItemChanged:
-                        (value){  model.mins = value; }, 
-                      itemExtent: _itemHeight,
-                      children: _minutes
-                      ),),
-                      Text('m')
-                  ],),
-
-                  /// Seconds picker
-                   Row(children: <Widget>[
-                       SizedBox(height: _pickerHeight, width: _pickerWidth  ,
-                    child: CupertinoPicker(
-                      backgroundColor:  Colors.transparent,
-                      scrollController: model.secondController,
-                      useMagnifier: true,
-                      onSelectedItemChanged:
-                        (value){  model.seconds = value;}, 
-                      itemExtent: _itemHeight,
-                      children: _seconds
-                      ),),
-                    Text('s'),
-
-                        ],
-                    )
-                ],))
-        ])
-        )
-        )
-        );
-        }
+        builder: (BuildContext context) => TimePicker(model)
     );
 }
-
-
 
 static Future<void> showAlert
 (String title, String message, String buttonText, Function buttonFunction, BuildContext context) async {

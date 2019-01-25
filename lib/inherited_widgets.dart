@@ -7,8 +7,8 @@ import 'package:dial_in_v1/data/mini_classes.dart';
 import 'dart:async';
 import 'package:dial_in_v1/data/functions.dart';
 import 'package:dial_in_v1/pages/profile_pages/profile_page_model.dart';
-import 'package:dial_in_v1/data/profile.dart';
 import 'package:dial_in_v1/data/item.dart';
+import 'package:rxdart/rxdart.dart';
 
 class CameraWidget extends InheritedWidget {
   CameraWidget({Key key, Widget child}) : super(key: key, child: child);
@@ -303,65 +303,58 @@ class ImagePickerModel extends Model {
 
 class TimerPickerModel extends Model {
 
-  FixedExtentScrollController minuteController;
-  FixedExtentScrollController secondController;
   ProfilePageModel _profilePageModel;
-  Item item;
-  int _time;
-  bool timerIsActive = false;
-  Timer timer = Timer(Duration(milliseconds:1000), (){},);
 
+  Timer timer;
+
+  BehaviorSubject<bool> timerRunningStreamContoller = new BehaviorSubject<bool>();
+  set timerIsActive (bool isActive) => timerRunningStreamContoller.sink.add(isActive);
+  Stream<bool> get isTimerActiveStream => timerRunningStreamContoller.stream;
+
+  BehaviorSubject<int> _timeStream = new BehaviorSubject<int>();
+  Stream<int> get timeStream => _timeStream.stream;
+
+  /// init
   TimerPickerModel(this._profilePageModel){
-
-    item = _profilePageModel.getItem(DatabaseIds.time);
-    time = Functions.getIntValue(item.value);
-    minuteController = new FixedExtentScrollController(initialItem: mins);
-    secondController = new FixedExtentScrollController(initialItem: seconds);
+    _time = Functions.getIntValue(item.value);
+    timerRunningStreamContoller.add(false);
+    _timeStream.add(_time);
   }
 
    void startWatch() {
         timerIsActive = true;
-        timer = Timer.periodic(Duration(seconds:1), (Timer t) => updateTime(t));
+        timer = new Timer.periodic(Duration(seconds:1), updateTime);
   }
 
   void stopWatch() {
       timerIsActive = false;
       timer.cancel();
+      timer.cancel();
   }
 
   void resetWatch() {
       timerIsActive = false;
-      time = 0;
+      _time = 0;
       timer.cancel();
   }
 
+  Item get item => _profilePageModel.getItem(DatabaseIds.time);
+
   int get mins => ( _time / 60 ).floor();
+  set mins(int minsIn) => _time = minsIn + seconds;
   int get seconds =>  _time % 60;
+  set seconds(int secondsIn) => _time = mins + secondsIn;
 
   List<List<dynamic>> get pickerValues => item.inputViewDataSet;
 
-  set mins(int mins) => time =  (mins * 60) + seconds;
-  set seconds(int seconds) => time =  (mins * 60) + seconds;
-
-
-
-  set time(int value) {
-    _time = value;
-    _profilePageModel.setProfileItemValue(DatabaseIds.time, _time.toString());
+  set _time(int value) {
+    _profilePageModel.setProfileItemValue(DatabaseIds.time, value.toString());
+    _timeStream.add(Functions.getIntValue( _profilePageModel.getItemValue(DatabaseIds.time)));
   }
+  
+  int get _time => Functions.getIntValue( _profilePageModel.getItemValue( DatabaseIds.time ));
 
-
-  void updateTime(Timer t){
-          
-     time = _time ++;
-
-    minuteController.animateTo((mins).floor().toDouble(),
-      duration: Duration( seconds: 1), curve: Curves.easeInOut);
-
-    secondController.animateTo((seconds).toDouble(),
-      duration: Duration( seconds: 1), curve: Curves.easeInOut);
-      
-  }
+  void updateTime(Timer t){ _time = _time + 1;}
   
  static TimerPickerModel of(BuildContext context) =>
       ScopedModel.of<TimerPickerModel>(context);

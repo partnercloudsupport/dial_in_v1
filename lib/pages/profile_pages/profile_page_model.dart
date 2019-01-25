@@ -15,7 +15,7 @@ class ProfilePageModel extends Model {
 
   void setProfileItemValue(String id, dynamic value) { 
     _profile.setItemValue(id, value);
-    _profileStreamController.add(_profile);
+    _profileStreamController.sink.add(_profile);
   }
 
   void setSubProfile(Profile profile) {
@@ -38,7 +38,7 @@ class ProfilePageModel extends Model {
   }
 
 
-  Item getItemValue(String databaseId){
+  dynamic getItemValue(String databaseId){
     return _profile.getItemValue(databaseId);
   }
 

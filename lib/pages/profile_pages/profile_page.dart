@@ -82,8 +82,10 @@ class ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+
     return new ScopedModel(
         model: _profilePageModel,
+
         child: StreamBuilder<bool>(
             stream: _profilePageModel.isEditingStream,
             builder: (BuildContext context, AsyncSnapshot<bool> isEditing) =>
@@ -91,6 +93,7 @@ class ProfilePageState extends State<ProfilePage> {
                     stream: _profilePageModel.profileStream,
                     builder:
                         (BuildContext context, AsyncSnapshot<Profile> profile) {
+                          
                       if (!profile.hasData) {
                         return Center(
                           child: CircularProgressIndicator(),

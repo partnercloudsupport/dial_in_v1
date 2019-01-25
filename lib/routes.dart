@@ -3,18 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:dial_in_v1/pages/sign_up.dart';
 import 'package:flutter/widgets.dart';
 
-class Routes{
+class Routes{}
 
-  
-
-
-}
-
-enum RouteOption{
-
-  slow
-
-}
+enum RouteOption{ slow } 
 
 class SlowerRoute extends MaterialPageRoute{
 
