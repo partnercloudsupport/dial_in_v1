@@ -972,12 +972,8 @@ class AddButton extends StatelessWidget {
 // TimePicker textfield card
 class TimePickerTextField extends StatefulWidget {
   final double _textFieldWidth;
-  final Item _item;
-  /// Returns a funtion with the Item 
-  /// of the item to open the picker view witht the correct data.
-  final Function(Item) _onItemTextPressed;
 
-  TimePickerTextField(this._item, this._onItemTextPressed, this._textFieldWidth);
+  TimePickerTextField(this._textFieldWidth);
 
   _TimePickerTextFieldState createState() => _TimePickerTextFieldState();
 }
@@ -985,15 +981,15 @@ class _TimePickerTextFieldState extends State<TimePickerTextField> {
 
   TextEditingController _controller;
   FocusNode _focus;
-  Item _item;
-
+  TimerPickerModel model;
 
       @override
        void initState() {
-            _item = widget._item;
             _focus = new FocusNode();
             _focus.addListener(handleLeftProfileTextfieldFocus);
-            _controller = new TextEditingController(text: Functions.convertSecsToMinsAndSec(Functions.getIntValue(_item.value)));
+            _controller = new TextEditingController();
+                     
+            model = new TimerPickerModel(ProfilePageModel.of(context));
             super.initState();
       }
 
@@ -1005,7 +1001,7 @@ class _TimePickerTextFieldState extends State<TimePickerTextField> {
 
       void handleLeftProfileTextfieldFocus(){
         if (_focus.hasFocus){setState(() {
-            widget._onItemTextPressed(widget._item);
+          PopUps.showTimePicker(context, model);
         });
           _focus.unfocus();  
         }
@@ -1019,13 +1015,18 @@ class _TimePickerTextFieldState extends State<TimePickerTextField> {
 
   @override
   Widget build(BuildContext context) {
+
+    int time = Functions.getIntValue(ProfilePageModel.of(context).getItemValue(DatabaseIds.time));
+    String textfieldValue = Functions.convertSecsToMinsAndSec(time);
+     _controller.text =textfieldValue;
+
     return Expanded(
       flex: 5,
       child: Container(padding: EdgeInsets.all(10.0), child: TextFormField(
            textAlign: TextAlign.start,
            decoration: new InputDecoration(
              prefixIcon: Icon(Icons.timer),
-             labelText: widget._item.title,
+             labelText: StringLabels.time,
            ),
            focusNode: _focus,
            controller: _controller,
@@ -1273,11 +1274,102 @@ static void showPickerMenu(Item item, BuildContext context, ProfilePageModel mod
             );
           }
         }).then((nul) {
-      // TODO
-      // _scrollController
-      // .animateTo(_scrollController.position.pixels + 1000.0 ,curve: Curves.easeInOut, duration: Duration(seconds: 1));
     });
   }
+
+static void showTimePicker(BuildContext context, TimerPickerModel model) {
+
+  double _itemHeight = 40.0; 
+  double _pickerHeight = 120.0;
+  double _pickerWidth = 50.0;
+
+  List< Widget> _minutes = new List<Widget>();
+  List< Widget> _seconds = new List<Widget>();  
+
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+
+           if (model.item.inputViewDataSet != null && model.item.inputViewDataSet.length > 0)
+          {model.item.inputViewDataSet[0]
+          .forEach((itemText){_minutes.add(Center(child:Text(itemText.toString(), style: Theme.of(context).textTheme.display2,)));}
+          );}
+
+          if (model.item.inputViewDataSet != null && model.item.inputViewDataSet.length > 0)
+          {model.item.inputViewDataSet[1]
+          .forEach((itemText){_seconds.add(Center(child:Text(itemText.toString(), style: Theme.of(context).textTheme.display2,)));}
+          );}    
+
+
+            return
+
+        ScopedModelDescendant<TimerPickerModel>
+              ( rebuildOnChange: true, builder: (BuildContext context, _ , TimerPickerModel model) =>
+   
+        Container(child: SizedBox(height: 200.0, width: double.infinity, child: Column(children: <Widget>[
+
+                    Material(elevation: 5.0, shadowColor: Colors.black, color:Theme.of(context).accentColor, type:MaterialType.card, 
+                    child: Container(height: 40.0, width: double.infinity,
+                    child:
+                    Row(mainAxisAlignment: MainAxisAlignment.center ,children: <Widget>[
+
+                    FlatButton(onPressed:() => model.resetWatch(), child: Icon(Icons.restore)),
+
+                    FlatButton(onPressed:() => model.timer.isActive ? model.stopWatch() : model.startWatch() ,child: model.timer.isActive ? Icon(Icons.stop): Icon(Icons.play_arrow)),
+
+                    Expanded(child: Container(),),
+
+                     FlatButton(onPressed:() => Navigator.pop(context),
+                    child: Text('Done')),
+
+                    ],)
+                    )
+                    ),
+
+               SizedBox(height: 160.0, width: double.infinity  ,child:
+                Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, crossAxisAlignment: CrossAxisAlignment.center,  
+                children: <Widget>[
+
+                  /// Minutes picker
+                  Row(children: <Widget>[
+                    SizedBox(height: _pickerHeight, width: _pickerWidth ,
+                    child: CupertinoPicker(
+                      backgroundColor: Colors.transparent,
+                      scrollController: model.minuteController,
+                      useMagnifier: true,
+                      onSelectedItemChanged:
+                        (value){  model.mins = value; }, 
+                      itemExtent: _itemHeight,
+                      children: _minutes
+                      ),),
+                      Text('m')
+                  ],),
+
+                  /// Seconds picker
+                   Row(children: <Widget>[
+                       SizedBox(height: _pickerHeight, width: _pickerWidth  ,
+                    child: CupertinoPicker(
+                      backgroundColor:  Colors.transparent,
+                      scrollController: model.secondController,
+                      useMagnifier: true,
+                      onSelectedItemChanged:
+                        (value){  model.seconds = value;}, 
+                      itemExtent: _itemHeight,
+                      children: _seconds
+                      ),),
+                    Text('s'),
+
+                        ],
+                    )
+                ],))
+        ])
+        )
+        )
+        );
+        }
+    );
+}
+
 
 
 static Future<void> showAlert

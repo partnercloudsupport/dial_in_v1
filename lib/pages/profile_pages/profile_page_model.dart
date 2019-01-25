@@ -6,20 +6,19 @@ import 'package:dial_in_v1/data/functions.dart';
 import 'package:dial_in_v1/widgets/profile_page_widgets.dart';
 import 'dart:async';
 import 'package:dial_in_v1/data/strings.dart';
+import 'package:dial_in_v1/data/item.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ProfilePageModel extends Model {
 
   Profile _profile;
 
-  void setProfileItemValue(String id, dynamic value) {
-    
+  void setProfileItemValue(String id, dynamic value) { 
     _profile.setItemValue(id, value);
     _profileStreamController.add(_profile);
   }
 
-   void setSubProfile(Profile profile) {
-    
+  void setSubProfile(Profile profile) {
     _profile.setSubProfile( profile );
     _profileStreamController.add(_profile);
   }
@@ -28,12 +27,20 @@ class ProfilePageModel extends Model {
     _profile.imageFilePath = imagePath;
     _profileStreamController.add(_profile);
   }
+
   set profileImageUrl(String imageUrl){
     _profile.imageUrl = imageUrl;
     _profileStreamController.add(_profile);
   }
 
+  Item getItem(String databaseId){
+    return _profile.getItem(databaseId);
+  }
 
+
+  Item getItemValue(String databaseId){
+    return _profile.getItemValue(databaseId);
+  }
 
   ///TODO
   BehaviorSubject<int> _doseStreamController ;

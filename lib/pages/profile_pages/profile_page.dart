@@ -413,24 +413,21 @@ class GoBackAppBarButton extends StatelessWidget {
   }
 }
 
-class CancelEditingProfileAppBar extends StatefulWidget {
-  final bool _isEditing;
-  CancelEditingProfileAppBar(this._isEditing);
+// class CancelEditingProfileAppBar extends StatefulWidget {
 
-  _CancelEditingProfileAppBarState createState() =>
-      _CancelEditingProfileAppBarState();
-}
+//   _CancelEditingProfileAppBarState createState() =>
+//       _CancelEditingProfileAppBarState();
+// }
 
-class _CancelEditingProfileAppBarState
-    extends State<CancelEditingProfileAppBar> {
-  bool _isEditing;
-  @override
-  Widget build(BuildContext context) => ScopedModelDescendant<ProfilePageModel>(
-      builder: (BuildContext context, _, model) => RawMaterialButton(
-          child: Icon(Icons.cancel),
-          onPressed: () {
-            setState(() {
-              // widget._isEditing = false;
-            });
-          }));
-}
+// class _CancelEditingProfileAppBarState
+//     extends State<CancelEditingProfileAppBar> {
+//   @override
+//   Widget build(BuildContext context) => ScopedModelDescendant<ProfilePageModel>(
+//       builder: (BuildContext context, _, model) => RawMaterialButton(
+//           child: Icon(Icons.cancel),
+//           onPressed: () {
+//             setState(() {
+//               // widget._isEditing = false;
+//             });
+//           }));
+// }

@@ -98,23 +98,16 @@ class _RecipePageState extends State<RecipePage> {
       ProfileInputCardWithAttribute
       ( snapshot.data.getProfileProfile(ProfileType.equipment), snapshot.data.getItem(DatabaseIds.preinfusion)),
 
-      /// Ratio card /// TODO fix
+      /// Ratio card /// 
       RatioCard(),
 
       /// Time
       Card(child: Container(margin: EdgeInsets.all(10.0), child: Row(children: <Widget>[
         
-          TimePickerTextField(
-          snapshot.data.getItem(DatabaseIds.time),
-          (item) => PopUps.showPickerMenu(item, context, model),
-          100.0, 
-          ),
+          TimePickerTextField(100.0,),
 
           ],)),),
 
-      /// Extraction and TDS
-      /// TODO
-      // TdsAndExtractionCard(),
 
       /// Notes
       NotesCard( snapshot.data.getItem( DatabaseIds.notes )),
