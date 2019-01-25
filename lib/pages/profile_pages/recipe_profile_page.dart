@@ -21,37 +21,6 @@ class RecipePage extends StatefulWidget {
 
 class _RecipePageState extends State<RecipePage> {
 
-  Stopwatch stopwatch = new Stopwatch();
-  Timer timer = Timer(Duration(milliseconds:1000), (){},);
-  int time;
-  int mins;
-  int sec;
-
-  void startWatch() {
-  timer = new Timer.periodic(new Duration(milliseconds:1000), updateTime);
-  }
-
-  void stopWatch() {
-    setState(() {
-      timer.cancel();
-    });
-  }
-
-  void resetWatch() {
-    setState(() {
-      time = 0;
-      timer.cancel();
-    });
-  }
-
-  void updateTime(Timer timer){
-       
-      print('time is $time ${timer.isActive}');
-
-      setState(() {
-           time ++;
-      });
-  }
 
   @override
   Widget build(BuildContext context) {

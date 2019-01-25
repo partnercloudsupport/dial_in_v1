@@ -345,7 +345,7 @@ class TimerPickerModel extends Model {
 
   Item get item => _profilePageModel.getItem(DatabaseIds.time);
 
-  int get mins => ( _time / 60 ).floor();
+  int get mins => ( _time ~/ 60 );
   set mins(int minsIn) => _time = (minsIn * 60) + seconds;
   int get seconds =>  _time % 60;
   set seconds(int secondsIn) => _time = (mins~/ 60) + secondsIn;

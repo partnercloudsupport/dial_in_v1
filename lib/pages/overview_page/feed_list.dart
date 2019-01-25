@@ -8,6 +8,8 @@ import 'package:dial_in_v1/data/mini_classes.dart';
 import 'package:dial_in_v1/routes.dart';
 import 'package:dial_in_v1/pages/overview_page/user_profile_page.dart';
 import 'package:dial_in_v1/data/strings.dart';
+import 'package:dial_in_v1/pages/profile_pages/profile_page_model.dart';
+
 
 
 
@@ -46,9 +48,9 @@ class _FeedListState extends State<FeedList>{
   }
 
   void _dealWithProfileSelection(FeedProfileData userProfile){
-
-      Navigator.push(context, SlowerRoute((BuildContext context) =>
-      ProfilePage(isFromUserFeed: true ,isOldProfile: false, isCopying: false, isEditing: false, isNew: false, type: userProfile.profile.type, referance: userProfile.userName, profileReferance: userProfile.profile.objectId)));
+    ProfilePageModel model = new ProfilePageModel(userProfile.profile.objectId, userProfile.profile.type, true, false, false, false, false);
+    Navigator.push(context, SlowerRoute((BuildContext context) =>
+    ProfilePage(model)));
   }
 
   Widget setupWidgetView(SnapShotDataState dataState , AsyncSnapshot<List<FeedProfileData>> snapshot, FeedType feedType){

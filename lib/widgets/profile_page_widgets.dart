@@ -50,6 +50,9 @@ class ScoreSliderState extends State<ScoreSlider> {
                 builder:
                     (BuildContext context, AsyncSnapshot<Profile> snapshot) {
 
+                      if(snapshot.data == null){return Center(child:CircularProgressIndicator());}
+                      else{
+
                       return
                   Container(
                       width: double.infinity,
@@ -65,7 +68,7 @@ class ScoreSliderState extends State<ScoreSlider> {
                                   style: Theme.of(context).textTheme.headline),
                             ),
 
-                            Text('${_value.toInt()}/10',
+                            Text('${_value.toInt() ?? 0}/10',
                                 style: Theme.of(context).textTheme.subtitle),
 
                             isEditing.data
@@ -95,6 +98,7 @@ class ScoreSliderState extends State<ScoreSlider> {
                                   ),
                             // inactiveColor: Theme.of(context).sliderTheme.inactiveTrackColor,
                           ]));
+                          }
                 })));
   }
 }

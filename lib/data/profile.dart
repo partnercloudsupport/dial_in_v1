@@ -1197,8 +1197,6 @@ Future<String> getUserImage ()async{
     DateTime coffeeRoastDate = getProfileProfileItemValue(ProfileType.coffee, DatabaseIds.roastDate);
     DateTime recipeMadeTime = getItemValue(DatabaseIds.date);
     int result = recipeMadeTime.difference(coffeeRoastDate).inDays;
-    print(coffeeRoastDate);
-    print(recipeMadeTime);
     return result;
   }
 }

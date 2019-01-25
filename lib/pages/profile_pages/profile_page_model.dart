@@ -13,6 +13,11 @@ class ProfilePageModel extends Model {
 
   Profile _profile;
 
+  set profile(Profile profile) {
+    _profile = profile;
+    _profileStreamController.sink.add(_profile);
+  }
+
   void setProfileItemValue(String id, dynamic value) { 
     _profile.setItemValue(id, value);
     _profileStreamController.sink.add(_profile);
@@ -65,47 +70,29 @@ class ProfilePageModel extends Model {
 
   bool isCalculating = false;
 
-  ProfilePageModel(
-    String profileReferance, 
-    ProfileType type, 
-    this.isFromUserFeed, 
-    _isEditing, 
-    this.isOldProfile, 
-    this.isCopying,
-    this._isNew) {
-      this.type = type; 
-      _profileStreamController = new BehaviorSubject<Profile>();
-      _isEditingStreamController = new BehaviorSubject<bool>();
-      _isEditingStreamController.add(_isEditing);
-      getProfile(profileReferance, type);
+ProfilePageModel(
+  String profileReferance, 
+  ProfileType type, 
+  this.isFromUserFeed, 
+  _isEditing, 
+  this.isOldProfile, 
+  this.isCopying,
+  this._isNew,
+  ) {
+    this.type = type; 
+    _profileStreamController = new BehaviorSubject<Profile>();
+    _isEditingStreamController = new BehaviorSubject<bool>();
+    _isEditingStreamController.add(_isEditing);
+    getProfile(profileReferance, type);
   }
 
-  void getProfile ( String profileReferance, ProfileType type ) async {
+ 
+
+    
+    void getProfile ( String profileReferance, ProfileType type ) async {
     _profile = await Dbf.getProfileFromFireStoreWithDocRef( Functions.getProfileTypeDatabaseId( type ), profileReferance );
-    _profileStreamController.add(_profile);
-
-    if ( _profile.type == ProfileType.recipe ) { setupRatios(); }
-  }
-
-  void setupRatios(){
-    _doseStreamController = new BehaviorSubject<int>();
-    _yieldStreamController = new BehaviorSubject<int>();
-    _brewWWeightStreamController = new BehaviorSubject<int>();
-
-    _doseStreamController.add( Functions.getIntValue(_profile.getItemValue(DatabaseIds.brewingDose)));
-    _yieldStreamController.add( Functions.getIntValue(_profile.getItemValue(DatabaseIds.yielde)));
-    _brewWWeightStreamController.add( Functions.getIntValue(_profile.getItemValue(DatabaseIds.brewWeight)));
-
-    _doseStreamController.listen((value) {
-       setProfileItemValue(DatabaseIds.brewingDose, value);
-    });
-    _yieldStreamController.listen((value) {
-       setProfileItemValue(DatabaseIds.yielde, value);
-    });
-    _brewWWeightStreamController.listen((value) {
-       setProfileItemValue(DatabaseIds.brewWeight, value);
-    });
-  }
+    _profileStreamController.add(_profile);    
+    }
 
   String appBarTitle(bool isEditing){
   if ( isFromUserFeed && _referance != null)
@@ -115,28 +102,32 @@ class ProfilePageModel extends Model {
     if ( _isNew || isCopying) 
       { return StringLabels.newe + ' ' + Functions.getProfileTypeString( _profile.type);
 
-    }else if ( isEditing){  return StringLabels.editing + ' ' + Functions.getProfileTypeString( _profile.type);}
-    else{ return Functions.getProfileTypeString( _profile.type);}
+    }else if(isEditing != null){
+    if ( isEditing){  return StringLabels.editing + ' ' + Functions.getProfileTypeString( _profile.type);}
+    else{ return Functions.getProfileTypeString( _profile.type );}
+    }
+
+    else{ return Functions.getProfileTypeString( _profile.type );}
     }
   }
 
-  Stream<int> getRatioStream(String type) {
-    Stream<int> result;
+  // Stream<int> getRatioStream(String type) {
+  //   Stream<int> result;
 
-    switch (type) {
-      case DatabaseIds.brewingDose:
-        result = _doseStreamController.stream;
-        break;
-      case DatabaseIds.yielde:
-        result = _yieldStreamController.stream;
-        break;
-      case DatabaseIds.brewWeight:
-        result = _brewWWeightStreamController.stream;
-        break;
-    }
-    assert(result != null, 'no stream allocated');
-    return result;
-  }
+  //   switch (type) {
+  //     case DatabaseIds.brewingDose:
+  //       result = _doseStreamController.stream;
+  //       break;
+  //     case DatabaseIds.yielde:
+  //       result = _yieldStreamController.stream;
+  //       break;
+  //     case DatabaseIds.brewWeight:
+  //       result = _brewWWeightStreamController.stream;
+  //       break;
+  //   }
+  //   assert(result != null, 'no stream allocated');
+  //   return result;
+  // }
 
   int getRatioValue(String type) {
     int result;
@@ -190,4 +181,7 @@ class ProfilePageModel extends Model {
 
   static ProfilePageModel of(BuildContext context) =>
       ScopedModel.of<ProfilePageModel>(context);
+  
 }
+
+

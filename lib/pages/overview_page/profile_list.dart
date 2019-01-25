@@ -7,6 +7,8 @@ import 'package:dial_in_v1/inherited_widgets.dart';
 import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'package:dial_in_v1/routes.dart';
 import "package:pull_to_refresh/pull_to_refresh.dart";
+import 'package:dial_in_v1/pages/profile_pages/profile_page_model.dart';
+import 'package:dial_in_v1/database_functions.dart';
 
 
 /// Profile list
@@ -22,10 +24,14 @@ class _ProfileListState extends State<ProfileList>{
 
   RefreshController _refreshController = new RefreshController();
 
-   void _dealWithProfileSelection(Profile profile){
-
-       Navigator.push(context, SlowerRoute((BuildContext context) =>
-        ProfilePage(isFromUserFeed: false, isFromProfile: false ,isOldProfile: true, isCopying: false, isEditing: false, isNew: false, type: profile.type, referance: profile.objectId, profileReferance: profile.objectId)));
+   void _dealWithProfileSelection(Profile profile)async{
+      Profile loadingProfile = await Dbf.getProfileFromFireStoreWithDocRef(profile.databaseId, profile.objectId);
+      ProfilePageModel model = new ProfilePageModel(profile.objectId,  profile.type, false, false, true, false, false);
+      model.profile = loadingProfile;
+      Navigator.push(context, SlowerRoute((BuildContext context) =>
+        
+      ProfilePage(model)));
+        
   }
 
   void _deleteProfile(Profile profile, BuildContext context){

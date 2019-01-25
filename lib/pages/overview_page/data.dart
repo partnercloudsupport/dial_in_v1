@@ -4,7 +4,9 @@ import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'package:dial_in_v1/theme/appColors.dart';
 import 'package:dial_in_v1/data/profile.dart';
 import 'package:dial_in_v1/pages/profile_pages/profile_page.dart';
+import 'package:dial_in_v1/pages/profile_pages/profile_page_model.dart';
 import 'package:dial_in_v1/data/functions.dart';
+import 'package:dial_in_v1/database_functions.dart';
 import 'package:dial_in_v1/pages/overview_page/profile_list.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:dial_in_v1/inherited_widgets.dart';
@@ -110,22 +112,12 @@ class DataPageState extends State<DataPage>with SingleTickerProviderStateMixin {
         ),
         floatingActionButton: ScopedModelDescendant<ProfilesModel>
             ( rebuildOnChange: false, builder: (context, _ ,model) => AddButton(()async{
-
-          Profile _profile = await Profile.createBlankProfile(_lists.ref[controller.index].type);
-
+          
+          ProfilePageModel model = new ProfilePageModel('', _lists.ref[controller.index].type, false, true, false, false, true);
+          
           Navigator.push(context, SlowerRoute((BuildContext context) =>
 
-          ProfilePage(
-          isFromUserFeed: false,
-          isFromProfile: false,
-          isOldProfile: false,
-          isCopying: false,
-          isEditing: true,
-          isNew: true,
-          type: _lists.ref[controller.index].type,
-          referance: '',
-          profileReferance: _profile.objectId ,
-          ))
+          ProfilePage(model))
           
           ).then((value){setState((){});});
 

@@ -547,6 +547,7 @@ class Dbf {
 
   /// Delete profile
   static Future<void> deleteProfile(Profile profile)async{
+    LocalStorage.deleteFile(File(profile.imageFilePath));
     Firestore.instance.collection(profile.databaseId).document(profile.objectId)
         .delete()
         .whenComplete((){
@@ -1029,6 +1030,11 @@ class CurrentUserProfileStream{
  
 
 class LocalStorage {
+
+  static deleteFile(File file)async{
+    if ( await file.exists() ){ file.delete(recursive: true).catchError((e) => print(e)); }   
+  }
+    
 
   static Future<String> get localPath async {
     final dir = await getApplicationDocumentsDirectory();

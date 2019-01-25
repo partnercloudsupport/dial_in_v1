@@ -150,11 +150,18 @@ class ShapedBox extends StatelessWidget {
   Widget build(BuildContext context) {
 
     BorderRadius border;
+    BoxShape shape;
 
     switch(_shape){
 
-      case Shape.circle: border = BorderRadius.circular(_size); break;
-      case Shape.square: border = BorderRadius.vertical(); break;
+      case Shape.circle:
+      border = BorderRadius.circular(_size);
+      shape = BoxShape.circle;
+       break;
+      case Shape.square: 
+      shape = BoxShape.rectangle;
+      border = BorderRadius.vertical(); 
+      break;
     }
 
     return Container(
@@ -162,13 +169,12 @@ class ShapedBox extends StatelessWidget {
           color: Colors.white,
           boxShadow: [BoxShadow
           (color: Colors.black, offset: new Offset(0.0, 2.0),blurRadius: 2.0,)],
-          shape: BoxShape.circle
+          shape: shape
         ),
         height:_size,
         width: _size,
-        margin: const EdgeInsets.all(5.0),
         child: ClipRRect(
-          borderRadius: new BorderRadius.circular(_size),
+          borderRadius: border,
           child:_child
         ),
     );   
@@ -289,104 +295,6 @@ class FadeInImageAssetNetworkFromProfile extends StatelessWidget {
           image: _profile.imageUrl
       );
 }
-
-
-
-
-
-/// Circular picture
-// class CircularProfilePicture extends StatelessWidget {
-
-//   final Profile _profile;
-//   final double _size;
-
-//   final BehaviorSubject<Widget> _widgetStreamController = new BehaviorSubject<Widget>();
-
-//   CircularProfilePicture(this._profile, this._size);
-
-//   _returnImageWidget()async{
-
-//     if(
-//       _profile.imageFilePath != null &&
-//       _profile.imageFilePath != ''){   
-//        if (await File(_profile.imageFilePath).exists()){
-//          _widgetStreamController.add(Image.file(File(_profile.imageFilePath),
-//                                                 fit: BoxFit.cover,)); 
-//         }
-//       }
-
-//     else 
-
-//    if(
-//       _profile.imageUrl != null &&
-//       _profile.imageUrl != '') {    
-//       _widgetStreamController.add( FadeInImage.assetNetwork(
-//                                       fit: BoxFit.cover,
-//                                       placeholder: _profile.getImagePlaceholder(),
-//                                       image: _profile.imageUrl
-//                                       ));
-//     } 
-//     else { 
-//       _widgetStreamController.add( Image.asset(_profile.getImagePlaceholder()));
-//         }
-//   }
-  
-
-//   Widget setupWidgetView(SnapShotDataState dataState , AsyncSnapshot<Widget> snapshot){
-
-//     Widget _returnWidget;
-
-//     switch(dataState){
-//       case SnapShotDataState.waiting: _returnWidget = CircularBox(CircularProgressIndicator(),_size); break;
-
-//       case SnapShotDataState.noData:_returnWidget =  CircularBox(Icon(Icons.error_outline), _size) ;break;
-
-//       case SnapShotDataState.hasdata:_returnWidget = CircularBox(snapshot.data, _size); break;
-
-//       case SnapShotDataState.hasError:
-//         print(snapshot.error);
-//         throw(snapshot.error);
-//         break;
-//     }   
-//     assert (_returnWidget != null, '_return widdget is null');
-//     return  _returnWidget;
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-
-//     _returnImageWidget();
-     
-//     return 
-//     StreamBuilder<Widget>(
-//       stream: _widgetStreamController.stream ,
-//       builder: (BuildContext context, AsyncSnapshot<Widget> snapshot){
-
-//            switch (snapshot.hasError) {
-//               case true: return setupWidgetView(SnapShotDataState.hasError, snapshot);
-//               case false:
-
-//               switch (snapshot.hasData) {
-
-//                 case false: 
-//                   switch(snapshot.connectionState){
-//                     case ConnectionState.none: break;
-//                     case ConnectionState.active: return setupWidgetView(SnapShotDataState.noData, snapshot);
-//                     case ConnectionState.waiting: return setupWidgetView(SnapShotDataState.waiting, snapshot);
-//                     case ConnectionState.done: break;
-//                   }     
-//                   break;       
-
-//                 case true: return setupWidgetView(SnapShotDataState.hasdata, snapshot); 
-                  
-//                 default:
-//               }
-//           }
-//       }
-//     );
-//   }
-// }
-
 
 
 /// Action button
@@ -628,8 +536,11 @@ void setWidgetUp(){
     }
 }
   void _editProfile(){
-   Navigator.push(context, SlowerRoute((BuildContext context) =>
-          ProfilePage(isFromUserFeed: false, isFromProfile: false ,isOldProfile: true, isCopying: false, isEditing: true, isNew: false, type: widget._profile.type, referance: widget._profile.objectId, profileReferance: widget._profile.objectId)));
+      
+    ProfilePageModel model = ProfilePageModel('', widget._profile.type, false, true, true, false, false);
+
+     Navigator.push(context, SlowerRoute((BuildContext context) =>
+          ProfilePage(model)));
   }
   @override
   Widget build(BuildContext context) {
@@ -761,30 +672,31 @@ class SocialFeedCard extends StatelessWidget {
       InkWell(onTap:() => _giveUserProfile(_profile.userProfile, _tag), 
       child:  
       Material (color: Theme.of(context).dividerColor, 
-      child: Container(padding: EdgeInsets.all(10.0), child: Row(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
+      child: Container(padding: EdgeInsets.all(10.0), child:
+      Row(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
 
-         /// User picture
-          Container(child:InkWell(onTap:() => _giveUserProfile(_profile.userProfile, _tag),
-              child: Hero(tag: _profile.userProfile.id + _tag.toString(), child: CircularFadeInAssetNetworkImage(_profile.userImage, Images.user , 40.0)))),
-              
-      
-          Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+      /// User picture
+      Container(child:InkWell(onTap:() => _giveUserProfile(_profile.userProfile, _tag),
+          child: Hero(tag: _profile.userProfile.id + _tag.toString(), child: CircularFadeInAssetNetworkImage(_profile.userImage, Images.user , 40.0)))),
+          
+  
+      Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
 
-            ///User Name
-            Container(margin: EdgeInsets.all(5.0), 
-            child:  Text(
-                      _profile.userProfile.userName ?? '',  
-                      maxLines: 1, 
-                      style: Theme.of(context).textTheme.display1, 
-                      softWrap: true,overflow: 
-                      TextOverflow.ellipsis,),),
+        ///User Name
+        Container(margin: EdgeInsets.all(5.0), 
+        child:  Text(
+                  _profile.userProfile.userName ?? '',  
+                  maxLines: 1, 
+                  style: Theme.of(context).textTheme.display1, 
+                  softWrap: true,overflow: 
+                  TextOverflow.ellipsis,),),
 
-            /// Date
-            Container(
-              margin: EdgeInsets.all(5.0), 
-              child: Text(
-                      _dateFormat.format(_profile.profile.getItemValue(DatabaseIds.date)) ,  
-                      maxLines: 1), ),
+        /// Date
+        Container(
+          margin: EdgeInsets.all(5.0), 
+          child: Text(
+                  _dateFormat.format(_profile.profile.getItemValue(DatabaseIds.date)) ,  
+                  maxLines: 1), ),
 
         ]),
         Expanded(child: Column(mainAxisAlignment: MainAxisAlignment.end, crossAxisAlignment: CrossAxisAlignment.end, children: [ 
@@ -802,7 +714,7 @@ class SocialFeedCard extends StatelessWidget {
         /// Recipe picture
         Hero(tag: _profile.profile.objectId, child: SizedBox(width: double.infinity, height: 200.0, child:
           Material(type: MaterialType.card, elevation: 2.0 ,color: Theme.of(context).scaffoldBackgroundColor,
-          child: FadeInImage.assetNetwork(image:_profile.profile.imageUrl, fit: BoxFit.cover, placeholder: Images.rippleLoadingGif),),),),
+          child: ProfilePicture(_profile.profile, double.infinity, Shape.square),),),),
         
         ///Spacer
           Container(height: 20.0,),
@@ -869,9 +781,9 @@ class _RatioTextFieldItemWithInitalValueState extends State<RatioTextFieldItemWi
             ( rebuildOnChange: true, builder: (BuildContext context, _ ,ProfilePageModel model) {
 
       return
-      StreamBuilder(
-      stream: model.getRatioStream(widget._item.databaseId),
-      builder: (BuildContext context, AsyncSnapshot<int> snapShot){
+      StreamBuilder<Profile>(
+      stream: model.profileStream,
+      builder: (BuildContext context, AsyncSnapshot<Profile> snapShot){
 
         if(model.isCalculating){
           _controller.text = snapShot.data.toString();
@@ -1019,6 +931,8 @@ class _TimePickerTextFieldState extends State<TimePickerTextField> {
     StreamBuilder<Profile>(
     stream: model.profileStream,
     builder: (BuildContext context, AsyncSnapshot<Profile> profile) {
+      if(profile.data == null){ return Center(child:CircularProgressIndicator());}
+      else{ 
 
       int time =  Functions.getIntValue(profile.data.getItemValue(DatabaseIds.time));
       String timeString = Functions.convertSecsToMinsAndSec(time);
@@ -1039,7 +953,8 @@ class _TimePickerTextFieldState extends State<TimePickerTextField> {
             controller: _controller,
         )
         )
-      );  
+      );
+      }  
     }
     )
   );
@@ -1306,6 +1221,7 @@ class PopUps{
 
       Future<dynamic> createNewProfilePage(ProfileType profileType) async {
 
+       ProfilePageModel model = ProfilePageModel('', profileType, false, true, false, false, true);
 
         /// Result to be passed back to
         var result = await Navigator.push(
@@ -1314,16 +1230,9 @@ class PopUps{
                 builder: (BuildContext context) =>
 
                     /// New Profile goes into Profile page
-                    ProfilePage(
-                      isFromUserFeed: false,
-                      isOldProfile: false,
-                      isFromProfile: true,
-                      isCopying: false,
-                      isEditing: true,
-                      isNew: true,
-                      type: profileType,
-                      referance: '',
-                    )));
+                    ProfilePage(model)
+            ));
+
     return result;
     }
     
@@ -2094,17 +2003,11 @@ class CopyProfileButton extends StatelessWidget {
             _newProfile.updatedAt = DateTime.now();
             _newProfile.objectId = '';
         
+        ProfilePageModel model = new ProfilePageModel(_profile.objectId, _profile.type, false, true, false, true, true);
+
         Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
-        /// If prifile referance is null create new profile
-        ProfilePage(
-          isFromUserFeed: false,
-          isOldProfile: false,
-          isCopying: true, 
-          isEditing: true, 
-          isNew: true, 
-          type: _profile.type, 
-          referance: '',
-          profileReferance: _profile.objectId,)
+
+        ProfilePage(model)
           )
           ).then((_) => Navigator.pop(context)
         );
