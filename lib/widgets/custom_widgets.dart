@@ -1168,11 +1168,18 @@ class _TimePickerState extends State<TimePicker> {
 
   void handleTimeChange(int time){
     print(time);
-    _minuteController.animateToItem( widget._model.mins,
-    duration: Duration( milliseconds: 800), curve: Curves.linear);
+    if(widget._model.mins == 0){
+      _minuteController.jumpToItem( widget._model.mins);
+    }else{
+      _minuteController.animateToItem( widget._model.mins,
+      duration: Duration( milliseconds: 800), curve: Curves.linear);}
 
+    if(widget._model.seconds == 0){
+      _secondController.jumpToItem( widget._model.seconds);
+    }else{
     _secondController.animateToItem( widget._model.seconds,
     duration: Duration( milliseconds: 800), curve: Curves.linear);
+    }
   }
 
   void initialise(){

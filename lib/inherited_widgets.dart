@@ -338,6 +338,8 @@ class TimerPickerModel extends Model {
       timer.cancel();
   }
 
+  void updateTime(Timer t){ _time = _time + 1;}
+
   Item get item => _profilePageModel.getItem(DatabaseIds.time);
 
   int get mins => ( _time / 60 ).floor();
@@ -353,8 +355,6 @@ class TimerPickerModel extends Model {
   }
   
   int get _time => Functions.getIntValue( _profilePageModel.getItemValue( DatabaseIds.time ));
-
-  void updateTime(Timer t){ _time = _time + 1;}
   
  static TimerPickerModel of(BuildContext context) =>
       ScopedModel.of<TimerPickerModel>(context);
