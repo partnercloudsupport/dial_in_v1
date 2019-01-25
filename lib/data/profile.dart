@@ -153,9 +153,6 @@ class Profile {
     return placeHolder?? '';
   }
 
-
-
-
   dynamic getItemValue(String itemDatabaseId) {
     
     dynamic value;

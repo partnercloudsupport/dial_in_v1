@@ -1172,13 +1172,13 @@ class _TimePickerState extends State<TimePicker> {
       _minuteController.jumpToItem( widget._model.mins);
     }else{
       _minuteController.animateToItem( widget._model.mins,
-      duration: Duration( milliseconds: 800), curve: Curves.linear);}
+      duration: Duration( milliseconds: 800), curve: Curves.easeInOut);}
 
     if(widget._model.seconds == 0){
       _secondController.jumpToItem( widget._model.seconds);
     }else{
     _secondController.animateToItem( widget._model.seconds,
-    duration: Duration( milliseconds: 800), curve: Curves.linear);
+    duration: Duration( milliseconds: 800), curve: Curves.easeInOut);
     }
   }
 
@@ -1246,7 +1246,7 @@ class _TimePickerState extends State<TimePicker> {
                   backgroundColor: Colors.transparent,
                   scrollController: _minuteController,
                   useMagnifier: true,
-                  onSelectedItemChanged: (value){  widget._model.mins = value; }, 
+                  onSelectedItemChanged: (value){  if(!isRunning.data){ widget._model.mins = value; }}, 
                   itemExtent: _itemHeight,
                   children: _minutes
                   ),),
@@ -1262,7 +1262,7 @@ class _TimePickerState extends State<TimePicker> {
                   backgroundColor:  Colors.transparent,
                   scrollController: _secondController,
                   useMagnifier: true,
-                  onSelectedItemChanged: (value){  widget._model.seconds = value;}, 
+                  onSelectedItemChanged: (value){ if(!isRunning.data){ widget._model.seconds = value;}}, 
                   itemExtent: _itemHeight,
                   children: _seconds
                   ),),
