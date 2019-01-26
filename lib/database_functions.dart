@@ -326,12 +326,18 @@ class Dbf {
      if (userdetails.email != null && userdetails.email != ""){
     user.updateEmail(userdetails.email).catchError(((error) => print(error)));}
 
+    String oldPicPath = await userdetails.getPhotoPath();
+    String imagePath = await LocalStorage.saveFileToDeviceReturnPath(File(oldPicPath));
+    String imageUrl = await Dbf.upLoadFileReturnUrl(File(imagePath), [DatabaseIds.user, userdetails.id ]);
+    if(imageUrl != userdetails.photoUrl){Dbf.deleteFireBaseStorageItem(userdetails.photoUrl);}
+
     await user.updateProfile(userUpdateInfo)
       .then( (_)async{
             Map<String, dynamic> data = {
             DatabaseIds.userId : user.uid,
             DatabaseIds.userName : userdetails.userName,
-            DatabaseIds.imageUrl : userdetails.photoUrl,
+            DatabaseIds.imageUrl : imageUrl,
+            DatabaseIds.imagePath : oldPicPath,
             DatabaseIds.motto : userdetails.motto 
             };
 
@@ -1072,7 +1078,7 @@ class LocalStorage {
     return file.writeAsString("$data");
   }
 
-  static Future<String> saveFileToDeviceReturnPath(File image, String referance)async{
+  static Future<String> saveFileToDeviceReturnPath(File image)async{
 
     File oldImage = image;
     final String locaPath = await LocalStorage.localPath;

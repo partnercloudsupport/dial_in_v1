@@ -2063,7 +2063,7 @@ class CupertinoImagePickerDiolog extends StatelessWidget {
   void handleImagePickerReturn(dynamic image, BuildContext context, ImagePickerModel model)async{
     if(image != null){
       PopUps.showCircularProgressIndicator(context);
-      String filePath = await LocalStorage.saveFileToDeviceReturnPath(image, model.referance);
+      String filePath = await LocalStorage.saveFileToDeviceReturnPath(image);
     if (filePath != null){ model.setFilePath = filePath ;}
       Navigator.pop(context, model.getFilePath);
       Navigator.pop(context, model.getFilePath);
