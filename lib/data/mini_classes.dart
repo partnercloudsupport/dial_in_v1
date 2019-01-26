@@ -114,13 +114,14 @@ class UserDetails{
     
       String get id => values[DatabaseIds.userId];
       String get photoUrl => values[DatabaseIds.imageUrl];
+      String get imagePath => values[DatabaseIds.imagePath];
       String get userName => values[DatabaseIds.userName];
       String get motto => values[DatabaseIds.motto];
       String get email => values[DatabaseIds.email];
       String get password => values[DatabaseIds.password];
 
       Future<String> getPhotoPath()async{ 
-        
+
         dynamic value;
 
         if (await File(values[DatabaseIds.imagePath]).exists())
