@@ -104,7 +104,6 @@ class _TextFieldEntryState extends State<TextFieldEntry> {
   }
 }
 
-/// Circular picture
 class CircularFadeInAssetNetworkImage extends StatelessWidget {
   final String _image;
   final String _placeHolder;
@@ -138,7 +137,6 @@ class CircularFadeInAssetNetworkImage extends StatelessWidget {
   }
 }
 
-/// Circular picture
 class ShapedBox extends StatelessWidget {
   final Widget _child;
   final double _size;
@@ -181,19 +179,18 @@ class ShapedBox extends StatelessWidget {
   }
 }
 
-class UserProfilePicture extends StatefulWidget {
+class ImageLocalNetwork extends StatefulWidget {
 
   final String _imageUrl;
   final String _imagePath;
   final double _size;
   final Shape _shape;
 
-  UserProfilePicture(this._imageUrl, this._size, this._shape, this._imagePath);
-  _UserProfilerPictureState createState() => _UserProfilerPictureState();
-
+  ImageLocalNetwork(this._imageUrl, this._size, this._shape, this._imagePath);
+  _ImageLocalNetworkState createState() => _ImageLocalNetworkState();
 }
 
-class _UserProfilerPictureState extends State<UserProfilePicture> {
+class _ImageLocalNetworkState extends State<ImageLocalNetwork> {
 
   final BehaviorSubject<Widget> _widgetStreamController = new BehaviorSubject<Widget>();
 
@@ -203,7 +200,7 @@ class _UserProfilerPictureState extends State<UserProfilePicture> {
   }
 
   @override
-    void didUpdateWidget(UserProfilePicture oldWidget) {
+    void didUpdateWidget(ImageLocalNetwork oldWidget) {
    _returnImageWidget();
       super.didUpdateWidget(oldWidget);
     }
@@ -230,7 +227,7 @@ class _UserProfilerPictureState extends State<UserProfilePicture> {
    if(
       widget._imageUrl != null &&
       widget._imageUrl != '') {    
-      _widgetStreamController.add( FadeInImage.assetNetwork(image: widget._imageUrl, placeholder: Images.user,));
+      _widgetStreamController.add( FadeInImage.assetNetwork(image: widget._imageUrl, placeholder: Images.user,fit: BoxFit.cover,));
     } 
     else { 
       _widgetStreamController.add( Image.asset(Images.user));
@@ -238,10 +235,12 @@ class _UserProfilerPictureState extends State<UserProfilePicture> {
   }
 
   Widget setupWidgetView(SnapShotDataState dataState , AsyncSnapshot<Widget> snapshot, Shape shape){
+
+    Widget _placeholder = shape == Shape.circle ? CircularProgressIndicator() : LinearProgressIndicator();
     Widget _returnWidget;
 
       switch(dataState){
-      case SnapShotDataState.waiting: _returnWidget = ShapedBox(CircularProgressIndicator(), widget._size, shape); break;
+      case SnapShotDataState.waiting: _returnWidget = ShapedBox(_placeholder, widget._size, shape); break;
       case SnapShotDataState.noData: _returnWidget =  ShapedBox(Icon(Icons.error_outline), widget._size, shape) ;break;
       case SnapShotDataState.hasdata: _returnWidget = ShapedBox(snapshot.data, widget._size, shape); break;
       case SnapShotDataState.hasError:
@@ -283,105 +282,120 @@ class _UserProfilerPictureState extends State<UserProfilePicture> {
   }
 }
 
+enum Shape {square, circle}
 
-class ProfilePicture extends StatefulWidget {
+// class ProfilePicture extends StatefulWidget {
 
+//   final Profile _profile;
+//   final double _size;
+//   final Shape _shape;
+
+  
+//   // ProfilePicture(this._profile, this._size, this._shape);
+//   // _ProfilerPictureState createState() => _ProfilerPictureState();
+
+// }
+
+class ProfilePicture extends StatelessWidget {
+  
   final Profile _profile;
   final double _size;
   final Shape _shape;
 
-  ProfilePicture(this._profile, this._size, this._shape);
-  _ProfilerPictureState createState() => _ProfilerPictureState();
-
-}
-enum Shape {square, circle}
-
-class _ProfilerPictureState extends State<ProfilePicture> {
-
-  final BehaviorSubject<Widget> _widgetStreamController = new BehaviorSubject<Widget>();
-
-  void initState() { 
-    super.initState();
-    _returnImageWidget();
-  }
-
-@override
-  void didUpdateWidget(ProfilePicture oldWidget) {
-   _returnImageWidget();
-    super.didUpdateWidget(oldWidget);
-  }
- @override
- void didChangeDependencies() {
-   super.didChangeDependencies();
-   _returnImageWidget();
- }
-
-  _returnImageWidget()async{
-
-    if(
-      widget._profile.imageFilePath != null &&
-      widget._profile.imageFilePath != ''){   
-       if (await File(widget._profile.imageFilePath).exists()){
-         _widgetStreamController.add(Image.file(File(widget._profile.imageFilePath),
-                                                fit: BoxFit.cover,)); 
-        }else{ Dbf.updateField(widget._profile.databaseId, widget._profile.objectId, DatabaseIds.imagePath, null);}
-      }
-    else 
-   if(
-      widget._profile.imageUrl != null &&
-      widget._profile.imageUrl != '') {    
-      _widgetStreamController.add( FadeInImageAssetNetworkFromProfile(widget._profile));
-    } 
-    else { 
-      _widgetStreamController.add( Image.asset(widget._profile.getImagePlaceholder()));
-        }
-  }
-
-  Widget setupWidgetView(SnapShotDataState dataState , AsyncSnapshot<Widget> snapshot, Shape shape){
-    Widget _returnWidget;
-
-      switch(dataState){
-      case SnapShotDataState.waiting: _returnWidget = ShapedBox(CircularProgressIndicator(), widget._size, shape); break;
-      case SnapShotDataState.noData: _returnWidget =  ShapedBox(Icon(Icons.error_outline), widget._size, shape) ;break;
-      case SnapShotDataState.hasdata: _returnWidget = ShapedBox(snapshot.data, widget._size, shape); break;
-      case SnapShotDataState.hasError:
-        print(snapshot.error);
-        throw(snapshot.error);
-        break;
-    } 
-    assert (_returnWidget != null, '_return widdget is null');
-    return  _returnWidget;
-  }
+   ProfilePicture(this._profile, this._size, this._shape);
 
   @override
   Widget build(BuildContext context) {
-   return 
-    StreamBuilder<Widget>(
-      stream: _widgetStreamController.stream ,
-      builder: (BuildContext context, AsyncSnapshot<Widget> snapshot){
-
-        switch (snapshot.hasError) {
-          case true: return setupWidgetView(SnapShotDataState.hasError, snapshot, widget._shape);
-          case false:
-
-          switch (snapshot.hasData) {
-
-            case false: 
-              switch(snapshot.connectionState){
-                case ConnectionState.none: break;
-                case ConnectionState.active: return setupWidgetView(SnapShotDataState.noData, snapshot, widget._shape);
-                case ConnectionState.waiting: return setupWidgetView(SnapShotDataState.waiting, snapshot, widget._shape);
-                case ConnectionState.done: break;}     
-              break;       
-
-            case true: return setupWidgetView(SnapShotDataState.hasdata, snapshot, widget._shape); 
-            default:
-          }
-      }
-      }
-    );
+    return ImageLocalNetwork(_profile.imageUrl , _size, _shape, _profile.imageFilePath);
   }
 }
+
+// class _ProfilerPictureState extends State<ProfilePicture> {
+
+//   final BehaviorSubject<Widget> _widgetStreamController = new BehaviorSubject<Widget>();
+
+//   void initState() { 
+//     super.initState();
+//     _returnImageWidget();
+//   }
+
+// @override
+//   void didUpdateWidget(ProfilePicture oldWidget) {
+//    _returnImageWidget();
+//     super.didUpdateWidget(oldWidget);
+//   }
+//  @override
+//  void didChangeDependencies() {
+//    super.didChangeDependencies();
+//    _returnImageWidget();
+//  }
+
+//   _returnImageWidget()async{
+
+//     if(
+//       widget._profile.imageFilePath != null &&
+//       widget._profile.imageFilePath != ''){   
+//        if (await File(widget._profile.imageFilePath).exists()){
+//          _widgetStreamController.add(Image.file(File(widget._profile.imageFilePath),
+//                                                 fit: BoxFit.cover,)); 
+//         }else{ Dbf.updateField(widget._profile.databaseId, widget._profile.objectId, DatabaseIds.imagePath, null);}
+//       }
+//     else 
+//    if(
+//       widget._profile.imageUrl != null &&
+//       widget._profile.imageUrl != '') {    
+//       _widgetStreamController.add( FadeInImageAssetNetworkFromProfile(widget._profile));
+//     } 
+//     else { 
+//       _widgetStreamController.add( Image.asset(widget._profile.getImagePlaceholder()));
+//         }
+//   }
+
+//   Widget setupWidgetView(SnapShotDataState dataState , AsyncSnapshot<Widget> snapshot, Shape shape){
+//     Widget _returnWidget;
+
+//       switch(dataState){
+//       case SnapShotDataState.waiting: _returnWidget = ShapedBox(CircularProgressIndicator(), widget._size, shape); break;
+//       case SnapShotDataState.noData: _returnWidget =  ShapedBox(Icon(Icons.error_outline), widget._size, shape) ;break;
+//       case SnapShotDataState.hasdata: _returnWidget = ShapedBox(snapshot.data, widget._size, shape); break;
+//       case SnapShotDataState.hasError:
+//         print(snapshot.error);
+//         throw(snapshot.error);
+//         break;
+//     } 
+//     assert (_returnWidget != null, '_return widdget is null');
+//     return  _returnWidget;
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//    return 
+//     StreamBuilder<Widget>(
+//       stream: _widgetStreamController.stream ,
+//       builder: (BuildContext context, AsyncSnapshot<Widget> snapshot){
+
+//         switch (snapshot.hasError) {
+//           case true: return setupWidgetView(SnapShotDataState.hasError, snapshot, widget._shape);
+//           case false:
+
+//           switch (snapshot.hasData) {
+
+//             case false: 
+//               switch(snapshot.connectionState){
+//                 case ConnectionState.none: break;
+//                 case ConnectionState.active: return setupWidgetView(SnapShotDataState.noData, snapshot, widget._shape);
+//                 case ConnectionState.waiting: return setupWidgetView(SnapShotDataState.waiting, snapshot, widget._shape);
+//                 case ConnectionState.done: break;}     
+//               break;       
+
+//             case true: return setupWidgetView(SnapShotDataState.hasdata, snapshot, widget._shape); 
+//             default:
+//           }
+//       }
+//       }
+//     );
+//   }
+// }
 
 class FadeInImageAssetNetworkFromProfile extends StatelessWidget {
 

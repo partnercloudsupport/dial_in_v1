@@ -292,7 +292,7 @@ class _UserInputDetailsState extends State<UserInputDetails> {
                     future: widget.userDetails.getPhotoPath(),
                     initialData: '',
                     builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-                      return  UserProfilePicture(widget.userDetails.photoUrl, 150.0, Shape.circle , snapshot.data);
+                      return  ImageLocalNetwork(widget.userDetails.photoUrl, 150.0, Shape.circle , snapshot.data);
                     },
                   ),
                 )))

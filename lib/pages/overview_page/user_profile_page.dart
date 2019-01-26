@@ -34,7 +34,7 @@ class UserProfilePage extends StatelessWidget {
                     child: Center(
                         child: Hero(
                             tag: tag == null ?  _userProfile.id : _userProfile.id + tag.toString(),
-                            child: UserProfilePicture( _userProfile.imageUrl , 150 , Shape.circle ,  _userProfile.imageFilePath )))),
+                            child: ImageLocalNetwork( _userProfile.imageUrl , 150 , Shape.circle ,  _userProfile.imageFilePath )))),
 
                 /// User name
                 Text(
