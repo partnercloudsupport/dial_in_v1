@@ -16,10 +16,9 @@ class UserProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
 
- 
     Stack(children: <Widget>[
         
-          Container(color: Theme.of(context).cardColor),
+      Container(color: Theme.of(context).cardColor),
       
        Center(child: 
         ScalableWidget(
@@ -34,7 +33,7 @@ class UserProfilePage extends StatelessWidget {
                     child: Center(
                         child: Hero(
                             tag: tag == null ?  _userProfile.id : _userProfile.id + tag.toString(),
-                            child: ImageLocalNetwork( _userProfile.imageUrl , 150 , Shape.circle ,  _userProfile.imageFilePath )))),
+                            child: UserProfileImage( _userProfile , 150 , Shape.circle )))),
 
                 /// User name
                 Text(

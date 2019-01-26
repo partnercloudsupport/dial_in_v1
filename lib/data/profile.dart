@@ -81,6 +81,23 @@ class Profile {
     }
   }
   
+  String get placeholder {
+
+    String value;
+
+    switch(type){
+      case ProfileType.barista: value = Images.user; break;
+      case ProfileType.coffee:  value = Images.coffeeBeans; break;
+      case ProfileType.equipment: value = Images.groupHandle; break;
+      case ProfileType.grinder: value = Images.grinder; break;
+      case ProfileType.recipe:  value = Images.recipeSmaller; break;
+      case ProfileType.water: value = Images.drop; break;
+    }
+
+    assert(value != null);
+    return value;
+  }
+
   //  Future<void> setDefaultPic()async{if (this.image == null){ this.image = await Functions.getFile(Images.recipeSmaller);}}
 
   double getExtractionYield(){

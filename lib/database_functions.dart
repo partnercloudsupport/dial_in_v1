@@ -327,7 +327,6 @@ class Dbf {
     String oldPicPath = await userdetails.getPhotoPath();
     String imagePath = await LocalStorage.saveFileToDeviceReturnPath(File(oldPicPath));
     String imageUrl = await Dbf.upLoadFileReturnUrl(File(imagePath), [DatabaseIds.user, userdetails.id ]);
-    if(imageUrl != null && imageUrl != userdetails.photoUrl){ Dbf.deleteFireBaseStorageItem(userdetails.photoUrl);}
 
     await user.updateProfile(userUpdateInfo)
       .then( (_)async{
@@ -366,6 +365,14 @@ class Dbf {
             });
       }
     ).catchError((error) => print(error));
+
+    if(imagePath != null && imagePath != oldPicPath){ 
+      LocalStorage.deleteFile(File(oldPicPath));}
+    
+    if(imageUrl != null && imageUrl != userdetails.photoUrl){ 
+      Dbf.updateField(DatabaseIds.User, user.uid, DatabaseIds.imageUrl, null);
+      Dbf.deleteFireBaseStorageItem(userdetails.photoUrl);}
+
   }
 
   

@@ -179,14 +179,28 @@ class ShapedBox extends StatelessWidget {
   }
 }
 
+class UserProfileImage extends StatelessWidget {
+
+  final UserProfile _userProfile;
+  final double _size;
+  final Shape _shape;
+
+  UserProfileImage(this._userProfile, this._size, this._shape);
+
+  @override
+  Widget build(BuildContext context) => 
+  ImageLocalNetwork(_userProfile.imageUrl, _size, _shape, _userProfile.imageFilePath, Images.user);
+}
+
 class ImageLocalNetwork extends StatefulWidget {
 
   final String _imageUrl;
   final String _imagePath;
   final double _size;
   final Shape _shape;
+  final String _placeHolder;
 
-  ImageLocalNetwork(this._imageUrl, this._size, this._shape, this._imagePath);
+  ImageLocalNetwork(this._imageUrl, this._size, this._shape, this._imagePath, this._placeHolder);
   _ImageLocalNetworkState createState() => _ImageLocalNetworkState();
 }
 
@@ -227,7 +241,7 @@ class _ImageLocalNetworkState extends State<ImageLocalNetwork> {
    if(
       widget._imageUrl != null &&
       widget._imageUrl != '') {    
-      _widgetStreamController.add( FadeInImage.assetNetwork(image: widget._imageUrl, placeholder: Images.user,fit: BoxFit.cover,));
+      _widgetStreamController.add( FadeInImage.assetNetwork(image: widget._imageUrl, placeholder: widget._placeHolder ,fit: BoxFit.cover,));
     } 
     else { 
       _widgetStreamController.add( Image.asset(Images.user));
@@ -284,17 +298,6 @@ class _ImageLocalNetworkState extends State<ImageLocalNetwork> {
 
 enum Shape {square, circle}
 
-// class ProfilePicture extends StatefulWidget {
-
-//   final Profile _profile;
-//   final double _size;
-//   final Shape _shape;
-
-  
-//   // ProfilePicture(this._profile, this._size, this._shape);
-//   // _ProfilerPictureState createState() => _ProfilerPictureState();
-
-// }
 
 class ProfilePicture extends StatelessWidget {
   
@@ -306,7 +309,7 @@ class ProfilePicture extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ImageLocalNetwork(_profile.imageUrl , _size, _shape, _profile.imageFilePath);
+    return ImageLocalNetwork(_profile.imageUrl , _size, _shape, _profile.imageFilePath, _profile.placeholder);
   }
 }
 

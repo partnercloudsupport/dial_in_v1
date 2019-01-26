@@ -95,7 +95,7 @@ class UserDetails{
   UserDetails({String userNameIn, String idIn, String photoIn, String mottoIn, String emailIn ,String passwordIn, String photoPathIn}){
       id = idIn;
       photoUrl = photoIn;
-      photoPath = photoPathIn;
+      imagePath = photoPathIn;
       userName = userNameIn;
       motto = mottoIn;
       email = emailIn;
@@ -106,7 +106,7 @@ class UserDetails{
 
       set id(String newId) => values[DatabaseIds.userId] = newId;
       set photoUrl(String newimage) => values[DatabaseIds.imageUrl] = newimage;
-      set photoPath(String newimageFile) => values[DatabaseIds.imagePath] = newimageFile;
+      set imagePath(String newimageFile) => values[DatabaseIds.imagePath] = newimageFile;
       set userName(String newuserName) => values[DatabaseIds.userName] = newuserName;
       set motto(String newmotto) => values[DatabaseIds.motto] = newmotto;
       set email(String newemail) => values[DatabaseIds.email] = newemail;

@@ -206,7 +206,7 @@ class SocialFeedBloc{
   }
 
 
-  Future<List<FeedProfileData>>convertProfilesToListOfFeedProfiles(List<Profile> stream) async {
+  Future<List<FeedProfileData>> convertProfilesToListOfFeedProfiles(List<Profile> stream) async {
       List<FeedProfileData> profiles = new List<FeedProfileData>();
 
       for(var doc in stream){  /// <<<<==== changed line
@@ -275,10 +275,11 @@ class UserFeed {
         .then((userProfile){
               _userDetails.userName = userProfile.userName; 
               _userDetails.photoUrl = userProfile.imageUrl;
-                            _userDetails.photoUrl = userProfile.imageUrl;
+              _userDetails.imagePath = userProfile.imageFilePath;
               _userDetails.motto = userProfile.motto; 
               _userProfile = userProfile;
-         _outgoingController.add(_userProfile);}).catchError((e) => print(e));
+         _outgoingController.add(_userProfile);
+         _outgoingUserDetailsController.add(_userDetails);}).catchError((e) => print(e));
       }
    }
 }
