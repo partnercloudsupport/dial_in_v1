@@ -12,6 +12,8 @@ import 'package:dial_in_v1/data/strings.dart';
 import 'package:dial_in_v1/data/mini_classes.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:flutter/services.dart';
+import 'package:dial_in_v1/data/functions.dart';
+
 
 
 class Dbf {
@@ -327,7 +329,7 @@ class Dbf {
     String oldPicPath = await userdetails.getPhotoPath();
     String imagePath = await LocalStorage.saveFileToDeviceReturnPath(File(oldPicPath));
     String imageUrl = await Dbf.upLoadFileReturnUrl(File(imagePath), [DatabaseIds.user, userdetails.id ]);
-    if(imageUrl != null && imageUrl != userdetails.photoUrl){ Dbf.deleteFireBaseStorageItem(userdetails.photoUrl);}
+    if(imageUrl != userdetails.photoUrl){Dbf.deleteFireBaseStorageItem(userdetails.photoUrl);}
 
     await user.updateProfile(userUpdateInfo)
       .then( (_)async{
@@ -364,8 +366,7 @@ class Dbf {
                           .catchError((e) => print('Error updating user $e'));
               }
             });
-      }
-    ).catchError((error) => print(error));
+      }).catchError((error) => print(error));
   }
 
   
