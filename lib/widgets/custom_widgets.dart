@@ -219,11 +219,11 @@ class _ImageLocalNetworkState extends State<ImageLocalNetwork> {
       super.didUpdateWidget(oldWidget);
     }
 
- @override
- void didChangeDependencies() {
-   super.didChangeDependencies();
-   _returnImageWidget();
- }
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _returnImageWidget();
+  }
 
   _returnImageWidget()async{
 

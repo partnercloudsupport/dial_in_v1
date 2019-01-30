@@ -702,7 +702,7 @@ class Dbf {
     if (doc.exists) {
 
           /// For following
-          List<dynamic> following = List<dynamic>.from(doc.data[DatabaseIds.following]) ?? List<dynamic>();
+          List<dynamic> following = List<dynamic>.from(doc.data[DatabaseIds.following] ??  List<dynamic>()) ?? List<dynamic>();
         
           List<String> followingRevisedList = new List<String>();
 
@@ -710,7 +710,7 @@ class Dbf {
           { if(follow is String) {followingRevisedList.add(follow);}});
            
           /// For followers
-          List<dynamic> followers = List<dynamic>.from(doc.data[DatabaseIds.followers]) ?? List<dynamic>();
+          List<dynamic> followers = List<dynamic>.from(doc.data[DatabaseIds.followers] ??  List<dynamic>()) ?? List<dynamic>();
           
           List<String> followersRevisedList = new List<String>();
 
