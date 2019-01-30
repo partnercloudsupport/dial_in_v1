@@ -38,6 +38,9 @@ class ProfilePageModel extends Model {
     _profileStreamController.add(_profile);
   }
 
+  String get imageUrl => _profile.imageUrl;
+  String get placeholder => _profile.placeholder;
+
   Item getItem(String databaseId){
     return _profile.getItem(databaseId);
   }

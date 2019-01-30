@@ -33,14 +33,14 @@ class NumericTextFormatter extends TextInputFormatter {
 class  UserProfile {
 
     UserProfile
-    (String _userId, String _userName, String _userImageUrl, List<String> _following, List<String> _followers, String _motto, String _userImageFilePath){
+    (String _userId, String _userName, String _userImageUrl, List<String> _following, List<String> _followers, String _motto, ){
        id = _userId; 
        userName = _userName; 
        imageUrl = _userImageUrl; 
        following = _following; 
        followers = _followers; 
        motto = _motto; 
-       imageFilePath = _userImageFilePath;      
+      //  imageFilePath = _userImageFilePath;      
     }
 
     //TODO put into map
@@ -58,8 +58,8 @@ class  UserProfile {
     String get imageUrl => values[DatabaseIds.imageUrl];
     set imageUrl(String setimageUrl) => values[DatabaseIds.imageUrl] = setimageUrl;
 
-    String get imageFilePath => values[DatabaseIds.imagePath];
-    set imageFilePath(String setimageFilePath) => values[DatabaseIds.imagePath] = setimageFilePath;
+    // String get imageFilePath => values[DatabaseIds.imagePath];
+    // set imageFilePath(String setimageFilePath) => values[DatabaseIds.imagePath] = setimageFilePath;
 
     List<String> get followers => values[DatabaseIds.followers];
     set followers(List<String> setimageFilePath) => values[DatabaseIds.followers] = setimageFilePath;
@@ -92,10 +92,10 @@ class  UserProfile {
 
 class UserDetails{
 
-  UserDetails({String userNameIn, String idIn, String photoIn, String mottoIn, String emailIn ,String passwordIn, String photoPathIn}){
+  UserDetails({String userNameIn, String idIn, String photoIn, String mottoIn, String emailIn ,String passwordIn, }){
       id = idIn;
       photoUrl = photoIn;
-      imagePath = photoPathIn;
+      // imagePath = photoPathIn;
       userName = userNameIn;
       motto = mottoIn;
       email = emailIn;
@@ -106,7 +106,7 @@ class UserDetails{
 
       set id(String newId) => values[DatabaseIds.userId] = newId;
       set photoUrl(String newimage) => values[DatabaseIds.imageUrl] = newimage;
-      set imagePath(String newimageFile) => values[DatabaseIds.imagePath] = newimageFile;
+      // set imagePath(String newimageFile) => values[DatabaseIds.imagePath] = newimageFile;
       set userName(String newuserName) => values[DatabaseIds.userName] = newuserName;
       set motto(String newmotto) => values[DatabaseIds.motto] = newmotto;
       set email(String newemail) => values[DatabaseIds.email] = newemail;
@@ -114,7 +114,7 @@ class UserDetails{
     
       String get id => values[DatabaseIds.userId];
       String get photoUrl => values[DatabaseIds.imageUrl];
-      String get imagePath => values[DatabaseIds.imagePath];
+      // String get imagePath => values[DatabaseIds.imagePath];
       String get userName => values[DatabaseIds.userName];
       String get motto => values[DatabaseIds.motto];
       String get email => values[DatabaseIds.email];

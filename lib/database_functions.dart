@@ -534,10 +534,10 @@ class Dbf {
 
     var imageUrl;
 
-    if ( profile.imageFilePath != null )
-      { if ( profile.imageFilePath != null )
-        { imageUrl = await Dbf.upLoadFileReturnUrl
-                  ( File(profile.imageFilePath ), [DatabaseIds.user, profile.userId, 'images', profile.databaseId] );} }
+    // if ( profile.imageFilePath != null )
+    //   { if ( profile.imageFilePath != null )
+    //     { imageUrl = await Dbf.upLoadFileReturnUrl
+    //               ( File(profile.imageFilePath ), [DatabaseIds.user, profile.userId, 'images', profile.databaseId] );} }
 
     Map <String, dynamic> _properties = new Map <String, dynamic>();
 
@@ -725,7 +725,6 @@ class Dbf {
                             followingRevisedList ?? List<String>() ?? ['Error: submit feedback database_functions.dart => line 606'],
                             followersRevisedList ?? List<String>() ?? ['Error: submit feedback database_functions.dart => line 607'],
                             doc.data[DatabaseIds.motto] ??  'Error: submit feedback database_functions.dart => line 608',
-                            doc.data[DatabaseIds.imagePath]?? '',
                             );
           
           assert(_userProfile != null, '_userProfile == null');
@@ -733,8 +732,7 @@ class Dbf {
     }
     assert(_userProfile != null, '_userProfile == null');
 
-    return _userProfile ?? new UserProfile
-                            ('error', 'error', 'error', ['error'], ['error'],'error', 'error');
+    return _userProfile;
   }
 
   /// Get value from collection with key
@@ -1040,7 +1038,6 @@ class CurrentUserProfileStream{
                               newFollowingList,
                               newFollowersList,
                               doc.data[DatabaseIds.motto] as String?? 'Error: submit feedback database_functions.dart => line 981w',
-                              doc.data[DatabaseIds.imagePath] as String?? 'Error: submit feedback database_functions.dart => line 981w',
                               );
 
         userProfileStreamcontroller.add(userProfile);

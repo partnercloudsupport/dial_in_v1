@@ -3,8 +3,6 @@ import 'package:dial_in_v1/data/profile.dart';
 import 'package:dial_in_v1/data/strings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:dial_in_v1/data/functions.dart';
-import 'package:flutter/foundation.dart';
-import 'package:meta/meta.dart';
 import 'package:dial_in_v1/pages/profile_pages/recipe_profile_page.dart';
 import 'package:dial_in_v1/pages/profile_pages/water_profile_page.dart';
 import 'package:dial_in_v1/pages/profile_pages/equipment_profile_page.dart';
@@ -16,6 +14,8 @@ import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'dart:async';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:dial_in_v1/pages/profile_pages/profile_page_model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+
 
 class ProfilePage extends StatefulWidget {
 
@@ -99,13 +99,8 @@ class ProfilePageState extends State<ProfilePage> {
       Container(
         padding: EdgeInsets.all(_margin),
         child: InkWell(
-            child: Hero(
-              tag: profile.objectId,
-              child: SizedBox(
-                  width: 200.0,
-                  height: 200.0,
-                  child: ProfilePicture(profile, 200.0, Shape.circle)),
-            ),
+            child: 
+              CircularCachedProfileImage(widget._model.placeholder, widget._model.imageUrl, 200, profile.objectId),
             onTap: isEditing
                 ? () {_getimage( model ,
                      (image) {setState(() { profile.imageUrl = image; }); });

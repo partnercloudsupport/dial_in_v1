@@ -25,6 +25,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:rxdart/rxdart.dart';
 import 'dart:io';
 import 'package:dial_in_v1/pages/overview_page/profile_list.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+
 
 
 
@@ -163,34 +165,82 @@ class ShapedBox extends StatelessWidget {
     }
 
     return Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [BoxShadow
-          (color: Colors.black, offset: new Offset(0.0, 2.0),blurRadius: 2.0,)],
-          shape: shape
-        ),
-        height:_size,
-        width: _size,
-        child: ClipRRect(
-          borderRadius: border,
-          child:_child
-        ),
-    );   
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [BoxShadow
+                (color: Colors.black, offset: new Offset(0.0, 2.0),blurRadius: 2.0,)],
+                shape: shape
+              ),
+              height:_size,
+              width: _size,
+              child: ClipRRect(
+                borderRadius: border,
+                child:_child
+              ),
+          );   
   }
 }
 
-class UserProfileImage extends StatelessWidget {
+class CircularCachedProfileImage extends StatelessWidget {
 
-  final UserProfile _userProfile;
   final double _size;
-  final Shape _shape;
+  final String _imageUrl;
+  final String _heroTag;
+  final String _placeholder;
 
-  UserProfileImage(this._userProfile, this._size, this._shape);
+  CircularCachedProfileImage(this._placeholder ,this._imageUrl, this._size, this._heroTag);
 
   @override
-  Widget build(BuildContext context) => 
-  ImageLocalNetwork(_userProfile.imageUrl, _size, _shape, _userProfile.imageFilePath, Images.user);
+  Widget build(BuildContext context) =>
+  
+  ShapedBox( 
+    Hero(tag: _heroTag,
+      child:
+      CachedNetworkImage(
+         placeholder: Image.asset(_placeholder),
+         imageUrl: _imageUrl, 
+         fit: BoxFit.cover,)),
+   _size , Shape.circle 
+  ); 
 }
+
+class CoverProfileCachedImage extends StatelessWidget {
+
+  final String _herotag;
+  final Profile _profile;
+  CoverProfileCachedImage(this._profile,this._herotag);
+  
+  @override
+  Widget build(BuildContext context) =>
+        Container(
+           decoration: BoxDecoration(
+                          color: Colors.white,
+                          boxShadow: [BoxShadow
+                          (color: Colors.black, offset: new Offset(0.0, 2.0),blurRadius: 2.0,)],
+                        ),
+              height: 300,
+              width: double.infinity,
+              child:  Hero(tag: _herotag,
+                            child:CachedNetworkImage(
+                                              placeholder: Image.asset(_profile.placeholder),
+                                              imageUrl: _profile.imageUrl ,
+                                )));   
+}
+
+
+
+// class UserProfileImage extends StatelessWidget {
+
+//   final UserProfile _userProfile;
+//   final double _size;
+//   final Shape _shape;
+
+//   UserProfileImage(this._userProfile, this._size, this._shape);
+
+//   @override
+//   Widget build(BuildContext context) => 
+//   ImageLocalNetwork(_userProfile.imageUrl, _size, _shape, _userProfile.imageFilePath, Images.user);
+// }
 
 class ImageLocalNetwork extends StatefulWidget {
 
@@ -664,24 +714,24 @@ void setWidgetUp(){
   Widget build(BuildContext context) {
     return 
     Slidable(
-  delegate: new SlidableDrawerDelegate(),
-  actionExtentRatio: 0.25,
-  secondaryActions: <Widget>[
-    new IconSlideAction(
-      caption: 'Delete',
-      color: Colors.red,
-      icon: Icons.delete,
-      onTap: () => widget._deleteProfile(widget._profile, context)
-,
-    ),
-    new IconSlideAction(
-      caption: 'Edit',
-      color: Colors.yellow,
-      icon: Icons.edit,
-      onTap: _editProfile,
-    ),
-  ],
-  child:
+      delegate: new SlidableDrawerDelegate(),
+      actionExtentRatio: 0.25,
+      secondaryActions: <Widget>[
+        new IconSlideAction(
+          caption: 'Delete',
+          color: Colors.red,
+          icon: Icons.delete,
+          onTap: () => widget._deleteProfile(widget._profile, context)
+    ,
+        ),
+        new IconSlideAction(
+          caption: 'Edit',
+          color: Colors.yellow,
+          icon: Icons.edit,
+          onTap: _editProfile,
+        ),
+      ],
+      child:
       
    Card(child: Container(padding: EdgeInsets.all(10.0),child: 
       InkWell(onTap:() => widget._giveprofile(widget._profile)
@@ -691,9 +741,8 @@ void setWidgetUp(){
       Row(children: <Widget>[
       ///
       /// Profile picture
-      ///
-      ScalableWidget(Hero(tag: widget._profile.objectId , child: Container (
-          child: ProfilePicture(widget._profile, 60.0, Shape.circle)),)),
+      /// 
+      CircularCachedProfileImage(widget._profile.placeholder , widget._profile.imageUrl, 60.0, widget._profile.objectId),
 
       Padding(padding: EdgeInsets.all(5.0)),
           
@@ -794,10 +843,13 @@ class SocialFeedCard extends StatelessWidget {
       Row(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
 
       /// User picture
+ 
       Container(child:InkWell(onTap:() => _giveUserProfile(_profile.userProfile, _tag),
-          child: Hero(tag: _profile.userProfile.id + _tag.toString(), child: CircularFadeInAssetNetworkImage(_profile.userImage, Images.user , 40.0)))),
+          child:  CircularCachedProfileImage(
+            Images.user,
+            _profile.userProfile.imageUrl, 60.0, 
+            _profile.userProfile.id + _tag.toString()),)),
           
-  
       Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
 
         ///User Name
@@ -830,10 +882,8 @@ class SocialFeedCard extends StatelessWidget {
       InkWell(onTap:() => _giveprofile(_profile),child: Column(children: <Widget>[
 
         /// Recipe picture
-        Hero(tag: _profile.profile.objectId, child: SizedBox(width: double.infinity, height: 200.0, child:
-          Material(type: MaterialType.card, elevation: 2.0 ,color: Theme.of(context).scaffoldBackgroundColor,
-          child: ProfilePicture(_profile.profile, double.infinity, Shape.square),),),),
-        
+        CoverProfileCachedImage(_profile.profile, _profile.profile.objectId),
+       
         ///Spacer
           Container(height: 20.0,),
 

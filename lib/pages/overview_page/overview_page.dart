@@ -276,21 +276,14 @@ class _UserInputDetailsState extends State<UserInputDetails> {
           Container( padding: EdgeInsets.all(20.0), alignment: Alignment(0, 0),
               child: 
               InkWell(
-               onTap:(){ 
-                    Functions.getimageFromCameraOrGallery(
-                      context,(String imagepath)async{
-                         setState(() {  _userDetails.imagePath = imagepath;});});
-                   },
-                child: Container(width: 200.0, height: 200.0, 
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle, 
-                  border: Border(),
-                  boxShadow: [BoxShadow(color: Colors.black, offset: Offset(2.0, 2.0))],), 
-                child:ClipRRect(
-                  borderRadius: new BorderRadius.circular(200),
-                  child: ImageLocalNetwork(widget.userDetails.photoUrl, 150.0, Shape.circle , widget.userDetails.imagePath, Images.user)
-                  
-                )))
+              onTap:(){ 
+                  Functions.getimageFromCameraOrGallery(
+                    context,(String imagepath)async{
+                        String url = await Dbf.upLoadFileReturnUrl(File(imagepath), [DatabaseIds.user, _userDetails.id, 'images']);
+                        setState(() {  _userDetails.photoUrl = url;});});
+                  },
+              child: CircularCachedProfileImage(Images.user, _userDetails.photoUrl, 200.0, '')
+            )
           ),
 
           ///Username

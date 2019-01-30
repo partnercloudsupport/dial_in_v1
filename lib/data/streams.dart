@@ -275,7 +275,7 @@ class UserFeed {
         .then((userProfile){
               _userDetails.userName = userProfile.userName; 
               _userDetails.photoUrl = userProfile.imageUrl;
-              _userDetails.imagePath = userProfile.imageFilePath;
+              // _userDetails.imagePath = userProfile.imageFilePath;
               _userDetails.motto = userProfile.motto; 
               _userProfile = userProfile;
          _outgoingController.add(_userProfile);

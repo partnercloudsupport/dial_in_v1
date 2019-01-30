@@ -4,6 +4,8 @@ import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'package:dial_in_v1/data/strings.dart';
 import 'package:dial_in_v1/data/mini_classes.dart';
 import 'package:dial_in_v1/data/images.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+
 
 class UserProfilePage extends StatelessWidget {
   final UserProfile _userProfile;
@@ -33,7 +35,7 @@ class UserProfilePage extends StatelessWidget {
                     child: Center(
                         child: Hero(
                             tag: tag == null ?  _userProfile.id : _userProfile.id + tag.toString(),
-                            child: UserProfileImage( _userProfile , 150 , Shape.circle )))),
+                            child: CircularCachedProfileImage(Images.user ,_userProfile.imageUrl , 150 ,  _userProfile.id )))),
 
                 /// User name
                 Text(
