@@ -161,7 +161,7 @@ class RoastingDetailsCardState extends State<RoastingDetailsCard> {
         Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: <Widget>[
           ///Roastery Name
           TextFieldItemWithInitalValue
-          (snapshot.data.getItem(DatabaseIds.roasterName), _textFieldWidth) ,    
+          (snapshot.data.getItem(DatabaseIds.roasteryName), _textFieldWidth) ,    
           
           /// Roaster name
           TextFieldItemWithInitalValue
