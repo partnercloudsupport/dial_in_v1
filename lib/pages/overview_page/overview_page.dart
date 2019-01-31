@@ -158,8 +158,6 @@ class MainMenuDrawer extends StatelessWidget{
             ),
           ),
           
-          Divider(),
-
           ListTile(
             title: Text('Theme'),
             onTap: () {
