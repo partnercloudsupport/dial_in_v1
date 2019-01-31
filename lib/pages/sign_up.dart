@@ -6,6 +6,7 @@ import 'package:dial_in_v1/data/images.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:dial_in_v1/data/functions.dart';
 import 'dart:io';
+import 'package:dial_in_v1/database_functions.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -142,7 +143,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
             ])),
 
-          BackIcon()
+          BackIcon( () {if (_userImage !=null ){ Dbf.deleteFireBaseStorageItem(_userImage); }})
    
         ],),
       )
@@ -152,6 +153,11 @@ class _SignUpPageState extends State<SignUpPage> {
 }
 
 class BackIcon extends StatelessWidget {
+  
+  final Function _deleteIfNeeded;
+
+  BackIcon(this._deleteIfNeeded);
+
   @override
   Widget build(BuildContext context) =>
     Container(
@@ -159,7 +165,7 @@ class BackIcon extends StatelessWidget {
           height: 30.0,
           width: 30.0,
           child: RawMaterialButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () { _deleteIfNeeded(); Navigator.pop(context); },
             child: Container(
               decoration: BoxDecoration(
                   image: DecorationImage(

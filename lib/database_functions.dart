@@ -270,8 +270,6 @@ class Dbf {
 
   }
 
-
-
   /// Logout
   static Future <void> logOut()async{
     await FirebaseAuth.instance.signOut();
@@ -324,9 +322,7 @@ class Dbf {
      if (userdetails.email != null && userdetails.email != ""){
     user.updateEmail(userdetails.email).catchError(((error) => print(error)));}
 
-    String oldPicPath = await userdetails.getPhotoPath();
-    String imagePath = await LocalStorage.saveFileToDeviceReturnPath(File(oldPicPath));
-    String imageUrl = await Dbf.upLoadFileReturnUrl(File(imagePath), [DatabaseIds.user, userdetails.id ]);
+    String imageUrl = userdetails.photoUrl;
 
     await user.updateProfile(userUpdateInfo)
       .then( (_)async{
@@ -334,7 +330,6 @@ class Dbf {
             DatabaseIds.userId : user.uid,
             DatabaseIds.userName : userdetails.userName,
             DatabaseIds.imageUrl : imageUrl,
-            DatabaseIds.imagePath : oldPicPath,
             DatabaseIds.motto : userdetails.motto 
             };
 
@@ -365,9 +360,6 @@ class Dbf {
             });
       }
     ).catchError((error) => print(error));
-
-    if(imagePath != null && imagePath != oldPicPath){ 
-      LocalStorage.deleteFile(File(oldPicPath));}
     
     if(imageUrl != null && imageUrl != userdetails.photoUrl){ 
       Dbf.updateField(DatabaseIds.User, user.uid, DatabaseIds.imageUrl, null);
@@ -655,41 +647,7 @@ class Dbf {
                               .snapshots();
   }
 
-  // static void  getUserProfileStreamFromFireStoreWithDocRef(String docRefernace){
 
-  //   Completer completer = new Completer();
-
-  //   Stream<DocumentSnapshot> userSnapshotStream = Firestore.instance.collection(DatabaseIds.User).document(docRefernace).snapshots();
-
-  //   final BehaviorSubject<UserProfile> _outgoingController = BehaviorSubject<UserProfile>();
-
-  //   UserProfile userProfile;
-
-  //   userSnapshotStream.listen((doc){
-
-  //     if (doc.exists){
-
-  //       userProfile = new UserProfile(
-  //                             doc.data[DatabaseIds.user]?? 'Error: submit feedback database_functions.dart => line 557',
-  //                             doc.data[DatabaseIds.userName]?? 'Error: submit feedback database_functions.dart => line 558',
-  //                             doc.data[DatabaseIds.imageUrl]?? '',
-  //                             doc.data[DatabaseIds.following]?? ['Error: submit feedback database_functions.dart => line 560'],
-  //                             doc.data[DatabaseIds.followers]?? ['Error: submit feedback database_functions.dart => line 561'],
-  //                             doc.data[DatabaseIds.motto]?? 'Error: submit feedback database_functions.dart => line 562',
-  //                             doc.data[DatabaseIds.imagePath]?? '',
-  //                             );
-
-  //       _outgoingController.add(userProfile);
-  //     }else{
-
-  //       completer.completeError('ERROR');
-
-  //     }
-  //   });
-  //   completer.completeError('ERROR');
-  // }
-
-    /// Get profiles from fore store with doc referance //TODO;
   static Future<UserProfile> getUserProfileFromFireStoreWithDocRef(String docRefernace)async{
 
     UserProfile _userProfile;
@@ -724,7 +682,7 @@ class Dbf {
                             doc.data[DatabaseIds.imageUrl] ?? '',
                             followingRevisedList ?? List<String>() ?? ['Error: submit feedback database_functions.dart => line 606'],
                             followersRevisedList ?? List<String>() ?? ['Error: submit feedback database_functions.dart => line 607'],
-                            doc.data[DatabaseIds.motto] ??  'Error: submit feedback database_functions.dart => line 608',
+                            doc.data[DatabaseIds.motto] ??  '',
                             );
           
           assert(_userProfile != null, '_userProfile == null');

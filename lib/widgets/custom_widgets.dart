@@ -211,6 +211,26 @@ class CircularCachedProfileImage extends StatelessWidget {
   }
 }
 
+class UserDetailsCachedProfileImage extends StatelessWidget {
+
+  final double _size;
+  final UserDetails _userDetails;
+
+  UserDetailsCachedProfileImage(this._userDetails, this._size);
+
+  @override
+  Widget build(BuildContext context) {
+
+    Widget _child = CachedNetworkImage(
+          placeholder: Image.asset(Images.user),
+          imageUrl: _userDetails.photoUrl, 
+          fit: BoxFit.cover);
+
+    return
+    ShapedBox( _child, _size , Shape.circle ); 
+  }
+}
+
 class CoverProfileCachedImage extends StatelessWidget {
 
   final String _herotag;
