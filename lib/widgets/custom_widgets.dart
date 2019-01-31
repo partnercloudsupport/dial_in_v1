@@ -1082,7 +1082,7 @@ class AddButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton(
       onPressed: _onPressed,
-      child: Icon(Icons.add),
+      child: Icon(Icons.add, color: Colors.black,),
     );
   }
 }

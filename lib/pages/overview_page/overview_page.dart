@@ -104,10 +104,10 @@ class OverviewPageState extends State<OverviewPage> with SingleTickerProviderSta
                 title: Text(StringLabels.overview, style: Theme.of(context).textTheme.title,),
                 automaticallyImplyLeading: false,
                 leading: RawMaterialButton( onPressed: () {logOut(context);}, 
-                  child: Icon(Icons.exit_to_app),),
+                  child: Icon(Icons.exit_to_app, color: Colors.black,),),
                 actions: <Widget>[ 
                   RawMaterialButton( onPressed: () => _scaffoldKey.currentState.openDrawer(),
-                  child: Icon(Icons.menu))  ], ),
+                  child: Icon(Icons.menu, color: Colors.black,))  ], ),
     
       drawer: MainMenuDrawer(),
 
