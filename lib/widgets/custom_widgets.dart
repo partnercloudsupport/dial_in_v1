@@ -1183,7 +1183,6 @@ class PickerTextField extends StatefulWidget {
   _PickerTextFieldState createState() => _PickerTextFieldState();
 }
 class _PickerTextFieldState extends State<PickerTextField> {
-
   TextEditingController _controller;
   FocusNode _focus;
   ProfilePageModel _model;

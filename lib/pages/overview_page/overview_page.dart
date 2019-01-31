@@ -156,6 +156,9 @@ class MainMenuDrawer extends StatelessWidget{
               color: Theme.of(context).primaryColor,
             ),
           ),
+          
+          Divider(),
+
           ListTile(
             title: Text('Theme'),
             onTap: () {
@@ -163,6 +166,9 @@ class MainMenuDrawer extends StatelessWidget{
               .then((_) => Navigator.pop(context));
             },
           ),
+
+          Divider(),
+
           ListTile(
             title: Text('Edit user profile'),
             onTap: () {

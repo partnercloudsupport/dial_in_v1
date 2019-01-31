@@ -24,18 +24,13 @@ class WaterPage extends StatelessWidget {
                 builder:
                     (BuildContext context, AsyncSnapshot<Profile> profile) {
                   return Column(children: <Widget>[
+
                     /// Name
-                    Container(
-                      margin: EdgeInsets.all(20.0),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            TextFieldItemWithInitalValue(
-                                profile.data.getItem(DatabaseIds.waterID),
-                                200.0)
-                          ]),
-                    ),
+                    Card(child:
+                    Container(margin: EdgeInsets.all(10), height: 100.0, child:
+                    Column(mainAxisAlignment: MainAxisAlignment.center ,children: <Widget>[
+                    TextFieldItemWithInitalValue
+                    (profile.data.getItem(DatabaseIds.waterID), 300)]))),
 
                     /// Date
                     DateTimeInputCard(StringLabels.dateTested,

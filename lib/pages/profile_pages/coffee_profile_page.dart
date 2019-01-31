@@ -32,7 +32,6 @@ class _CoffeeProfilePageState extends State<CoffeeProfilePage> {
           Column(
             children: <Widget>[
 
-
               Card(child:
               Container(margin: EdgeInsets.all(10), height: 100.0, child:
               Column(mainAxisAlignment: MainAxisAlignment.center ,children: <Widget>[
