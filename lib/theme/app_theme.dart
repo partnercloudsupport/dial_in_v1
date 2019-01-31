@@ -8,6 +8,7 @@ ThemeData buildThemeData(){
   final baseTheme = ThemeData(
      
     ///Colors
+    brightness: Brightness.light,
     // primarySwatch: AppColors.getColor(ColorType.toolBar),
     primaryColorDark: Color.fromARGB(255, 240, 240, 250),
     scaffoldBackgroundColor: Color.fromARGB(255, 200, 200, 200),

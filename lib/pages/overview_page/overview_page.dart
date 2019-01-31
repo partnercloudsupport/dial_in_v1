@@ -150,6 +150,7 @@ class MainMenuDrawer extends StatelessWidget{
         // Important: Remove any padding from the ListView.
         padding: EdgeInsets.zero,
         children: <Widget>[
+
           DrawerHeader(
             child: Container(alignment:Alignment(0, 0),child:Text('Options', style:Theme.of(context).textTheme.title)),
             decoration: BoxDecoration(

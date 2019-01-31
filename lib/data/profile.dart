@@ -86,6 +86,7 @@ class Profile {
       case ProfileType.barista:
         this.referanceNumber = 5;
         this.label = StringLabels.barista;
+        this.imageAssetPlaceholder = Images.user; 
         break;
 
       default:
