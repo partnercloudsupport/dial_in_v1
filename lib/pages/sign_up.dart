@@ -112,32 +112,29 @@ class _SignUpPageState extends State<SignUpPage> {
                 Center(child:
                 Text(
                   StringLabels.userName,
-                  style: TextStyle(
-                      color: Colors.white70, fontWeight: FontWeight.w600),
+                  style: TextStyle( fontWeight: FontWeight.w600),
                 )),
                 TextFieldEntry(StringLabels.userName, _userNameController, false),
 
                 /// Email
                 Center(child: Text(
                   StringLabels.email,
-                  style: TextStyle(
-                      color: Colors.white70, fontWeight: FontWeight.w600),
+                  style: TextStyle(fontWeight: FontWeight.w600),
                 )),
                 TextFieldEntry(StringLabels.email, _emailController, false),
 
                 /// Password
                 Center(child: Text(
                   StringLabels.password,
-                  style: TextStyle(
-                      color: Colors.white70, fontWeight: FontWeight.w600),
+                  style: TextStyle(fontWeight: FontWeight.w600),
                 )),
                 TextFieldEntry(StringLabels.password, _passwordController, true),
 
                 /// Signup button
-                Container(
+                 Center(child:Container(
                   margin: EdgeInsets.all(20.0),
                   child: ActionButton(StringLabels.signUp, signUpButton),
-                ),
+                )),
 
                 Padding(padding: EdgeInsets.all(20.0),),
 

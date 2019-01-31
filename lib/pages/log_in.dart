@@ -147,9 +147,8 @@ class _LoginPageState extends State<LoginPage> {
                     margin: const EdgeInsets.all(10.0),
                     alignment: Alignment(0.0, 0.0),
                     child: Text(StringLabels.welcomeToDialIn,
-                        textAlign: TextAlign.center,
-                        style:
-                            TextStyle(color: Colors.white70, fontSize: 23.0)),
+                        textAlign: TextAlign.center, style: Theme.of(context).textTheme.headline,)
+                      
                   ),
 
                   // Instructions
@@ -159,8 +158,8 @@ class _LoginPageState extends State<LoginPage> {
                     alignment: Alignment(0.0, 0.0),
                     child: Text(StringLabels.logInWithDetails,
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white70)),
-                  ),
+                        style: Theme.of(context).textTheme.subhead,
+                      )),
 
                   // Email field
                   TextFieldEntry(StringLabels.email, _emailController, false),
@@ -175,7 +174,6 @@ class _LoginPageState extends State<LoginPage> {
                     child: FlatButton(
                         child: Text(StringLabels.forgottonPassword,
                             style: TextStyle(
-                                color: Colors.white70,
                                 fontWeight: FontWeight.w600)),
                         onPressed: () {
                           setState(() {
@@ -199,7 +197,6 @@ class _LoginPageState extends State<LoginPage> {
                                 margin: const EdgeInsets.all(0.0),
                                 child: Text(StringLabels.dontHaveAccount,
                                     style: TextStyle(
-                                        color: Colors.white70,
                                         fontSize: 10.0))),
 
                             // Sign up button
@@ -221,14 +218,14 @@ class LoginButton extends StatelessWidget {
   LoginButton(this.loginAction);
 
   Widget build(BuildContext context) {
-    return Container(width: 250, child:RaisedButton(
+    return Center(child: Container(width: 250, child:RaisedButton(
         padding: EdgeInsets.fromLTRB(25.0, 10.0, 25.0, 10.0),
         shape: RoundedRectangleBorder(
             borderRadius: new BorderRadius.circular(30.0)),
         color: AppColors.getColor(ColorType.primarySwatch),
         child: Text(StringLabels.logIn,
             style: TextStyle(fontWeight: FontWeight.w500, fontSize: 25.0)),
-        onPressed: loginAction));
+        onPressed: loginAction)));
   }
 }
 

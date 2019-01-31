@@ -48,50 +48,50 @@ class GrinderDetailsCard extends StatelessWidget {
      StreamBuilder<Profile>(
             stream: model.profileStream,
             builder: (BuildContext context, AsyncSnapshot<Profile> snapshot){
+                if (!snapshot.hasData){ return Center(child: CircularProgressIndicator(),);}
 
-              return
-    
-    Card(
-        child: Container(
-      padding: EdgeInsets.all(_padding),
-      margin: EdgeInsets.all(_margin),
-      child: Column(
-        children: <Widget>[
-          ///Row 1
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              
-              /// Name
-              TextFieldItemWithInitalValue( snapshot.data.getItem( DatabaseIds.grinderId ), _textFieldWidth),
+              return 
+                Card(
+                    child: Container(
+                  padding: EdgeInsets.all(_padding),
+                  margin: EdgeInsets.all(_margin),
+                  child: Column(
+                    children: <Widget>[
+                      ///Row 1
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          
+                          /// Name
+                          TextFieldItemWithInitalValue( snapshot.data.getItem( DatabaseIds.grinderId ), _textFieldWidth),
 
-              /// Burrs
-              PickerTextField( snapshot.data.getItem( DatabaseIds.burrs ), _textFieldWidth),
+                          /// Burrs
+                          PickerTextField( snapshot.data.getItem( DatabaseIds.burrs ), _textFieldWidth),
 
-            ],
-          ),
+                        ],
+                      ),
 
 
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
 
-              /// Make
-              TextFieldItemWithInitalValue( snapshot.data.getItem( DatabaseIds.grinderMake ), _textFieldWidth),
+                          /// Make
+                          TextFieldItemWithInitalValue( snapshot.data.getItem( DatabaseIds.grinderMake ), _textFieldWidth),
 
-              /// Model
-              TextFieldItemWithInitalValue( snapshot.data.getItem( DatabaseIds.grinderModel ), _textFieldWidth),
+                          /// Model
+                          TextFieldItemWithInitalValue( snapshot.data.getItem( DatabaseIds.grinderModel ), _textFieldWidth),
 
-            ],
-          ),
-        ],
-      ),
-    )
-    );
-  }
-     )
-     );
-  }
+                        ],
+                      ),
+                    ],
+                  ),
+                )
+                );
+              }
+                  )
+                  );
+              }
 }

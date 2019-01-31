@@ -50,7 +50,7 @@ dev_dependencies:
   flutter_launcher_icons: "^0.7.0"
   
 flutter_icons:
-  image_path: "assets/images/dial_in_logo_whitebg.png"
+  image_path: "assets/images/dial_in_logo_whitebg_no _logo.png"
   android: true 
   ios: true
   

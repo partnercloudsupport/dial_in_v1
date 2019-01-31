@@ -55,9 +55,9 @@ class DialInLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(15.0),
+      margin: const EdgeInsets.all(10.0),
       child: Image.asset('assets/images/dial_in_logo_nobg.png',
-          height: 200.0, width: 200.0),
+          height: 200.0, width: 250.0),
     );
   }
 }
@@ -99,7 +99,7 @@ class _TextFieldEntryState extends State<TextFieldEntry> {
                 filled: true,
                 hintText: widget._placeholder,
                 hintStyle: TextStyle(color: Colors.black),
-                fillColor: Colors.grey.withOpacity(0.7)
+                // fillColor: AppColors.getColor(Colo)
                 )
         )
     );

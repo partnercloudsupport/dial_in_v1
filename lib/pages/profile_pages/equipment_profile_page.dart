@@ -19,6 +19,8 @@ class EquipmentPage extends StatelessWidget {
      StreamBuilder<Profile>(
             stream: model.profileStream,
             builder: (BuildContext context, AsyncSnapshot<Profile> snapshot){
+              
+              if (!snapshot.hasData){ return Center(child: CircularProgressIndicator(),);}
 
               return
               

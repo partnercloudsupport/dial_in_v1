@@ -101,7 +101,7 @@ class OverviewPageState extends State<OverviewPage> with SingleTickerProviderSta
 
       /// App bar 
       appBar: AppBar(
-                title: Text(StringLabels.overview, style: TextStyle( fontWeight: FontWeight.w700),),
+                title: Text(StringLabels.overview, style: Theme.of(context).textTheme.headline,),
                 automaticallyImplyLeading: false,
                 leading: RawMaterialButton( onPressed: () {logOut(context);}, 
                   child: Icon(Icons.exit_to_app),),

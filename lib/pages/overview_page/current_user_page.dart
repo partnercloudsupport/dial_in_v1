@@ -7,7 +7,6 @@ import 'package:dial_in_v1/inherited_widgets.dart';
 
 class CurrentUserPage extends StatelessWidget{
 
-
   CurrentUserPage();
 
   Widget setupWidgetView(SnapShotDataState dataState , AsyncSnapshot<UserProfile> snapshot, BuildContext context){
@@ -52,7 +51,7 @@ class CurrentUserPage extends StatelessWidget{
         break;
 
       case SnapShotDataState.hasdata:
-        _returnWidget = UserProfilePage(snapshot.data, true);
+        _returnWidget = UserProfilePage(snapshot.data, true, tag:0);
 
         break;
     }   
