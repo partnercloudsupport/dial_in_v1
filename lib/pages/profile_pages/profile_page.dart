@@ -322,8 +322,8 @@ class GoBackAppBarButton extends StatelessWidget {
     RawMaterialButton(
         child: Icon(Icons.arrow_back),
         onPressed: () {
-          if ( !model.isOldProfile){ if (model.imageUrl != null ||model.imageUrl != '')
-           {Dbf.deleteFireBaseStorageItem( model.imageUrl ); }}
+          if ( !model.isOldProfile){ if (model.imageUrl != null && model.imageUrl != '')
+           { Dbf.deleteFireBaseStorageItem( model.imageUrl ); }}
           Navigator.pop(context, false);
         },
       )

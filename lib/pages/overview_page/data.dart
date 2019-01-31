@@ -114,7 +114,6 @@ class DataPageState extends State<DataPage>with SingleTickerProviderStateMixin {
             ( rebuildOnChange: false, builder: (context, _ ,model) => AddButton(()async{
           
           ProfilePageModel model = new ProfilePageModel('', _lists.ref[controller.index].type, false, true, false, false, true);
-          
           Navigator.push(context, SlowerRoute((BuildContext context) =>
 
           ProfilePage(model))

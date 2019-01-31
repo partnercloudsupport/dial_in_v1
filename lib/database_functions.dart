@@ -507,7 +507,7 @@ class Dbf {
 
   static void deleteFireBaseStorageItem(String fileUrl){
 
-    if (fileUrl != null || fileUrl != ''){
+    if (fileUrl != null && fileUrl != ''){
 
     String filePath = fileUrl
                       .replaceAll(new 
@@ -621,7 +621,7 @@ class Dbf {
       } else {_profile =  await Profile.createBlankProfile(Functions.getProfileDatabaseIdType(collectionDataBaseId));}
 
     }else{_profile =  await Profile.createBlankProfile(Functions.getProfileDatabaseIdType(collectionDataBaseId));
-    _profile.userId = docRefernace;}
+    _profile.userId = await Dbf.getCurrentUserId();}
 
     return _profile;
   }
