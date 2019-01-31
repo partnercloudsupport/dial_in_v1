@@ -18,7 +18,7 @@ class Profile {
 
   String imageUrl;
   String imageAssetPlaceholder;
-  String imageFilePath;
+  // String imageFilePath;
   @required
   ProfileType type;
   @required
@@ -30,6 +30,7 @@ class Profile {
   List<Profile> profiles;
   List<Map<String,String>> comments = List<Map<String,String>>();
   List<String> likes = List<String>();
+  String label;
 
   // Is it water , coffee, grinder , machine etc?
 
@@ -44,7 +45,7 @@ class Profile {
       this.type,
       this.properties,
       this.imageUrl,
-      this.imageFilePath,
+      // this.imageFilePath,
       this.imageAssetPlaceholder,
       this.databaseId,
       this.orderNumber,
@@ -54,26 +55,32 @@ class Profile {
     switch (type) {
       case ProfileType.recipe:
         this.referanceNumber = 0;
+        this.label = StringLabels.recipe;
         break;
 
       case ProfileType.coffee:
         this.referanceNumber = 1;
+        this.label = StringLabels.coffee;
         break;
 
       case ProfileType.grinder:
         this.referanceNumber = 2;
+        this.label = StringLabels.grinder;
         break;
 
       case ProfileType.equipment:
         this.referanceNumber = 3;
+        this.label = StringLabels.method;
         break;
 
       case ProfileType.water:
         this.referanceNumber = 4;
+        this.label = StringLabels.water;
         break;
 
       case ProfileType.barista:
         this.referanceNumber = 5;
+        this.label = StringLabels.barista;
         break;
 
       default:
@@ -532,7 +539,7 @@ Future<String> getUserImage ()async{
           isPublic: true,
           updatedAt: DateTime.now(),
           objectId: '',
-          imageAssetPlaceholder: Images.groupHandle,
+          imageAssetPlaceholder: Images.aeropressSmaller512x512,
           databaseId: DatabaseIds.brewingEquipment,
           type: ProfileType.equipment,
           orderNumber: 0,

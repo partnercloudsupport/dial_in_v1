@@ -12,9 +12,9 @@ import 'package:dial_in_v1/pages/profile_pages/grinder_profile_page.dart';
 import 'package:dial_in_v1/database_functions.dart';
 import 'package:dial_in_v1/widgets/custom_widgets.dart';
 import 'dart:async';
+import 'dart:io';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:dial_in_v1/pages/profile_pages/profile_page_model.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 
 class ProfilePage extends StatefulWidget {
@@ -96,21 +96,9 @@ class ProfilePageState extends State<ProfilePage> {
       ),
 
       /// Profile Image
-      Container(
-        padding: EdgeInsets.all(_margin),
-        child: InkWell(
-            child: 
-              CircularCachedProfileImage(widget._model.placeholder, widget._model.imageUrl, 200, profile.objectId),
-            onTap: isEditing
-                ? () {_getimage( model ,
-                     (image) {setState(() { profile.imageUrl = image; }); });
-                  }
-                : () {}),
-      ),
+      ProfilePageImage(),
 
-      Expanded(
-        child: Container(),
-      ),
+      Expanded(child: Container(),),
     ];
 
     if (!widget._model.isFromUserFeed) {
@@ -188,11 +176,7 @@ class ProfilePageState extends State<ProfilePage> {
   }
 
   /// Get image for profile photo
-  Future _getimage(ProfilePageModel model, Function(String) then) async {
-    
-   var filePath = await showDialog( context: context,builder: ( BuildContext context ) => CupertinoImagePicker());
-   setState(() { if ( filePath != null ){ model.profileImagePath = filePath; }});
-  }
+  
 }
 
 class PublicProfileSwitch extends StatefulWidget {
@@ -331,14 +315,51 @@ class _ProfilePageAppBarState extends State<ProfilePageAppBar> {
 
 class GoBackAppBarButton extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return RawMaterialButton(
-      child: Icon(Icons.arrow_back),
-      onPressed: () {
-        Navigator.pop(context, false);
-      },
+  Widget build(BuildContext context) =>
+  
+    ScopedModelDescendant<ProfilePageModel>
+    ( rebuildOnChange: true, builder: (BuildContext context, _ , ProfilePageModel model) =>
+    RawMaterialButton(
+        child: Icon(Icons.arrow_back),
+        onPressed: () {
+          if ( !model.isOldProfile){ Dbf.deleteFireBaseStorageItem( model.imageUrl ); }
+          Navigator.pop(context, false);
+        },
+      )
     );
-  }
 }
 
+class ProfilePageImage extends StatefulWidget {
+  _ProfilePageImageState createState() => _ProfilePageImageState();
+}
+
+class _ProfilePageImageState extends State<ProfilePageImage> {
+
+  Future _getimage(ProfilePageModel model) async {
+    
+   var filePath = await showDialog( context: context,builder: ( BuildContext context ) => CupertinoImagePicker());
+   if ( filePath != null ){ 
+      PopUps.showCircularProgressIndicator(context);
+      String url = await Dbf.upLoadFileReturnUrl(File(filePath), [DatabaseIds.user, model.profile.userId, DatabaseIds.images, model.profile.databaseId]).catchError((e) => print(e));
+      setState(() { model.profileImageUrl = url; }); 
+      Navigator.pop(context); }
+  }
+
+  @override
+  Widget build(BuildContext context) =>   /// Profile Image
+
+    ScopedModelDescendant(builder: (BuildContext context ,_, ProfilePageModel model) =>
+      Container(
+        padding: EdgeInsets.all(20.0),
+        child: InkWell(
+            child: 
+              CircularCachedProfileImage( model.placeholder, model.imageUrl, 200, model.profile.objectId ),
+            onTap: model.isEditing
+                ? () {_getimage( model );
+                  }
+                : () {}
+        ),
+      )   
+    );
+}
 

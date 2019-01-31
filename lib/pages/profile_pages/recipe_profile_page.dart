@@ -34,7 +34,9 @@ class _RecipePageState extends State<RecipePage> {
      StreamBuilder<Profile>(
             stream: model.profileStream,
             builder: (BuildContext context, AsyncSnapshot<Profile> snapshot){
-   
+
+    if (!snapshot.hasData){ return Center(child:CircularProgressIndicator());}
+    else{
     return
 
     Column(children: <Widget>[ 
@@ -43,7 +45,7 @@ class _RecipePageState extends State<RecipePage> {
       DateTimeInputCard(
           StringLabels.date,
           snapshot.data.getItemValue( DatabaseIds.date),
-          (dateTime) {if (dateTime != null){ model.setProfileItemValue( DatabaseIds.date, dateTime);}},
+          (dateTime) {if ( dateTime != null){ model.setProfileItemValue( DatabaseIds.date, dateTime);}},
           ),
 
     ///Coffee
@@ -146,6 +148,7 @@ class _RecipePageState extends State<RecipePage> {
         NotesCard(snapshot.data.getItem(DatabaseIds.descriptors)),
               ],
         );
+    }
     }
   );
                }

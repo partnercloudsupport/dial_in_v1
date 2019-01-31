@@ -13,6 +13,8 @@ class ProfilePageModel extends Model {
 
   Profile _profile;
 
+  Profile get profile => _profile;
+
   set profile(Profile profile) {
     _profile = profile;
     _profileStreamController.sink.add(_profile);
@@ -28,16 +30,17 @@ class ProfilePageModel extends Model {
     _profileStreamController.add(_profile);
   }
 
-  set profileImagePath(String imagePath) { 
-    _profile.imageFilePath = imagePath;
-    _profileStreamController.add(_profile);
-  }
+  // set profileImagePath(String imagePath) { 
+  //   _profile.imageFilePath = imagePath;
+  //   _profileStreamController.add(_profile);
+  // }
 
   set profileImageUrl(String imageUrl){
     _profile.imageUrl = imageUrl;
     _profileStreamController.add(_profile);
   }
 
+  
   String get imageUrl => _profile.imageUrl;
   String get placeholder => _profile.placeholder;
 
@@ -71,6 +74,7 @@ class ProfilePageModel extends Model {
   bool _isNew;
   ProfileType type;
 
+  bool get isEditing => _isEditingStreamController.value;
   bool isCalculating = false;
 
 ProfilePageModel(

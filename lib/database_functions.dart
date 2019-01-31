@@ -546,7 +546,7 @@ class Dbf {
       _properties[DatabaseIds.public] = profile.isPublic;
       _properties[DatabaseIds.likes] = profile.likes;
       _properties[DatabaseIds.comments] = profile.comments;
-      profile.imageFilePath != null ? _properties[DatabaseIds.imagePath]  = profile.imageFilePath : print("profile.imageFilePath == null");
+      // profile.imageFilePath != null ? _properties[DatabaseIds.imagePath]  = profile.imageFilePath : print("profile.imageFilePath == null");
       profile.imageUrl != null ? _properties[DatabaseIds.imageUrl]  = profile.imageUrl : print("profile.imageFilePath == null");
 
       if (profile.type == ProfileType.recipe){
@@ -561,7 +561,7 @@ class Dbf {
 
   /// Delete profile
   static Future<void> deleteProfile(Profile profile)async{
-    LocalStorage.deleteFile(File(profile.imageFilePath));
+    // LocalStorage.deleteFile(File(profile.imageFilePath));
     Firestore.instance.collection(profile.databaseId).document(profile.objectId)
         .delete()
         .whenComplete((){
@@ -680,8 +680,8 @@ class Dbf {
                             docRefernace,
                             doc.data[DatabaseIds.userName] ?? 'Error: submit feedback database_functions.dart => line 604',
                             doc.data[DatabaseIds.imageUrl] ?? '',
-                            followingRevisedList ?? List<String>() ?? ['Error: submit feedback database_functions.dart => line 606'],
-                            followersRevisedList ?? List<String>() ?? ['Error: submit feedback database_functions.dart => line 607'],
+                            followingRevisedList ??= List<String>(),
+                            followersRevisedList ??= List<String>(),
                             doc.data[DatabaseIds.motto] ??  '',
                             );
           
@@ -812,7 +812,7 @@ class Dbf {
               objectId: _objectId,
               type: ProfileType.recipe,
               imageUrl: _image,
-              imageFilePath: _imagePath,
+              // imageFilePath: _imagePath,
               databaseId: databaseId,
               orderNumber: _orderNumber,
               properties: newProfile.properties,
@@ -836,7 +836,7 @@ class Dbf {
               objectId: _objectId,
               type: ProfileType.coffee,
               imageUrl: _image,
-              imageFilePath: _imagePath,
+              // imageFilePath: _imagePath,
               databaseId: databaseId,
               orderNumber: _orderNumber,
               properties: newProfile.properties
@@ -853,7 +853,7 @@ class Dbf {
               objectId: _objectId,
               type: ProfileType.grinder,
               imageUrl: _image,
-              imageFilePath: _imagePath,
+              // imageFilePath: _imagePath,
               databaseId: databaseId,
               orderNumber: _orderNumber,
               properties: newProfile.properties
@@ -870,7 +870,7 @@ class Dbf {
         objectId: _objectId,
         type: ProfileType.equipment,
         imageUrl: _image,
-        imageFilePath: _imagePath,
+        // imageFilePath: _imagePath,
         databaseId: databaseId,
         orderNumber: _orderNumber,
         properties: newProfile.properties
@@ -887,7 +887,7 @@ class Dbf {
         objectId: _objectId,
         type: ProfileType.water,
         imageUrl: _image,
-        imageFilePath: _imagePath,
+        // imageFilePath: _imagePath,
         databaseId: databaseId,
         orderNumber: _orderNumber,
         properties: newProfile.properties
@@ -904,7 +904,7 @@ class Dbf {
         objectId: _objectId,
         type: ProfileType.barista,
         imageUrl: _image,
-        imageFilePath: _imagePath,
+        // imageFilePath: _imagePath,
         databaseId: databaseId,
         orderNumber: _orderNumber,
         properties: newProfile.properties
@@ -1059,6 +1059,7 @@ class LocalStorage {
 }
 
 class DatabaseIds{
+  static const String images = 'images';
   static const String motto = 'motto';
   static const String comments = 'comments';
   static const String likes = 'likes';

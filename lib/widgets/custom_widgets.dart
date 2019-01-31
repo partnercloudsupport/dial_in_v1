@@ -400,7 +400,7 @@ class ProfilePicture extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ImageLocalNetwork(_profile.imageUrl , _size, _shape, _profile.imageFilePath, _profile.placeholder);
+    return ImageLocalNetwork(_profile.imageUrl , _size, _shape, _profile.imageUrl, _profile.placeholder);
   }
 }
 

@@ -193,7 +193,7 @@ class _ProfileInputCardWithAttributeState
                           textAlign: TextAlign.start,
                           keyboardType: widget.attributeItem.keyboardType,
                           decoration: new InputDecoration(
-                            labelText: widget.profile.databaseId,
+                            labelText: widget.profile.label,
                             hintText: StringLabels.selectProfile,
                           ),
                           focusNode: _textFocus,
@@ -676,6 +676,10 @@ class _RatioCardState extends State<RatioCard> {
         builder: (context, _, model) => StreamBuilder<Profile>(
             stream: model.profileStream,
             builder: (BuildContext context, AsyncSnapshot<Profile> snapshot) {
+
+
+    if (!snapshot.hasData){ return Center(child:CircularProgressIndicator());}
+    else{
               return
               Card(
                   child: Container(
@@ -771,7 +775,10 @@ class _RatioCardState extends State<RatioCard> {
                   ],
                 ),
               ));
-            }));
+            }
+        }
+      )
+    );
   }
 }
 
