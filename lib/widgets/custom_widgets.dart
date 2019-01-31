@@ -56,8 +56,8 @@ class DialInLogo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(15.0),
-      child: Image.asset('assets/images/DialInWhiteLogo.png',
-          height: 50.0, width: 50.0),
+      child: Image.asset('assets/images/dial_in_logo_nobg.png',
+          height: 200.0, width: 200.0),
     );
   }
 }
@@ -184,24 +184,31 @@ class ShapedBox extends StatelessWidget {
 class CircularCachedProfileImage extends StatelessWidget {
 
   final double _size;
-  final String _imageUrl;
+  final dynamic _imageUrl;
   final String _heroTag;
   final String _placeholder;
 
   CircularCachedProfileImage(this._placeholder ,this._imageUrl, this._size, this._heroTag);
 
   @override
-  Widget build(BuildContext context) =>
-  
-  ShapedBox( 
-    Hero(tag: _heroTag,
-      child:
-      CachedNetworkImage(
-         placeholder: Image.asset(_placeholder),
-         imageUrl: _imageUrl, 
-         fit: BoxFit.cover,)),
-   _size , Shape.circle 
-  ); 
+  Widget build(BuildContext context) {
+
+    Widget _child;
+
+    if (_imageUrl == null){ _child = Image.asset(_placeholder);} 
+    else if (_imageUrl is String){ _child =  Hero(tag: _heroTag,
+        child:
+        CachedNetworkImage(
+          placeholder: Image.asset(_placeholder),
+          imageUrl: _imageUrl, 
+          fit: BoxFit.cover,)); }
+    else{ throw('error with image url String'); }
+
+    assert( _child != null, 'Child is null');
+
+    return
+    ShapedBox( _child, _size , Shape.circle ); 
+  }
 }
 
 class CoverProfileCachedImage extends StatelessWidget {
@@ -218,16 +225,30 @@ class CoverProfileCachedImage extends StatelessWidget {
                           boxShadow: [BoxShadow
                           (color: Colors.black, offset: new Offset(0.0, 2.0),blurRadius: 2.0,)],
                         ),
-              height: 300,
+              height: 250,
               width: double.infinity,
               child:  Hero(tag: _herotag,
-                            child:CachedNetworkImage(
+                            child: CachedNetworkImage(
                                               placeholder: Image.asset(_profile.placeholder),
                                               imageUrl: _profile.imageUrl ,
+                                              fit: BoxFit.cover,
                                 )));   
 }
 
-
+class SignUpLoginBackground extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) =>
+  Container(
+            decoration: new BoxDecoration(
+              gradient: new LinearGradient(
+                  colors: [ AppColors.getColor(ColorType.tint), AppColors.getColor(ColorType.lightBackground)],
+                  begin: const FractionalOffset(0.5, 0.0),
+                  end: const FractionalOffset(0.0, 0.5),
+                  stops: [0.0, 1.0],
+                  tileMode: TileMode.clamp),
+            ),
+          );
+}
 
 // class UserProfileImage extends StatelessWidget {
 
@@ -477,7 +498,7 @@ class ActionButton extends StatelessWidget {
       padding: EdgeInsets.fromLTRB(25.0, 10.0, 25.0, 10.0),
       shape:
           RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-      color: Colors.orange.shade600.withOpacity(0.6),
+      color: AppColors.getColor(ColorType.primarySwatch),
       child: Text(_buttonTitle,
           style: TextStyle(fontWeight: FontWeight.w500, fontSize: 25.0)),
       onPressed: _buttonAction);
@@ -2122,15 +2143,17 @@ class CupertinoImagePickerDiolog extends StatelessWidget {
 
   void showImagePicker(BuildContext context, ImagePickerModel model){
 
-      ImagePicker.pickImage(maxWidth: 640.0, maxHeight: 480.0, source: _imageSource)
+      ImagePicker.pickImage(maxWidth: 512.0, maxHeight: 384.0, source: _imageSource)
                   .then((image) => handleImagePickerReturn(image, context, model))
                   .catchError((error) => print(error));
   }
 
   void handleImagePickerReturn(dynamic image, BuildContext context, ImagePickerModel model)async{
     if(image != null){
+      ///Image is a File
       PopUps.showCircularProgressIndicator(context);
-      String filePath = await LocalStorage.saveFileToDeviceReturnPath(image);
+      String filePath = (image as File).path;
+      // await LocalStorage.saveFileToDeviceReturnPath(image);
     if (filePath != null){ model.setFilePath = filePath ;}
       Navigator.pop(context, model.getFilePath);
       Navigator.pop(context, model.getFilePath);

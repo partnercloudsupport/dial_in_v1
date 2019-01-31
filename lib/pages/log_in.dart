@@ -5,6 +5,7 @@ import 'package:dial_in_v1/pages/sign_up.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:dial_in_v1/pages/overview_page/overview_page.dart';
 import 'package:dial_in_v1/database_functions.dart';
+import 'package:dial_in_v1/theme/appColors.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key, this.title}) : super(key: key);
@@ -66,9 +67,6 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-  Color gradientStart =
-      Colors.deepPurple[700]; //Change start gradient color here
-  Color gradientEnd = Colors.purple[500];
 
   void signUpButtonPressed() {
     Navigator.push(context,
@@ -128,25 +126,12 @@ class _LoginPageState extends State<LoginPage> {
           // Pagebackground(AssetImage('assets/images/cherries.jpg')),
           // Material(color: Colors.amber,),
 
-          Container(
-            decoration: new BoxDecoration(
-              gradient: new LinearGradient(
-                  colors: [gradientStart, gradientEnd],
-                  begin: const FractionalOffset(0.5, 0.0),
-                  end: const FractionalOffset(0.0, 0.5),
-                  stops: [0.0, 1.0],
-                  tileMode: TileMode.clamp),
-            ),
-          ),
+          SignUpLoginBackground(),
 
-          Center(child: 
-            ScalableWidget(
               Container(child:
 
                   /// View components
-              new Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
+              new ListView(
                 children: <Widget>[
                   
                   Padding(
@@ -222,7 +207,6 @@ class _LoginPageState extends State<LoginPage> {
                           ])))
                 ],
               ),
-            )),
           )
         ],
       ),
@@ -237,14 +221,14 @@ class LoginButton extends StatelessWidget {
   LoginButton(this.loginAction);
 
   Widget build(BuildContext context) {
-    return RaisedButton(
+    return Container(width: 250, child:RaisedButton(
         padding: EdgeInsets.fromLTRB(25.0, 10.0, 25.0, 10.0),
         shape: RoundedRectangleBorder(
             borderRadius: new BorderRadius.circular(30.0)),
-        color: Colors.orange.shade600.withOpacity(0.6),
+        color: AppColors.getColor(ColorType.primarySwatch),
         child: Text(StringLabels.logIn,
             style: TextStyle(fontWeight: FontWeight.w500, fontSize: 25.0)),
-        onPressed: loginAction);
+        onPressed: loginAction));
   }
 }
 
@@ -261,7 +245,7 @@ class SignUpButton extends StatelessWidget {
       child: MaterialButton(
           child: Text(StringLabels.signUp,
               style: TextStyle(
-                  color: Colors.deepOrangeAccent,
+                  color: AppColors.getColor(ColorType.primarySwatch),
                   fontSize: 30.0,
                   fontWeight: FontWeight.w300)),
           onPressed: _onPressed),

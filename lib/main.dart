@@ -7,11 +7,16 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:dial_in_v1/inherited_widgets.dart';
 import 'package:dial_in_v1/routes.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
+import 'package:flutter/services.dart';
+
 // import 'dart:developer';
 // import 'package:flutter/rendering.dart';
 
 
 void main() {
+   SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
   ///Slow down animations
   timeDilation = 1.0;
   runApp(new MyApp());

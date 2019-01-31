@@ -5,6 +5,7 @@ import 'package:dial_in_v1/database_functions.dart';
 import 'package:dial_in_v1/data/images.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:dial_in_v1/data/functions.dart';
+import 'dart:io';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -12,7 +13,7 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  String _userImage = Images.userFirebase;
+  String _userImage;
 
   TextEditingController _userNameController = new TextEditingController();
   TextEditingController _emailController = new TextEditingController();
@@ -54,6 +55,19 @@ class _SignUpPageState extends State<SignUpPage> {
         }, context));
   }
 
+  void savePicture(){
+    Functions.getimageFromCameraOrGallery(context,
+      (String image)async{
+      PopUps.showCircularProgressIndicator(context);
+      String url = await Dbf.upLoadFileReturnUrl(File(image), ['NewUserImages']).catchError((e) => print(e));
+      Navigator.pop(context);
+      setState(() {
+        _userImage = url;
+      });
+    });
+  }
+  
+
   ///
   /// UI Build
   ///
@@ -62,99 +76,60 @@ class _SignUpPageState extends State<SignUpPage> {
     return new Scaffold(
         body: new Stack(children: <Widget>[
 
-      Container(
-        decoration: new BoxDecoration(
-          gradient: new LinearGradient(
-              colors: [gradientStart, gradientEnd],
-              begin: const FractionalOffset(0.5, 0.0),
-              end: const FractionalOffset(0.0, 0.5),
-              stops: [0.0, 1.0],
-              tileMode: TileMode.clamp),
-        ),
-      ),
+      SignUpLoginBackground(),
       
       SafeArea(
               child: Stack(children: <Widget>[
 
-           Container(
-                margin: EdgeInsets.all(20.0),
-                height: 30.0,
-                width: 30.0,
-                child: RawMaterialButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image:
-                                AssetImage('assets/images/back_icon.png'),
-                            fit: BoxFit.fitHeight)),
-                  ),
-                ),
-              ),
-        ///
-        /// Back icon
-        ///
-
-        // Column(),
-
-        Center(child: 
-
-        ScalableWidget(
-          
+        
           new Container(child: 
             
-            Column(children: <Widget>[
+            ListView(children: <Widget>[
 
               Padding(padding: EdgeInsets.all(20.0),),
 
                 /// New User text
-                Text(
+                Center(child:Text(
                   StringLabels.newUser,
                   style: TextStyle(color: Colors.black87, fontSize: 30.0),
-                ),
+                )),
 
                 Padding(
                   padding: EdgeInsets.all(10.0),
                 ),
 
                 ///User Picture
-                InkWell(
+                 Center(child:InkWell(
                     child: Container(
                         decoration: BoxDecoration(shape: BoxShape.circle),
                         margin: EdgeInsets.fromLTRB(25.0, 0.0, 25.0, 25.0),
-                        child: CircularFadeInAssetNetworkImage(_userImage, Images.user, 150.0)),
-                    onTap: () {
-                      Functions.getimageFromCameraOrGallery(context,
-                          (String image) {
-                        setState(() {
-                          _userImage = image;
-                        });
-                      });
-                    }),
+                        child: CircularCachedProfileImage(Images.user, _userImage, 150.0, '')),
+                    onTap: savePicture)),
 
                 /// Sign up details
                 /// Username
+                Center(child:
                 Text(
                   StringLabels.userName,
                   style: TextStyle(
                       color: Colors.white70, fontWeight: FontWeight.w600),
-                ),
+                )),
                 TextFieldEntry(StringLabels.userName, _userNameController, false),
 
                 /// Email
-                Text(
+                Center(child: Text(
                   StringLabels.email,
                   style: TextStyle(
                       color: Colors.white70, fontWeight: FontWeight.w600),
-                ),
+                )),
                 TextFieldEntry(StringLabels.email, _emailController, false),
 
                 /// Password
-                Text(
+                Center(child: Text(
                   StringLabels.password,
                   style: TextStyle(
                       color: Colors.white70, fontWeight: FontWeight.w600),
-                ),
+                )),
                 TextFieldEntry(StringLabels.password, _passwordController, true),
 
                 /// Signup button
@@ -166,11 +141,32 @@ class _SignUpPageState extends State<SignUpPage> {
                 Padding(padding: EdgeInsets.all(20.0),),
 
             ])),
-          ),
-        )
+
+          BackIcon()
+   
         ],),
       )
     ])
     );
   }
+}
+
+class BackIcon extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) =>
+    Container(
+          margin: EdgeInsets.all(20.0),
+          height: 30.0,
+          width: 30.0,
+          child: RawMaterialButton(
+            onPressed: () => Navigator.pop(context),
+            child: Container(
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image:
+                          AssetImage('assets/images/back_icon.png'),
+                      fit: BoxFit.fitHeight)),
+            ),
+          ),
+        );
 }

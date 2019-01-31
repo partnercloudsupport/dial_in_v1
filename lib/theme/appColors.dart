@@ -3,17 +3,17 @@ import 'package:flutter/material.dart';
 
 class AppColors {
 
-  static Color getColor(ColorType font) {
+  static Color getColor(ColorType colorType) {
     Color returnValue;
 
-    switch ( font ) {
+    switch ( colorType ) {
 
       case ColorType.background:
         returnValue = Colors.black;
         break;
 
         case ColorType.tint:
-        returnValue = Colors.orange;
+        returnValue = const Color(0xffBC794D);
         break;
 
         case ColorType.button:
@@ -33,7 +33,7 @@ class AppColors {
         break;
 
         case ColorType.primarySwatch:
-        returnValue = Colors.orange;
+        returnValue = const Color(0xffBC794D);
         break;
 
         case ColorType.lightBackground:
@@ -53,7 +53,7 @@ class AppColors {
         break;
 
       default:
-        returnValue = Colors.orange;
+        returnValue = const Color(0xffBC794D);
     }
     return returnValue;
   }
