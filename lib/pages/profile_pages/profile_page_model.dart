@@ -30,11 +30,6 @@ class ProfilePageModel extends Model {
     _profileStreamController.add(_profile);
   }
 
-  // set profileImagePath(String imagePath) { 
-  //   _profile.imageFilePath = imagePath;
-  //   _profileStreamController.add(_profile);
-  // }
-
   set profileImageUrl(String imageUrl){
     _profile.imageUrl = imageUrl;
     _profileStreamController.add(_profile);
@@ -93,8 +88,6 @@ ProfilePageModel(
     getProfile(profileReferance, type);
   }
 
- 
-
     
     void getProfile ( String profileReferance, ProfileType type ) async {
     _profile = await Dbf.getProfileFromFireStoreWithDocRef( Functions.getProfileTypeDatabaseId( type ), profileReferance );
@@ -117,24 +110,6 @@ ProfilePageModel(
     else{ return Functions.getProfileTypeString( _profile.type );}
     }
   }
-
-  // Stream<int> getRatioStream(String type) {
-  //   Stream<int> result;
-
-  //   switch (type) {
-  //     case DatabaseIds.brewingDose:
-  //       result = _doseStreamController.stream;
-  //       break;
-  //     case DatabaseIds.yielde:
-  //       result = _yieldStreamController.stream;
-  //       break;
-  //     case DatabaseIds.brewWeight:
-  //       result = _brewWWeightStreamController.stream;
-  //       break;
-  //   }
-  //   assert(result != null, 'no stream allocated');
-  //   return result;
-  // }
 
   int getRatioValue(String type) {
     int result;

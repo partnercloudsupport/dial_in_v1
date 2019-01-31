@@ -500,12 +500,14 @@ class Dbf {
 
     var url = await (await uploadTask.onComplete).ref.getDownloadURL().catchError((error){errorHandler(error);});
 
-    assert( url != null, 'url is n ull');
+    assert( url != null, 'url is null');
     assert( url is String, 'url is not a string');
     return url;
   }
 
   static void deleteFireBaseStorageItem(String fileUrl){
+
+    if (fileUrl != null || fileUrl != ''){
 
     String filePath = fileUrl
                       .replaceAll(new 
@@ -518,7 +520,7 @@ class Dbf {
     StorageReference storageReferance = FirebaseStorage.instance.ref();
 
     storageReferance.child(filePath).delete().then((_) => print('Successfully deleted $filePath storage item' ));
-
+    }
   }
 
   /// Prepare Profile for FirebaseUpload or Update
@@ -606,7 +608,7 @@ class Dbf {
   }
 
   /// Get profiles from from store with doc referance
-  static Future<Profile> getProfileFromFireStoreWithDocRef(String collectionDataBaseId, String docRefernace)async{
+  static Future<Profile>  getProfileFromFireStoreWithDocRef(String collectionDataBaseId, String docRefernace)async{
 
     Profile _profile;
 
@@ -618,7 +620,8 @@ class Dbf {
           _profile = await Dbf.createProfileFromDocumentSnapshot(collectionDataBaseId, doc);
       } else {_profile =  await Profile.createBlankProfile(Functions.getProfileDatabaseIdType(collectionDataBaseId));}
 
-    }else{_profile =  await Profile.createBlankProfile(Functions.getProfileDatabaseIdType(collectionDataBaseId));}
+    }else{_profile =  await Profile.createBlankProfile(Functions.getProfileDatabaseIdType(collectionDataBaseId));
+    _profile.userId = docRefernace;}
 
     return _profile;
   }

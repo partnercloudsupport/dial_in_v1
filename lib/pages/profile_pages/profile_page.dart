@@ -322,7 +322,8 @@ class GoBackAppBarButton extends StatelessWidget {
     RawMaterialButton(
         child: Icon(Icons.arrow_back),
         onPressed: () {
-          if ( !model.isOldProfile){ Dbf.deleteFireBaseStorageItem( model.imageUrl ); }
+          if ( !model.isOldProfile){ if (model.imageUrl != null ||model.imageUrl != '')
+           {Dbf.deleteFireBaseStorageItem( model.imageUrl ); }}
           Navigator.pop(context, false);
         },
       )
@@ -340,6 +341,7 @@ class _ProfilePageImageState extends State<ProfilePageImage> {
    var filePath = await showDialog( context: context,builder: ( BuildContext context ) => CupertinoImagePicker());
    if ( filePath != null ){ 
       PopUps.showCircularProgressIndicator(context);
+      if ( model.imageUrl != null && model.imageUrl != '') { Dbf.deleteFireBaseStorageItem(model.imageUrl); }
       String url = await Dbf.upLoadFileReturnUrl(File(filePath), [DatabaseIds.user, model.profile.userId, DatabaseIds.images, model.profile.databaseId]).catchError((e) => print(e));
       setState(() { model.profileImageUrl = url; }); 
       Navigator.pop(context); }
