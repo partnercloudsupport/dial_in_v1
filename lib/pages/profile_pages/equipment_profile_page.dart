@@ -71,7 +71,7 @@ class EquipmentDetailsCard extends StatelessWidget {
               
               /// Name
               TextFieldItemWithInitalValue(
-               snapshot.data.getItem(DatabaseIds.name), _textFieldWidth,), 
+               snapshot.data.getItem(DatabaseIds.equipmentId), _textFieldWidth,), 
 
               /// Type
               PickerTextField(
@@ -94,6 +94,8 @@ class EquipmentDetailsCard extends StatelessWidget {
                snapshot.data.getItem(DatabaseIds.equipmentModel),_textFieldWidth),
             ],
           ),
+
+          NotesCard(snapshot.data.getItem(DatabaseIds.method))
         ],
         ),
       ))

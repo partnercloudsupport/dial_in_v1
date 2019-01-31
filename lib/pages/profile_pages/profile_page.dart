@@ -27,7 +27,6 @@ class ProfilePage extends StatefulWidget {
 }
 
 class ProfilePageState extends State<ProfilePage> {
-  double _margin = 10.0;
   List<Widget> _appBarActions = [Container()];
   List<Widget> _pageBody = List<Widget>();
 

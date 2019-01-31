@@ -332,7 +332,7 @@ class Functions {
         break;
 
       case ProfileType.equipment:
-        return DatabaseIds.method;
+        return DatabaseIds.brewingEquipment;
         break;
 
       case ProfileType.grinder:

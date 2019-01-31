@@ -56,26 +56,31 @@ class Profile {
       case ProfileType.recipe:
         this.referanceNumber = 0;
         this.label = StringLabels.recipe;
+        this.imageAssetPlaceholder = Images.recipeSmaller;
         break;
 
       case ProfileType.coffee:
         this.referanceNumber = 1;
         this.label = StringLabels.coffee;
+        this.imageAssetPlaceholder = Images.coffeeBeans;
         break;
 
       case ProfileType.grinder:
         this.referanceNumber = 2;
         this.label = StringLabels.grinder;
+        this.imageAssetPlaceholder = Images.grinder; 
         break;
 
       case ProfileType.equipment:
         this.referanceNumber = 3;
         this.label = StringLabels.method;
+        this.imageAssetPlaceholder = Images.aeropressSmaller512x512;
         break;
 
       case ProfileType.water:
         this.referanceNumber = 4;
         this.label = StringLabels.water;
+        this.imageAssetPlaceholder = Images.water; 
         break;
 
       case ProfileType.barista:

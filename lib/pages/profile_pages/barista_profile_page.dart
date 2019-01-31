@@ -55,23 +55,18 @@ class BaristaDetailsCard extends StatelessWidget {
                         margin: EdgeInsets.all(_margin),
                         child: Column(
                           children: <Widget>[
-                            ///Row 1
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
+
                                 /// Name
                                 TextFieldItemWithInitalValue(
                                   snapshot.data.getItem(DatabaseIds.name),
-                                  _textFieldWidth,
+                                  double.infinity,
                                 ),
 
                                 /// Level
                                 TextFieldItemWithInitalValue(
-                                    snapshot.data.getItem(DatabaseIds.name),
-                                    _textFieldWidth),
-                              ],
-                            ),
+                                    snapshot.data.getItem(DatabaseIds.level),
+                                    double.infinity),
+
                           ],
                         )));
               });
