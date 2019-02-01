@@ -73,6 +73,15 @@ class Functions {
     return value;
    }
 
+  static double getDoubleValue(dynamic item){
+
+    int value = Functions.getIntValue(item);
+    
+    assert(value != null ,'Value is null');
+
+    return value.toDouble();
+   }
+
   static String convertSecsToMinsAndSec(int timeInput){
         
         int timeSecs = timeInput;

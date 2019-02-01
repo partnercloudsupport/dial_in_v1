@@ -138,9 +138,9 @@ ProfilePageModel(
   void estimateBrewRatio(BrewRatioType type) {
     isCalculating = true;
 
-    double _dose = double.parse(_profile.getItemValue(DatabaseIds.brewingDose));
-    double _yielde = double.parse(_profile.getItemValue(DatabaseIds.yielde));
-    double _brewWeight = double.parse(_profile.getItemValue(DatabaseIds.brewWeight));
+    double _dose = Functions.getIntValue(_profile.getItemValue(DatabaseIds.brewingDose)).toDouble();
+    double _yielde = Functions.getIntValue(_profile.getItemValue(DatabaseIds.yielde)).toDouble();
+    double _brewWeight = Functions.getIntValue(_profile.getItemValue(DatabaseIds.brewWeight)).toDouble();
 
     double result;
 
