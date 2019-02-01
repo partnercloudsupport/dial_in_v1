@@ -765,7 +765,7 @@ class _ProfileCardState extends State<ProfileCard> {
 
   void _editProfile() {
     ProfilePageModel model = ProfilePageModel(
-        '', widget._profile.type, false, true, true, false, false);
+        widget._profile.objectId, widget._profile.type, false, true, true, false, false);
 
     Navigator.push(
         context, SlowerRoute((BuildContext context) => ProfilePage(model)));
@@ -1204,7 +1204,7 @@ class _TimePickerTextFieldState extends State<TimePickerTextField> {
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant(
-        builder: (BuildContext context, _, ProfilePageModel model) =>
+        builder: (BuildContext context ,_, ProfilePageModel model) =>
             StreamBuilder<Profile>(
                 stream: model.profileStream,
                 builder:
@@ -1212,8 +1212,8 @@ class _TimePickerTextFieldState extends State<TimePickerTextField> {
                   if (profile.data == null) {
                     return Center(child: CircularProgressIndicator());
                   } else {
-                    int time = Functions.getIntValue(
-                        profile.data.getItemValue(DatabaseIds.time));
+                    Item item = profile.data.getItem(DatabaseIds.time);
+                    int time = Functions.getIntValue(item.value);
                     String timeString = Functions.convertSecsToMinsAndSec(time);
 
                     _controller.text = timeString;
@@ -1223,6 +1223,7 @@ class _TimePickerTextFieldState extends State<TimePickerTextField> {
                         child: Container(
                             padding: EdgeInsets.all(10.0),
                             child: TextFormField(
+                              key: new Key(item.databaseId),
                               textAlign: TextAlign.start,
                               decoration: new InputDecoration(
                                 prefixIcon: Icon(Icons.timer),
@@ -1294,6 +1295,8 @@ class _PickerTextFieldState extends State<PickerTextField> {
             child: Container(
                 padding: EdgeInsets.all(10.0),
                 child: TextFormField(
+                  key: new Key(widget._item.databaseId),
+                  textCapitalization: TextCapitalization.sentences,
                   textAlign: TextAlign.start,
                   decoration: new InputDecoration(
                     prefixIcon: widget._item.icon ?? null,
@@ -1511,6 +1514,7 @@ class _TimePickerState extends State<TimePicker> {
 class PopUps {
   static void showProfileList(ProfileType profileType, BuildContext context,
       ProfilePageModel model) async {
+
     void handleProfileselectionResult(dynamic result) {
       if (result is bool) {
         if (result != false) {
@@ -2316,4 +2320,11 @@ class DeleteProfileButton extends StatelessWidget {
           Navigator.pop(context);
         });
   }
+}
+
+class CenterdCircularProgressIndicator extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) =>
+  Center(child: CircularProgressIndicator());
+
 }

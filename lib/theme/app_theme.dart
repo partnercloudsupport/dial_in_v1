@@ -9,18 +9,17 @@ ThemeData buildThemeData(){
      
     ///Colors
     brightness: Brightness.light,
-    // primarySwatch: AppColors.getColor(ColorType.toolBar),
+    // primarySwatch: MaterialColor(AppColors.getColor(ColorType.toolBar)),
     primaryColorDark: Color.fromARGB(255, 240, 240, 250),
     scaffoldBackgroundColor: Color.fromARGB(255, 200, 200, 200),
     primaryColorLight: Color.fromARGB(255, 180, 184, 171),
     primaryColor: AppColors.getColor(ColorType.primarySwatch),
     buttonColor: AppColors.getColor(ColorType.primarySwatch),
     textSelectionColor: AppColors.getColor(ColorType.primarySwatch),
-    backgroundColor: Color.fromARGB(255, 240, 240, 250),
-    // buttonColor: AppColors.getColor(ColorType.button),
+    backgroundColor: Color.fromARGB(255, 230, 230, 230),
     bottomAppBarColor: AppColors.getColor(ColorType.white),
     accentColor: AppColors.getColor(ColorType.tint),
-    cardColor: Color.fromARGB(255, 230, 230, 230),
+    cardColor: Color.fromARGB(255, 240, 240, 240),
     canvasColor: Color.fromARGB(255, 150, 150, 150),
     cursorColor: Colors.black,
     

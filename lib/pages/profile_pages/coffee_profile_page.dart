@@ -76,6 +76,9 @@ class OriginDetailsCard extends StatelessWidget {
     StreamBuilder<Profile>(
           stream: model.profileStream,
           builder: (BuildContext context, AsyncSnapshot<Profile> snapshot){
+
+            if (!snapshot.hasData){ return CenterdCircularProgressIndicator(); }
+
             return
     Card(child: Container(padding: EdgeInsets.all(_padding), margin: EdgeInsets.all( _margin), child: Column(children: <Widget>[
 
@@ -124,15 +127,15 @@ class RoastingDetailsCardState extends State<RoastingDetailsCard> {
   final double _textFieldWidth = 150.0;
 
  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) =>
 
-    return
-    
     ScopedModelDescendant(builder: (BuildContext context,_, ProfilePageModel model) =>
 
     StreamBuilder<Profile>(
           stream: model.profileStream,
           builder: (BuildContext context, AsyncSnapshot<Profile> snapshot){
+
+          if (!snapshot.hasData){ return CenterdCircularProgressIndicator();}
             
     return Card(child:
     
@@ -171,7 +174,6 @@ class RoastingDetailsCardState extends State<RoastingDetailsCard> {
     );
   })
     );
-}
 }           
         
 class ProfileInputCard extends StatelessWidget {
@@ -279,7 +281,11 @@ class GreenDetailsCard extends StatelessWidget {
 
     StreamBuilder<Profile>(
           stream: model.profileStream,
-          builder: (BuildContext context, AsyncSnapshot<Profile> snapshot) =>
+          builder: (BuildContext context, AsyncSnapshot<Profile> snapshot) {
+
+    if( !snapshot.hasData ){ return CenterdCircularProgressIndicator(); }
+
+    return
 
     Card(child: Container(padding: EdgeInsets.all(_padding), margin: EdgeInsets.all( _margin), child: Column(children: <Widget>[
 
@@ -335,8 +341,8 @@ class GreenDetailsCard extends StatelessWidget {
         ],),
 
     ],))
-    )
-
+    );
+  }
     )
   );
   }

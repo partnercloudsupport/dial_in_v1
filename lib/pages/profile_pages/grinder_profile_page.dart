@@ -19,6 +19,8 @@ class GrinderPage extends StatelessWidget {
             stream: model.profileStream,
             builder: (BuildContext context, AsyncSnapshot<Profile> snapshot){
 
+              if( !snapshot.hasData ){ return CenterdCircularProgressIndicator(); }
+
     return new Column(children: <Widget>[
 
       /// Details

@@ -190,6 +190,7 @@ class _ProfileInputCardWithAttributeState
                     child: Container(
                         margin: EdgeInsets.all(5.0),
                         child: TextFormField(
+                          textCapitalization: TextCapitalization.sentences,
                           textAlign: TextAlign.start,
                           keyboardType: widget.attributeItem.keyboardType,
                           decoration: new InputDecoration(

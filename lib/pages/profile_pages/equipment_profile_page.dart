@@ -54,8 +54,10 @@ class EquipmentDetailsCard extends StatelessWidget {
 
      StreamBuilder<Profile>(
             stream: model.profileStream,
-            builder: (BuildContext context, AsyncSnapshot<Profile> snapshot) =>
+            builder: (BuildContext context, AsyncSnapshot<Profile> snapshot) {
 
+    if (!snapshot.hasData){ return CenterdCircularProgressIndicator();}
+    return
 
      Card(
         child: Container(
@@ -80,6 +82,7 @@ class EquipmentDetailsCard extends StatelessWidget {
             ],
           ),
 
+          /// Row 2
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -98,7 +101,7 @@ class EquipmentDetailsCard extends StatelessWidget {
           NotesCard(snapshot.data.getItem(DatabaseIds.method))
         ],
         ),
-      ))
+      ));}
      )
     );
   }
