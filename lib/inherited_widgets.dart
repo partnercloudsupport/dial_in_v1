@@ -311,7 +311,7 @@ class TimerPickerModel extends Model {
   BehaviorSubject<bool> timerRunningStreamContoller = new BehaviorSubject<bool>();
   set timerIsActive (bool isActive) => timerRunningStreamContoller.sink.add(isActive);
 
-  bool get timerIsActive => timer.isActive; 
+  bool get timerIsActive { if (timer == null || !timer.isActive){ return false; } else { return true; } }
   Stream<bool> get isTimerActiveStream => timerRunningStreamContoller.stream;
 
   BehaviorSubject<int> _timeStream = new BehaviorSubject<int>();
