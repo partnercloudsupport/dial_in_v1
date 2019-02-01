@@ -336,7 +336,7 @@ class TimerPickerModel extends Model {
   }
 
   void resetWatch() {
-    timer.cancel();
+    if (timer != null ) { timer.cancel(); }
     timerIsActive = false;
    _time = 0;
   }
