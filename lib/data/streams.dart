@@ -138,7 +138,7 @@ class SocialFeedBloc{
   void handleProfileList(List<Profile> profilesin){
     
       _currentFeedData = profilesin;
-
+      if ( _currentUser != null ) {
       var profiles = _returnListOfProfilesWithoutUserProfiles(profilesin);
 
      if(_databaseId == DatabaseIds.community){
@@ -181,6 +181,7 @@ class SocialFeedBloc{
               _outgoingController.add(feedListProfiles);}
           );
         }
+    }
   }
 
   List<Profile> _returnListOfProfilesWithoutUserProfiles(List<Profile> profilesIn){

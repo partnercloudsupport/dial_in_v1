@@ -542,7 +542,7 @@ class Dbf {
 
     String userId = await Dbf.getCurrentUserId();
 
-      _properties[DatabaseIds.imageUrl] = profile.imageUrl;
+      if (profile.imageUrl != null ) { _properties[DatabaseIds.imageUrl] = profile.imageUrl; }
       _properties[DatabaseIds.orderNumber] = profile.orderNumber;
       _properties[DatabaseIds.user] = userId;
       _properties[DatabaseIds.public] = profile.isPublic;

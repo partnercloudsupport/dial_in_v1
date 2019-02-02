@@ -19,6 +19,8 @@ class BaristaPage extends StatelessWidget {
                 builder:
                     (BuildContext context, AsyncSnapshot<Profile> snapshot) {
 
+                if ( !snapshot.hasData ){ return CenterdCircularProgressIndicator(); }
+
                 return
                   new Column(children: <Widget>[
                     /// Details

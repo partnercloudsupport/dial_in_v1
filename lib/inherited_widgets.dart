@@ -324,24 +324,26 @@ class TimerPickerModel extends Model {
     _timeStream.add(_time);
   }
 
-   void startWatch() {
-        timerIsActive = true;
-        timer = new Timer.periodic(Duration(seconds:1), updateTime);
+  void startWatch() {
+    timerIsActive = true;
+    timer = new Timer.periodic( Duration(seconds:1) , updateTime);
   }
 
   void stopWatch() {
-      timerIsActive = false;
-      timer.cancel();
-      timer.cancel();
+    timerIsActive = false;
+    timer.cancel();
+    timer.cancel();
   }
 
   void resetWatch() {
     if (timer != null ) { timer.cancel(); }
     timerIsActive = false;
-   _time = 0;
+    _time = 0;
   }
 
-  void updateTime(Timer t){ _time = _time + 1;}
+  void updateTime(Timer t){
+    _time = _time + 1;
+  }
 
   Item get item => _profilePageModel.getItem(DatabaseIds.time);
 
@@ -359,8 +361,7 @@ class TimerPickerModel extends Model {
   
   int get _time => Functions.getIntValue( _profilePageModel.getItemValue( DatabaseIds.time ));
   
- static TimerPickerModel of(BuildContext context) =>
-      ScopedModel.of<TimerPickerModel>(context);
+  static TimerPickerModel of(BuildContext context) => ScopedModel.of<TimerPickerModel>(context);
   
 }
 

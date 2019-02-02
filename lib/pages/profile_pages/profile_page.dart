@@ -332,7 +332,6 @@ class GoBackAppBarButton extends StatelessWidget {
 class ProfilePageImage extends StatefulWidget {
   _ProfilePageImageState createState() => _ProfilePageImageState();
 }
-
 class _ProfilePageImageState extends State<ProfilePageImage> {
 
   Future _getimage(ProfilePageModel model) async {
@@ -341,9 +340,9 @@ class _ProfilePageImageState extends State<ProfilePageImage> {
    if ( filePath != null ){ 
       PopUps.showCircularProgressIndicator(context);
       if ( model.imageUrl != null && model.imageUrl != '') { Dbf.deleteFireBaseStorageItem(model.imageUrl); }
-      String url = await Dbf.upLoadFileReturnUrl(File(filePath), [DatabaseIds.user, model.profile.userId, DatabaseIds.images, model.profile.databaseId]).catchError((e) => print(e));
+      String url = await Dbf.upLoadFileReturnUrl(File(filePath), [ DatabaseIds.user, model.profile.userId, DatabaseIds.images, model.profile.databaseId]).catchError((e) => print(e));
       setState(() { model.profileImageUrl = url; }); 
-      Navigator.pop(context); }
+      Navigator.pop(context); } 
   }
 
   @override
@@ -355,10 +354,7 @@ class _ProfilePageImageState extends State<ProfilePageImage> {
         child: InkWell(
             child: 
               CircularCachedProfileImage( model.placeholder, model.imageUrl, 200, model.profile.objectId ),
-            onTap: model.isEditing
-                ? () {_getimage( model );
-                  }
-                : () {}
+            onTap: () { if ( model.isEditing ){ _getimage( model ); } }
         ),
       )   
     );

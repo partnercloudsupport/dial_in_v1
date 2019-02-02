@@ -192,20 +192,20 @@ class CircularCachedProfileImage extends StatelessWidget {
     if (_imageUrl == null) {
       _child = Image.asset(_placeholder);
     } else if (_imageUrl is String) {
-      _child = Hero(
-          tag: _heroTag,
-          child: CachedNetworkImage(
+      _child = CachedNetworkImage(
             placeholder: Image.asset(_placeholder),
             imageUrl: _imageUrl,
             fit: BoxFit.cover,
-          ));
+          );
     } else {
       throw ('error with image url String');
     }
 
     assert(_child != null, 'Child is null');
 
-    return ShapedBox(_child, _size, Shape.circle);
+    return  Hero(
+          tag: _heroTag,
+          child: ShapedBox(_child, _size, Shape.circle));
   }
 }
 
@@ -1055,6 +1055,8 @@ class _RatioTextFieldItemWithInitalValueState
     _focusNode.addListener(_focusNodeListenerFunction);
     super.initState();
   }
+
+  void unfocus(){ _focusNode.unfocus(); }
 
   void _focusNodeListenerFunction() {
     if (!_focusNode.hasFocus) {

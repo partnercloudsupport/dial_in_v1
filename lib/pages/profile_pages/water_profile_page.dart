@@ -23,6 +23,9 @@ class WaterPage extends StatelessWidget {
                 stream: model.profileStream,
                 builder:
                     (BuildContext context, AsyncSnapshot<Profile> profile) {
+ 
+                  if ( !profile.hasData ) { return CenterdCircularProgressIndicator(); }
+
                   return Column(children: <Widget>[
 
                     /// Name
